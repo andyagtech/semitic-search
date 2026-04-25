@@ -405,6 +405,21 @@ export function FontLab() {
     });
   }, [text, hebrewStretchActive]);
 
+  /** Generic single-char insertion at cursor — used by Arabic-mark
+   *  buttons (shaddah / tanwin). Combining marks attach to the preceding
+   *  character automatically once they're in the text. */
+  const insertAtCursor = useCallback((ch: string) => {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    const pos = ta.selectionStart;
+    const updated = text.slice(0, pos) + ch + text.slice(pos);
+    setText(updated);
+    requestAnimationFrame(() => {
+      ta.focus();
+      ta.setSelectionRange(pos + ch.length, pos + ch.length);
+    });
+  }, [text]);
+
   /** Remove one stretch character before the cursor, if present. Skips
    *  over any combining marks so "remove kashida" works whether the
    *  cursor is right after the tatweel or after a vowel that followed
@@ -628,6 +643,27 @@ export function FontLab() {
                 in text: use <kbd className="px-1 py-0.5 rounded bg-neutral-100 border border-neutral-300 font-mono">+</kbd> / <kbd className="px-1 py-0.5 rounded bg-neutral-100 border border-neutral-300 font-mono">−</kbd> keys
                 {hebrewStretchActive && <> · press multiple times to widen indefinitely</>}
               </span>
+            </div>
+          )}
+          {hebrewStretchActive && (
+            <div className="mt-2 flex items-center gap-2 text-xs text-neutral-600 flex-wrap">
+              <span className="text-neutral-500 uppercase tracking-wider">Arabic marks</span>
+              {[
+                { ch: "ّ", label: "shaddah" },
+                { ch: "ً", label: "fathatan" },
+                { ch: "ٌ", label: "dammatan" },
+                { ch: "ٍ", label: "kasratan" },
+              ].map(({ ch, label }) => (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => insertAtCursor(ch)}
+                  className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 font-mono font-semibold"
+                  title={`Insert U+${ch.charCodeAt(0).toString(16).toUpperCase().padStart(4, "0")} ${label} at the cursor — combining mark, attaches to the preceding Hebrew letter`}
+                >
+                  {ch} <span className="text-[10px] text-neutral-500 font-sans font-normal">{label}</span>
+                </button>
+              ))}
             </div>
           )}
           {supportsJaltWiden && (

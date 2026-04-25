@@ -59,6 +59,12 @@ ALIAS_DAGESH = {
     "tav":      [0xFB4A],   # ת + dagesh
 }
 
+# Arabic combining marks to import into every Hebrew stretch font: shaddah
+# and the three tanwin marks. These are pulled from Amiri-Regular.ttf and
+# scaled to the target font's UPM. Lets users place these marks over any
+# Hebrew letter (academic / comparative use case).
+ARABIC_MARKS = [0x0651, 0x064B, 0x064C, 0x064D]
+
 FRANK_RUHL = {
     "id": "frank-ruhl",
     "source": "FrankRuhlLibre.ttf",
@@ -67,6 +73,7 @@ FRANK_RUHL = {
     "postscript": "SemiticStretchHebrew",
     "internal_id": "SemiticSearch-SemiticStretchHebrew-2.0",
     "step": 150,
+    "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -92,6 +99,7 @@ KETER_ARAM_TSOVA = {
     "postscript": "SemiticStretchKeterAramTsova",
     "internal_id": "SemiticSearch-SemiticStretchKeterAramTsova-1.0",
     "step": 300,
+    "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -354,6 +362,73 @@ def otTables_new_gsub():
     return t
 
 
+def import_arabic_marks(target_font: TTFont, codepoints: list[int]) -> int:
+    """Copy combining-mark glyphs from Amiri-Regular.ttf into target_font,
+    scaling coordinates if UPMs differ. Returns count of marks imported.
+
+    Why: shaddah / tanwin (U+0651, U+064B-064D) are Arabic combining marks.
+    When typed after a Hebrew letter, browsers either render them via font
+    fallback (often misaligned) or show tofu. Embedding the mark glyphs
+    directly in our Hebrew font lets the same font render the base + mark
+    as one shaping run, avoiding fallback weirdness.
+
+    The source glyph's y-coordinates (Amiri designs them at y=820-1230 to
+    sit above Arabic letters) line up well with Hebrew letter heights
+    when both UPMs are 1000. For other UPMs we scale.
+    """
+    amiri_path = FONTS_DIR / "Amiri-Regular.ttf"
+    if not amiri_path.exists():
+        return 0
+    amiri = TTFont(str(amiri_path))
+    src_upem = amiri["head"].unitsPerEm
+    dst_upem = target_font["head"].unitsPerEm
+    scale = dst_upem / src_upem
+    src_cmap = amiri.getBestCmap()
+    target_glyf = target_font["glyf"]
+    target_hmtx = target_font["hmtx"]
+    order = target_font.getGlyphOrder()
+    imported = 0
+    for cp in codepoints:
+        gname = src_cmap.get(cp)
+        if not gname:
+            continue
+        src_glyph = amiri["glyf"][gname]
+        # Decompose composite glyphs into a flat outline (kasratan is
+        # composite in Amiri — referencing other glyphs by name — and we
+        # can't easily port its components piecewise). Use TTGlyphPen +
+        # decompose machinery via the glyph set.
+        if src_glyph.numberOfContours == -1:
+            # Composite — render via amiri's glyph set then capture outline.
+            from fontTools.pens.recordingPen import DecomposingRecordingPen
+            from fontTools.pens.transformPen import TransformPen
+            from fontTools.misc.transform import Identity
+            amiri_gs = amiri.getGlyphSet()
+            pen = DecomposingRecordingPen(amiri_gs)
+            amiri_gs[gname].draw(pen)
+            ttpen = TTGlyphPen(None)
+            scale_t = Identity.scale(scale, scale)
+            tp = TransformPen(ttpen, scale_t)
+            pen.replay(tp)
+            new_glyph = ttpen.glyph()
+        else:
+            new_glyph = copy.deepcopy(src_glyph)
+            for i, (x, y) in enumerate(new_glyph.coordinates):
+                new_glyph.coordinates[i] = (int(round(x * scale)), int(round(y * scale)))
+            new_glyph.recalcBounds(target_glyf)
+        target_glyf[gname] = new_glyph
+        # Combining marks have advance=0
+        target_hmtx.metrics[gname] = (0, 0)
+        if gname not in order:
+            order.append(gname)
+        # cmap mapping
+        for t in target_font["cmap"].tables:
+            if t.isUnicode() or t.platformID == 3:
+                t.cmap[cp] = gname
+        imported += 1
+    target_font.setGlyphOrder(order)
+    return imported
+
+
 def build_one(config: dict) -> int:
     src_path = FONTS_DIR / config["source"]
     out_path = FONTS_DIR / config["output"]
@@ -448,6 +523,13 @@ def build_one(config: dict) -> int:
         letter_variants[src_glyph] = {"variants": variants, "aliases": aliases}
         alias_note = f" + aliases {aliases}" if aliases else ""
         print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}")
+
+    # --- 2b. Optionally import Arabic combining marks (shaddah, tanwin)
+    # so the same font can render Hebrew base + Arabic mark cleanly.
+    import_marks = config.get("import_marks", [])
+    if import_marks:
+        n = import_arabic_marks(font, list(import_marks))
+        print(f"  imported {n} Arabic mark glyphs from Amiri")
 
     # --- 3. Wire up GSUB ligatures via feaLib (Adobe Feature File syntax).
     #

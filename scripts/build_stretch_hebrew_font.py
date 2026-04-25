@@ -133,16 +133,25 @@ SHMULIK = {
     "step": 300,
     "import_marks": ARABIC_MARKS,
     "letters": {
-        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1300, "x_cutoff": 700,
+        # Shmulik's body bars sit at y=1050 with serifs reaching y=1186.
+        # Letters are wide (1280-1600 advance), so x_cutoffs are bigger
+        # than narrower fonts — they anchor the actual right descender/leg
+        # which sits near x=1000+.
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 900,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
-        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 900, "bar_top": 1300, "leg_max_y": 800, "x_cutoff": 800,
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 1100,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1200, "arm_min_y": 1200, "x_cutoff": 600,
+        # Lamed: tall arm at y=1132+, body bar at y=1050. Old cfg used
+        # bar_top=1200 + x_cutoff=600 — split the body bar awkwardly,
+        # producing the wedge in image #42. Now arm_min_y=1100 so the
+        # whole upper hook translates rigidly, x_cutoff=900 anchors only
+        # the body's right end.
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1100, "arm_min_y": 1100, "x_cutoff": 900,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
-        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 700},
-        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 900, "bar_top": 1300, "x_cutoff": 600,
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 1100},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 900,
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
-        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1300, "leg_max_y": 900, "x_cutoff": 900,
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 1200,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
     },
 }
@@ -157,7 +166,10 @@ HILLEL = {
     "family": "Semitic Stretch Hillel CLM",
     "postscript": "SemiticStretchHillelCLM",
     "internal_id": "SemiticSearch-SemiticStretchHillelCLM-1.0",
-    "step": 130,
+    # 150 instead of 130 — keeps the stretch ratio consistent at ~0.15em
+    # per level across all UPM=1000 fonts. Was 130 because Hillel renders
+    # smaller; normalizing makes side-by-side comparisons fair.
+    "step": 150,
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 280},
@@ -873,6 +885,16 @@ def build_one(config: dict) -> int:
         letter_variants[src_glyph] = {"variants": variants, "aliases": aliases}
         alias_note = f" + aliases {aliases}" if aliases else ""
         print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}")
+
+    # --- 2a. Drop variable-font tables. Noto Sans/Serif Hebrew (and other
+    # Google variable fonts) ship with fvar/gvar/HVAR/STAT/avar. When we
+    # add stretch variant glyphs to the font, gvar's per-glyph variation
+    # records no longer match glyphCount → font is invalid and the new
+    # glyphs render as blanks. We don't need variable axes for static
+    # stretch derivatives, so drop the variable-font tables entirely.
+    for tag in ("fvar", "gvar", "avar", "cvar", "HVAR", "VVAR", "MVAR", "STAT"):
+        if tag in font:
+            del font[tag]
 
     # --- 2b. Optionally import Arabic combining marks (shaddah, tanwin,
     # sukun) so the same font can render Hebrew base + Arabic mark cleanly.

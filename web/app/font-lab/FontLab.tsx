@@ -57,6 +57,12 @@ const SCRIPTS: ScriptEntry[] = [
         note: "custom derivative of Frank Ruhl Libre (OFL). Supports true kashida-like widening via +/- keys" },
       { id: "stretchketer", label: "Semitic Stretch Keter Aram Tsova", file: "SemiticStretchKeterAramTsova.ttf", family: "FL_StretchKeterAram",
         note: "custom derivative of Keter Aram Tsova (Culmus, GPL). Same kashida-like widening as Semitic Stretch Hebrew, but with Aleppo-codex letterforms" },
+      { id: "stretchshmulik", label: "Semitic Stretch Shmulik CLM", file: "SemiticStretchShmulikCLM.ttf", family: "FL_StretchShmulik",
+        note: "Culmus fancy (GPL) by Yoram Gnat. Display serif with kashida-like widening." },
+      { id: "stretchhillel", label: "Semitic Stretch Hillel CLM", file: "SemiticStretchHillelCLM.ttf", family: "FL_StretchHillel",
+        note: "Culmus fancy (GPL) by Maxim Iorsh. Modern Hebrew with kashida-like widening; consonants only (no niqqud)." },
+      { id: "stretchgladia", label: "Semitic Stretch Gladia CLM", file: "SemiticStretchGladiaCLM.ttf", family: "FL_StretchGladia",
+        note: "Culmus fancy (GPL) by Maxim Iorsh. Bold display Hebrew with kashida-like widening; consonants only." },
       { id: "taameyfrank",label: "Taamey Frank CLM",   file: "TaameyFrankCLM-Medium.ttf", family: "FL_TaameyFrank",
         note: "Culmus / Yoram Gnat (GPL). jalt + salt + niqqud + te'amim positioning" },
       { id: "keteryg",    label: "Keter YG",           file: "KeterYG-Medium.ttf", family: "FL_KeterYG",
@@ -313,7 +319,7 @@ export function FontLab() {
   // The Hebrew stretch font supports a REAL kashida-style extender via
   // U+E010 insertion, indefinite widening. Other Hebrew fonts fall back
   // to per-letter jalt substitution.
-  const hebrewStretchActive = script.id === "hebrew" && (font.id === "stretch" || font.id === "stretchketer");
+  const hebrewStretchActive = script.id === "hebrew" && font.id.startsWith("stretch");
   const supportsKashida = script.id === "arabic" || script.id === "syriac" || hebrewStretchActive;
   const supportsWideHebrew = script.id === "hebrew";
   // Hebrew (non-stretch font): widening via jalt is per-letter via OT feature.
@@ -653,6 +659,8 @@ export function FontLab() {
                 { ch: "ً", label: "fathatan" },
                 { ch: "ٌ", label: "dammatan" },
                 { ch: "ٍ", label: "kasratan" },
+                { ch: "ْ", label: "sukun" },
+                { ch: "̈", label: "two dots" },  // U+0308 — for Heh → ة
               ].map(({ ch, label }) => (
                 <button
                   key={label}

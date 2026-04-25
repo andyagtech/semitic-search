@@ -59,11 +59,17 @@ ALIAS_DAGESH = {
     "tav":      [0xFB4A],   # ת + dagesh
 }
 
-# Arabic combining marks to import into every Hebrew stretch font: shaddah
-# and the three tanwin marks. These are pulled from Amiri-Regular.ttf and
-# scaled to the target font's UPM. Lets users place these marks over any
-# Hebrew letter (academic / comparative use case).
-ARABIC_MARKS = [0x0651, 0x064B, 0x064C, 0x064D]
+# Arabic combining marks to import into every Hebrew stretch font: shaddah,
+# three tanwin marks, sukun. Pulled from Amiri-Regular.ttf and scaled to
+# the target font's UPM. Lets users place these marks over any Hebrew
+# letter (academic / comparative use case).
+ARABIC_MARKS = [0x0651, 0x064B, 0x064C, 0x064D, 0x0652]
+
+# Combining diaeresis (U+0308): two dots above. Used for Hebrew Heh + dots
+# to visually represent Arabic ة (taa marbuta), among other comparative uses.
+# Amiri's diaeresis is positioned for Latin x-heights, too low for Hebrew —
+# we design our own glyph instead.
+DIAERESIS_CP = 0x0308
 
 FRANK_RUHL = {
     "id": "frank-ruhl",
@@ -115,7 +121,76 @@ KETER_ARAM_TSOVA = {
     },
 }
 
-CONFIGS = [FRANK_RUHL, KETER_ARAM_TSOVA]
+# Shmulik CLM (Culmus fancy, GPL) — UPM=2048, distinctive serif Hebrew
+# inspired by hand-set type. Top bars sit around y=900-1238.
+SHMULIK = {
+    "id": "shmulik",
+    "source": "ShmulikCLM.ttf",
+    "output": "SemiticStretchShmulikCLM.ttf",
+    "family": "Semitic Stretch Shmulik CLM",
+    "postscript": "SemiticStretchShmulikCLM",
+    "internal_id": "SemiticSearch-SemiticStretchShmulikCLM-1.0",
+    "step": 300,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1300, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 900, "bar_top": 1300, "leg_max_y": 800, "x_cutoff": 800,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1200, "arm_min_y": 1200, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 700},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 900, "bar_top": 1300, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1300, "leg_max_y": 900, "x_cutoff": 900,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+# Hillel (Culmus fancy, GPL) — UPM=1000, modern Israeli serif. No
+# composed-dagesh glyphs, so aliases unused (IgnoreMarks lookupflag
+# suffices to skip the dagesh combining mark).
+HILLEL = {
+    "id": "hillel",
+    "source": "HillelCLM-Medium.ttf",
+    "output": "SemiticStretchHillelCLM.ttf",
+    "family": "Semitic Stretch Hillel CLM",
+    "postscript": "SemiticStretchHillelCLM",
+    "internal_id": "SemiticSearch-SemiticStretchHillelCLM-1.0",
+    "step": 130,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 280},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 350, "bar_top": 520, "leg_max_y": 320, "x_cutoff": 280},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 350, "bar_top": 470, "arm_min_y": 470, "x_cutoff": 250},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 280},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 250},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 350, "bar_top": 520, "leg_max_y": 350, "x_cutoff": 320},
+    },
+}
+
+# Gladia (Culmus fancy, GPL) — UPM=1000, bold display Hebrew. No composed
+# dagesh forms, same as Hillel.
+GLADIA = {
+    "id": "gladia",
+    "source": "GladiaCLM-Bold.ttf",
+    "output": "SemiticStretchGladiaCLM.ttf",
+    "family": "Semitic Stretch Gladia CLM",
+    "postscript": "SemiticStretchGladiaCLM",
+    "internal_id": "SemiticSearch-SemiticStretchGladiaCLM-1.0",
+    "step": 150,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 380},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 380},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 450, "bar_top": 600, "arm_min_y": 600, "x_cutoff": 300},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 350},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 350},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 450, "x_cutoff": 400},
+    },
+}
+
+CONFIGS = [FRANK_RUHL, KETER_ARAM_TSOVA, SHMULIK, HILLEL, GLADIA]
 
 # Stretching model (matches Torah scribal widening):
 #   bar — top bar stretches; no rigid arm/leg (dalet ד, resh ר).
@@ -429,6 +504,44 @@ def import_arabic_marks(target_font: TTFont, codepoints: list[int]) -> int:
     return imported
 
 
+def add_two_dots_above(target_font: TTFont) -> bool:
+    """Install a custom 'two dots above' glyph at U+0308 (combining diaeresis).
+    Designed for Hebrew letter heights — sits well above the letter cap. Uses
+    negative x-positioning so the mark backs up over the preceding character.
+    Returns True if added.
+    """
+    upem = target_font["head"].unitsPerEm
+    # Scale factors relative to UPM=1000 baseline
+    s = upem / 1000.0
+    cy = int(900 * s)        # vertical center of the dots (above letter cap)
+    r = int(60 * s)          # dot radius
+    cx_left = int(-330 * s)  # left dot center (negative — backs up over base)
+    cx_right = int(-110 * s)
+
+    pen = TTGlyphPen(None)
+    for cx in (cx_left, cx_right):
+        # Approximate a circle with 4 quadratic Bezier segments.
+        pen.moveTo((cx + r, cy))
+        pen.qCurveTo((cx + r, cy + r), (cx, cy + r))
+        pen.qCurveTo((cx - r, cy + r), (cx - r, cy))
+        pen.qCurveTo((cx - r, cy - r), (cx, cy - r))
+        pen.qCurveTo((cx + r, cy - r), (cx + r, cy))
+        pen.closePath()
+    glyph = pen.glyph()
+
+    gname = f"uni{DIAERESIS_CP:04X}"
+    order = target_font.getGlyphOrder()
+    if gname not in order:
+        order.append(gname)
+        target_font.setGlyphOrder(order)
+    target_font["glyf"][gname] = glyph
+    target_font["hmtx"].metrics[gname] = (0, 0)  # combining mark
+    for t in target_font["cmap"].tables:
+        if t.isUnicode() or t.platformID == 3:
+            t.cmap[DIAERESIS_CP] = gname
+    return True
+
+
 def build_one(config: dict) -> int:
     src_path = FONTS_DIR / config["source"]
     out_path = FONTS_DIR / config["output"]
@@ -524,12 +637,16 @@ def build_one(config: dict) -> int:
         alias_note = f" + aliases {aliases}" if aliases else ""
         print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}")
 
-    # --- 2b. Optionally import Arabic combining marks (shaddah, tanwin)
-    # so the same font can render Hebrew base + Arabic mark cleanly.
+    # --- 2b. Optionally import Arabic combining marks (shaddah, tanwin,
+    # sukun) so the same font can render Hebrew base + Arabic mark cleanly.
     import_marks = config.get("import_marks", [])
     if import_marks:
         n = import_arabic_marks(font, list(import_marks))
         print(f"  imported {n} Arabic mark glyphs from Amiri")
+    # --- 2c. Custom two-dots-above (U+0308) — designed for Hebrew letter
+    # heights. Lets users place dots above Hebrew Heh to evoke Arabic ة.
+    if add_two_dots_above(font):
+        print(f"  installed two-dots-above (U+0308)")
 
     # --- 3. Wire up GSUB ligatures via feaLib (Adobe Feature File syntax).
     #

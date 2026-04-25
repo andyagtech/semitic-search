@@ -66,12 +66,18 @@
   const s = document.createElement('style');
   s.textContent =
     "@font-face{font-family:'StretchTest';src:url('/fonts/SemiticStretchHebrew.ttf?t=" + t + "') format('truetype');font-display:block;}" +
-    "@font-face{font-family:'StretchKeter';src:url('/fonts/SemiticStretchKeterAramTsova.ttf?t=" + t + "') format('truetype');font-display:block;}";
+    "@font-face{font-family:'StretchKeter';src:url('/fonts/SemiticStretchKeterAramTsova.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchShmulik';src:url('/fonts/SemiticStretchShmulikCLM.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchHillel';src:url('/fonts/SemiticStretchHillelCLM.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchGladia';src:url('/fonts/SemiticStretchGladiaCLM.ttf?t=" + t + "') format('truetype');font-display:block;}";
   document.head.appendChild(s);
 </script>
 
 <style>
-  .keter { font-family: 'StretchKeter', serif; }
+  .keter   { font-family: 'StretchKeter',   serif; }
+  .shmulik { font-family: 'StretchShmulik', serif; }
+  .hillel  { font-family: 'StretchHillel',  serif; }
+  .gladia  { font-family: 'StretchGladia',  serif; }
 </style>
 
 <p class="intro">
@@ -89,6 +95,9 @@
 <div class="row"><span class="label">ל + dammatan —</span><span>לٌ</span></div>
 <div class="row"><span class="label">ל + kasratan (kasra below) —</span><span>לٍ</span></div>
 <div class="row"><span class="label">שָׁל + shaddah + וֹם —</span><span>שָׁלّוֹם</span></div>
+<div class="row"><span class="label">ל + sukun —</span><span>לْ</span></div>
+<div class="row"><span class="label">ה + two-dots-above (Hebrew ה → Arabic ة) —</span><span>ה̈</span></div>
+<div class="row"><span class="label">בית̈ (house, with ה̈ to evoke ة) —</span><span>בית̈</span></div>
 <div class="row"><span class="label">stretched ל + shaddah —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;ّוֹם</span></div>
 
 <h1>Same in Keter Aram Tsova</h1>
@@ -97,6 +106,27 @@
 <div class="row keter"><span class="label">ל + dammatan —</span><span>לٌ</span></div>
 <div class="row keter"><span class="label">ל + kasratan —</span><span>לٍ</span></div>
 <div class="row keter"><span class="label">stretched ל + shaddah —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;ّוֹם</span></div>
+
+<h1>New Culmus fancy stretch fonts — Shmulik / Hillel / Gladia</h1>
+<p class="intro" style="margin-top:-8px">Three more open-source Hebrew fonts run through the framework. Hillel and Gladia are unvocalized display fonts (no niqqud).</p>
+
+<h1>Semitic Stretch Shmulik CLM</h1>
+<div class="row shmulik"><span class="label">ל s3 (vocalized) —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row shmulik"><span class="label">ת s3 in torah —</span><span>תּ&#x05C6;&#x05C6;&#x05C6;וֹרָה</span></div>
+<div class="row shmulik"><span class="label">ם s6 (final) —</span><span>שלום&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row shmulik"><span class="label">ל + shaddah —</span><span>לّ</span></div>
+
+<h1>Semitic Stretch Hillel CLM</h1>
+<div class="row hillel"><span class="label">ל s3 —</span><span>של&#x05C6;&#x05C6;&#x05C6;ום</span></div>
+<div class="row hillel"><span class="label">ת s3 —</span><span>ת&#x05C6;&#x05C6;&#x05C6;ורה</span></div>
+<div class="row hillel"><span class="label">ם s6 (final) —</span><span>שלום&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row hillel"><span class="label">ל + shaddah —</span><span>לّ</span></div>
+
+<h1>Semitic Stretch Gladia CLM</h1>
+<div class="row gladia"><span class="label">ל s3 —</span><span>של&#x05C6;&#x05C6;&#x05C6;ום</span></div>
+<div class="row gladia"><span class="label">ת s3 —</span><span>ת&#x05C6;&#x05C6;&#x05C6;ורה</span></div>
+<div class="row gladia"><span class="label">ם s6 (final) —</span><span>שלום&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row gladia"><span class="label">ל + shaddah —</span><span>לّ</span></div>
 
 <h1>Semitic Stretch Keter Aram Tsova — all 6 letters at s3</h1>
 <p class="intro" style="margin-top:-8px">First stretch font built on a NON-Frank-Ruhl base. Keter Aram Tsova uses Aleppo-codex letterforms and UPM=2048 (vs Frank Ruhl's 1000), so geometry params were re-tuned per-letter.</p>

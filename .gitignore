@@ -1,0 +1,39 @@
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+
+# Data dumps (large, redownloadable)
+data/raw/
+data/dumps/
+*.jsonl.gz
+*.jsonl.bz2
+
+# Built sqlite databases (large binary, regenerable from raw + scripts)
+*.sqlite3
+*.sqlite
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.vercel
+.env*.local

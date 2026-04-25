@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Semitic Stretch Hebrew — all stretchable letters</title>
+<style>
+  body {
+    background: #1f2937;
+    color: #f3f4f6;
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'StretchTest', serif;
+  }
+  h1 {
+    font-family: -apple-system, system-ui, sans-serif;
+    color: #9ca3af;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 40px 0 8px;
+    direction: ltr;
+    text-align: left;
+  }
+  h1 .letter {
+    font-family: 'StretchTest', serif;
+    font-size: 24px;
+    color: #f3f4f6;
+    text-transform: none;
+    margin-left: 6px;
+    letter-spacing: 0;
+  }
+  .intro {
+    font-family: -apple-system, system-ui, sans-serif;
+    color: #9ca3af;
+    font-size: 13px;
+    direction: ltr;
+    text-align: left;
+    max-width: 700px;
+    margin-bottom: 20px;
+  }
+  .row {
+    font-size: 84px;
+    line-height: 1.35;
+    padding: 8px 0;
+    border-bottom: 1px solid #374151;
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 24px;
+  }
+  .label {
+    font-family: ui-monospace, Menlo, monospace;
+    color: #9ca3af;
+    font-size: 11px;
+    direction: ltr;
+    text-align: left;
+    flex-shrink: 0;
+    align-self: center;
+  }
+</style>
+</head>
+<body>
+<script>
+  const s = document.createElement('style');
+  s.textContent = "@font-face{font-family:'StretchTest';src:url('/fonts/SemiticStretchHebrew.ttf?t=" + Date.now() + "') format('truetype');font-display:block;}";
+  document.head.appendChild(s);
+</script>
+
+<p class="intro">
+  Six Hebrew letters are traditionally stretched by Torah scribes for column
+  justification. Each shows the letter in a representative word at
+  0 / 1 / 3 / 6 trigger levels (U+05C6 after the letter).
+  Classes: <code>bar</code> (ד ר), <code>arm</code> (ל), <code>leg</code> (ה ת),
+  <code>box</code> (ם).
+</p>
+
+<h1>Lamed <span class="letter">ל</span> — arm class (ascending arm translates, bar stretches below)</h1>
+<div class="row"><span class="label">0 —</span><span>שָׁלוֹם</span></div>
+<div class="row"><span class="label">1 → lamed_s1 —</span><span>שָׁל&#x05C6;וֹם</span></div>
+<div class="row"><span class="label">3 → lamed_s3 —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row"><span class="label">6 → lamed_s6 (max) —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+
+<h1>Tav <span class="letter">ת</span> — leg class (left leg translates, bar stretches, right leg anchored)</h1>
+<div class="row"><span class="label">0 —</span><span>תּוֹרָה</span></div>
+<div class="row"><span class="label">1 → tav_s1 —</span><span>תּ&#x05C6;וֹרָה</span></div>
+<div class="row"><span class="label">3 → tav_s3 —</span><span>תּ&#x05C6;&#x05C6;&#x05C6;וֹרָה</span></div>
+<div class="row"><span class="label">6 → tav_s6 (max) —</span><span>תּ&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹרָה</span></div>
+
+<h1>Dalet <span class="letter">ד</span> — bar class (top bar stretches, right descender anchored)</h1>
+<div class="row"><span class="label">0 —</span><span>דָּוִד</span></div>
+<div class="row"><span class="label">1 → dalet_s1 —</span><span>דָּ&#x05C6;וִד</span></div>
+<div class="row"><span class="label">3 → dalet_s3 —</span><span>דָּ&#x05C6;&#x05C6;&#x05C6;וִד</span></div>
+<div class="row"><span class="label">6 → dalet_s6 (max) —</span><span>דָּ&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וִד</span></div>
+
+<h1>Resh <span class="letter">ר</span> — bar class (top bar stretches, right descender anchored)</h1>
+<div class="row"><span class="label">0 —</span><span>רֹאשׁ</span></div>
+<div class="row"><span class="label">1 → resh_s1 —</span><span>רֹ&#x05C6;אשׁ</span></div>
+<div class="row"><span class="label">3 → resh_s3 —</span><span>רֹ&#x05C6;&#x05C6;&#x05C6;אשׁ</span></div>
+<div class="row"><span class="label">6 → resh_s6 (max) —</span><span>רֹ&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;אשׁ</span></div>
+
+<h1>He <span class="letter">ה</span> — leg class (detached left leg translates, bar stretches, right leg anchored)</h1>
+<div class="row"><span class="label">0 —</span><span>הִנֵּה</span></div>
+<div class="row"><span class="label">1 → he_s1 —</span><span>הִ&#x05C6;נֵּה</span></div>
+<div class="row"><span class="label">3 → he_s3 —</span><span>הִ&#x05C6;&#x05C6;&#x05C6;נֵּה</span></div>
+<div class="row"><span class="label">6 → he_s6 (max) —</span><span>הִ&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;נֵּה</span></div>
+
+<h1>Final Mem <span class="letter">ם</span> — box class (closed rectangle widens on the left)</h1>
+<p class="intro" style="margin-top:-8px">Word-final, so stretching extends leftward into the line's leading edge — exactly how Torah scribes use it for column justification.</p>
+<div class="row"><span class="label">0 —</span><span>שָׁלוֹם</span></div>
+<div class="row"><span class="label">1 → finalmem_s1 —</span><span>שָׁלוֹם&#x05C6;</span></div>
+<div class="row"><span class="label">3 → finalmem_s3 —</span><span>שָׁלוֹם&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row"><span class="label">6 → finalmem_s6 (max) —</span><span>שָׁלוֹם&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+
+<h1>Isolated letters — just letter + N triggers, no word context</h1>
+<p class="intro" style="margin-top:-8px">Each stretchable letter on its own at 0 / 3 / 6.</p>
+<div class="row"><span class="label">ד baseline → s3 → s6 —</span><span>ד&nbsp;&nbsp;ד&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ד&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row"><span class="label">ה baseline → s3 → s6 —</span><span>ה&nbsp;&nbsp;ה&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ה&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row"><span class="label">ל baseline → s3 → s6 —</span><span>ל&nbsp;&nbsp;ל&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row"><span class="label">ם baseline → s3 → s6 —</span><span>ם&nbsp;&nbsp;ם&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ם&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row"><span class="label">ר baseline → s3 → s6 —</span><span>ר&nbsp;&nbsp;ר&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ר&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+<div class="row"><span class="label">ת baseline → s3 → s6 —</span><span>ת&nbsp;&nbsp;ת&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ת&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+
+</body>
+</html>

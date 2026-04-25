@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* Per-language script/font variants — all open-source.
+   · Hebrew: Rashi + Solitreo + Paleo (Phoenician block) + Samaritan
+   · Arabic: Amiri (SIL OFL), Reem Kufi, Noto Nastaliq Urdu
+   · Syriac: Noto Sans Syriac {Eastern, Western} + Noto Serif Syriac (Estrangela)
+   · Ethiopic: Noto Serif Ethiopic + Abyssinica SIL
+   · Akkadian: Noto Sans Cuneiform (explicit, system fallback is unreliable)
+   · Ktav Yad CLM (GPL from Culmus Project) is hosted locally in /fonts/.
+*/
+@import url("https://fonts.googleapis.com/css2?family=Noto+Rashi+Hebrew:wght@400;500;600&family=Solitreo&family=Noto+Sans+Phoenician&family=Noto+Sans+Samaritan&family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Noto+Sans+Syriac:wght@400;500&family=Noto+Sans+Syriac+Eastern:wght@400;500&family=Noto+Sans+Syriac+Western:wght@400;500&family=Noto+Serif+Syriac:wght@400;500&family=Noto+Serif+Ethiopic:wght@400;500&family=Noto+Sans+Cuneiform&family=Abyssinica+SIL&display=swap");
+
+@font-face {
+  font-family: "KtavYad CLM";
+  src: url("/fonts/KtavYadCLM-MediumItalic.ttf") format("truetype");
+  font-weight: 400 600;
+  font-style: normal italic;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light dark;
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+/* Dark mode: invert the white/neutral scale that Tailwind utilities read
+   from as CSS custom properties. Every `bg-white`, `bg-neutral-*`,
+   `text-neutral-*`, `border-neutral-*` class flips automatically without
+   touching any component source. Accent colors (emerald/violet/amber/sky/
+   blue) keep their saturation for consistent branding across themes. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b0b10;
+    --foreground: #e8e8ec;
+    --color-white: #14141a;
+    --color-neutral-50: #17171d;
+    --color-neutral-100: #1c1c23;
+    --color-neutral-200: #262630;
+    --color-neutral-300: #3a3a44;
+    --color-neutral-400: #5a5a65;
+    --color-neutral-500: #7e7e88;
+    --color-neutral-600: #a4a4af;
+    --color-neutral-700: #c5c5cf;
+    --color-neutral-800: #dcdce4;
+    --color-neutral-900: #ececf2;
+    /* Backwards-compat: some Tailwind utilities resolve 'gray' aliases. */
+    --color-gray-50: #17171d;
+    --color-gray-100: #1c1c23;
+    --color-gray-200: #262630;
+    --color-gray-500: #7e7e88;
+    --color-gray-700: #c5c5cf;
+  }
+
+  /* Softer accent surfaces in dark mode — light-colored fill classes
+     (emerald-50/amber-50/violet-50/sky-50) look blindingly bright inverted,
+     so tone them down to semi-transparent tints on dark bg. */
+  :root {
+    --color-emerald-50: rgba(16, 185, 129, 0.08);
+    --color-amber-50: rgba(245, 158, 11, 0.08);
+    --color-violet-50: rgba(139, 92, 246, 0.08);
+    --color-violet-100: rgba(139, 92, 246, 0.18);
+    --color-sky-50: rgba(14, 165, 233, 0.08);
+    --color-red-50: rgba(239, 68, 68, 0.1);
+  }
+}
+
+input,
+textarea,
+select {
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Print stylesheet — intended for /roots/[slug] researcher reference cards.
+   Hide nav/footer/interactive bits, unify to black-on-white, keep all the
+   linguistic content dense and readable. */
+@media print {
+  header a, footer, button, nav {
+    display: none !important;
+  }
+  main {
+    background: white !important;
+    padding: 0 !important;
+  }
+  a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+  .bg-white, .bg-neutral-50, .bg-neutral-100, .bg-emerald-50\/40 {
+    background: white !important;
+    border-color: #aaa !important;
+  }
+  body {
+    color: #000 !important;
+  }
+}

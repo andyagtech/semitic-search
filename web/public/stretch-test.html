@@ -58,9 +58,65 @@
     flex-shrink: 0;
     align-self: center;
   }
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(31, 41, 55, 0.95);
+    backdrop-filter: blur(6px);
+    margin: -32px -32px 24px;
+    padding: 12px 32px;
+    border-bottom: 1px solid #374151;
+    direction: ltr;
+    text-align: left;
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 13px;
+    color: #d1d5db;
+  }
+  .toolbar label { cursor: pointer; user-select: none; }
+  .toolbar input { vertical-align: middle; margin-right: 6px; }
 </style>
 </head>
 <body>
+<div class="toolbar">
+  <label><input type="checkbox" id="show-nekudot"> Show nekudot (Hebrew vowel marks)</label>
+</div>
+<script>
+  // Strip Hebrew nekudot/dagesh/cantillation by default; toggle restores them.
+  // Range covers points U+05B0..U+05BD (vowels + dagesh + meteg), U+05BF (rafe),
+  // U+05C1..U+05C2 (shin/sin dots), U+05C7 (qamats qatan), and the cantillation
+  // taamim U+0591..U+05AF.
+  (function(){
+    const NEK_RE = /[֑-ְ֯-ׇֽֿׁׂ]/g;
+    function walkText(node, fn) {
+      if (node.nodeType === 3) { fn(node); return; }
+      if (node.nodeType !== 1) return;
+      // skip the toolbar itself and any element marked .keep-marks
+      if (node.classList && (node.classList.contains('toolbar') || node.classList.contains('keep-marks'))) return;
+      for (const child of Array.from(node.childNodes)) walkText(child, fn);
+    }
+    function snapshotAll() {
+      walkText(document.body, n => {
+        if (n._origText === undefined) n._origText = n.nodeValue;
+      });
+    }
+    function applyMode(showNekudot) {
+      walkText(document.body, n => {
+        const orig = n._origText !== undefined ? n._origText : n.nodeValue;
+        n.nodeValue = showNekudot ? orig : orig.replace(NEK_RE, '');
+      });
+    }
+    function init() {
+      snapshotAll();
+      const cb = document.getElementById('show-nekudot');
+      cb.addEventListener('change', () => applyMode(cb.checked));
+      applyMode(cb.checked);  // default: unchecked → stripped
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else { init(); }
+  })();
+</script>
 <script>
   const t = Date.now();
   const s = document.createElement('style');
@@ -106,24 +162,6 @@
   <code>box</code> (ם).
 </p>
 
-<h1>Arabic marks on Hebrew letters — shaddah, fathatan, dammatan, kasratan</h1>
-<p class="intro" style="margin-top:-8px">Arabic combining marks (U+0651, U+064B-064D) imported from Amiri and added to our Hebrew stretch fonts. Each mark sits above the preceding Hebrew letter as a single shaping run.</p>
-<div class="row"><span class="label">ל + shaddah —</span><span>לّ</span></div>
-<div class="row"><span class="label">ל + fathatan —</span><span>לً</span></div>
-<div class="row"><span class="label">ל + dammatan —</span><span>לٌ</span></div>
-<div class="row"><span class="label">ל + kasratan (kasra below) —</span><span>לٍ</span></div>
-<div class="row"><span class="label">שָׁל + shaddah + וֹם —</span><span>שָׁלّוֹם</span></div>
-<div class="row"><span class="label">ל + sukun —</span><span>לْ</span></div>
-<div class="row"><span class="label">ה + two-dots-above (Hebrew ה → Arabic ة) —</span><span>ה̈</span></div>
-<div class="row"><span class="label">בית̈ (house, with ה̈ to evoke ة) —</span><span>בית̈</span></div>
-<div class="row"><span class="label">stretched ל + shaddah —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;ّוֹם</span></div>
-
-<h1>Same in Keter Aram Tsova</h1>
-<div class="row keter"><span class="label">ל + shaddah —</span><span>לّ</span></div>
-<div class="row keter"><span class="label">ל + fathatan —</span><span>לً</span></div>
-<div class="row keter"><span class="label">ל + dammatan —</span><span>לٌ</span></div>
-<div class="row keter"><span class="label">ל + kasratan —</span><span>לٍ</span></div>
-<div class="row keter"><span class="label">stretched ל + shaddah —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;ّוֹם</span></div>
 
 <h1>Consistency check — same word at lamed_s3 across all 14 fonts</h1>
 <p class="intro" style="margin-top:-8px">Looking for: similar PROPORTION of lamed-stretch to font baseline. Step values normalized to ~0.15em/level so the visual ratio is comparable.</p>
@@ -198,19 +236,16 @@
 <div class="row shmulik"><span class="label">ל s3 (vocalized) —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
 <div class="row shmulik"><span class="label">ת s3 in torah —</span><span>תּ&#x05C6;&#x05C6;&#x05C6;וֹרָה</span></div>
 <div class="row shmulik"><span class="label">ם s6 (final) —</span><span>שלום&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
-<div class="row shmulik"><span class="label">ל + shaddah —</span><span>לّ</span></div>
 
 <h1>Semitic Stretch Hillel CLM</h1>
 <div class="row hillel"><span class="label">ל s3 —</span><span>של&#x05C6;&#x05C6;&#x05C6;ום</span></div>
 <div class="row hillel"><span class="label">ת s3 —</span><span>ת&#x05C6;&#x05C6;&#x05C6;ורה</span></div>
 <div class="row hillel"><span class="label">ם s6 (final) —</span><span>שלום&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
-<div class="row hillel"><span class="label">ל + shaddah —</span><span>לّ</span></div>
 
 <h1>Semitic Stretch Gladia CLM</h1>
 <div class="row gladia"><span class="label">ל s3 —</span><span>של&#x05C6;&#x05C6;&#x05C6;ום</span></div>
 <div class="row gladia"><span class="label">ת s3 —</span><span>ת&#x05C6;&#x05C6;&#x05C6;ורה</span></div>
 <div class="row gladia"><span class="label">ם s6 (final) —</span><span>שלום&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
-<div class="row gladia"><span class="label">ל + shaddah —</span><span>לّ</span></div>
 
 <h1>Semitic Stretch Keter Aram Tsova — all 6 letters at s3</h1>
 <p class="intro" style="margin-top:-8px">First stretch font built on a NON-Frank-Ruhl base. Keter Aram Tsova uses Aleppo-codex letterforms and UPM=2048 (vs Frank Ruhl's 1000), so geometry params were re-tuned per-letter.</p>
@@ -268,6 +303,40 @@
 <div class="row"><span class="label">ם baseline → s3 → s6 —</span><span>ם&nbsp;&nbsp;ם&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ם&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
 <div class="row"><span class="label">ר baseline → s3 → s6 —</span><span>ר&nbsp;&nbsp;ר&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ר&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
 <div class="row"><span class="label">ת baseline → s3 → s6 —</span><span>ת&nbsp;&nbsp;ת&#x05C6;&#x05C6;&#x05C6;&nbsp;&nbsp;ת&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;</span></div>
+
+<h1>Judeo-Arabic — Maimonides wrote his Guide of the Perplexed in this script</h1>
+<p class="intro" style="margin-top:-8px">
+  Judeo-Arabic is Arabic written in Hebrew letters. Maimonides composed the Guide
+  of the Perplexed (دلالة الحائرين / דלאלת אלחאירין) entirely this way. Arabic
+  vocalization marks — shaddah, sukun, fathatan, etc. — sit above the Hebrew
+  letters as combining marks, here rendered by our extended Hebrew stretch fonts.
+</p>
+<div class="row"><span class="label">title (Dalālat al-Ḥā'irīn) —</span><span>דלאלת אלחאירין</span></div>
+<div class="row"><span class="label">Allah — shaddah on second lām marks gemination —</span><span>אללّה</span></div>
+<div class="row"><span class="label">rabbu l-ʿālamīn (Lord of the worlds) —</span><span>רבّ אלעאלמין</span></div>
+<div class="row"><span class="label">bismi-llāh (in the name of God) —</span><span>בّסם אללّה</span></div>
+<div class="row"><span class="label">al-ḥamdu lillāhi (praise to God) —</span><span>אלחמד ללّה</span></div>
+
+<!-- ARABIC_MARKS_SECTION_START -->
+<h1>Arabic marks on Hebrew letters — shaddah, fathatan, dammatan, kasratan</h1>
+<p class="intro" style="margin-top:-8px">Arabic combining marks (U+0651, U+064B-064D) imported from Amiri and added to our Hebrew stretch fonts. Each mark sits above the preceding Hebrew letter as a single shaping run.</p>
+<div class="row"><span class="label">ל + shaddah —</span><span>לّ</span></div>
+<div class="row"><span class="label">ל + fathatan —</span><span>לً</span></div>
+<div class="row"><span class="label">ל + dammatan —</span><span>לٌ</span></div>
+<div class="row"><span class="label">ל + kasratan (kasra below) —</span><span>לٍ</span></div>
+<div class="row"><span class="label">שָׁל + shaddah + וֹם —</span><span>שָׁלّוֹם</span></div>
+<div class="row"><span class="label">ל + sukun —</span><span>לْ</span></div>
+<div class="row"><span class="label">ה + two-dots-above (Hebrew ה → Arabic ة) —</span><span>ה̈</span></div>
+<div class="row"><span class="label">בית̈ (house, with ה̈ to evoke ة) —</span><span>בית̈</span></div>
+<div class="row"><span class="label">stretched ל + shaddah —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;ّוֹם</span></div>
+
+<h1>Same in Keter Aram Tsova</h1>
+<div class="row keter"><span class="label">ל + shaddah —</span><span>לّ</span></div>
+<div class="row keter"><span class="label">ל + fathatan —</span><span>לً</span></div>
+<div class="row keter"><span class="label">ל + dammatan —</span><span>לٌ</span></div>
+<div class="row keter"><span class="label">ל + kasratan —</span><span>לٍ</span></div>
+<div class="row keter"><span class="label">stretched ל + shaddah —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;ّוֹם</span></div>
+<!-- ARABIC_MARKS_SECTION_END -->
 
 </body>
 </html>

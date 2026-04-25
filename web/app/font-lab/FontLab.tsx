@@ -164,9 +164,12 @@ const SCRIPTS: ScriptEntry[] = [
   },
 ];
 
+// Bright, vibrant defaults — picked so EVERY swatch (incl. the first
+// cluster) reads clearly on both the dark and light themes. The previous
+// palette led with #111827 (near-black), invisible on dark backgrounds.
 const DEFAULT_COLORS = [
-  "#111827", "#dc2626", "#d97706", "#059669", "#2563eb",
-  "#7c3aed", "#db2777", "#0891b2", "#65a30d", "#ea580c",
+  "#fbbf24", "#f87171", "#fb923c", "#34d399", "#60a5fa",
+  "#a78bfa", "#f472b6", "#22d3ee", "#a3e635", "#facc15",
 ];
 
 // --- Kashida / tatweel ----------------------------------------------------
@@ -290,7 +293,49 @@ function ensureFontLoaded(family: string, file: string): Promise<void> {
 // immediately see what the tool does.
 const DEFAULT_SCRIPT = "hebrew";
 const DEFAULT_FONT = "stretch";
-const DEFAULT_TEXT = "שָׁל" + HEBREW_STRETCH.repeat(5) + "וֹם";
+// Genesis 1:1 sans niqqud, kashida-stretched into a 3-line justified column.
+// Stretches placed after stretchable letters only (ה / ר) so GSUB consumes
+// the U+05C6 triggers — otherwise they fall back to a visible dot glyph.
+const DEFAULT_TEXT =
+  "בראשית ברא אלה" + HEBREW_STRETCH.repeat(2) + "ים\n" +
+  "את ה" + HEBREW_STRETCH.repeat(5) + "שמים\n" +
+  "ואת האר" + HEBREW_STRETCH.repeat(8) + "ץ";
+
+// Quick-load samples for Hebrew / stretch fonts. Each demonstrates a
+// different feature of the kashida system. All use real Hebrew with
+// stretches (U+05C6) pre-placed at scribally appropriate positions.
+const SX = HEBREW_STRETCH;
+const HEBREW_SAMPLES: { label: string; text: string; hint: string }[] = [
+  {
+    label: "שלום",
+    text: "שָׁל" + SX.repeat(5) + "וֹם",
+    hint: "Basic stretch — lamed widens via 5 kashida triggers",
+  },
+  {
+    label: "Genesis 1:1 (justified column)",
+    text:
+      "בְּרֵאשִׁית בָּרָא אֱלֹהִ" + SX.repeat(2) + "ים\n" +
+      "אֵת הַ" + SX.repeat(5) + "שָּׁמַיִם\n" +
+      "וְאֵת הָאָר" + SX.repeat(8) + "ֶץ",
+    hint: "Multi-line — kashida-stretched ה / ר to justify each row to the left margin (Torah-scribal style)",
+  },
+  {
+    label: "Judeo-Arabic (Maimonides)",
+    text:
+      "דלאלת אלחאירין\n" +
+      "אלחמד ללّה רבّ אלעאלמין",
+    hint: "Arabic written in Hebrew letters with Arabic combining marks (shaddah)",
+  },
+  {
+    label: "Psalms 1 (poetry)",
+    text:
+      "אַשְׁרֵי הָאִ" + SX.repeat(3) + "ישׁ\n" +
+      "אֲשֶׁר לֹא הָלַךְ בַּעֲצַת רְשָׁעִים\n" +
+      "וּבְדֶרֶךְ חַטָּאִים לֹא עָמָד\n" +
+      "וּבְמוֹשַׁב לֵצִים לֹא יָשָׁב",
+    hint: "Biblical poetry — stretched first line as a parashah opener",
+  },
+];
 
 export function FontLab() {
   const [scriptId, setScriptId] = useState(DEFAULT_SCRIPT);
@@ -444,6 +489,41 @@ export function FontLab() {
     });
   }, [text]);
 
+  /** Add the mark at cursor if it isn't already in the current grapheme
+   *  cluster; otherwise remove the existing instance from that cluster.
+   *  Lets each mark button serve double-duty (add + remove) without a
+   *  separate "remove" UI. The "current cluster" is the one ending at
+   *  or before the cursor — found by walking back through any combining
+   *  marks until we hit a base character, then walking forward through
+   *  marks again. */
+  const toggleMarkAtCursor = useCallback((markChar: string) => {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    const pos = ta.selectionStart;
+    const markRe = /\p{M}/u;
+    let baseStart = pos;
+    while (baseStart > 0 && markRe.test(text[baseStart - 1])) baseStart--;
+    let clusterEnd = pos;
+    while (clusterEnd < text.length && markRe.test(text[clusterEnd])) clusterEnd++;
+    const idx = text.indexOf(markChar, baseStart);
+    if (idx >= 0 && idx < clusterEnd) {
+      const updated = text.slice(0, idx) + text.slice(idx + 1);
+      setText(updated);
+      requestAnimationFrame(() => {
+        ta.focus();
+        const newPos = pos > idx ? pos - 1 : pos;
+        ta.setSelectionRange(newPos, newPos);
+      });
+    } else {
+      const updated = text.slice(0, pos) + markChar + text.slice(pos);
+      setText(updated);
+      requestAnimationFrame(() => {
+        ta.focus();
+        ta.setSelectionRange(pos + markChar.length, pos + markChar.length);
+      });
+    }
+  }, [text]);
+
   /** Remove one stretch character before the cursor, if present. Skips
    *  over any combining marks so "remove kashida" works whether the
    *  cursor is right after the tatweel or after a vowel that followed
@@ -592,11 +672,41 @@ export function FontLab() {
     }
   };
 
+  // Coach-marks state. Auto-show on first visit; user can re-open via the
+  // Help button. Persisted under "fontlab.tour.seen.v1" so a future tour
+  // (v2 etc.) can be re-shown if we change steps materially.
+  const [tourOpen, setTourOpen] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!localStorage.getItem("fontlab.tour.seen.v1")) {
+      setTourOpen(true);
+    }
+  }, []);
+  const closeTour = () => {
+    setTourOpen(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("fontlab.tour.seen.v1", "1");
+    }
+  };
+
   return (
     <div>
+      {tourOpen && script.id === "hebrew" && (
+        <CoachMarks onClose={closeTour} />
+      )}
+      <div className="mb-3 flex justify-end">
+        <button
+          type="button"
+          onClick={() => setTourOpen(true)}
+          className="text-xs px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-700"
+          title="Show the stretch-Hebrew tour"
+        >
+          ? How to stretch Hebrew letters
+        </button>
+      </div>
       <section className="mb-4 bg-white border border-neutral-200 rounded-lg p-4">
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="block">
+          <label id="fl-script-select" className="block">
             <span className="text-xs uppercase tracking-wider text-neutral-500">Script</span>
             <select
               className="mt-1 block w-full px-2 py-1.5 border border-neutral-300 rounded text-sm"
@@ -608,7 +718,7 @@ export function FontLab() {
               ))}
             </select>
           </label>
-          <label className="block">
+          <label id="fl-font-select" className="block">
             <span className="text-xs uppercase tracking-wider text-neutral-500">Font</span>
             <select
               className="mt-1 block w-full px-2 py-1.5 border border-neutral-300 rounded text-sm"
@@ -624,9 +734,35 @@ export function FontLab() {
           </label>
         </div>
 
+        {script.id === "hebrew" && (
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-neutral-500 uppercase tracking-wider">Samples</span>
+            {HEBREW_SAMPLES.map((s) => (
+              <button
+                key={s.label}
+                type="button"
+                onClick={() => {
+                  setText(s.text);
+                  // Stretches only render against a Semitic Stretch font
+                  // — switch automatically if the user is on a different
+                  // Hebrew font, so the kashida demo actually shows.
+                  if (s.text.includes(HEBREW_STRETCH) && !fontId.startsWith("stretch")) {
+                    setFontId(DEFAULT_FONT);
+                  }
+                  requestAnimationFrame(() => textareaRef.current?.focus());
+                }}
+                title={s.hint}
+                className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100"
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         <label className="block mt-3">
           <span className="text-xs uppercase tracking-wider text-neutral-500">Text</span>
-          <div className="relative">
+          <div id="fl-textarea" className="relative">
             <textarea
               ref={textareaRef}
               className="mt-1 block w-full px-3 py-2 border border-neutral-300 rounded"
@@ -683,9 +819,9 @@ export function FontLab() {
                 <button
                   key={label}
                   type="button"
-                  onClick={() => insertAtCursor(ch)}
+                  onClick={() => toggleMarkAtCursor(ch)}
                   className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 font-mono font-semibold"
-                  title={`Insert U+${ch.charCodeAt(0).toString(16).toUpperCase().padStart(4, "0")} ${label} at the cursor — combining mark, attaches to the preceding Hebrew letter`}
+                  title={`Toggle U+${ch.charCodeAt(0).toString(16).toUpperCase().padStart(4, "0")} ${label}: adds it to the letter at the cursor, or removes it if already present`}
                 >
                   {ch} <span className="text-[10px] text-neutral-500 font-sans font-normal">{label}</span>
                 </button>
@@ -718,6 +854,32 @@ export function FontLab() {
           )}
         </label>
 
+        {script.id === "hebrew" && (
+          <HebrewOnScreenKeyboard
+            onPress={insertAtCursor}
+            onToggleMark={toggleMarkAtCursor}
+            onBackspace={() => {
+              const ta = textareaRef.current;
+              if (!ta) return;
+              const pos = ta.selectionStart;
+              if (pos <= 0) return;
+              setText(text.slice(0, pos - 1) + text.slice(pos));
+              requestAnimationFrame(() => {
+                ta.focus();
+                ta.setSelectionRange(pos - 1, pos - 1);
+              });
+            }}
+            onClear={() => {
+              setText("");
+              requestAnimationFrame(() => textareaRef.current?.focus());
+            }}
+            onStretch={hebrewStretchActive ? insertKashida : undefined}
+            onShorten={hebrewStretchActive ? removeKashida : undefined}
+            font={font}
+            fontReady={fontReady}
+          />
+        )}
+
         <div className="mt-3 flex items-center gap-4 flex-wrap">
           <label className="flex items-center gap-2 text-xs">
             <span className="text-neutral-500 uppercase tracking-wider">Size</span>
@@ -747,7 +909,15 @@ export function FontLab() {
               onChange={(e) => setStripMarks(e.target.checked)}
               className="w-4 h-4"
             />
-            <span className="text-neutral-500 uppercase tracking-wider">Strip marks</span>
+            <span className="text-neutral-500 uppercase tracking-wider">
+              {script.id === "hebrew"
+                ? "No niqqud"
+                : script.id === "arabic"
+                ? "No harakat"
+                : script.id === "syriac"
+                ? "No diacritics"
+                : "Strip marks"}
+            </span>
           </label>
 
           <span className="ml-auto text-xs text-neutral-500">
@@ -798,6 +968,9 @@ export function FontLab() {
             padding: "24px",
             minHeight: `${fontSize * 1.4 + 48}px`,
             fontFeatureSettings,
+            // Preserve newlines in the source text so multi-line samples
+            // (Genesis 1:1 column, Psalms 1) render as separate lines.
+            whiteSpace: "pre-wrap",
           }}
         >
           {(() => {
@@ -856,7 +1029,7 @@ export function FontLab() {
       </section>
 
       {clusters.length > 0 && (
-        <section className="bg-white border border-neutral-200 rounded-lg p-4">
+        <section id="fl-colors" className="bg-white border border-neutral-200 rounded-lg p-4">
           <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
             <h3 className="text-sm font-semibold text-neutral-700">
               Per-letter colors
@@ -870,8 +1043,16 @@ export function FontLab() {
               onReset={() => setColors(clusters.map((_, i) => DEFAULT_COLORS[i % DEFAULT_COLORS.length]))}
             />
           </div>
-          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+          {/* In RTL scripts the grid flows right-to-left so swatches appear
+              in the same visual order as the displayed word (first cluster
+              on the right, matching how the reader scans). */}
+          <div dir={script.dir} className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
             {clusters.map((g, i) => {
+              // Stretch extenders (U+05C6 / tatweel) inherit the preceding
+              // letter's color via effectiveColors and visually merge with
+              // it, so they shouldn't get their own swatch — that would
+              // look like an empty slot in the middle of a stretched word.
+              if (isStretchExtender(g)) return null;
               // Two widening paths, distinct:
               //   · jalt (typographic, glyph-level): Hebrew letters that the
               //     font has a wide alternate glyph for. Toggled via the
@@ -1019,6 +1200,300 @@ function BulkColorControls({
       >
         Reset palette
       </button>
+    </div>
+  );
+}
+
+// Letters that have a stretch variant in our SemiticStretch* fonts. Any
+// of these followed by U+05C6 trigger(s) gets substituted to a wider
+// glyph by the GSUB liga rule. Highlighted in the on-screen keyboard so
+// users know which keys can be stretched.
+const STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
+
+// --- Coach marks --------------------------------------------------------
+
+type TourStep = {
+  targetId: string;
+  title: string;
+  body: string;
+  placement?: "top" | "bottom";
+};
+
+const TOUR_STEPS: TourStep[] = [
+  {
+    targetId: "fl-font-select",
+    title: "1. Pick a stretch-capable font",
+    body: "Any 'Semitic Stretch …' font supports kashida-style widening of six letters: ד ה ל ם ר ת. The other Hebrew fonts are available too but only widen via per-letter jalt.",
+    placement: "bottom",
+  },
+  {
+    targetId: "fl-textarea",
+    title: "2. Type your text here",
+    body: "Type Hebrew normally, or use the on-screen keyboard below. Each grapheme cluster (letter + niqqud) becomes one colorable unit.",
+    placement: "bottom",
+  },
+  {
+    targetId: "fl-keyboard",
+    title: "3. Stretchable letters are highlighted",
+    body: "ד ה ל ם ר ת glow amber in the keyboard — those are the six letters that can be widened by inserting kashida triggers after them.",
+    placement: "top",
+  },
+  {
+    targetId: "fl-stretch-btn",
+    title: "4. Tap ✚ stretch to widen",
+    body: "After typing a stretchable letter, tap ✚ — it inserts a U+05C6 trigger and our font's GSUB ligature swaps in a wider glyph. Tap again for more stretch (up to 16 levels). Keyboard shortcut: the + key.",
+    placement: "top",
+  },
+  {
+    targetId: "fl-colors",
+    title: "5. Color each letter, then download",
+    body: "Each cluster gets its own swatch (in reading order). Pick colors, then hit Download SVG to export — the font is embedded so the SVG renders identically anywhere.",
+    placement: "top",
+  },
+];
+
+function CoachMarks({ onClose }: { onClose: () => void }) {
+  const [step, setStep] = useState(0);
+  const [rect, setRect] = useState<DOMRect | null>(null);
+  const current = TOUR_STEPS[step];
+
+  // Re-measure the target on step change, scroll, and resize.
+  useEffect(() => {
+    function measure() {
+      const el = document.getElementById(current.targetId);
+      if (!el) { setRect(null); return; }
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+      // Wait for the smooth-scroll to settle before measuring.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setRect(el.getBoundingClientRect()));
+      });
+    }
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("scroll", measure, { passive: true });
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", measure);
+    };
+  }, [current.targetId]);
+
+  // Position the tooltip near the target. Default below; flip above if
+  // there isn't room and the step prefers it.
+  const placement = current.placement ?? "bottom";
+  const tooltipStyle: React.CSSProperties = rect
+    ? placement === "top"
+      ? { top: rect.top - 12, left: rect.left + rect.width / 2, transform: "translate(-50%, -100%)" }
+      : { top: rect.bottom + 12, left: rect.left + rect.width / 2, transform: "translate(-50%, 0)" }
+    : { top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
+
+  // Spotlight: dim everything except the target's bounding box. Built as a
+  // 4-rect overlay rather than CSS clip-path so it works in every browser.
+  const spotlight = rect ? (
+    <>
+      <div className="fixed inset-x-0 top-0 bg-black/60 pointer-events-auto" style={{ height: rect.top - 6 }} />
+      <div className="fixed inset-x-0 bg-black/60 pointer-events-auto" style={{ top: rect.bottom + 6, bottom: 0 }} />
+      <div className="fixed bg-black/60 pointer-events-auto" style={{ top: rect.top - 6, left: 0, width: rect.left - 6, height: rect.height + 12 }} />
+      <div className="fixed bg-black/60 pointer-events-auto" style={{ top: rect.top - 6, left: rect.right + 6, right: 0, height: rect.height + 12 }} />
+      <div className="fixed pointer-events-none border-2 border-amber-300 rounded-lg shadow-[0_0_0_4px_rgba(252,211,77,0.3)]"
+           style={{ top: rect.top - 6, left: rect.left - 6, width: rect.width + 12, height: rect.height + 12 }} />
+    </>
+  ) : (
+    <div className="fixed inset-0 bg-black/60" />
+  );
+
+  return (
+    <div className="fixed inset-0 z-50">
+      {spotlight}
+      <div
+        className="fixed z-10 max-w-sm bg-white border border-neutral-300 rounded-lg shadow-2xl p-4"
+        style={tooltipStyle}
+      >
+        <div className="text-xs uppercase tracking-wider text-neutral-500 mb-1">
+          Step {step + 1} of {TOUR_STEPS.length}
+        </div>
+        <h4 className="font-semibold text-base mb-1">{current.title}</h4>
+        <p className="text-sm text-neutral-700 mb-3">{current.body}</p>
+        <div className="flex items-center justify-between gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-xs px-2 py-1 text-neutral-500 hover:text-neutral-800"
+          >
+            Skip tour
+          </button>
+          <div className="flex gap-2">
+            {step > 0 && (
+              <button
+                type="button"
+                onClick={() => setStep(step - 1)}
+                className="text-sm px-3 py-1.5 rounded border border-neutral-300 bg-white hover:bg-neutral-100"
+              >
+                ← Back
+              </button>
+            )}
+            {step < TOUR_STEPS.length - 1 ? (
+              <button
+                type="button"
+                onClick={() => setStep(step + 1)}
+                className="text-sm px-3 py-1.5 rounded bg-emerald-600 text-white hover:bg-emerald-700"
+              >
+                Next →
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-sm px-3 py-1.5 rounded bg-emerald-600 text-white hover:bg-emerald-700"
+              >
+                Got it ✓
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const HEBREW_KEY_ROWS: string[][] = [
+  ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י"],
+  ["כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר"],
+  ["ש", "ת", "ך", "ם", "ן", "ף", "ץ"],
+];
+
+// Niqqud + cantillation row. Each is a combining mark — clicking inserts
+// the codepoint at the cursor; it attaches to the preceding letter.
+const HEBREW_NIQQUD: { ch: string; label: string }[] = [
+  { ch: "ַ", label: "patah" },
+  { ch: "ָ", label: "qamatz" },
+  { ch: "ֵ", label: "tzere" },
+  { ch: "ֶ", label: "segol" },
+  { ch: "ִ", label: "hiriq" },
+  { ch: "ֹ", label: "holam" },
+  { ch: "ֻ", label: "qubutz" },
+  { ch: "ְ", label: "sheva" },
+  { ch: "ּ", label: "dagesh" },
+  { ch: "ׁ", label: "shin-dot" },
+  { ch: "ׂ", label: "sin-dot" },
+];
+
+function HebrewOnScreenKeyboard({
+  onPress, onToggleMark, onBackspace, onClear, onStretch, onShorten, font, fontReady,
+}: {
+  onPress: (ch: string) => void;
+  onToggleMark: (ch: string) => void;
+  onBackspace: () => void;
+  onClear: () => void;
+  onStretch?: () => void;
+  onShorten?: () => void;
+  font: { family: string };
+  fontReady: boolean;
+}) {
+  const [open, setOpen] = useState(true);
+  const fontStyle = fontReady ? { fontFamily: font.family } : undefined;
+  return (
+    <div id="fl-keyboard" className="mt-3 border border-neutral-300 rounded-lg overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-3 py-2 bg-neutral-100 hover:bg-neutral-200 text-xs"
+      >
+        <span className="uppercase tracking-wider text-neutral-600">
+          ⌨ Hebrew keyboard
+          <span className="ml-2 normal-case text-neutral-500">
+            tap letters to type · highlighted letters can be stretched
+          </span>
+        </span>
+        <span className="font-mono text-neutral-500">{open ? "▲" : "▼"}</span>
+      </button>
+      {open && (
+        <div dir="rtl" className="p-3 bg-neutral-50 space-y-1.5">
+          {HEBREW_KEY_ROWS.map((row, ri) => (
+            <div key={ri} className="flex gap-1 justify-center flex-wrap">
+              {row.map((ch) => {
+                const isStretchable = STRETCHABLE.has(ch);
+                return (
+                  <button
+                    key={ch}
+                    type="button"
+                    onMouseDown={(e) => { e.preventDefault(); onPress(ch); }}
+                    title={isStretchable ? `${ch} — stretchable letter (press ✚ after typing)` : ch}
+                    className={`min-w-10 h-11 px-2 rounded border text-2xl leading-none transition ${
+                      isStretchable
+                        ? "bg-amber-100 border-amber-400 text-amber-900 hover:bg-amber-200"
+                        : "bg-white border-neutral-300 hover:bg-neutral-100"
+                    }`}
+                    style={fontStyle}
+                  >
+                    {ch}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+          <div className="flex gap-1 justify-center flex-wrap pt-1.5 border-t border-neutral-200">
+            {HEBREW_NIQQUD.map(({ ch, label }) => (
+              <button
+                key={label}
+                type="button"
+                onMouseDown={(e) => { e.preventDefault(); onToggleMark(ch); }}
+                title={`${label} — click to add to the letter at the cursor; click again to remove`}
+                className="min-w-10 h-9 px-2 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-lg"
+                style={fontStyle}
+              >
+                <span className="text-neutral-400">◌</span>{ch}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-1 justify-center flex-wrap pt-1.5 border-t border-neutral-200">
+            {onStretch && (
+              <button
+                id="fl-stretch-btn"
+                type="button"
+                onMouseDown={(e) => { e.preventDefault(); onStretch(); }}
+                title="Stretch the letter just typed (inserts U+05C6 trigger). Tap again to extend further. Keyboard: + key."
+                className="px-3 h-10 rounded border-2 border-emerald-500 bg-emerald-100 text-emerald-900 hover:bg-emerald-200 font-semibold text-sm"
+              >
+                ✚ stretch
+              </button>
+            )}
+            {onShorten && (
+              <button
+                type="button"
+                onMouseDown={(e) => { e.preventDefault(); onShorten(); }}
+                title="Shorten by one stretch level. Keyboard: − key."
+                className="px-3 h-10 rounded border-2 border-rose-400 bg-rose-50 text-rose-900 hover:bg-rose-100 font-semibold text-sm"
+              >
+                − shorten
+              </button>
+            )}
+            <button
+              type="button"
+              onMouseDown={(e) => { e.preventDefault(); onPress(" "); }}
+              title="Space"
+              className="min-w-32 h-10 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-sm"
+            >
+              ␣ space
+            </button>
+            <button
+              type="button"
+              onMouseDown={(e) => { e.preventDefault(); onBackspace(); }}
+              title="Delete the character before the cursor"
+              className="min-w-12 h-10 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-base"
+            >
+              ⌫
+            </button>
+            <button
+              type="button"
+              onMouseDown={(e) => { e.preventDefault(); onClear(); }}
+              title="Clear the textarea"
+              className="px-3 h-10 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-xs"
+            >
+              clear
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

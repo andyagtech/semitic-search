@@ -111,7 +111,9 @@ KETER_ARAM_TSOVA = {
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 800, "x_cutoff": 700,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1200, "arm_min_y": 1200, "x_cutoff": 600,
+        # Lamed: body wide y=675-1089 (x to 784), arm pure y>1227 (x<196).
+        # bar_top=1089 / arm_min_y=1089 / x_cutoff=400 splits cleanly.
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 675, "bar_top": 1089, "arm_min_y": 1089, "x_cutoff": 400,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 600},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
@@ -141,12 +143,12 @@ SHMULIK = {
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 1100,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
-        # Lamed: tall arm at y=1132+, body bar at y=1050. Old cfg used
-        # bar_top=1200 + x_cutoff=600 — split the body bar awkwardly,
-        # producing the wedge in image #42. Now arm_min_y=1100 so the
-        # whole upper hook translates rigidly, x_cutoff=900 anchors only
-        # the body's right end.
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1100, "arm_min_y": 1100, "x_cutoff": 900,
+        # Lamed: body bar y=697-981 (x to 1126), narrowing joint
+        # y=981-1124 (x to 1126), pure arm y>1240 (x<393). bar_top=981
+        # ends bar zone at the wide top of body; arm_min_y=981 makes the
+        # joint+arm translate rigidly via x-split; x_cutoff=500 anchors
+        # the body's right side (x=1126) cleanly.
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 700, "bar_top": 981, "arm_min_y": 981, "x_cutoff": 500,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 1100},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 900,
@@ -174,7 +176,9 @@ HILLEL = {
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 280},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 350, "bar_top": 520, "leg_max_y": 320, "x_cutoff": 280},
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 350, "bar_top": 470, "arm_min_y": 470, "x_cutoff": 250},
+        # Lamed: body wide y=403-520 (x to 456), pure arm y>520 (x<140).
+        # x_cutoff=200 anchors body's right edge cleanly.
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 400, "bar_top": 520, "arm_min_y": 520, "x_cutoff": 200},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 280},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 250},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 350, "bar_top": 520, "leg_max_y": 350, "x_cutoff": 320},
@@ -276,8 +280,10 @@ SHOFAR = {
     },
 }
 
-# FreeMono (GNU FreeFont, GPL) — monospace with Hebrew. Stretching breaks
-# monospacing for the stretched letters but that's the point of widening.
+# FreeMono (GNU FreeFont, GPL) — monospace with Hebrew. Step = 600 (the
+# font's mono cell width) so each stretch level adds exactly one full
+# character cell. Preserves monospacing: a stretched letter occupies
+# (1 + n) cells, keeping all column alignments intact.
 FREE_MONO = {
     "id": "free-mono",
     "source": "FreeMono.ttf",
@@ -285,7 +291,7 @@ FREE_MONO = {
     "family": "Semitic Stretch FreeMono",
     "postscript": "SemiticStretchFreeMono",
     "internal_id": "SemiticSearch-SemiticStretchFreeMono-1.0",
-    "step": 150,
+    "step": 600,
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 380,
@@ -327,7 +333,8 @@ NACHLIELI = {
     },
 }
 
-# Miriam Mono CLM (Culmus, GPL) — monospace serif Hebrew. UPM=1000.
+# Miriam Mono CLM (Culmus, GPL) — monospace serif Hebrew. UPM=1000,
+# mono cell width=600. Step = 600 to match — preserves monospacing.
 MIRIAM_MONO = {
     "id": "miriam-mono",
     "source": "MiriamMonoCLM-Book.ttf",
@@ -335,7 +342,7 @@ MIRIAM_MONO = {
     "family": "Semitic Stretch Miriam Mono CLM",
     "postscript": "SemiticStretchMiriamMonoCLM",
     "internal_id": "SemiticSearch-SemiticStretchMiriamMonoCLM-1.0",
-    "step": 150,
+    "step": 600,
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 350,
@@ -368,7 +375,10 @@ EZRA_SIL = {
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 1100, "bar_top": 1500, "leg_max_y": 1000, "x_cutoff": 800,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 1100, "bar_top": 1444, "arm_min_y": 1444, "x_cutoff": 700,
+        # Lamed: body wide y=893-1259, joint narrows y=1259-1442 (right
+        # still at 1160), pure arm y>1442 (x<352). bar_top=1442 keeps the
+        # joint in bar zone with x-split; x_cutoff=400 anchors right side.
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1442, "arm_min_y": 1442, "x_cutoff": 400,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 700},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 700,
@@ -397,7 +407,10 @@ STAM_ASHKENAZ = {
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 850, "bar_top": 1450, "leg_max_y": 800, "x_cutoff": 700,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 850, "bar_top": 1450, "arm_min_y": 1450, "x_cutoff": 600,
+        # Lamed: body wide y=563-1127 (x to 1115), narrow joint y=1127-1314
+        # (x=176 only), arm y>1314 reaches OUT to x=-300 (Stam style).
+        # bar_top=1314 / arm_min_y=1314 / x_cutoff=400 splits cleanly.
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 550, "bar_top": 1314, "arm_min_y": 1314, "x_cutoff": 400,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 600},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 850, "bar_top": 1100, "x_cutoff": 600,
@@ -424,7 +437,10 @@ SHLOMO_SEMISTAM = {
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 1100, "bar_top": 1500, "leg_max_y": 1000, "x_cutoff": 800,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 1100, "bar_top": 1450, "arm_min_y": 1450, "x_cutoff": 700,
+        # Lamed: body wide y=898-1259 (x to 1180), joint y=1259-1440 (x to
+        # 833), arm y>1620 (x<325). bar_top=1440 catches body+joint with
+        # x-split; x_cutoff=500 anchors right side cleanly.
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1440, "arm_min_y": 1440, "x_cutoff": 500,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 700},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 1100, "bar_top": 1400, "x_cutoff": 700,

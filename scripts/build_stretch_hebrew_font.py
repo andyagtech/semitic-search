@@ -190,7 +190,244 @@ GLADIA = {
     },
 }
 
-CONFIGS = [FRANK_RUHL, KETER_ARAM_TSOVA, SHMULIK, HILLEL, GLADIA]
+# --- More fonts requested from opensiddur.org/help/fonts/ ---
+
+NOTO_SANS_HEBREW = {
+    "id": "noto-sans-hebrew",
+    "source": "NotoSansHebrew.ttf",
+    "output": "SemiticStretchNotoSansHebrew.ttf",
+    "family": "Semitic Stretch Noto Sans Hebrew",
+    "postscript": "SemiticStretchNotoSansHebrew",
+    "internal_id": "SemiticSearch-SemiticStretchNotoSansHebrew-1.0",
+    "step": 150,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 350,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 440, "bar_top": 600, "arm_min_y": 600, "x_cutoff": 280,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 350},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 280,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 380,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+NOTO_SERIF_HEBREW = {
+    "id": "noto-serif-hebrew",
+    "source": "NotoSerifHebrew.ttf",
+    "output": "SemiticStretchNotoSerifHebrew.ttf",
+    "family": "Semitic Stretch Noto Serif Hebrew",
+    "postscript": "SemiticStretchNotoSerifHebrew",
+    "internal_id": "SemiticSearch-SemiticStretchNotoSerifHebrew-1.0",
+    "step": 150,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 300,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 480, "bar_top": 670, "leg_max_y": 440, "x_cutoff": 380,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 480, "bar_top": 650, "arm_min_y": 650, "x_cutoff": 300,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 350},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 280,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 480, "bar_top": 670, "leg_max_y": 480, "x_cutoff": 380,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+SHOFAR = {
+    "id": "shofar",
+    "source": "ShofarRegular.ttf",
+    "output": "SemiticStretchShofar.ttf",
+    "family": "Semitic Stretch Shofar",
+    "postscript": "SemiticStretchShofar",
+    "internal_id": "SemiticSearch-SemiticStretchShofar-1.0",
+    "step": 300,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 800, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1200, "arm_min_y": 1200, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 600},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 800,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+# FreeMono (GNU FreeFont, GPL) — monospace with Hebrew. Stretching breaks
+# monospacing for the stretched letters but that's the point of widening.
+FREE_MONO = {
+    "id": "free-mono",
+    "source": "FreeMono.ttf",
+    "output": "SemiticStretchFreeMono.ttf",
+    "family": "Semitic Stretch FreeMono",
+    "postscript": "SemiticStretchFreeMono",
+    "internal_id": "SemiticSearch-SemiticStretchFreeMono-1.0",
+    "step": 150,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 380,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 350, "bar_top": 500, "leg_max_y": 320, "x_cutoff": 380,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 350, "bar_top": 480, "arm_min_y": 480, "x_cutoff": 300,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 350},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 350,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 350, "bar_top": 500, "leg_max_y": 350, "x_cutoff": 400,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+# Nachlieli CLM (Culmus, GPL) — UPM=1090, light/airy serif Hebrew.
+NACHLIELI = {
+    "id": "nachlieli",
+    "source": "NachlieliCLM-Light.ttf",
+    "output": "SemiticStretchNachlieliCLM.ttf",
+    "family": "Semitic Stretch Nachlieli CLM",
+    "postscript": "SemiticStretchNachlieliCLM",
+    "internal_id": "SemiticSearch-SemiticStretchNachlieliCLM-1.0",
+    "step": 165,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 420, "bar_top": 620, "x_cutoff": 350,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 420, "bar_top": 620, "leg_max_y": 380, "x_cutoff": 380,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 420, "bar_top": 600, "arm_min_y": 600, "x_cutoff": 320,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 380},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 420, "bar_top": 620, "x_cutoff": 320,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 420, "bar_top": 620, "leg_max_y": 430, "x_cutoff": 430,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+# Miriam Mono CLM (Culmus, GPL) — monospace serif Hebrew. UPM=1000.
+MIRIAM_MONO = {
+    "id": "miriam-mono",
+    "source": "MiriamMonoCLM-Book.ttf",
+    "output": "SemiticStretchMiriamMonoCLM.ttf",
+    "family": "Semitic Stretch Miriam Mono CLM",
+    "postscript": "SemiticStretchMiriamMonoCLM",
+    "internal_id": "SemiticSearch-SemiticStretchMiriamMonoCLM-1.0",
+    "step": 150,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 350,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 350, "bar_top": 500, "leg_max_y": 320, "x_cutoff": 350,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 350, "bar_top": 480, "arm_min_y": 480, "x_cutoff": 280,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 350},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 320,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 350, "bar_top": 500, "leg_max_y": 350, "x_cutoff": 350,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+# Ezra SIL SR (SIL OFL) — UPM=2048, scholarly Hebrew Bible font with full
+# cantillation. SR = "SIL Roman" version with right-to-left support tweaks.
+EZRA_SIL = {
+    "id": "ezra-sil",
+    "source": "EzraSIL-SR.ttf",
+    "output": "SemiticStretchEzraSIL.ttf",
+    "family": "Semitic Stretch Ezra SIL SR",
+    "postscript": "SemiticStretchEzraSIL",
+    "internal_id": "SemiticSearch-SemiticStretchEzraSIL-1.0",
+    "step": 300,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 1100, "bar_top": 1500, "leg_max_y": 1000, "x_cutoff": 800,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 1100, "bar_top": 1444, "arm_min_y": 1444, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 700},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 1100, "bar_top": 1500, "leg_max_y": 1100, "x_cutoff": 800,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+# StamAshkenazCLM (Culmus, GPL) — Ashkenazi Stam (Torah-scribal) style.
+# This is the closest match to the requested "Taamey Ashkenaz" — Culmus
+# does not have a separate "Taamey Ashkenaz" font, only StamAshkenaz. The
+# lamed reaches x=-300 even at baseline (already-extended arm); set the
+# arm_min_y high so we don't double-stretch.
+STAM_ASHKENAZ = {
+    "id": "stam-ashkenaz",
+    "source": "StamAshkenazCLM.ttf",
+    "output": "SemiticStretchStamAshkenazCLM.ttf",
+    "family": "Semitic Stretch Stam Ashkenaz CLM",
+    "postscript": "SemiticStretchStamAshkenazCLM",
+    "internal_id": "SemiticSearch-SemiticStretchStamAshkenazCLM-1.0",
+    "step": 300,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 850, "bar_top": 1450, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 850, "bar_top": 1450, "leg_max_y": 800, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 850, "bar_top": 1450, "arm_min_y": 1450, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 600},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 850, "bar_top": 1100, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 850, "bar_top": 1100, "leg_max_y": 900, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+# Shlomo SemiStam (CC BY-SA / OFL via the Open Siddur project, derived
+# from Ezra SIL SR — has full cantillation marks). Wayback-archived from
+# Google Sites since the original host requires sign-in.
+SHLOMO_SEMISTAM = {
+    "id": "shlomo-semistam",
+    "source": "ShlomoSemiStam.ttf",
+    "output": "SemiticStretchShlomoSemiStam.ttf",
+    "family": "Semitic Stretch Shlomo SemiStam",
+    "postscript": "SemiticStretchShlomoSemiStam",
+    "internal_id": "SemiticSearch-SemiticStretchShlomoSemiStam-1.0",
+    "step": 300,
+    "import_marks": ARABIC_MARKS,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 1100, "bar_top": 1500, "leg_max_y": 1000, "x_cutoff": 800,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 1100, "bar_top": 1450, "arm_min_y": 1450, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 700},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 1100, "bar_top": 1400, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 1100, "bar_top": 1400, "leg_max_y": 1100, "x_cutoff": 800,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+CONFIGS = [
+    FRANK_RUHL, KETER_ARAM_TSOVA, SHMULIK, HILLEL, GLADIA,
+    NOTO_SANS_HEBREW, NOTO_SERIF_HEBREW, SHOFAR,
+    FREE_MONO, NACHLIELI, MIRIAM_MONO, EZRA_SIL,
+    STAM_ASHKENAZ, SHLOMO_SEMISTAM,
+]
 
 # Stretching model (matches Torah scribal widening):
 #   bar — top bar stretches; no rigid arm/leg (dalet ד, resh ר).

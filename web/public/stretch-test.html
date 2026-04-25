@@ -69,15 +69,33 @@
     "@font-face{font-family:'StretchKeter';src:url('/fonts/SemiticStretchKeterAramTsova.ttf?t=" + t + "') format('truetype');font-display:block;}" +
     "@font-face{font-family:'StretchShmulik';src:url('/fonts/SemiticStretchShmulikCLM.ttf?t=" + t + "') format('truetype');font-display:block;}" +
     "@font-face{font-family:'StretchHillel';src:url('/fonts/SemiticStretchHillelCLM.ttf?t=" + t + "') format('truetype');font-display:block;}" +
-    "@font-face{font-family:'StretchGladia';src:url('/fonts/SemiticStretchGladiaCLM.ttf?t=" + t + "') format('truetype');font-display:block;}";
+    "@font-face{font-family:'StretchGladia';src:url('/fonts/SemiticStretchGladiaCLM.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchNotoSans';src:url('/fonts/SemiticStretchNotoSansHebrew.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchNotoSerif';src:url('/fonts/SemiticStretchNotoSerifHebrew.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchShofar';src:url('/fonts/SemiticStretchShofar.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchFreeMono';src:url('/fonts/SemiticStretchFreeMono.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchNachlieli';src:url('/fonts/SemiticStretchNachlieliCLM.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchMiriamMono';src:url('/fonts/SemiticStretchMiriamMonoCLM.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchEzraSIL';src:url('/fonts/SemiticStretchEzraSIL.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchStamAshkenaz';src:url('/fonts/SemiticStretchStamAshkenazCLM.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchShlomo';src:url('/fonts/SemiticStretchShlomoSemiStam.ttf?t=" + t + "') format('truetype');font-display:block;}";
   document.head.appendChild(s);
 </script>
 
 <style>
-  .keter   { font-family: 'StretchKeter',   serif; }
-  .shmulik { font-family: 'StretchShmulik', serif; }
-  .hillel  { font-family: 'StretchHillel',  serif; }
-  .gladia  { font-family: 'StretchGladia',  serif; }
+  .keter         { font-family: 'StretchKeter',         serif; }
+  .shmulik       { font-family: 'StretchShmulik',       serif; }
+  .hillel        { font-family: 'StretchHillel',        serif; }
+  .gladia        { font-family: 'StretchGladia',        serif; }
+  .notosans      { font-family: 'StretchNotoSans',      sans-serif; }
+  .notoserif     { font-family: 'StretchNotoSerif',     serif; }
+  .shofar        { font-family: 'StretchShofar',        serif; }
+  .freemono      { font-family: 'StretchFreeMono',      monospace; }
+  .nachlieli     { font-family: 'StretchNachlieli',     serif; }
+  .miriammono    { font-family: 'StretchMiriamMono',    monospace; }
+  .ezrasil       { font-family: 'StretchEzraSIL',       serif; }
+  .stamashkenaz  { font-family: 'StretchStamAshkenaz',  serif; }
+  .shlomo        { font-family: 'StretchShlomo',        serif; }
 </style>
 
 <p class="intro">
@@ -106,6 +124,23 @@
 <div class="row keter"><span class="label">ל + dammatan —</span><span>לٌ</span></div>
 <div class="row keter"><span class="label">ל + kasratan —</span><span>לٍ</span></div>
 <div class="row keter"><span class="label">stretched ל + shaddah —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;ّוֹם</span></div>
+
+<h1>All 14 stretch fonts at-a-glance — same word at lamed_s5</h1>
+<p class="intro" style="margin-top:-8px">Same vocalized שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם in every font. Quickest way to see which need geometry tuning.</p>
+<div class="row"><span class="label">Frank Ruhl Libre —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row keter"><span class="label">Keter Aram Tsova —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row shmulik"><span class="label">Shmulik CLM —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row hillel"><span class="label">Hillel CLM —</span><span>של&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;ום</span></div>
+<div class="row gladia"><span class="label">Gladia CLM —</span><span>של&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;ום</span></div>
+<div class="row notosans"><span class="label">Noto Sans Hebrew —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row notoserif"><span class="label">Noto Serif Hebrew —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row shofar"><span class="label">Shofar —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row freemono"><span class="label">FreeMono —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row nachlieli"><span class="label">Nachlieli CLM —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row miriammono"><span class="label">Miriam Mono CLM —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row ezrasil"><span class="label">Ezra SIL SR —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row stamashkenaz"><span class="label">Stam Ashkenaz CLM —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row shlomo"><span class="label">Shlomo SemiStam —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
 
 <h1>New Culmus fancy stretch fonts — Shmulik / Hillel / Gladia</h1>
 <p class="intro" style="margin-top:-8px">Three more open-source Hebrew fonts run through the framework. Hillel and Gladia are unvocalized display fonts (no niqqud).</p>

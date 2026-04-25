@@ -55,6 +55,8 @@ const SCRIPTS: ScriptEntry[] = [
         note: "clean modern Hebrew sans" },
       { id: "stretch",    label: "Semitic Stretch Hebrew", file: "SemiticStretchHebrew.ttf", family: "FL_StretchHebrew",
         note: "custom derivative of Frank Ruhl Libre (OFL). Supports true kashida-like widening via +/- keys" },
+      { id: "stretchketer", label: "Semitic Stretch Keter Aram Tsova", file: "SemiticStretchKeterAramTsova.ttf", family: "FL_StretchKeterAram",
+        note: "custom derivative of Keter Aram Tsova (Culmus, GPL). Same kashida-like widening as Semitic Stretch Hebrew, but with Aleppo-codex letterforms" },
       { id: "taameyfrank",label: "Taamey Frank CLM",   file: "TaameyFrankCLM-Medium.ttf", family: "FL_TaameyFrank",
         note: "Culmus / Yoram Gnat (GPL). jalt + salt + niqqud + te'amim positioning" },
       { id: "keteryg",    label: "Keter YG",           file: "KeterYG-Medium.ttf", family: "FL_KeterYG",
@@ -311,7 +313,7 @@ export function FontLab() {
   // The Hebrew stretch font supports a REAL kashida-style extender via
   // U+E010 insertion, indefinite widening. Other Hebrew fonts fall back
   // to per-letter jalt substitution.
-  const hebrewStretchActive = script.id === "hebrew" && font.id === "stretch";
+  const hebrewStretchActive = script.id === "hebrew" && (font.id === "stretch" || font.id === "stretchketer");
   const supportsKashida = script.id === "arabic" || script.id === "syriac" || hebrewStretchActive;
   const supportsWideHebrew = script.id === "hebrew";
   // Hebrew (non-stretch font): widening via jalt is per-letter via OT feature.

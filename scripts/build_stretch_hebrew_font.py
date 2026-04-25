@@ -1,20 +1,20 @@
-"""Derive a kashida-capable Hebrew font from Frank Ruhl Libre (SIL OFL) by
-adding per-letter STRETCHED VARIANTS of the calligraphically-extendable
-letters (ד ה ז ח ל ם ן ר ת) and wiring them up with GSUB ligatures, so
-`letter + N × U+E010` substitutes with `letter_stretched_N`. This gives
-proper Hebrew-scribal widening where the letter's own stroke extends,
-rather than floating a separate rectangle between characters.
+"""Build kashida-capable Hebrew fonts from open-source bases. Each entry in
+CONFIGS specifies a source font (e.g. Frank Ruhl Libre, Keter Aram Tsova)
+and per-letter geometric zones (bar/arm/leg/box ranges, x_cutoff). For each
+of the six scribally-stretchable letters (ד ה ל ם ר ת), we derive 6 widened
+variants and wire them via GSUB ligatures so `letter + N × U+05C6` produces
+`letter_stretched_N`.
 
-Algorithm per letter per stretch level N:
-  1. Find the topmost stroke region of the letter (y near yMax).
-  2. Identify points at the LEFT END of that region.
-  3. Shift those left-end points further LEFT by STEP × N units.
-  4. Expand the glyph's xMin accordingly.
-  5. Leave the advance width unchanged — the stretched glyph extends
-     LEFT of its origin, overlapping into the previous visual letter
-     in RTL (which is empty space at word-end, so no collision).
+The framework is config-driven so adding a new font is just adding one
+CONFIGS entry. Per-font tuning is required because each font's glyphs sit
+at different coordinates (Frank Ruhl uses UPM=1000, Keter Aram Tsova
+UPM=2048, Heebo UPM=1000 with different stroke heights, etc.).
 
-Output is renamed "Semitic Stretch Hebrew" per SIL OFL §3.
+License notes:
+  - SIL OFL fonts (Frank Ruhl Libre, David Libre, Heebo, Noto, ...) — must
+    be renamed (per OFL §3) when modified. Output stays under SIL OFL.
+  - GPL fonts (Culmus: Keter Aram Tsova, Keter YG, Taamey Frank, Shofar,
+    Ktav Yad CLM) — derivatives must remain GPL. Distribute output as GPL.
 """
 
 from __future__ import annotations
@@ -28,8 +28,7 @@ from fontTools.ttLib.tables import otTables as ot
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
 
-SRC = Path(__file__).resolve().parents[1] / "web" / "public" / "fonts" / "FrankRuhlLibre.ttf"
-OUT = Path(__file__).resolve().parents[1] / "web" / "public" / "fonts" / "SemiticStretchHebrew.ttf"
+FONTS_DIR = Path(__file__).resolve().parents[1] / "web" / "public" / "fonts"
 
 # Our stretch trigger. Originally U+E010 (PUA) — but browsers segment text
 # into script runs BEFORE shaping, and PUA has script=Unknown/Zzzz. That
@@ -40,53 +39,93 @@ OUT = Path(__file__).resolve().parents[1] / "web" / "public" / "fonts" / "Semiti
 # rare in real text (only appears a few times in Torah — Numbers 10:35-36).
 STRETCH_CODEPOINT = 0x05C6
 STRETCH_GLYPH = f"uni{STRETCH_CODEPOINT:04X}"
-NEW_NAME = "Semitic Stretch Hebrew"
-NEW_POSTSCRIPT = "SemiticStretchHebrew"
 MAX_LEVELS = 6         # number of stretch variants per letter
-STEP = 150             # units of leftward extension per level
 
-# Hebrew letters traditionally stretched in Torah scribal justification
-# (ת ם ל ה plus dalet/resh which are calligraphically similar).
-# Aleph (א) is a special case — diagonal strokes, NOT shipped here.
-#
-# Each letter has a "class" that determines which contour points shift:
-#   A = single-stroke top arm (ל ר ד):
-#       Points with y >= y_threshold shift LEFT. Straightforward.
-# Zone-based stretching model (matches Torah scribal widening):
-#   bar — top bar stretches, no rigid arm/leg (dalet ד, resh ר).
-#   arm — top bar stretches, ARM ABOVE rides rigidly with the bar's
-#         left edge (lamed ל). Above-the-bar = full shift.
-#   leg — top bar stretches, LEFT LEG BELOW rides rigidly with the bar's
-#         left edge (tav ת, he ה). Below-the-bar-and-left = full shift,
-#         right leg stays.
+# ---------------------------------------------------------------------------
+# Per-font configurations. STEP is in font units; scale with the font's UPM
+# (Frank Ruhl uses 1000, Keter Aram Tsova 2048, ...). The visual stretch
+# at a given font-size is `step / upem * font-size-px` per level.
+# ---------------------------------------------------------------------------
+
+# `alias_codepoints` is a list of Unicode codepoints (Hebrew Presentation
+# Forms) that the build resolves to the font's actual glyph name via cmap.
+# This works across fonts that use different naming conventions (fontTools'
+# `uniFB33` vs Culmus's `daleddagesh`).
+ALIAS_DAGESH = {
+    "dalet":    [0xFB33],   # ד + dagesh
+    "he":       [0xFB34],   # ה + mapiq
+    "lamed":    [0xFB3C],   # ל + dagesh (rare)
+    "resh":     [0xFB48],   # ר + dagesh (rare)
+    "tav":      [0xFB4A],   # ת + dagesh
+}
+
+FRANK_RUHL = {
+    "id": "frank-ruhl",
+    "source": "FrankRuhlLibre.ttf",
+    "output": "SemiticStretchHebrew.ttf",
+    "family": "Semitic Stretch Hebrew",
+    "postscript": "SemiticStretchHebrew",
+    "internal_id": "SemiticSearch-SemiticStretchHebrew-2.0",
+    "step": 150,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 350,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 440, "bar_top": 573, "arm_min_y": 573, "x_cutoff": 300,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 300},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 350,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+# Keter Aram Tsova (Culmus, GPL) — UPM=2048, so all values ~2× Frank Ruhl's.
+# Initial values from coordinate inspection; will be refined visually.
+KETER_ARAM_TSOVA = {
+    "id": "keter-aram-tsova",
+    "source": "KeterAramTsova.ttf",
+    "output": "SemiticStretchKeterAramTsova.ttf",
+    "family": "Semitic Stretch Keter Aram Tsova",
+    "postscript": "SemiticStretchKeterAramTsova",
+    "internal_id": "SemiticSearch-SemiticStretchKeterAramTsova-1.0",
+    "step": 300,
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 800, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["he"]},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 900, "bar_top": 1200, "arm_min_y": 1200, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 600},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 700,
+                 "alias_codepoints": ALIAS_DAGESH["tav"]},
+    },
+}
+
+CONFIGS = [FRANK_RUHL, KETER_ARAM_TSOVA]
+
+# Stretching model (matches Torah scribal widening):
+#   bar — top bar stretches; no rigid arm/leg (dalet ד, resh ר).
+#   arm — top bar stretches; arm ABOVE rides rigidly with the bar's left
+#         edge (lamed ל).
+#   leg — top bar stretches; LEFT leg BELOW rides rigidly with the bar's
+#         left edge (tav ת, he ה). Right leg stays anchored.
 #   box — enclosed rectangle widens on the left (finalmem ם).
 #
-# Each class uses linear falloff in x across the bar zone: leftmost points
-# of the bar shift by `shift`, points at x=x_cutoff shift by 0. The rigid
-# element shifts by `shift` uniformly so its shape is preserved.
-LETTERS: dict[int, dict[str, object]] = {
-    # x_cutoff is the HARD boundary inside the bar zone. Points at x<x_cutoff
-    # shift by the full amount (rigidly, with the arm/leg). Points at
-    # x>=x_cutoff stay anchored. Pick x_cutoff between the arm/leg's extent
-    # and the anchored-body's extent — it's the x-location where the flat
-    # extended bar is "cut" and a new horizontal segment is inserted.
-    # `aliases`: extra source glyphs that should ALSO trigger the stretch
-    # (in addition to the base codepoint). Needed because the font's `ccmp`/
-    # `rlig` pre-composes letter+dagesh into Hebrew Presentation Forms (U+FB30
-    # block) BEFORE our liga runs. If we only matched bare letters, vocalized
-    # text with dagesh (תּ, דּ, ...) would never stretch.
-    0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
-             "aliases": ["uniFB33"]},                                # ד + dagesh — descender starts at x≈291
-    0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 350,
-             "aliases": ["uniFB34"]},                                # ה + mapiq
-    0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 440, "bar_top": 573, "arm_min_y": 573, "x_cutoff": 300,
-             "aliases": ["uniFB3C"]},                                # ל + dagesh (rare)
-    0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 300},
-    0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
-             "aliases": ["uniFB48"]},                                # ר + dagesh (rare) — descender corner at x=321
-    0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 350,
-             "aliases": ["uniFB4A"]},                                # ת + dagesh
-}
+# Within the bar zone we use a hard x-split (not linear falloff): points at
+# x<x_cutoff shift by the full amount (riding with the arm/leg), points at
+# x≥x_cutoff stay anchored. This produces a FLAT extended top bar.
+#
+# `aliases`: extra source glyphs that should ALSO trigger the stretch (in
+# addition to the base codepoint). Needed because each font's `ccmp`/`rlig`
+# pre-composes letter+dagesh into Hebrew Presentation Forms (U+FB30 block)
+# BEFORE our liga runs. Without aliases, vocalized text with dagesh (תּ,
+# דּ, ...) would never stretch.
 
 
 def stretch_glyph(
@@ -315,12 +354,21 @@ def otTables_new_gsub():
     return t
 
 
-def main() -> int:
-    if not SRC.exists():
-        print(f"Missing {SRC}")
+def build_one(config: dict) -> int:
+    src_path = FONTS_DIR / config["source"]
+    out_path = FONTS_DIR / config["output"]
+    family = config["family"]
+    postscript = config["postscript"]
+    internal_id = config["internal_id"]
+    step = int(config["step"])
+    letters = config["letters"]
+
+    print(f"\n=== Building {family} (from {config['source']}) ===")
+    if not src_path.exists():
+        print(f"  ! Missing source font {src_path}")
         return 1
 
-    font = TTFont(str(SRC))
+    font = TTFont(str(src_path))
 
     # --- 1. Design the U+E010 control/stretch glyph (zero-advance placeholder
     # for chain-substitution). It acts as the trigger codepoint the user
@@ -352,7 +400,7 @@ def main() -> int:
     letter_variants: dict[str, dict] = {}
     cmap = font.getBestCmap()
 
-    for cp, info in LETTERS.items():
+    for cp, info in letters.items():
         letter_name = str(info["name"])
         letter_class = str(info.get("class", "bar"))
         bar_bottom = int(info.get("bar_bottom", 440))  # type: ignore
@@ -363,8 +411,12 @@ def main() -> int:
         leg_max_y = int(leg) if isinstance(leg, int) else None
         x_cut = info.get("x_cutoff")
         x_cut_int = int(x_cut) if isinstance(x_cut, int) else None
-        aliases_raw = info.get("aliases", [])
-        aliases = list(aliases_raw) if isinstance(aliases_raw, list) else []
+        # Resolve alias codepoints (Hebrew Presentation Forms) to the
+        # actual glyph names this font uses. Different fonts have different
+        # naming conventions (uniFB33 vs daleddagesh).
+        alias_cps_raw = info.get("alias_codepoints", [])
+        alias_cps = list(alias_cps_raw) if isinstance(alias_cps_raw, list) else []
+        aliases = [cmap[a] for a in alias_cps if a in cmap]
         shift_contours_raw = info.get("shift_contours")
         shift_contours = list(shift_contours_raw) if isinstance(shift_contours_raw, list) else None
         src_glyph = cmap.get(cp)
@@ -376,7 +428,7 @@ def main() -> int:
         variants: list[str] = []
         for n in range(1, MAX_LEVELS + 1):
             variant_name = f"{letter_name}_s{n}"
-            total_shift = STEP * n
+            total_shift = step * n
             new_glyph = stretch_glyph(
                 font, src_glyph, total_shift,
                 letter_class=letter_class,
@@ -395,7 +447,7 @@ def main() -> int:
             variants.append(variant_name)
         letter_variants[src_glyph] = {"variants": variants, "aliases": aliases}
         alias_note = f" + aliases {aliases}" if aliases else ""
-        print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={STEP}{alias_note}")
+        print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}")
 
     # --- 3. Wire up GSUB ligatures via feaLib (Adobe Feature File syntax).
     #
@@ -440,13 +492,13 @@ def main() -> int:
     addOpenTypeFeaturesFromString(font, fea_src)
     print(f"  wired {total_rules} multi-component ligature rules via feaLib")
 
-    # --- 4. Rename per OFL.
+    # --- 4. Rename per OFL/GPL §3 (must rename derivatives).
     name_table = font["name"]
     RENAMES = {
-        1: NEW_NAME,
-        4: NEW_NAME + " Regular",
-        6: NEW_POSTSCRIPT,
-        16: NEW_NAME,
+        1: family,
+        4: family + " Regular",
+        6: postscript,
+        16: family,
         17: "Regular",
     }
     plat_variants = [(3, 1, 0x409), (1, 0, 0x0)]
@@ -454,14 +506,30 @@ def main() -> int:
         for plat in plat_variants:
             name_table.setName(value, name_id, plat[0], plat[1], plat[2])
     for plat in plat_variants:
-        name_table.setName("SemiticSearch-SemiticStretchHebrew-2.0", 3, plat[0], plat[1], plat[2])
+        name_table.setName(internal_id, 3, plat[0], plat[1], plat[2])
 
     # --- 5. Save.
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    font.save(str(OUT))
-    size_kb = OUT.stat().st_size / 1024
-    print(f"\n✓ Wrote {OUT} ({size_kb:.0f} KB)")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    font.save(str(out_path))
+    size_kb = out_path.stat().st_size / 1024
+    print(f"  ✓ Wrote {out_path.name} ({size_kb:.0f} KB)")
     return 0
+
+
+def main() -> int:
+    """Build every font in CONFIGS. Failures don't stop the loop — each
+    config is independent."""
+    failures = 0
+    for cfg in CONFIGS:
+        try:
+            rc = build_one(cfg)
+            if rc != 0:
+                failures += 1
+        except Exception as e:
+            print(f"  ! Build failed for {cfg.get('id')}: {e}")
+            failures += 1
+    print(f"\nDone. {len(CONFIGS) - failures}/{len(CONFIGS)} fonts built.")
+    return 1 if failures else 0
 
 
 if __name__ == "__main__":

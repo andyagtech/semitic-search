@@ -62,10 +62,17 @@
 </head>
 <body>
 <script>
+  const t = Date.now();
   const s = document.createElement('style');
-  s.textContent = "@font-face{font-family:'StretchTest';src:url('/fonts/SemiticStretchHebrew.ttf?t=" + Date.now() + "') format('truetype');font-display:block;}";
+  s.textContent =
+    "@font-face{font-family:'StretchTest';src:url('/fonts/SemiticStretchHebrew.ttf?t=" + t + "') format('truetype');font-display:block;}" +
+    "@font-face{font-family:'StretchKeter';src:url('/fonts/SemiticStretchKeterAramTsova.ttf?t=" + t + "') format('truetype');font-display:block;}";
   document.head.appendChild(s);
 </script>
+
+<style>
+  .keter { font-family: 'StretchKeter', serif; }
+</style>
 
 <p class="intro">
   Six Hebrew letters are traditionally stretched by Torah scribes for column
@@ -74,6 +81,17 @@
   Classes: <code>bar</code> (ד ר), <code>arm</code> (ל), <code>leg</code> (ה ת),
   <code>box</code> (ם).
 </p>
+
+<h1>Semitic Stretch Keter Aram Tsova — all 6 letters at s3</h1>
+<p class="intro" style="margin-top:-8px">First stretch font built on a NON-Frank-Ruhl base. Keter Aram Tsova uses Aleppo-codex letterforms and UPM=2048 (vs Frank Ruhl's 1000), so geometry params were re-tuned per-letter.</p>
+<div class="row keter"><span class="label">ל s3 in shalom —</span><span>שָׁל&#x05C6;&#x05C6;&#x05C6;וֹם</span></div>
+<div class="row keter"><span class="label">ת s3 in torah —</span><span>תּ&#x05C6;&#x05C6;&#x05C6;וֹרָה</span></div>
+<div class="row keter"><span class="label">ד s3 in david —</span><span>דָּ&#x05C6;&#x05C6;&#x05C6;וִד</span></div>
+<div class="row keter"><span class="label">ר s3 in rosh —</span><span>רֹ&#x05C6;&#x05C6;&#x05C6;אשׁ</span></div>
+<div class="row keter"><span class="label">ה s3 in hineh —</span><span>הִ&#x05C6;&#x05C6;&#x05C6;נֵּה</span></div>
+<div class="row keter"><span class="label">ם s3 (final, in shalom) —</span><span>שָׁלוֹם&#x05C6;&#x05C6;&#x05C6;</span></div>
+
+<h1>Semitic Stretch Hebrew (Frank Ruhl base) — for comparison</h1>
 
 <h1>Lamed <span class="letter">ל</span> — arm class (ascending arm translates, bar stretches below)</h1>
 <div class="row"><span class="label">0 —</span><span>שָׁלוֹם</span></div>

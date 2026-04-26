@@ -23,6 +23,7 @@ import copy
 import sys
 from pathlib import Path
 
+import pathops
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables import otTables as ot
 from fontTools.pens.ttGlyphPen import TTGlyphPen
@@ -81,15 +82,19 @@ FRANK_RUHL = {
     "step": 150,
     "import_marks": ARABIC_MARKS,
     "letters": {
+        # dalet/resh/lamed all opt into overflow chains: kashidas beyond
+        # MAX_LEVELS substitute into bar segments that tile leftward of the
+        # max pre-baked variant, with a rounded corner cap on the leftmost
+        # segment matching the natural bar's left-edge design.
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
-                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
+                 "alias_codepoints": ALIAS_DAGESH["dalet"], "overflow": True},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
         0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 440, "bar_top": 573, "arm_min_y": 573, "x_cutoff": 300,
-                 "alias_codepoints": ALIAS_DAGESH["lamed"]},
+                 "alias_codepoints": ALIAS_DAGESH["lamed"], "overflow": True, "arm_top_y": 793},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 300},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
-                 "alias_codepoints": ALIAS_DAGESH["resh"]},
+                 "alias_codepoints": ALIAS_DAGESH["resh"], "overflow": True},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
     },
@@ -920,6 +925,287 @@ def add_two_dots_above(target_font: TTFont) -> bool:
     return True
 
 
+def build_overflow_segment(
+    font: TTFont,
+    src_glyph_name: str,
+    info: dict,
+    step: int,
+    max_levels: int,
+    lsb_mode: str,
+) -> tuple[str, int, int]:
+    """Build the overflow "tatweel" bar-segment glyph for a stretchable
+    letter. Returns (segment_glyph_name, advance, lsb).
+
+    Inspired by Arabic kashida tatweel: a flat horizontal segment matching
+    the letter's bar y-band that tiles seamlessly to the LEFT (in RTL
+    display) of the letter's max pre-baked variant. Each additional U+05C6
+    after `letter_s{max_levels}` substitutes into another segment, so the
+    extension grows without bound.
+
+    Geometry:
+      · width = `step` font units (one stretch level), so segment N adds
+        the same horizontal increment as a pre-baked level would have.
+      · y-band = [bar_bottom, bar_top] from the letter config — matches
+        the bar's design thickness exactly so the seam is invisible.
+
+    LSB math:
+      · HarfBuzz emits glyphs in VISUAL left-to-right order (regardless of
+        script direction). Renderers accumulate pen rightward (pen += adv)
+        and draw each glyph at `pen + (lsb - xMin)`.
+      · For RTL text "ל" + N kashidas + "ה", the buffer order is:
+        [heh, seg, seg, ..., seg, lamed_s16] — segments sit BETWEEN heh
+        (leftmost) and lamed_s16 (rightmost), tiling to lamed's bar-left.
+      · The variant's bar-left display = pen_lamed + (lsb - xMin) +
+        bar_xmin_stretched. Since pen_lamed is determined by cumulative
+        advance of preceding glyphs, the segment just needs an LSB that
+        positions its outline at the bar's y-band exactly:
+            lsb_seg = bar_left_offset_in_glyph
+        (= the leftmost bar-x minus the glyph's own xMin in the source.)
+      · This makes segments tile contiguously and the LAST segment's
+        right edge land exactly on the variant's bar-left display.
+    """
+    bar_bottom = int(info["bar_bottom"])
+    bar_top = int(info["bar_top"])
+    letter_name = str(info["name"])
+
+    pen = TTGlyphPen(None)
+    pen.moveTo((0, bar_bottom))
+    pen.lineTo((step, bar_bottom))
+    pen.lineTo((step, bar_top))
+    pen.lineTo((0, bar_top))
+    pen.closePath()
+    seg_glyph = pen.glyph()
+
+    seg_name = f"{letter_name}_bar_segment"
+
+    src_glyph = font["glyf"][src_glyph_name]
+
+    # Bar's leftmost x within its y-band (in source-glyph coordinates).
+    # Both bar_xmin and glyph xmin shift by the same total_shift during
+    # stretching, so the offset is invariant — read it from the source.
+    bar_xs = [x for x, y in src_glyph.coordinates if bar_bottom <= y <= bar_top]
+    bar_left_offset = (min(bar_xs) - src_glyph.xMin) if bar_xs else 0
+
+    # See docstring above for derivation. For all lsb_modes the LSB is the
+    # same simple value because what matters is where the segment's outline
+    # falls relative to its pen position — and that's just the bar offset.
+    lsb_seg = bar_left_offset
+
+    font["glyf"][seg_name] = seg_glyph
+    font["hmtx"].metrics[seg_name] = (step, lsb_seg)
+    order = font.getGlyphOrder()
+    if seg_name not in order:
+        order.append(seg_name)
+        font.setGlyphOrder(order)
+
+    return seg_name, step, lsb_seg
+
+
+def _clip_glyph_at_y(
+    glyf_table, glyph_name: str, y_threshold: int, *, keep_below: bool
+) -> pathops.Path:
+    """Boolean-intersect a glyph's outline with a half-plane y <= threshold
+    (keep_below=True) or y >= threshold (False). Returns a pathops Path.
+
+    Draws directly from the glyf table rather than via font.getGlyphSet() —
+    the latter eagerly loads gvar, which is stale after we've added stretch
+    variant glyphs (gvar.glyphCount no longer matches the font's glyphOrder).
+    """
+    src = pathops.Path()
+    glyf_table[glyph_name].draw(src.getPen(), glyf_table)
+    BIG = 100_000
+    clip = pathops.Path()
+    cp = clip.getPen()
+    if keep_below:
+        cp.moveTo((-BIG, -BIG)); cp.lineTo((BIG, -BIG))
+        cp.lineTo((BIG, y_threshold)); cp.lineTo((-BIG, y_threshold))
+    else:
+        cp.moveTo((-BIG, y_threshold)); cp.lineTo((BIG, y_threshold))
+        cp.lineTo((BIG, BIG)); cp.lineTo((-BIG, BIG))
+    cp.closePath()
+    return pathops.op(src, clip, pathops.PathOp.INTERSECTION)
+
+
+def build_overflow_chain(
+    font: TTFont,
+    src_glyph_name: str,
+    last_variant_name: str,
+    info: dict,
+    step: int,
+    max_levels: int,
+) -> tuple[str, str, str]:
+    """For a stretchable letter with bar or arm class, build the three-glyph
+    chain that extends the bar past the pre-baked variant cap. For arm-class
+    letters the arm migrates to the leftmost end:
+
+      · {name}_overflow_start   — lamed_s{max} with the arm clipped off
+                                  (just bar + body). Substitutes in for
+                                  lamed_s{max} when overflow triggers, so
+                                  the arm doesn't double up at both ends.
+      · {name}_bar_segment      — plain bar rectangle, intermediate tile.
+      · {name}_overflow_tail    — bar rectangle + arm extracted from the
+                                  original glyph, translated to overhang
+                                  the bar's left by `bar_left_offset`
+                                  units (matching lamed_s{max}'s arm-vs-
+                                  bar offset).
+
+    GSUB chain (added later in fea_lines):
+      sub last' kashida by start;        # demote when overflow about to fire
+      sub start kashida' lookup → tail;  # first overflow kashida → tail
+      sub tail  kashida' lookup → tail;  # subsequent kashidas → tail
+      sub tail' tail by intermediate;    # demote all-but-rightmost tail to plain seg
+
+    All lsb math assumes lsb_mode="shift" (caller responsibility to gate).
+    """
+    bar_bottom = int(info["bar_bottom"])
+    bar_top = int(info["bar_top"])
+    letter_class = str(info.get("class", "bar"))
+    has_arm = letter_class == "arm"
+    arm_min_y = int(info.get("arm_min_y", bar_top))
+    letter_name = str(info["name"])
+
+    glyf = font["glyf"]
+    src_glyph = glyf[src_glyph_name]
+
+    # Bar's leftmost x within its y-band (in source-glyph coords). Both bar
+    # and arm shift by the same total_shift during stretching so this is
+    # invariant.
+    bar_xs = [x for x, y in src_glyph.coordinates if bar_bottom <= y <= bar_top]
+    bar_left_offset = (min(bar_xs) - src_glyph.xMin) if bar_xs else 0
+
+    # The body's natural bar top — typically lower than `bar_top` because
+    # `bar_top` covers the bar/arm transition shoulder. Clipping lamed_s{max}
+    # at this y and matching the segment's top to it makes the bar a uniform
+    # flat strip across the entire extended cluster (no seam at the shoulder).
+    arm_xs = [x for x, y in src_glyph.coordinates if y > arm_min_y]
+    arm_x_range = (min(arm_xs), max(arm_xs)) if arm_xs else (0, 0)
+    body_top_ys = [
+        y for x, y in src_glyph.coordinates
+        if bar_bottom <= y <= bar_top
+        and not (arm_x_range[0] <= x <= arm_x_range[1])
+    ]
+    seg_bar_top = max(body_top_ys) if body_top_ys else bar_top
+
+    # The bar's left-edge has rounded corners (top-left and bottom-left
+    # softening) in most Hebrew designs. We want those corners ONLY at the
+    # visual leftmost end of the extended cluster (= seg_tail), so we need
+    # to clip them off lamed_overflow_start AND graft them onto seg_tail.
+    #
+    # bar_clip_x_left = the x where the bar's bottom edge becomes flat,
+    # just past the rounded corner. In lamed_s{max}'s post-stretch coords,
+    # this is the second-leftmost x at y=bar_bottom.
+    last_glyph = glyf[last_variant_name]
+    bottom_xs = sorted({x for x, y in last_glyph.coordinates if y == bar_bottom})
+    bar_clip_x_left = bottom_xs[1] if len(bottom_xs) >= 2 else last_glyph.xMin
+
+    # 1. start glyph: lamed_s{max} clipped at (x >= bar_clip_x_left, y <= seg_bar_top)
+    # so its left edge is a clean vertical line that tiles seamlessly with
+    # the rectangular intermediate segments.
+    BIG = 100_000
+    src_path = pathops.Path()
+    last_glyph.draw(src_path.getPen(), glyf)
+    clip_box = pathops.Path()
+    cb = clip_box.getPen()
+    cb.moveTo((bar_clip_x_left, -BIG)); cb.lineTo((BIG, -BIG))
+    cb.lineTo((BIG, seg_bar_top)); cb.lineTo((bar_clip_x_left, seg_bar_top))
+    cb.closePath()
+    no_arm_path = pathops.op(src_path, clip_box, pathops.PathOp.INTERSECTION)
+    start_pen = TTGlyphPen(None)
+    no_arm_path.draw(start_pen)
+    start_glyph = start_pen.glyph()
+    start_glyph.recalcBounds(glyf)
+    start_name = f"{letter_name}_overflow_start"
+    glyf[start_name] = start_glyph
+    base_advance = font["hmtx"].metrics[src_glyph_name][0]
+    max_advance = base_advance + step * max_levels
+    # lsb=0 (shift mode) keeps display alignment consistent with lamed_s{max}.
+    font["hmtx"].metrics[start_name] = (max_advance, 0)
+
+    # 2. Extract the bar's left-edge structure from lamed_s{max} — the
+    # rounded bottom-left and top-left corners that we just clipped OFF
+    # the start glyph. Translate so its rightmost x = 0 (i.e., it sits
+    # to the left of seg_tail's bar rectangle, providing the visual
+    # rounded-end-cap.)
+    edge_clip = pathops.Path()
+    ec = edge_clip.getPen()
+    ec.moveTo((-BIG, bar_bottom)); ec.lineTo((bar_clip_x_left, bar_bottom))
+    ec.lineTo((bar_clip_x_left, seg_bar_top)); ec.lineTo((-BIG, seg_bar_top))
+    ec.closePath()
+    edge_path = pathops.op(src_path, edge_clip, pathops.PathOp.INTERSECTION)
+    edge_xmax_orig = edge_path.bounds[2] if edge_path.bounds else 0
+    edge_path = edge_path.transform(1, 0, 0, 1, -edge_xmax_orig, 0)
+    corner_leftmost_x = edge_path.bounds[0] if edge_path.bounds else 0
+
+    # 3. arm-only outline from the ORIGINAL (unstretched) glyph (arm class
+    # only). Extract everything above seg_bar_top so the arm bottom continues
+    # from the bar's top with no gap. Translate the arm so it sits at the
+    # visual leftmost of the cluster — its leftmost x lands
+    # `arm_overhang_past_corner` units to the LEFT of the rounded corner cap.
+    arm_path = None
+    if has_arm:
+        arm_path = _clip_glyph_at_y(glyf, src_glyph_name, seg_bar_top, keep_below=False)
+        # Optionally clip the arm's TOP — Hebrew lameds typically end in a
+        # small decorative serif/kotz at the very top, which reads as a
+        # "lip" when grafted onto an extension. `arm_top_y` (per-letter
+        # config) clips at that y to leave a smoother rounded top.
+        arm_top_y = info.get("arm_top_y")
+        if arm_top_y is not None:
+            top_clip = pathops.Path()
+            tc = top_clip.getPen()
+            tc.moveTo((-BIG, -BIG)); tc.lineTo((BIG, -BIG))
+            tc.lineTo((BIG, int(arm_top_y))); tc.lineTo((-BIG, int(arm_top_y)))
+            tc.closePath()
+            arm_path = pathops.op(arm_path, top_clip, pathops.PathOp.INTERSECTION)
+        arm_bounds = arm_path.bounds
+        arm_overhang_past_corner = 20
+        arm_target_xmin = corner_leftmost_x - arm_overhang_past_corner
+        arm_translate_x = arm_target_xmin - arm_bounds[0]
+        arm_translate_y = seg_bar_top - arm_bounds[1]
+        arm_path = arm_path.transform(1, 0, 0, 1, arm_translate_x, arm_translate_y)
+
+    # 4. tail glyph: bar rectangle + corner cap + arm (if arm-class). Bar
+    # extends 2 units beyond `step` on both sides so adjacent segments
+    # overlap (hides sub-pixel/AA gaps).
+    tail_pen = TTGlyphPen(None)
+    if arm_path is not None:
+        arm_path.draw(tail_pen)
+    edge_path.draw(tail_pen)
+    tail_pen.moveTo((-2, bar_bottom))
+    tail_pen.lineTo((step + 2, bar_bottom))
+    tail_pen.lineTo((step + 2, seg_bar_top))
+    tail_pen.lineTo((-2, seg_bar_top))
+    tail_pen.closePath()
+    tail_glyph = tail_pen.glyph()
+    tail_glyph.recalcBounds(glyf)
+    tail_name = f"{letter_name}_overflow_tail"
+    glyf[tail_name] = tail_glyph
+    # lsb = xMin so display offset = 0 → bar's display = pen..pen+step,
+    # tiling seamlessly to the next intermediate segment (which has lsb=0).
+    font["hmtx"].metrics[tail_name] = (step, tail_glyph.xMin)
+
+    # 5. intermediate segment: plain bar rectangle, lsb=0. Outline extends
+    # 2 units beyond `step` on each side to overlap adjacent segments and
+    # hide sub-pixel rendering gaps between glyphs.
+    int_pen = TTGlyphPen(None)
+    int_pen.moveTo((-2, bar_bottom))
+    int_pen.lineTo((step + 2, bar_bottom))
+    int_pen.lineTo((step + 2, seg_bar_top))
+    int_pen.lineTo((-2, seg_bar_top))
+    int_pen.closePath()
+    int_glyph = int_pen.glyph()
+    int_name = f"{letter_name}_bar_segment"
+    glyf[int_name] = int_glyph
+    font["hmtx"].metrics[int_name] = (step, 0)
+
+    order = font.getGlyphOrder()
+    for n in (start_name, int_name, tail_name):
+        if n not in order:
+            order.append(n)
+    font.setGlyphOrder(order)
+
+    return start_name, int_name, tail_name
+
+
 def build_one(config: dict) -> int:
     src_path = FONTS_DIR / config["source"]
     out_path = FONTS_DIR / config["output"]
@@ -964,6 +1250,13 @@ def build_one(config: dict) -> int:
     # Aliases are extra source glyphs (composed presentation forms) that
     # should also trigger the same stretch (see LETTERS dict for details).
     letter_variants: dict[str, dict] = {}
+    # src_glyph -> (segment_glyph_name, last_variant_name) — populated for
+    # bar-class letters with "overflow": True (simple single-segment chain).
+    overflow_segments: dict[str, tuple[str, str]] = {}
+    # src_glyph -> (start, intermediate, tail, last_variant) — populated
+    # for arm-class letters with "overflow": True (start/tail/intermediate
+    # three-glyph chain that migrates the arm to the leftmost end).
+    overflow_chains: dict[str, tuple[str, str, str, str]] = {}
     cmap = font.getBestCmap()
 
     for cp, info in letters.items():
@@ -1057,6 +1350,20 @@ def build_one(config: dict) -> int:
         alias_note = f" + aliases {aliases}" if aliases else ""
         print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}")
 
+        # Overflow tatweel-style chain. Default-enabled for bar/arm class
+        # letters in shift-mode fonts (the math for natural/mono modes
+        # still needs derivation, so those are skipped). Leg/box classes
+        # still TODO. Per-letter `"overflow": False` opts out.
+        is_shift = config.get("lsb_mode", "shift") == "shift"
+        overflow_default = letter_class in ("bar", "arm") and is_shift
+        overflow_enabled = info.get("overflow", overflow_default)
+        if overflow_enabled and is_shift and letter_class in ("bar", "arm"):
+            start, intermed, tail = build_overflow_chain(
+                font, src_glyph, variants[-1], info, step, MAX_LEVELS,
+            )
+            overflow_chains[src_glyph] = (start, intermed, tail, variants[-1])
+            print(f"    + overflow chain ({letter_class}): start={start}, int={intermed}, tail={tail}")
+
     # --- 2a. Drop variable-font tables. Noto Sans/Serif Hebrew (and other
     # Google variable fonts) ship with fvar/gvar/HVAR/STAT/avar. When we
     # add stretch variant glyphs to the font, gvar's per-glyph variation
@@ -1102,6 +1409,22 @@ def build_one(config: dict) -> int:
         "languagesystem DFLT dflt;",
         "languagesystem hebr dflt;",
         "",
+    ]
+    # Helper lookups for the overflow chain. Defined OUTSIDE the feature
+    # block so they can be invoked from chained-context rules. Each
+    # overflow letter gets its own `kashida → bar_segment` (or → tail)
+    # lookup so we can reference the per-letter glyph by name.
+    for src_glyph, (seg_name, _last) in overflow_segments.items():
+        fea_lines.append(f"lookup k_to_{seg_name} {{")
+        fea_lines.append(f"    sub {STRETCH_GLYPH} by {seg_name};")
+        fea_lines.append(f"}} k_to_{seg_name};")
+        fea_lines.append("")
+    for src_glyph, (_start, _int, tail, _last) in overflow_chains.items():
+        fea_lines.append(f"lookup k_to_{tail} {{")
+        fea_lines.append(f"    sub {STRETCH_GLYPH} by {tail};")
+        fea_lines.append(f"}} k_to_{tail};")
+        fea_lines.append("")
+    fea_lines += [
         "feature liga {",
         "    lookupflag IgnoreMarks;",
     ]
@@ -1116,10 +1439,49 @@ def build_one(config: dict) -> int:
                 comps = " ".join([first] + [STRETCH_GLYPH] * n)
                 fea_lines.append(f"    sub {comps} by {variants[n - 1]};")
                 total_rules += 1
+    # --- Overflow chain. AFTER all the multi-component ligatures so the
+    # max-level ligature consumes its full quota of kashidas first, then
+    # leftover kashidas get tatweel-substituted into bar segments. The
+    # second rule (`sub bar_segment U+05C6'`) is what makes the chain
+    # arbitrarily long: each substitution puts a bar_segment before the
+    # next kashida, which then triggers the same lookup. HarfBuzz processes
+    # chained-context substitutions left-to-right with re-entry, so the
+    # cascade resolves in one pass.
+    overflow_rules = 0
+    for src_glyph, (seg_name, last_variant) in overflow_segments.items():
+        fea_lines.append(f"    sub {last_variant} {STRETCH_GLYPH}' lookup k_to_{seg_name};")
+        fea_lines.append(f"    sub {seg_name} {STRETCH_GLYPH}' lookup k_to_{seg_name};")
+        overflow_rules += 2
+    # Arm-class overflow chain (lamed). The "extend" rules and the "demote"
+    # rule must live in SEPARATE lookups — within one lookup the shaper
+    # makes a single left-to-right pass, so without splitting, all the new
+    # tails would already be there but the demote rule would miss them.
+    # Splitting forces a second pass after extend completes.
+    #
+    # Pass 1 (extend, single lookup):
+    #   [lamed_s16, k, k, k] → [start, tail, tail, tail]
+    # Pass 2 (demote, separate lookup):
+    #   → [start, intermediate, intermediate, tail]
+    # The arm rides with the LAST tail = leftmost segment in display.
     fea_lines.append("} liga;")
+    for src_glyph, (start, intermed, tail, last_variant) in overflow_chains.items():
+        fea_lines.append("")
+        fea_lines.append(f"feature liga {{")
+        fea_lines.append(f"    lookupflag IgnoreMarks;")
+        fea_lines.append(f"    sub {last_variant}' {STRETCH_GLYPH} by {start};")
+        fea_lines.append(f"    sub {start} {STRETCH_GLYPH}' lookup k_to_{tail};")
+        fea_lines.append(f"    sub {tail} {STRETCH_GLYPH}' lookup k_to_{tail};")
+        fea_lines.append(f"}} liga;")
+        fea_lines.append("")
+        fea_lines.append(f"feature liga {{")
+        fea_lines.append(f"    lookupflag IgnoreMarks;")
+        fea_lines.append(f"    sub {tail}' {tail} by {intermed};")
+        fea_lines.append(f"}} liga;")
+        overflow_rules += 4
     fea_src = "\n".join(fea_lines)
     addOpenTypeFeaturesFromString(font, fea_src)
-    print(f"  wired {total_rules} multi-component ligature rules via feaLib")
+    overflow_note = f" + {overflow_rules} overflow chain rules" if overflow_rules else ""
+    print(f"  wired {total_rules} multi-component ligature rules via feaLib{overflow_note}")
 
     # --- 4. Rename per OFL/GPL §3 (must rename derivatives).
     name_table = font["name"]

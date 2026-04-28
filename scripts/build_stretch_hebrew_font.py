@@ -149,8 +149,17 @@ KETER_ARAM_TSOVA = {
         # 45 units too high. Without the override the bar_segment tile
         # was 45 units taller than the natural bar, producing a visible
         # step where the chain met the body.
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 675, "bar_top": 1227, "arm_min_y": 1227, "x_cutoff": 400,
-                 "chain_bar_top": 1047,
+        # chain_bar_bottom=766: bar_bottom=675 captures the wall for stretch
+        # purposes, but the natural bar's flat bottom sits at y=766 (sloping
+        # to 792 at the right). Without the override the bar tile extended
+        # 91 units below the body's bar — the "tab below the top line."
+        # x_cutoff=290 (was 400): keeps the on-curve at (299, 1047) anchored.
+        # Previously it translated, while the off-curve at (469, 1047) and
+        # the shoulder peak at (666, 1092) stayed put — creating a wide
+        # gradual rise from y=1047 to y=1092 across the entire chain
+        # extension's bar top instead of a tight curve at the body.
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 675, "bar_top": 1227, "arm_min_y": 1227, "x_cutoff": 290,
+                 "chain_bar_top": 1047, "chain_bar_bottom": 766,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 600},
         # resh: underside at y=720-784. bar_bottom=720 brings underside
@@ -165,8 +174,11 @@ KETER_ARAM_TSOVA = {
         # chain_bar_top=1070: natural bar flat top is at y=1070, but the
         # upper-left ear peaks at y=1213 — a 143-unit gap. Without this
         # override the bar_segment tile towered above the natural bar.
+        # chain_bar_bottom=744: the underside-flatten output is a slope from
+        # y=720 (right) to y=745 (left). Setting tile bottom to 744 matches
+        # the start glyph's leftmost bar bottom at the chain seam.
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 720, "bar_top": 1250, "x_cutoff": 600,
-                 "chain_bar_top": 1070,
+                 "chain_bar_top": 1070, "chain_bar_bottom": 744,
                  "underside_y_max": 800, "underside_x_min": 150,
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 700,
@@ -1142,6 +1154,13 @@ def build_overflow_chain(
     # peak so the bar tile stays at bar height while the cap region
     # (edge_path, which uses seg_bar_top) still captures the kotz.
     chain_bar_top = int(info.get("chain_bar_top", seg_bar_top))
+    # chain_bar_bottom: the chain bar TILE's bottom (higher than bar_bottom
+    # when the natural body's bar bottom sits ABOVE the stretch zone bottom —
+    # e.g., bar_bottom encompasses a wall/descender for translation purposes,
+    # but the actual flat bar bottom is higher up). Defaults to bar_bottom.
+    # Set this when the bar_segment tile would otherwise extend below the
+    # natural body's bar, creating a visible step at the chain seam.
+    chain_bar_bottom = int(info.get("chain_bar_bottom", bar_bottom))
 
     # The bar's left-edge has rounded corners (top-left and bottom-left
     # softening) in most Hebrew designs. We want those corners ONLY at the
@@ -1222,7 +1241,7 @@ def build_overflow_chain(
     # rounded-end-cap.)
     edge_clip = pathops.Path()
     ec = edge_clip.getPen()
-    ec.moveTo((-BIG, bar_bottom)); ec.lineTo((bar_clip_x_left, bar_bottom))
+    ec.moveTo((-BIG, chain_bar_bottom)); ec.lineTo((bar_clip_x_left, chain_bar_bottom))
     ec.lineTo((bar_clip_x_left, seg_bar_top)); ec.lineTo((-BIG, seg_bar_top))
     ec.closePath()
     edge_path = pathops.op(src_path, edge_clip, pathops.PathOp.INTERSECTION)
@@ -1264,11 +1283,24 @@ def build_overflow_chain(
     if arm_path is not None:
         arm_path.draw(tail_pen)
     edge_path.draw(tail_pen)
-    tail_pen.moveTo((-2, bar_bottom))
-    tail_pen.lineTo((step + 2, bar_bottom))
+    tail_pen.moveTo((-2, chain_bar_bottom))
+    tail_pen.lineTo((step + 2, chain_bar_bottom))
     tail_pen.lineTo((step + 2, chain_bar_top))
     tail_pen.lineTo((-2, chain_bar_top))
     tail_pen.closePath()
+    # Filler rect: bridges bar tile top to arm bottom when chain_bar_top <
+    # seg_bar_top. The arm is clipped above seg_bar_top, so its bottom sits
+    # at seg_bar_top after translation. If the bar tile top is lower
+    # (chain_bar_top), there's an empty band y=[chain_bar_top, seg_bar_top]
+    # under the arm — visible as a gap at the upper-left of the cluster.
+    # Filling it with a rect under the arm's full x-range closes the gap.
+    if arm_path is not None and chain_bar_top < seg_bar_top:
+        ax0, _, ax1, _ = arm_path.bounds
+        tail_pen.moveTo((ax0, chain_bar_top))
+        tail_pen.lineTo((ax1, chain_bar_top))
+        tail_pen.lineTo((ax1, seg_bar_top))
+        tail_pen.lineTo((ax0, seg_bar_top))
+        tail_pen.closePath()
     tail_glyph = tail_pen.glyph()
     tail_glyph.recalcBounds(glyf)
     tail_name = f"{letter_name}_overflow_tail"
@@ -1281,8 +1313,8 @@ def build_overflow_chain(
     # 2 units beyond `step` on each side to overlap adjacent segments and
     # hide sub-pixel rendering gaps between glyphs.
     int_pen = TTGlyphPen(None)
-    int_pen.moveTo((-2, bar_bottom))
-    int_pen.lineTo((step + 2, bar_bottom))
+    int_pen.moveTo((-2, chain_bar_bottom))
+    int_pen.lineTo((step + 2, chain_bar_bottom))
     int_pen.lineTo((step + 2, chain_bar_top))
     int_pen.lineTo((-2, chain_bar_top))
     int_pen.closePath()

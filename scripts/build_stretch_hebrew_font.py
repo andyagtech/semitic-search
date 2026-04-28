@@ -238,7 +238,13 @@ SHMULIK = {
         # arm_min_y=981 sliced it off because the body has a slight
         # slope and points just above 981 with x=1126 got rigidly
         # translated leftward.
+        # chain_bar_bottom=812: bar_bottom=700 captures the descender area
+        # for stretch translation, but the natural body's bar bottom sits
+        # at y=812 (where the body's left edge meets the arm root). Without
+        # the override, the bar tile extends 112 units below the natural
+        # body's bar — visible as a tab hanging down at every chain seam.
         0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 700, "bar_top": 1240, "arm_min_y": 1240, "x_cutoff": 500,
+                 "chain_bar_bottom": 812,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
         # finalmem: was x_cutoff=1100 — but the right corner serifs
         # have points at x≈1100-1300, and the inner contour ends at
@@ -1167,49 +1173,49 @@ def build_overflow_chain(
     # visual leftmost end of the extended cluster (= seg_tail), so we need
     # to clip them off lamed_overflow_start AND graft them onto seg_tail.
     #
-    # bar_clip_x_left = the x where the bar's bottom edge becomes flat,
-    # just past the rounded corner. In lamed_s{max}'s post-stretch coords,
-    # this is the second-leftmost x at y=bar_bottom.
-    last_glyph = glyf[last_variant_name]
-    bottom_xs = sorted({x for x, y in last_glyph.coordinates if y == bar_bottom})
-    bar_clip_x_left = bottom_xs[1] if len(bottom_xs) >= 2 else last_glyph.xMin
-    # When chain_bar_top differs from seg_bar_top, the default bar_clip_x_left
-    # (which looks for points exactly at y=bar_bottom) often falls back to
-    # last_glyph.xMin — collapsing the cap region. Override using:
+    # bar_clip_x_left = the x in last_glyph coords where the bar's flat
+    # extension ends and the natural left ear/cap begins. Compute it from
+    # the SOURCE glyph using two complementary signals:
     #   leftmost: leftmost ON-curve at bar's flat top (chain_bar_top), and
     #   rightmost: rightmost x of any kotz pt (y > chain_bar_top in stretch
     #              zone, x < x_cutoff so it actually translates).
-    # Take the MAX of the two so the cap region captures both the bar's
-    # flat-top left edge AND the kotz's right curl. If the kotz right side
-    # extends past the bar's leftmost flat point (Shmulik dalet: kotz curl
-    # reaches x=411 but bar flat starts at x=394), using just leftmost
-    # leaves a kotz sliver in the start glyph.
-    if "chain_bar_top" in info:
-        cutoff = info.get("x_cutoff")
-        bar_top_pts = [
-            src_glyph.coordinates[i][0]
-            for i in range(len(src_glyph.coordinates))
-            if (src_glyph.flags[i] & 1)
-            and abs(src_glyph.coordinates[i][1] - chain_bar_top) <= 5
-        ]
-        # Filter kotz pts to LEFT HALF of bar zone — the bar zone spans
-        # [src.xMin, x_cutoff]; the bar's left kotz is in the left half,
-        # the right kotz (above the body's right side) is in the right
-        # half. Without this filter, off-curve transitions between bar
-        # and right kotz get treated as left-side kotz pts, pulling
-        # bar_clip_x_left way too far right.
-        bar_zone_mid = (int(src_glyph.xMin) + (cutoff if cutoff is not None else int(src_glyph.xMax))) // 2
-        kotz_xs = [
-            src_glyph.coordinates[i][0]
-            for i in range(len(src_glyph.coordinates))
-            if src_glyph.coordinates[i][1] > chain_bar_top + 5
-            and src_glyph.coordinates[i][0] < bar_zone_mid
-        ]
-        if bar_top_pts:
-            src_bar_left = min(bar_top_pts)
-            if kotz_xs:
-                src_bar_left = max(src_bar_left, max(kotz_xs) + 5)
-            bar_clip_x_left = src_bar_left + (int(last_glyph.xMin) - int(src_glyph.xMin))
+    # Take the MAX so the cap captures both the bar's flat-top left edge
+    # AND the kotz's right curl. If the kotz right side extends past the
+    # bar's leftmost flat point (Shmulik dalet: kotz curl reaches x=411
+    # but bar flat starts at x=394), using just leftmost leaves a kotz
+    # sliver in the start glyph.
+    last_glyph = glyf[last_variant_name]
+    cutoff = info.get("x_cutoff")
+    bar_top_pts = [
+        src_glyph.coordinates[i][0]
+        for i in range(len(src_glyph.coordinates))
+        if (src_glyph.flags[i] & 1)
+        and abs(src_glyph.coordinates[i][1] - chain_bar_top) <= 5
+    ]
+    # Filter kotz pts to LEFT HALF of bar zone — the bar zone spans
+    # [src.xMin, x_cutoff]; the bar's left kotz is in the left half,
+    # the right kotz (above the body's right side) is in the right
+    # half. Without this filter, off-curve transitions between bar
+    # and right kotz get treated as left-side kotz pts, pulling
+    # bar_clip_x_left way too far right.
+    bar_zone_mid = (int(src_glyph.xMin) + (cutoff if cutoff is not None else int(src_glyph.xMax))) // 2
+    kotz_xs = [
+        src_glyph.coordinates[i][0]
+        for i in range(len(src_glyph.coordinates))
+        if src_glyph.coordinates[i][1] > chain_bar_top + 5
+        and src_glyph.coordinates[i][0] < bar_zone_mid
+    ]
+    if bar_top_pts:
+        src_bar_left = min(bar_top_pts)
+        if kotz_xs:
+            src_bar_left = max(src_bar_left, max(kotz_xs) + 5)
+        bar_clip_x_left = src_bar_left + (int(last_glyph.xMin) - int(src_glyph.xMin))
+    else:
+        # Fallback: second-leftmost x at y=bar_bottom in last_glyph (works
+        # when the source has on-curves exactly at bar_bottom — e.g., a flat
+        # bar bottom with rounded left corner).
+        bottom_xs = sorted({x for x, y in last_glyph.coordinates if y == bar_bottom})
+        bar_clip_x_left = bottom_xs[1] if len(bottom_xs) >= 2 else last_glyph.xMin
 
     # 1. start glyph: lamed_s{max} clipped at (x >= bar_clip_x_left, y <= seg_bar_top)
     # so its left edge is a clean vertical line that tiles seamlessly with

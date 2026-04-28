@@ -709,6 +709,7 @@ export function FontLab() {
           <label id="fl-script-select" className="block">
             <span className="text-xs uppercase tracking-wider text-neutral-500">Script</span>
             <select
+              suppressHydrationWarning
               className="mt-1 block w-full px-2 py-1.5 border border-neutral-300 rounded text-sm"
               value={scriptId}
               onChange={(e) => setScriptId(e.target.value)}
@@ -721,6 +722,7 @@ export function FontLab() {
           <label id="fl-font-select" className="block">
             <span className="text-xs uppercase tracking-wider text-neutral-500">Font</span>
             <select
+              suppressHydrationWarning
               className="mt-1 block w-full px-2 py-1.5 border border-neutral-300 rounded text-sm"
               value={fontId}
               onChange={(e) => setFontId(e.target.value)}
@@ -764,6 +766,7 @@ export function FontLab() {
           <span className="text-xs uppercase tracking-wider text-neutral-500">Text</span>
           <div id="fl-textarea" className="relative">
             <textarea
+              suppressHydrationWarning
               ref={textareaRef}
               className="mt-1 block w-full px-3 py-2 border border-neutral-300 rounded"
               rows={2}

@@ -144,7 +144,13 @@ KETER_ARAM_TSOVA = {
         # arm_min_y=1227 keeps the body's slight slope from getting
         # sliced — earlier arm_min_y=1089 sliced off body-right points
         # at y=1100ish that should have stayed anchored.
+        # chain_bar_top=1047: natural bar flat top is at y=1047, but the
+        # body has a right-shoulder peak at y=1092 that pulls seg_bar_top
+        # 45 units too high. Without the override the bar_segment tile
+        # was 45 units taller than the natural bar, producing a visible
+        # step where the chain met the body.
         0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 675, "bar_top": 1227, "arm_min_y": 1227, "x_cutoff": 400,
+                 "chain_bar_top": 1047,
                  "alias_codepoints": ALIAS_DAGESH["lamed"]},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 600},
         # resh: underside at y=720-784. bar_bottom=720 brings underside
@@ -156,7 +162,11 @@ KETER_ARAM_TSOVA = {
         # the right anchor (607, 720) to the leftmost shifted point at
         # y=745. underside_x_min excludes the left ear (pts 0-4 at x<100)
         # which lives in the same y range but should keep its curved shape.
+        # chain_bar_top=1070: natural bar flat top is at y=1070, but the
+        # upper-left ear peaks at y=1213 — a 143-unit gap. Without this
+        # override the bar_segment tile towered above the natural bar.
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 720, "bar_top": 1250, "x_cutoff": 600,
+                 "chain_bar_top": 1070,
                  "underside_y_max": 800, "underside_x_min": 150,
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 700,

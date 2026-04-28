@@ -86,14 +86,24 @@ FRANK_RUHL = {
         # MAX_LEVELS substitute into bar segments that tile leftward of the
         # max pre-baked variant, with a rounded corner cap on the leftmost
         # segment matching the natural bar's left-edge design.
+        # chain_bar_top=546: natural bar's flat top is at y=546, but the
+        # upper-left ear/serif peaks at y=586. Without this override,
+        # seg_bar_top defaults to 586 (the body's max y) and the bar_segment
+        # tile is built 40 units taller than the natural body's bar —
+        # creating a visible height mismatch (chain extension towers above
+        # natural body). Setting chain_bar_top to the actual flat top
+        # makes the chain bar a uniform strip.
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
+                 "chain_bar_top": 546,
                  "alias_codepoints": ALIAS_DAGESH["dalet"], "overflow": True},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
         0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 440, "bar_top": 573, "arm_min_y": 573, "x_cutoff": 300,
                  "alias_codepoints": ALIAS_DAGESH["lamed"], "overflow": True, "arm_top_y": 793},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 300},
+        # Same ear-peak issue as dalet — bar flat top at y=546, ear at y=586.
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
+                 "chain_bar_top": 546,
                  "alias_codepoints": ALIAS_DAGESH["resh"], "overflow": True},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},

@@ -170,7 +170,28 @@ SHMULIK = {
         # Letters are wide (1280-1600 advance), so x_cutoffs are bigger
         # than narrower fonts — they anchor the actual right descender/leg
         # which sits near x=1000+.
-        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 900,
+        # bar_bottom=810 (not 900): the body's natural bar+wall combined
+        # region runs y=810 (wall bottom) to y=1050 (bar top). With
+        # bar_bottom=810 the stretch zone includes the wall — both bar AND
+        # wall translate as a unit, so variants/chains have a uniform full
+        # thickness from variant.xMin all the way to the body. With 900
+        # only the bar would translate while the wall stayed put, yielding
+        # a visible wedge that tapers from full thickness at the body to
+        # bar-only thickness at the chain seam.
+        # chain_bar_top=1050: caps the chain bar tile (and bar_clip_x_left
+        # detection) at the bar's natural flat top, excluding the kotz
+        # region (extends up to y=1238). The kotz is captured in the cap
+        # region of the tail glyph, not in the bar rectangle.
+        # x_cutoff=800 (was 900): the natural top has off-curves at (845, 1050)
+        # and (880, 1065) that bridge the bar's flat-top on-curve at (795, 1050)
+        # to the kotz peak on-curve at (919, 1104). With cutoff=900 those
+        # off-curves translated leftward while the kotz on-curve stayed put —
+        # creating a 4900-wide degenerate bezier that ramped y=1050→1104 across
+        # the entire chain extension. cutoff=800 keeps both off-curves anchored
+        # so the rise stays tight at the natural kotz boundary. Same logic at
+        # the bottom-right corner: (824, 810) off-curve now stays anchored.
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 810, "bar_top": 1250, "x_cutoff": 800,
+                 "chain_bar_top": 1050,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
         # he: x_cutoff was 1100 — but Shmulik's right floating leg lives at
         # x=1005-1239, so 1100 sliced THROUGH it (left half x<1100 shifted,
@@ -191,7 +212,17 @@ SHMULIK = {
         # have points at x≈1100-1300, and the inner contour ends at
         # x=1039. Lowering to 800 anchors all right-side serif features.
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 800},
-        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 900,
+        # bar_bottom=810: same wall-translation rationale as dalet.
+        # x_cutoff=730 (was 900): the natural bottom has off-curves at (777, 811)
+        # and (753, 811) that translated under cutoff=900, while the wall-curl
+        # off-curves at (811, 806), (821, 803), (838, 787) etc. stayed put
+        # (y<bar_bottom). The result was a ~13-unit dip in the chain extension's
+        # bottom edge over ~4800 units. cutoff=730 keeps the bar-bottom off-curves
+        # anchored at their natural positions so the wall transition stays tight.
+        # Top transition is unaffected (already clean — natural off-curves at
+        # x=1020, 1064 sit past any reasonable cutoff).
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 810, "bar_top": 1250, "x_cutoff": 730,
+                 "chain_bar_top": 1050,
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         # tav: was x_cutoff=1200 but Shmulik's right descender sits at
         # x=1163-1595 with internal points at x≈1163; cutoff=1200 split
@@ -1085,6 +1116,12 @@ def build_overflow_chain(
         and not (arm_x_range[0] <= x <= arm_x_range[1])
     ]
     seg_bar_top = max(body_top_ys) if body_top_ys else bar_top
+    # chain_bar_top: the chain bar TILE's top (lower than seg_bar_top
+    # when the natural body has a kotz extending above the bar). Defaults
+    # to seg_bar_top. Set on letters whose seg_bar_top includes a kotz
+    # peak so the bar tile stays at bar height while the cap region
+    # (edge_path, which uses seg_bar_top) still captures the kotz.
+    chain_bar_top = int(info.get("chain_bar_top", seg_bar_top))
 
     # The bar's left-edge has rounded corners (top-left and bottom-left
     # softening) in most Hebrew designs. We want those corners ONLY at the
@@ -1097,6 +1134,43 @@ def build_overflow_chain(
     last_glyph = glyf[last_variant_name]
     bottom_xs = sorted({x for x, y in last_glyph.coordinates if y == bar_bottom})
     bar_clip_x_left = bottom_xs[1] if len(bottom_xs) >= 2 else last_glyph.xMin
+    # When chain_bar_top differs from seg_bar_top, the default bar_clip_x_left
+    # (which looks for points exactly at y=bar_bottom) often falls back to
+    # last_glyph.xMin — collapsing the cap region. Override using:
+    #   leftmost: leftmost ON-curve at bar's flat top (chain_bar_top), and
+    #   rightmost: rightmost x of any kotz pt (y > chain_bar_top in stretch
+    #              zone, x < x_cutoff so it actually translates).
+    # Take the MAX of the two so the cap region captures both the bar's
+    # flat-top left edge AND the kotz's right curl. If the kotz right side
+    # extends past the bar's leftmost flat point (Shmulik dalet: kotz curl
+    # reaches x=411 but bar flat starts at x=394), using just leftmost
+    # leaves a kotz sliver in the start glyph.
+    if "chain_bar_top" in info:
+        cutoff = info.get("x_cutoff")
+        bar_top_pts = [
+            src_glyph.coordinates[i][0]
+            for i in range(len(src_glyph.coordinates))
+            if (src_glyph.flags[i] & 1)
+            and abs(src_glyph.coordinates[i][1] - chain_bar_top) <= 5
+        ]
+        # Filter kotz pts to LEFT HALF of bar zone — the bar zone spans
+        # [src.xMin, x_cutoff]; the bar's left kotz is in the left half,
+        # the right kotz (above the body's right side) is in the right
+        # half. Without this filter, off-curve transitions between bar
+        # and right kotz get treated as left-side kotz pts, pulling
+        # bar_clip_x_left way too far right.
+        bar_zone_mid = (int(src_glyph.xMin) + (cutoff if cutoff is not None else int(src_glyph.xMax))) // 2
+        kotz_xs = [
+            src_glyph.coordinates[i][0]
+            for i in range(len(src_glyph.coordinates))
+            if src_glyph.coordinates[i][1] > chain_bar_top + 5
+            and src_glyph.coordinates[i][0] < bar_zone_mid
+        ]
+        if bar_top_pts:
+            src_bar_left = min(bar_top_pts)
+            if kotz_xs:
+                src_bar_left = max(src_bar_left, max(kotz_xs) + 5)
+            bar_clip_x_left = src_bar_left + (int(last_glyph.xMin) - int(src_glyph.xMin))
 
     # 1. start glyph: lamed_s{max} clipped at (x >= bar_clip_x_left, y <= seg_bar_top)
     # so its left edge is a clean vertical line that tiles seamlessly with
@@ -1172,8 +1246,8 @@ def build_overflow_chain(
     edge_path.draw(tail_pen)
     tail_pen.moveTo((-2, bar_bottom))
     tail_pen.lineTo((step + 2, bar_bottom))
-    tail_pen.lineTo((step + 2, seg_bar_top))
-    tail_pen.lineTo((-2, seg_bar_top))
+    tail_pen.lineTo((step + 2, chain_bar_top))
+    tail_pen.lineTo((-2, chain_bar_top))
     tail_pen.closePath()
     tail_glyph = tail_pen.glyph()
     tail_glyph.recalcBounds(glyf)
@@ -1189,8 +1263,8 @@ def build_overflow_chain(
     int_pen = TTGlyphPen(None)
     int_pen.moveTo((-2, bar_bottom))
     int_pen.lineTo((step + 2, bar_bottom))
-    int_pen.lineTo((step + 2, seg_bar_top))
-    int_pen.lineTo((-2, seg_bar_top))
+    int_pen.lineTo((step + 2, chain_bar_top))
+    int_pen.lineTo((-2, chain_bar_top))
     int_pen.closePath()
     int_glyph = int_pen.glyph()
     int_name = f"{letter_name}_bar_segment"

@@ -1234,73 +1234,46 @@ def build_overflow_chain(
     # lsb=0 (shift mode) keeps display alignment consistent with lamed_s{max}.
     font["hmtx"].metrics[start_name] = (max_advance, 0)
 
-    # 2. Extract the bar's left-edge structure from lamed_s{max} — the
-    # rounded bottom-left and top-left corners that we just clipped OFF
-    # the start glyph. Translate so its rightmost x = 0 (i.e., it sits
-    # to the left of seg_tail's bar rectangle, providing the visual
-    # rounded-end-cap.)
-    edge_clip = pathops.Path()
-    ec = edge_clip.getPen()
-    ec.moveTo((-BIG, chain_bar_bottom)); ec.lineTo((bar_clip_x_left, chain_bar_bottom))
-    ec.lineTo((bar_clip_x_left, seg_bar_top)); ec.lineTo((-BIG, seg_bar_top))
-    ec.closePath()
-    edge_path = pathops.op(src_path, edge_clip, pathops.PathOp.INTERSECTION)
-    edge_xmax_orig = edge_path.bounds[2] if edge_path.bounds else 0
-    edge_path = edge_path.transform(1, 0, 0, 1, -edge_xmax_orig, 0)
-    corner_leftmost_x = edge_path.bounds[0] if edge_path.bounds else 0
+    # 2. Extract the natural left-side structure (ear + arm + bar's leftmost
+    # portion) from lamed_s{max} as a single piece. Earlier versions used
+    # two separate extractions — a "cap" clipped at seg_bar_top plus an
+    # "arm" clipped from the source above seg_bar_top — and joined them with
+    # a filler rect. That produced visible square corners at the synthetic
+    # boundaries (cap-top horizontal line, filler edges) where the natural
+    # design has smooth ear-to-arm curves.
+    #
+    # Single extraction: keep everything in last_glyph at x <= bar_clip_x_left
+    # and y >= chain_bar_bottom. Translate so its rightmost x lands at 0,
+    # matching the bar tile's leftmost edge. Optional arm_top_y clip removes
+    # decorative serifs at the very top (set per-letter when the source's arm
+    # ends in a kotz that reads as a "lip" when grafted onto an extension).
+    left_clip = pathops.Path()
+    lc = left_clip.getPen()
+    lc.moveTo((-BIG, chain_bar_bottom)); lc.lineTo((bar_clip_x_left, chain_bar_bottom))
+    lc.lineTo((bar_clip_x_left, BIG)); lc.lineTo((-BIG, BIG))
+    lc.closePath()
+    left_path = pathops.op(src_path, left_clip, pathops.PathOp.INTERSECTION)
+    arm_top_y = info.get("arm_top_y") if has_arm else None
+    if arm_top_y is not None:
+        top_clip = pathops.Path()
+        tc = top_clip.getPen()
+        tc.moveTo((-BIG, -BIG)); tc.lineTo((BIG, -BIG))
+        tc.lineTo((BIG, int(arm_top_y))); tc.lineTo((-BIG, int(arm_top_y)))
+        tc.closePath()
+        left_path = pathops.op(left_path, top_clip, pathops.PathOp.INTERSECTION)
+    left_xmax_orig = left_path.bounds[2] if left_path.bounds else 0
+    left_path = left_path.transform(1, 0, 0, 1, -left_xmax_orig, 0)
 
-    # 3. arm-only outline from the ORIGINAL (unstretched) glyph (arm class
-    # only). Extract everything above seg_bar_top so the arm bottom continues
-    # from the bar's top with no gap. Translate the arm so it sits at the
-    # visual leftmost of the cluster — its leftmost x lands
-    # `arm_overhang_past_corner` units to the LEFT of the rounded corner cap.
-    arm_path = None
-    if has_arm:
-        arm_path = _clip_glyph_at_y(glyf, src_glyph_name, seg_bar_top, keep_below=False)
-        # Optionally clip the arm's TOP — Hebrew lameds typically end in a
-        # small decorative serif/kotz at the very top, which reads as a
-        # "lip" when grafted onto an extension. `arm_top_y` (per-letter
-        # config) clips at that y to leave a smoother rounded top.
-        arm_top_y = info.get("arm_top_y")
-        if arm_top_y is not None:
-            top_clip = pathops.Path()
-            tc = top_clip.getPen()
-            tc.moveTo((-BIG, -BIG)); tc.lineTo((BIG, -BIG))
-            tc.lineTo((BIG, int(arm_top_y))); tc.lineTo((-BIG, int(arm_top_y)))
-            tc.closePath()
-            arm_path = pathops.op(arm_path, top_clip, pathops.PathOp.INTERSECTION)
-        arm_bounds = arm_path.bounds
-        arm_overhang_past_corner = 20
-        arm_target_xmin = corner_leftmost_x - arm_overhang_past_corner
-        arm_translate_x = arm_target_xmin - arm_bounds[0]
-        arm_translate_y = seg_bar_top - arm_bounds[1]
-        arm_path = arm_path.transform(1, 0, 0, 1, arm_translate_x, arm_translate_y)
-
-    # 4. tail glyph: bar rectangle + corner cap + arm (if arm-class). Bar
-    # extends 2 units beyond `step` on both sides so adjacent segments
-    # overlap (hides sub-pixel/AA gaps).
+    # 3. tail glyph: natural left piece + bar rectangle. Bar extends 2 units
+    # beyond `step` on both sides so adjacent segments overlap (hides sub-
+    # pixel/AA gaps).
     tail_pen = TTGlyphPen(None)
-    if arm_path is not None:
-        arm_path.draw(tail_pen)
-    edge_path.draw(tail_pen)
+    left_path.draw(tail_pen)
     tail_pen.moveTo((-2, chain_bar_bottom))
     tail_pen.lineTo((step + 2, chain_bar_bottom))
     tail_pen.lineTo((step + 2, chain_bar_top))
     tail_pen.lineTo((-2, chain_bar_top))
     tail_pen.closePath()
-    # Filler rect: bridges bar tile top to arm bottom when chain_bar_top <
-    # seg_bar_top. The arm is clipped above seg_bar_top, so its bottom sits
-    # at seg_bar_top after translation. If the bar tile top is lower
-    # (chain_bar_top), there's an empty band y=[chain_bar_top, seg_bar_top]
-    # under the arm — visible as a gap at the upper-left of the cluster.
-    # Filling it with a rect under the arm's full x-range closes the gap.
-    if arm_path is not None and chain_bar_top < seg_bar_top:
-        ax0, _, ax1, _ = arm_path.bounds
-        tail_pen.moveTo((ax0, chain_bar_top))
-        tail_pen.lineTo((ax1, chain_bar_top))
-        tail_pen.lineTo((ax1, seg_bar_top))
-        tail_pen.lineTo((ax0, seg_bar_top))
-        tail_pen.closePath()
     tail_glyph = tail_pen.glyph()
     tail_glyph.recalcBounds(glyf)
     tail_name = f"{letter_name}_overflow_tail"

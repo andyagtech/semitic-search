@@ -18,15 +18,47 @@
   font-display: swap;
 }
 
+/* ────────────────────────────────────────────────────────────────
+   Manuscript / parchment palette
+
+   Warm cream in light mode, warm ebony in dark mode. Four semantic
+   accents (sage/ochre/terracotta/walnut) replace the default emerald/
+   amber/violet/sky. Tailwind's amber-50/emerald-50/sky-50/violet-50
+   utility classes are RETINTED to parchment-friendly hues so the many
+   components that hard-code those class names shift automatically. */
+
 :root {
   color-scheme: light dark;
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5efe0;        /* parchment cream */
+  --foreground: #2a1e14;        /* warm ebony */
+
+  --accent-inherited: #6f8f6d;  /* sage */
+  --accent-showcase:  #b0800a;  /* aged brass / ochre */
+  --accent-loans:     #a0523a;  /* terracotta */
+  --accent-proto:     #6b4a3c;  /* walnut */
+
+  --accent-inherited-tint: rgba(111, 143, 109, 0.14);
+  --accent-showcase-tint:  rgba(176, 128, 10, 0.14);
+  --accent-loans-tint:     rgba(160, 82, 58, 0.14);
+  --accent-proto-tint:     rgba(107, 74, 60, 0.14);
+
+  /* Retint Tailwind's stock accent-50 surfaces so the many bg-amber-50 /
+     bg-emerald-50 / bg-sky-50 / bg-violet-50 utilities scattered through
+     the app blend with parchment instead of screaming. */
+  --color-amber-50:   #f0e6cf;
+  --color-emerald-50: #e4ecdf;
+  --color-sky-50:     #ecdfc7;
+  --color-violet-50:  #ede2d3;
+  --color-red-50:     #eddcd4;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-sage:       var(--accent-inherited);
+  --color-ochre:      var(--accent-showcase);
+  --color-terracotta: var(--accent-loans);
+  --color-walnut:     var(--accent-proto);
 }
 
 body {
@@ -35,44 +67,47 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
-/* Dark mode: invert the white/neutral scale that Tailwind utilities read
-   from as CSS custom properties. Every `bg-white`, `bg-neutral-*`,
-   `text-neutral-*`, `border-neutral-*` class flips automatically without
-   touching any component source. Accent colors (emerald/violet/amber/sky/
-   blue) keep their saturation for consistent branding across themes. */
+/* Dark mode: warm ebony + warm ivory. Neutrals warm-tinted so every
+   bg-white / bg-neutral-* / text-neutral-* utility flips automatically. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b0b10;
-    --foreground: #e8e8ec;
-    --color-white: #14141a;
-    --color-neutral-50: #17171d;
-    --color-neutral-100: #1c1c23;
-    --color-neutral-200: #262630;
-    --color-neutral-300: #3a3a44;
-    --color-neutral-400: #5a5a65;
-    --color-neutral-500: #7e7e88;
-    --color-neutral-600: #a4a4af;
-    --color-neutral-700: #c5c5cf;
-    --color-neutral-800: #dcdce4;
-    --color-neutral-900: #ececf2;
-    /* Backwards-compat: some Tailwind utilities resolve 'gray' aliases. */
-    --color-gray-50: #17171d;
-    --color-gray-100: #1c1c23;
-    --color-gray-200: #262630;
-    --color-gray-500: #7e7e88;
-    --color-gray-700: #c5c5cf;
-  }
+    --background: #1a1614;      /* warm ebony */
+    --foreground: #e8dfcf;      /* warm ivory */
 
-  /* Softer accent surfaces in dark mode — light-colored fill classes
-     (emerald-50/amber-50/violet-50/sky-50) look blindingly bright inverted,
-     so tone them down to semi-transparent tints on dark bg. */
-  :root {
-    --color-emerald-50: rgba(16, 185, 129, 0.08);
-    --color-amber-50: rgba(245, 158, 11, 0.08);
-    --color-violet-50: rgba(139, 92, 246, 0.08);
-    --color-violet-100: rgba(139, 92, 246, 0.18);
-    --color-sky-50: rgba(14, 165, 233, 0.08);
-    --color-red-50: rgba(239, 68, 68, 0.1);
+    --color-white:       #221d19;
+    --color-neutral-50:  #221d19;
+    --color-neutral-100: #262019;
+    --color-neutral-200: #332b23;
+    --color-neutral-300: #4a3f34;
+    --color-neutral-400: #6b5c4d;
+    --color-neutral-500: #8a7967;
+    --color-neutral-600: #a89786;
+    --color-neutral-700: #c4b7a6;
+    --color-neutral-800: #d9cfbf;
+    --color-neutral-900: #e8dfcf;
+    --color-gray-50:  #221d19;
+    --color-gray-100: #262019;
+    --color-gray-200: #332b23;
+    --color-gray-500: #8a7967;
+    --color-gray-700: #c4b7a6;
+
+    /* Lighten accents for readability on ebony */
+    --accent-inherited: #a3c19f;
+    --accent-showcase:  #d8b04a;
+    --accent-loans:     #d18466;
+    --accent-proto:     #c9a37a;
+    --accent-inherited-tint: rgba(163, 193, 159, 0.14);
+    --accent-showcase-tint:  rgba(216, 176, 74, 0.14);
+    --accent-loans-tint:     rgba(209, 132, 102, 0.14);
+    --accent-proto-tint:     rgba(201, 163, 122, 0.14);
+
+    /* Retint accent-50 fills on dark bg — parchment translucent tints. */
+    --color-emerald-50: rgba(163, 193, 159, 0.10);
+    --color-amber-50:   rgba(216, 176, 74, 0.10);
+    --color-violet-50:  rgba(201, 163, 122, 0.10);
+    --color-violet-100: rgba(201, 163, 122, 0.20);
+    --color-sky-50:     rgba(216, 176, 74, 0.08);
+    --color-red-50:     rgba(209, 132, 102, 0.12);
   }
 }
 
@@ -85,7 +120,52 @@ select {
 
 input::placeholder,
 textarea::placeholder {
-  color: #9ca3af;
+  color: color-mix(in oklab, var(--foreground) 45%, transparent);
+}
+
+/* Semantic accent utility classes — same tokens across Semitic + Turkic Search. */
+.accent-inherited { color: var(--accent-inherited); }
+.accent-showcase  { color: var(--accent-showcase); }
+.accent-loans     { color: var(--accent-loans); }
+.accent-proto     { color: var(--accent-proto); }
+
+.badge-inherited {
+  color: var(--accent-inherited);
+  background: var(--accent-inherited-tint);
+  border-color: color-mix(in oklab, var(--accent-inherited) 40%, transparent);
+}
+.badge-showcase {
+  color: var(--accent-showcase);
+  background: var(--accent-showcase-tint);
+  border-color: color-mix(in oklab, var(--accent-showcase) 40%, transparent);
+}
+.badge-loans {
+  color: var(--accent-loans);
+  background: var(--accent-loans-tint);
+  border-color: color-mix(in oklab, var(--accent-loans) 40%, transparent);
+}
+.badge-proto {
+  color: var(--accent-proto);
+  background: var(--accent-proto-tint);
+  border-color: color-mix(in oklab, var(--accent-proto) 40%, transparent);
+}
+
+.tier-high        { color: var(--accent-inherited); background: var(--accent-inherited-tint); border-color: color-mix(in oklab, var(--accent-inherited) 40%, transparent); }
+.tier-medium      { color: var(--accent-showcase);  background: var(--accent-showcase-tint);  border-color: color-mix(in oklab, var(--accent-showcase) 40%, transparent); }
+.tier-low         { color: var(--accent-loans);     background: var(--accent-loans-tint);     border-color: color-mix(in oklab, var(--accent-loans) 40%, transparent); }
+.tier-speculative { color: var(--accent-proto);     background: var(--accent-proto-tint);     border-color: color-mix(in oklab, var(--accent-proto) 40%, transparent); }
+.tier-unknown     { color: color-mix(in oklab, var(--foreground) 55%, transparent); }
+
+.stem-of-day {
+  background: linear-gradient(
+    to right,
+    color-mix(in oklab, var(--accent-showcase) 12%, var(--background)),
+    color-mix(in oklab, var(--accent-inherited) 12%, var(--background))
+  );
+  border-color: color-mix(in oklab, var(--accent-showcase) 40%, transparent);
+}
+.stem-of-day:hover {
+  border-color: color-mix(in oklab, var(--accent-showcase) 65%, transparent);
 }
 
 /* Print stylesheet — intended for /roots/[slug] researcher reference cards.

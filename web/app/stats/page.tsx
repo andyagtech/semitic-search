@@ -149,7 +149,7 @@ export default function StatsPage() {
             Cross-referenced lemmas where we have an earliest textual citation.
           </p>
           <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
-            <Stat label="📜 Tanakh" value={DATA_STATS.tanakhAttestations.toLocaleString()} suffix="Hebrew lemmas" />
+            <Stat label="Tanakh" value={DATA_STATS.tanakhAttestations.toLocaleString()} suffix="Hebrew lemmas" />
             <Stat label="☪︎ Qur'an" value={DATA_STATS.quranAttestations.toLocaleString()} suffix="Arabic lemmas" />
           </dl>
         </section>

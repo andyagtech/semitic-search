@@ -168,7 +168,7 @@ export default function MethodologyPage() {
               &quot;Earliest attestation&quot; is computed over all matches
               with a source priority Tanakh → Targumim → Mishnah → Qur&apos;an,
               then by book_order within a source. Displayed as badges
-              (📜 Tanakh, ✡︎ Mishnah, 𐡀 Targum, ☪︎ Qur&apos;an) across the UI.
+              (T Tanakh, ✡︎ Mishnah, 𐡀 Targum, ☪︎ Qur&apos;an) across the UI.
             </p>
           </Section>
 

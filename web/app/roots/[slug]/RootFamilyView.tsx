@@ -267,7 +267,7 @@ function LemmaRow({
         {lemma.attestation && (() => {
           const s = lemma.attestation.source;
           const icon =
-            s === "tanakh" ? "📜" :
+            s === "tanakh" ? "T" :
             s === "quran"  ? "☪︎" :
             s === "mishnah"? "✡︎" :
             (s === "onkelos" || s === "jonathan" || s === "neofiti" || s === "jerusalem") ? "𐡀" : "•";

@@ -112,7 +112,7 @@ function LemmaRow({ l, rtl }: { l: RootLemma; rtl: boolean }) {
         <span className="text-[10px] uppercase tracking-wider text-neutral-500">{l.pos}</span>
         {l.attestation && (
           <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200">
-            {l.attestation.source === "tanakh" ? "📜" : l.attestation.source === "quran" ? "☪︎" : "•"} {l.attestation.citation}
+            {l.attestation.source === "tanakh" ? "T" : l.attestation.source === "quran" ? "☪︎" : "•"} {l.attestation.citation}
           </span>
         )}
       </div>

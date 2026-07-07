@@ -89,7 +89,7 @@ export default async function RootFamilyPage({ params }: { params: Promise<Param
                 )}
                 {ea && (() => {
                   const icon =
-                    ea.source === "tanakh" ? "📜" :
+                    ea.source === "tanakh" ? "T" :
                     ea.source === "quran"  ? "☪︎" :
                     ea.source === "mishnah"? "✡︎" :
                     (ea.source === "onkelos" || ea.source === "jonathan" || ea.source === "neofiti" || ea.source === "jerusalem") ? "𐡀" : "•";

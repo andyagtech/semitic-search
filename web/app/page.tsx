@@ -21,44 +21,44 @@ type FamilySummary = {
 // Themed search packs — curated root sets that reveal a semantic category
 // across the Semitic family. Each root is filtered at render-time against
 // the shipped family manifest so we only show packs whose roots exist.
-const SEED_PACKS: { label: string; emoji: string; subtitle: string; roots: string[] }[] = [
-  { label: "Body parts", emoji: "👁", subtitle: "anatomy cognates",
+const SEED_PACKS: { label: string; subtitle: string; roots: string[] }[] = [
+  { label: "Body parts", subtitle: "anatomy cognates",
     roots: ["ʿ-y-n", "y-d", "r-ʾ-š", "l-b", "f-m", "r-g-l", "š-n", "l-š-n"] },
-  { label: "Kinship",    emoji: "👨‍👩‍👧", subtitle: "family terminology",
+  { label: "Kinship", subtitle: "family terminology",
     roots: ["ʾ-b", "ʾ-m", "ʾ-ḥ", "b-n", "b-t", "ʾ-š-h"] },
-  { label: "Peace & wholeness", emoji: "🕊", subtitle: "root of salam / shalom",
+  { label: "Peace & wholeness", subtitle: "root of salam / shalom",
     roots: ["š-l-m", "š-l-h", "n-w-ḥ"] },
-  { label: "Colors",     emoji: "🎨", subtitle: "color-term roots",
+  { label: "Colors", subtitle: "color-term roots",
     roots: ["ḥ-m-r", "l-b-n", "š-ḥ-r", "y-r-q", "ṣ-h-b", "ʾ-d-m"] },
-  { label: "Numbers",    emoji: "🔢", subtitle: "cardinal number roots",
+  { label: "Numbers", subtitle: "cardinal number roots",
     roots: ["ʾ-ḥ-d", "ṯ-n-y", "ṯ-l-ṯ", "ʾ-r-b", "ḫ-m-s", "š-b-ʿ", "ʿ-š-r"] },
-  { label: "Writing & scripture", emoji: "📜", subtitle: "verbs of text & record",
+  { label: "Writing & scripture", subtitle: "verbs of text & record",
     roots: ["k-t-b", "s-f-r", "q-r-ʾ", "l-m-d", "ʿ-l-m"] },
-  { label: "Rulership",  emoji: "👑", subtitle: "leadership & sovereignty",
+  { label: "Rulership", subtitle: "leadership & sovereignty",
     roots: ["m-l-k", "ʾ-d-n", "r-ʾ-š", "n-g-d"] },
-  { label: "Weather & sky", emoji: "⛅️", subtitle: "atmospheric & natural phenomena",
+  { label: "Weather & sky", subtitle: "atmospheric & natural phenomena",
     roots: ["b-r-q", "m-ṭ-r", "r-ʿ-m", "š-m-š", "y-r-ḥ", "k-w-k-b"] },
-  { label: "Dwelling & place", emoji: "🏠", subtitle: "houses, cities, gates",
+  { label: "Dwelling & place", subtitle: "houses, cities, gates",
     roots: ["b-y-t", "q-r-y", "š-ʿ-r", "ʾ-r-ḍ"] },
-  { label: "Iconic Proto-Semitic roots", emoji: "🌳", subtitle: "pedagogically classic examples",
+  { label: "Iconic Proto-Semitic roots", subtitle: "pedagogically classic examples",
     roots: ["k-l-b", "ḏ-h-b", "ʾ-r-ḍ", "ṯ-l-ṯ", "b-r-k"] },
-  { label: "Religion & spirit",  emoji: "🕎", subtitle: "theology & ritual",
+  { label: "Religion & spirit", subtitle: "theology & ritual",
     roots: ["ʾ-l-h", "q-d-š", "b-r-k", "z-b-ḥ", "ṣ-l-y", "k-h-n"] },
-  { label: "Food & drink",       emoji: "🍞", subtitle: "bread, oil, wine, meat",
+  { label: "Food & drink", subtitle: "bread, oil, wine, meat",
     roots: ["ʾ-k-l", "l-ḥ-m", "š-t-y", "ḥ-l-b", "z-y-t", "b-š-l"] },
-  { label: "Emotions",           emoji: "💛", subtitle: "love, fear, grief, joy",
+  { label: "Emotions", subtitle: "love, fear, grief, joy",
     roots: ["ʾ-h-b", "r-ḥ-m", "y-r-ʾ", "ḥ-s-d", "b-k-y", "ś-m-ḥ"] },
-  { label: "Wine & vine",        emoji: "🍷", subtitle: "vineyard, grape, drink, intoxication",
+  { label: "Wine & vine", subtitle: "vineyard, grape, drink, intoxication",
     roots: ["y-n", "k-r-m", "ʿ-n-b", "š-k-r", "ḫ-m-r"] },
-  { label: "Time & sun",         emoji: "🌅", subtitle: "day, night, dawn, dusk, year",
+  { label: "Time & sun", subtitle: "day, night, dawn, dusk, year",
     roots: ["y-w-m", "l-y-l", "š-n-y", "b-q-r", "ʿ-r-b", "š-m-š"] },
-  { label: "Trade & work",       emoji: "⚒️", subtitle: "commerce, wage, craft",
+  { label: "Trade & work", subtitle: "commerce, wage, craft",
     roots: ["m-k-r", "k-s-p", "ʿ-b-d", "š-k-r", "p-ʿ-l"] },
-  { label: "Motion & path",      emoji: "🚶", subtitle: "walking, running, returning",
+  { label: "Motion & path", subtitle: "walking, running, returning",
     roots: ["h-l-k", "b-w-ʾ", "y-ṣ-ʾ", "š-w-b", "r-w-ṣ", "ʿ-b-r"] },
-  { label: "Speech & knowledge", emoji: "🗣", subtitle: "speaking, hearing, teaching, wisdom",
+  { label: "Speech & knowledge", subtitle: "speaking, hearing, teaching, wisdom",
     roots: ["ʾ-m-r", "d-b-r", "š-m-ʿ", "l-m-d", "y-d-ʿ", "ḥ-k-m"] },
-  { label: "Water & flow",       emoji: "💧", subtitle: "rain, river, sea, spring",
+  { label: "Water & flow", subtitle: "rain, river, sea, spring",
     roots: ["m-y-m", "n-h-r", "y-m", "m-ṭ-r", "ʿ-y-n"] },
 ];
 
@@ -601,7 +601,7 @@ export default function Home() {
               <div className="flex items-baseline justify-between gap-3 flex-wrap">
                 <div>
                   <span className="text-[10px] uppercase tracking-wider text-amber-800 font-semibold">
-                    🌱 Root of the day
+                    Root of the day
                   </span>
                   <div className="mt-1 flex items-baseline gap-3 flex-wrap">
                     <span className="text-2xl sm:text-3xl font-mono font-semibold tracking-tight">
@@ -823,7 +823,6 @@ export default function Home() {
                 return (
                   <div key={pack.label} className="bg-white border border-neutral-200 rounded-lg p-4">
                     <div className="flex items-baseline gap-2 mb-2">
-                      <span className="text-lg">{pack.emoji}</span>
                       <span className="font-semibold">{pack.label}</span>
                       <span className="ml-auto text-xs text-neutral-500">{pack.subtitle}</span>
                     </div>
@@ -930,7 +929,7 @@ type AttestedCognate = {
 function AttestationBadge({ a }: { a: { source: string; citation: string } }) {
   const { icon, title } = (() => {
     switch (a.source) {
-      case "tanakh":    return { icon: "📜", title: `First attested in the Tanakh at ${a.citation}` };
+      case "tanakh":    return { icon: "T",  title: `First attested in the Tanakh at ${a.citation}` };
       case "quran":     return { icon: "☪︎",  title: `First attested in the Qur'an at ${a.citation}` };
       case "mishnah":   return { icon: "✡︎",  title: `First attested in the Mishnah at ${a.citation}` };
       case "onkelos":   return { icon: "𐡀",  title: `Attested in Targum Onkelos at ${a.citation}` };

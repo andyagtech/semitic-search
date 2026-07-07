@@ -30,7 +30,7 @@ export default async function Image() {
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <div style={{ display: "flex", gap: 32, fontSize: 22, color: "#94a3b8" }}>
-            <span>📜 Tanakh (c. 1200–400 BCE)</span>
+            <span>Tanakh (c. 1200–400 BCE)</span>
             <span>☪︎ Qur&apos;an (c. 610–632 CE)</span>
           </div>
           <div style={{ fontSize: 20, color: "#64748b" }}>

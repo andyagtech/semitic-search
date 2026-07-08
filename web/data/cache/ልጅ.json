@@ -1,0 +1,80 @@
+{
+  "query": "ልጅ",
+  "normalized": "ልጅ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 701,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ልጅ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ልጅ",
+    "extracted_root": "ל-ד-ג",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ד",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ג",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "لَدْجَة",
+        "surface_root": "ل-د-ج",
+        "gloss": "small child (rare/dialectal)",
+        "confidence": "medium",
+        "correspondence_path": "Am ለ ↔ Ar ل; Am ד ↔ Ar د; Am ג ↔ Ar ج (reflections of *l-d-g)",
+        "wiktionary_hint": null,
+        "notes": "While related, the root L-D-G is not the common Semitic word for 'child', suggesting a potential Ge'ez/Ethio-Semitic innovation or retention of a rare root."
+      },
+      {
+        "language": "ti",
+        "language_name": "Tigrinya",
+        "surface_form": "ልጅ",
+        "surface_root": "ል-ጅ",
+        "gloss": "child",
+        "confidence": "high",
+        "correspondence_path": "Direct cognate within Ethio-Semitic",
+        "wiktionary_hint": null,
+        "notes": "Shared Ethio-Semitic term widely used in both Amharic and Tigrinya."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root L-D-G for 'child' is specific to Ethio-Semitic (Ge'ez ልዳጅ lidāğ); it is not reconstructed for Proto-Semitic as the primary word for child, which is typically *walad-.",
+      "Tigrinya and Amharic reflexes are near-identical due to shared linguistic ancestry."
+    ]
+  }
+}

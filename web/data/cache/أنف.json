@@ -1,0 +1,79 @@
+{
+  "query": "أنف",
+  "normalized": "أنف",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 755,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أنف",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "أنف",
+    "extracted_root": "أ-ن-ف",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ف",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אַף",
+        "surface_root": "א-ף",
+        "gloss": "nose; anger",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ He א (regular laryngeal); Ar ن (lost in He biliteral development) ↔ He ∅; Ar ف ↔ He פ (regular *p > f/p shift)",
+        "wiktionary_hint": "אַף",
+        "notes": "Hebrew simplifies the root to a biliteral form. The nasal consonant 'n' was assimilated into the following 'p' in very early Proto-Canaanite stages."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܰܦ݁ܳܐ",
+        "surface_root": "א-פ-א",
+        "gloss": "face; nose",
+        "confidence": "medium",
+        "correspondence_path": "Ar أ ↔ Syc ܐ; Ar ف ↔ Syc ܦ — regular *p > p/f shift",
+        "wiktionary_hint": "ܐܦܐ",
+        "notes": "There is a semantic shift here: Arabic 'anf' means 'nose', whereas the Syriac cognate 'appā' primarily refers to 'face', though it retains the anatomical 'nose' usage in specific contexts."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The noun 'nose' often shows irregularity in Semitic due to frequent usage, leading to nasal assimilation (as seen in Hebrew) or semantic shift toward 'face' (as seen in Aramaic/Syriac)."
+    ]
+  }
+}

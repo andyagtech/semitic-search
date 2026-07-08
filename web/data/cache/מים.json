@@ -1,0 +1,79 @@
+{
+  "query": "מים",
+  "normalized": "מים",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 669,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "מים",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "מים",
+    "extracted_root": "מ-י-מ",
+    "root_type": "geminate",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "י",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ماء",
+        "surface_root": "م-و-ه",
+        "gloss": "water",
+        "confidence": "high",
+        "correspondence_path": "Ar م ↔ He מ — regular *m reflex",
+        "wiktionary_hint": "ماء",
+        "notes": "Arabic reflects a third root consonant *h, while Hebrew shows a geminate or reduced form. The proto-form is often reconstructed as *may-/*maw- (pluralized)."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܡܝܐ",
+        "surface_root": "ܡ-ܝ-ܐ",
+        "gloss": "water",
+        "confidence": "high",
+        "correspondence_path": "Syc م ↔ He מ — regular *m reflex",
+        "wiktionary_hint": "ܡܝܐ",
+        "notes": "Syriac typically treats this as a plural noun in form, exhibiting a final *ʔreflex."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root for 'water' is notoriously difficult in Semitic; it is arguably a defective biliteral that underwent various forms of augmentation/pluralization in the daughter languages (*may-)."
+    ]
+  }
+}

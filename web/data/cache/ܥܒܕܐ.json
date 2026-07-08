@@ -1,0 +1,91 @@
+{
+  "query": "ܥܒܕܐ",
+  "normalized": "ܥܒܕܐ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4720,
+    "output_tokens": 660,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ܥܒܕܐ",
+    "detected_language": "syc",
+    "detected_language_name": "Syriac",
+    "normalized_form": "עבדא",
+    "extracted_root": "ע-ב-ד",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ܥ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ܒ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ܕ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "عَبْد",
+        "surface_root": "ع-ب-د",
+        "gloss": "slave, servant",
+        "confidence": "high",
+        "correspondence_path": "Ar ع ↔ Syc ܥ; Ar ب ↔ Syc ܒ; Ar د ↔ Syc ܕ — regular PS *ʕ-b-d reflex",
+        "wiktionary_hint": "عبد",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "עֶבֶד",
+        "surface_root": "ע-ב-ד",
+        "gloss": "slave, servant",
+        "confidence": "high",
+        "correspondence_path": "He ע ↔ Syc ܥ; He ב ↔ Syc ܒ; He ד ↔ Syc ܕ — regular PS *ʕ-b-d reflex",
+        "wiktionary_hint": "עבד",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "ardu",
+        "surface_root": "w-r-d",
+        "gloss": "servant, slave",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": "ardu",
+        "notes": "While semantically equivalent, the Akkadian form reflects an initial *w-r-d root due to the common Semitic metathesis/variation of this lexeme, though it is often grouped with the *ʕ-b-d root complex."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Syriac suffix 'ܐ' (ā) is the emphatic state marker rather than part of the root.",
+      "Akkadain cognate linkage is complex due to historical linguistic debates regarding the commonality of the 'servant' root across branches versus potential phonetic shift."
+    ]
+  }
+}

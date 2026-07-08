@@ -1,0 +1,84 @@
+{
+  "query": "بنت",
+  "normalized": "بنت",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 656,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "بنت",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "بنت",
+    "extracted_root": "ب-ن-ي",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "בַּת",
+        "surface_root": "ב-ת",
+        "gloss": "daughter",
+        "confidence": "high",
+        "correspondence_path": "Ar ب ↔ He ב; Ar ن assimilated; Ar ت ↔ He ת — regular *b-n-t > *ban-t > bat",
+        "wiktionary_hint": "בת",
+        "notes": "Hebrew reflects the feminine singular form where the 'n' has assimilated into the following 't'."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܪܬܐ",
+        "surface_root": "ܒ-ܪ-ܬ",
+        "gloss": "daughter",
+        "confidence": "medium",
+        "correspondence_path": "Ar ب ↔ Syc ܒ; Ar ت ↔ Syc ܬ; Ar ن vs Syc ر — the 'r' appears to be a secondary formation or dialectal variant common in Aramaic branches.",
+        "wiktionary_hint": "ܒܪܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root b-n-y is historically reconstructed as b-n-t; the 'n' in many Semitic languages shows assimilation (e.g., Arabic bint, Hebrew bat, Ge'ez bet).",
+      "Syriac 'brt' (daughter) displays a rhotacism or insertion not present in the Arabic/Hebrew forms, a known phenomenon in Aramaic morphology."
+    ]
+  }
+}

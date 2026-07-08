@@ -1,0 +1,79 @@
+{
+  "query": "خمر",
+  "normalized": "خمر",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 588,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "خمر",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "خمر",
+    "extracted_root": "خ-م-ر",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "خ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "חֶמֶר",
+        "surface_root": "ח-מ-ר",
+        "gloss": "wine (poetic)",
+        "confidence": "high",
+        "correspondence_path": "Ar خ ↔ He ח — regular *ḫ reflex",
+        "wiktionary_hint": "חמר",
+        "notes": "Hebrew ח usually reflects *ḥ, but also merges with *ḫ in later periods/dialects; standard etymology links Arabic خمر 'wine' with Hebrew poetic חמר."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܡܪܐ",
+        "surface_root": "ܚ-ܡ-ܪ",
+        "gloss": "wine",
+        "confidence": "high",
+        "correspondence_path": "Ar خ ↔ Syc ܚ — regular *ḫ reflex (merger with *ḥ)",
+        "wiktionary_hint": "ܚܡܪܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ḫ-m-r in the context of 'wine/fermentation' often demonstrates semantic overlap with the root *ḥ-m-r ('redness', referring to the color of wine); cognate identification must be careful to distinguish between the 'fermented' sense and 'red' sense."
+    ]
+  }
+}

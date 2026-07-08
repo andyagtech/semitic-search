@@ -1,0 +1,90 @@
+{
+  "query": "أكل",
+  "normalized": "أكل",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 734,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أكل",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "أكل",
+    "extracted_root": "أ-ك-ل",
+    "root_type": "hamzated",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ك",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אָכַל",
+        "surface_root": "א-כ-ל",
+        "gloss": "to eat",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/أ ↔ He א/א — regular *ʔ reflex",
+        "wiktionary_hint": "אכל",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܟܠ",
+        "surface_root": "ܐ-ܟ-ܠ",
+        "gloss": "to eat, devour",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/ك/ل ↔ Syc ܐ/ܟ/ܠ — regular *ʔ/*k/*l reflexes",
+        "wiktionary_hint": "ܐܟܠ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "akālu",
+        "surface_root": "a-k-l",
+        "gloss": "to eat",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/ك/ل ↔ Akk ∅/k/l — Akkadian laryngeal loss (*ʔ > ∅)",
+        "wiktionary_hint": "akālu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The initial glottal stop (*ʔ) dropped in Akkadian but is preserved in Arabic orthography as hamza (أ)."
+    ]
+  }
+}

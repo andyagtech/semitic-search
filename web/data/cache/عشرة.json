@@ -1,0 +1,94 @@
+{
+  "query": "عشرة",
+  "normalized": "عشرة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 629,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "عشرة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "عشرة",
+    "extracted_root": "ع-ش-ر",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ع",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ش",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "עֶשֶׂר",
+        "surface_root": "ע-ש-ר",
+        "gloss": "ten",
+        "confidence": "high",
+        "correspondence_path": "Ar ع ↔ He ע (*ʕ), Ar ش ↔ He שׂ (*ś), Ar ر ↔ He ר (*r).",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܥܣܪܐ",
+        "surface_root": "ܥ-ܣ-ܪ",
+        "gloss": "ten",
+        "confidence": "high",
+        "correspondence_path": "Ar ع ↔ Syc ܥ (*ʕ), Ar ش ↔ Syc ܣ (*ś), Ar ر ↔ Syc ܪ (*r).",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "ešer",
+        "surface_root": "e-š-r",
+        "gloss": "ten",
+        "confidence": "medium",
+        "correspondence_path": "Ar ع ↔ Akk ∅, Ar ش ↔ Akk š (*ś/š), Ar ر ↔ Akk r (*r).",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The middle radical in this root reflects Proto-Semitic *ś (the lateral sibilant), which merged into Hebrew שׂ (as in עֶשֶׂר), Syriac ܣ, and Arabic ش."
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "query": "جاء",
+  "normalized": "جاء",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 802,
+    "cache_read_tokens": 4009
+  },
+  "result": {
+    "input_word": "جاء",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "جاء",
+    "extracted_root": "ج-ي-أ",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ج",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "יָצָא",
+        "surface_root": "י-צ-א",
+        "gloss": "to go out",
+        "confidence": "medium",
+        "correspondence_path": "Ar ج (*g) ↔ He צ (*ṣ). Note: The semantic shift from 'coming' (Ar) to 'going out' (He) is common in Semitic, but the *g to *ṣ shift is technically irregular; it is often theorized as a specific dialectal shift or semantic development of 'emerging vs arrival'.",
+        "wiktionary_hint": "יצא",
+        "notes": "While commonly linked to Arabic جاء, the correspondence of initial *g to Hebrew צ is unusual and suggests a complex evolution."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܬܐ",
+        "surface_root": "ܐ-ܬ-ܝ",
+        "gloss": "to come",
+        "confidence": "low",
+        "correspondence_path": "Ar (final-weak) ↔ Syc (final-weak). The root consonants do not align perfectly (Ar *g-y-ʔ vs Syc *ʔ-t-y).",
+        "wiktionary_hint": "ܐܬܐ",
+        "notes": "Semantic match (to come) is strong, but etymologically distinct. Often compared due to shared usage as the primary 'come' verb."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic root is *g-y-ʔ (Hamzated III-weak).",
+      "Cognate search for 'to come' is notoriously difficult in Semitic due to high suppletion rates.",
+      "The commonly cited link to Hebrew יצא (y-ṣ-ʔ) is often debated by linguists due to the irregular *g ↔ *ṣ correspondence."
+    ]
+  }
+}

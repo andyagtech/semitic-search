@@ -1,0 +1,91 @@
+{
+  "query": "كتابته",
+  "normalized": "كتابته",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 747,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "كتابته",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "كتابته",
+    "extracted_root": "ك-ت-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ك",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ت",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "כָּתַב",
+        "surface_root": "כ-ת-ב",
+        "gloss": "to write",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ; Ar ت ↔ He ת; Ar ب ↔ He ב — stable cognate reflection",
+        "wiktionary_hint": "כתב",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܟܬܒ",
+        "surface_root": "ܟ-ܬ-ܒ",
+        "gloss": "to write",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ Syc ܟ; Ar ت ↔ Syc ܬ; Ar ب ↔ Syc ܒ — regular consonantal correspondence",
+        "wiktionary_hint": "ܟܬܒ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šaṭāru",
+        "surface_root": "ש-ט-ר",
+        "gloss": "to write",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": "šaṭāru",
+        "notes": "Semantic cognate, but potentially different root path (Akkadian šaṭāru does not derive from K-T-B). Included to contrast root evolution."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The input 'كتابته' contains the root 'ك-ت-ب' followed by the possessive suffix '-hu'.",
+      "Akkadian cognates often differ significantly in root selection for 'writing'; 'šaṭāru' is provided as a related semantic concept, not a cognate of the K-T-B root."
+    ]
+  }
+}

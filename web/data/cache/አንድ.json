@@ -1,0 +1,79 @@
+{
+  "query": "አንድ",
+  "normalized": "አንድ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 683,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "አንድ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "አንድ",
+    "extracted_root": "አ-н-ד",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "አ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ን",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ድ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أحد",
+        "surface_root": "أ-ح-د",
+        "gloss": "one",
+        "confidence": "high",
+        "correspondence_path": "Ar ح ↔ Am n (Amharic shows regular n-d evolution from Proto-Semitic *ḥd via Aramaic influence or phonetic development common in Ethio-Semitic; note Ar ʔaḥad vs Am ʔand)",
+        "wiktionary_hint": "أحد",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֶחָד",
+        "surface_root": "א-ח-ד",
+        "gloss": "one",
+        "confidence": "high",
+        "correspondence_path": "Ar ح ↔ He ח ↔ Am n (PS *ʔaḥad-)",
+        "wiktionary_hint": "אחד",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Amharic root 'አ-ን-ד' (and) is a classic example of liquid/nasal shift or dissimilation common in Ethiopic languages where Proto-Semitic *ḥ evolved into 'n' in the numeral 'one'. This is a well-attested development distinct from the standard Semitic reflexes seen in Arabic and Hebrew."
+    ]
+  }
+}

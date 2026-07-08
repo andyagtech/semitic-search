@@ -1,0 +1,79 @@
+{
+  "query": "נביא",
+  "normalized": "נביא",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 689,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "נביא",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "נביא",
+    "extracted_root": "נ-ב-א",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "נ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "نبي",
+        "surface_root": "ن-ب-أ",
+        "gloss": "prophet",
+        "confidence": "high",
+        "correspondence_path": "Ar ن ↔ He נ; Ar ب ↔ He ב; Ar ء ↔ He א — regular proto-Semitic *n-b-ʔ root",
+        "wiktionary_hint": "نبي",
+        "notes": "Arabic 'nabī' is likely a borrowing from Aramaic/Hebrew or North Arabic into classical Arabic, but the underlying root *n-b-ʔ is clearly Semitic."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܢܒܝܐ",
+        "surface_root": "ܢ-ܒ-ܐ",
+        "gloss": "prophet",
+        "confidence": "high",
+        "correspondence_path": "Syc ܢ ↔ He נ; Syc ܒ ↔ He ב; Syc ܐ ↔ He א — regular phonological correspondence",
+        "wiktionary_hint": "ܢܒܝܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The noun 'nabi' in Arabic is widely considered a loanword from an Aramaic or Hebrew source, although the root itself is indigenous to the Semitic family."
+    ]
+  }
+}

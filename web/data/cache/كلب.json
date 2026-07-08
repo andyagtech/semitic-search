@@ -1,0 +1,90 @@
+{
+  "query": "كلب",
+  "normalized": "كلب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 670,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "كلب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "كلب",
+    "extracted_root": "ك-ل-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ك",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "כֶּלֶב",
+        "surface_root": "כ-ל-ב",
+        "gloss": "dog",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ ↔ Aram ܟ — regular *k reflex; Ar ل ↔ He ל ↔ Aram ܠ — regular *l reflex; Ar ب ↔ He ב ↔ Aram ܒ — regular *b reflex",
+        "wiktionary_hint": "כלב",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܟܲܠܒܵܐ",
+        "surface_root": "ܟ-ܠ-ܒ",
+        "gloss": "dog",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ ↔ Syc ܟ — regular *k reflex",
+        "wiktionary_hint": "ܟܠܒܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "kalbu",
+        "surface_root": "k-l-b",
+        "gloss": "dog",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ Akk k — regular *k reflex",
+        "wiktionary_hint": "kalbu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Though the dog (Canis familiaris) is widely distributed, the root *k-l-b is remarkably stable across Semitic languages."
+    ]
+  }
+}

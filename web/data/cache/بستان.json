@@ -1,0 +1,78 @@
+{
+  "query": "بستان",
+  "normalized": "بستان",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 517,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "بستان",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "بستان",
+    "extracted_root": "ب-س-ت-ن",
+    "root_type": "quadriliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ت",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 4,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܘܣܬܢܐ",
+        "surface_root": "ܒ-ܣ-ܬ-ܢ",
+        "gloss": "garden, orchard",
+        "confidence": "high",
+        "correspondence_path": "Ar ب ↔ Syr ܒ, Ar س ↔ Syr ܣ, Ar ت ↔ Syr ܬ, Ar ن ↔ Syr ܢ",
+        "wiktionary_hint": "ܒܘܣܬܢܐ",
+        "notes": "Loanword from Old Persian *bostān via Aramaic; not a native Semitic root."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'bostān' is widely recognized in Semitic linguistics as a loanword from Old Persian (*bū-stān, 'place of scent'). Therefore, it is a quadrilateral noun of non-Semitic origin, not a derivative of a primary Proto-Semitic root."
+    ]
+  }
+}

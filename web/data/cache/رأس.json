@@ -1,0 +1,91 @@
+{
+  "query": "رأس",
+  "normalized": "رأس",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 738,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "رأس",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "رأس",
+    "extracted_root": "ر-أ-س",
+    "root_type": "hamzated",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "רֹאשׁ",
+        "surface_root": "ר-א-ש",
+        "gloss": "head",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ He ר, Ar أ ↔ He א, Ar س ↔ He שׁ (Note: Arabic س corresponds to Proto-Semitic *s, while Hebrew שׁ in this context is a stable, standard reflex of the root head)",
+        "wiktionary_hint": "ראש",
+        "notes": "While Arabic س usually reflects *s, and Hebrew שׁ can reflect *š, *θ, or *ś, this is a well-established cognate pair with universal acceptance."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܪܫܐ",
+        "surface_root": "ܪ-ܫ-ܐ",
+        "gloss": "head",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ Syr ܪ, Ar س ↔ Syr ܫ, Ar أ ↔ Syr ܐ (metathesis/shifting common in final position)",
+        "wiktionary_hint": "ܪܫܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "rēšu",
+        "surface_root": "r-ʾ-š",
+        "gloss": "head",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ Akk r, Ar س ↔ Akk š",
+        "wiktionary_hint": "rēšu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic root is treated as Hamzated at the second position (*r-ʔ-s).",
+      "Hebrew 'רֹאשׁ' uses שׁ (shin), which in this specific root historically derives from *s, showing the complexity of sibilant correspondences in the North Semitic branch."
+    ]
+  }
+}

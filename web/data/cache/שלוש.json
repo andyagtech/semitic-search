@@ -1,0 +1,98 @@
+{
+  "query": "שלוש",
+  "normalized": "שלוש",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 843,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שלוש",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שלוש",
+    "extracted_root": "ש-ל-שׁ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "שׁ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.1
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ثلاثة",
+        "surface_root": "ث-ل-ث",
+        "gloss": "three",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ He שׁ (regular *θ reflex)",
+        "wiktionary_hint": "ثلاثة",
+        "notes": "Hebrew שׁ is the regular development of *θ. The Arabic form exhibits the expected voiceless interdental."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܬܠܬܐ",
+        "surface_root": "ܬ-ل-ܬ",
+        "gloss": "three",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ He שׁ ↔ Syr ת (regular *θ reflex)",
+        "wiktionary_hint": "ܬܠܬܐ",
+        "notes": "Classic Semitic numeral root."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šalāšu",
+        "surface_root": "š-l-š",
+        "gloss": "to be one-third",
+        "confidence": "medium",
+        "correspondence_path": "Ar ث ↔ He שׁ ↔ Akk š",
+        "wiktionary_hint": "šalāšu",
+        "notes": "Reflects the common Semitic root for three, though Akkadian š covers multiple Proto-Semitic interdentals and sibilants."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Hebrew שׁ is historically ambiguous; however, in the root for 'three', the standard etymological reconstruction is the Proto-Semitic *θlθ."
+    ]
+  }
+}

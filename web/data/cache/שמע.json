@@ -1,0 +1,94 @@
+{
+  "query": "שמע",
+  "normalized": "שמע",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 705,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שמע",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שמע",
+    "extracted_root": "ש-מ-ע",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.95
+          },
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.05
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سَمِعَ",
+        "surface_root": "س-م-ع",
+        "gloss": "to hear",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He שׁ ↔ Aram שׁ — regular *š reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܡܰܥ",
+        "surface_root": "ܫ-ܡ-ܥ",
+        "gloss": "to hear, obey",
+        "confidence": "high",
+        "correspondence_path": "Syc ܫ ↔ He שׁ ↔ Ar س — regular *š reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šemû",
+        "surface_root": "š-m-ʔ",
+        "gloss": "to hear",
+        "confidence": "medium",
+        "correspondence_path": "Akk š ↔ He שׁ; note Akk ʔ reflects PS *ʕ in final position",
+        "wiktionary_hint": null,
+        "notes": "Akkadian orthography shows final weak consonant resulting from the loss/absorption of the pharyngeal *ʕ."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Hebrew ש can potentially represent *š, *ś, or *θ. In all major cognate languages for this root (Arabic samia, Syriac šmaʿ), the evidence points strongly to *š."
+    ]
+  }
+}

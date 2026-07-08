@@ -1,0 +1,80 @@
+{
+  "query": "דג",
+  "normalized": "דג",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 652,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "דג",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "דג",
+    "extracted_root": "ד-ו-ג",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ד",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ו",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ג",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "دَجّ",
+        "surface_root": "د-ج-ج",
+        "gloss": "fish (rare, regional, or specific terminology)",
+        "confidence": "medium",
+        "correspondence_path": "Ar ج ↔ He ג — regular *g reflex.",
+        "wiktionary_hint": null,
+        "notes": "While the Arabic root d-g-g for 'fish' is well-attested (often secondary to ḥūt), some propose relations to the act of teeming or swarming."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܢܽܘܢܳܐ",
+        "surface_root": "נ-ו-נ",
+        "gloss": "fish",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Not a cognate but a semantic parallel. Hebrew 'dag' likely replaced the common Semitic term *nūn- (fish) in some contexts."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Hebrew 'dag' is typically treated as a biliteral or hollow-root derivation. Its etymological connection to *d-w-g is supported by the verb 'dāga' (to swarm, teem, related to the nature of fish).",
+      "Arabic 'dajj' as a direct cognate is debated; some scholars argue it might be an isolated form or secondary to the more dominant *ḥ-w-t root."
+    ]
+  }
+}

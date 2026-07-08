@@ -1,0 +1,88 @@
+{
+  "query": "ዘጠኝ",
+  "normalized": "ዘጠኝ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 657,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ዘጠኝ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ዘጠኝ",
+    "extracted_root": "ዘ-ط-ณ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ዘ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*z",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ጠ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṭ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*ṯ̣",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ኝ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "تسعة",
+        "surface_root": "ت-س-ع",
+        "gloss": "nine",
+        "confidence": "high",
+        "correspondence_path": "Ar ت ↔ Geʿez ዘ (via shift) ↔ Am ዘ ↔ PS *t/ṯ — irregular initial reflex common in numeral 'nine'",
+        "wiktionary_hint": "تسعة",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "תֵּשַׁע",
+        "surface_root": "ת-ש-ע",
+        "gloss": "nine",
+        "confidence": "high",
+        "correspondence_path": "He ת ↔ PS *ṯ reflex",
+        "wiktionary_hint": "תשע",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The numeral 'nine' in Semitic presents complex historical issues (e.g., the presence of a pharyngeal/uvular third radical in Arabic/Hebrew vs. the nasal radical in Ge'ez/Amharic).",
+      "The Amharic root Z-Ṭ-N is reconstructed for the purpose of this analysis, but the etymology of 'nine' is subject to debate in comparative linguistics due to potential taboos or morphological restructuring."
+    ]
+  }
+}

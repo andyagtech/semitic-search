@@ -1,0 +1,90 @@
+{
+  "query": "تسعة",
+  "normalized": "تسعة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 691,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "تسعة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "تسعة",
+    "extracted_root": "ت-س-ع",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ت",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ع",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "תֵּשַׁע",
+        "surface_root": "ת-ש-ע",
+        "gloss": "nine",
+        "confidence": "high",
+        "correspondence_path": "Ar ت ↔ He ת; Ar س ↔ He שׂ (merger of *ś); Ar ع ↔ He ע — Proto-Semitic *tišʕ-",
+        "wiktionary_hint": "תשע",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܬܫܥܐ",
+        "surface_root": "ܬ-ܫ-ܥ",
+        "gloss": "nine",
+        "confidence": "high",
+        "correspondence_path": "Ar ت ↔ Aram ת; Ar س ↔ Aram ܫ (*ś > š in Aramaic); Ar ع ↔ Aram ע — Proto-Semitic *tišʕ-",
+        "wiktionary_hint": "ܬܫܥܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "tešû",
+        "surface_root": "t-š-ʔ",
+        "gloss": "nine",
+        "confidence": "high",
+        "correspondence_path": "Ar ت ↔ Akk t; Ar س ↔ Akk š; Ar ع ↔ Akk ∅ (loss of pharyngeal) — Proto-Semitic *tišʕ-",
+        "wiktionary_hint": "tešû",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root for 'nine' in Semitic is classically reconstructed as *tišʕ-; the middle consonant mapping is complex due to the varying reflexes of *ś across daughter languages."
+    ]
+  }
+}

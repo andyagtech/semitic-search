@@ -1,0 +1,81 @@
+{
+  "query": "לב",
+  "normalized": "לב",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 626,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "לב",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "לב",
+    "extracted_root": "ל-ב",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "لُبّ",
+        "surface_root": "ل-ب-ب",
+        "gloss": "core, heart, essence",
+        "confidence": "high",
+        "correspondence_path": "Ar ل ↔ He ל; Ar ب ↔ He ב (biliteral core *libb-)",
+        "wiktionary_hint": "لب",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܠܸܒܵܐ",
+        "surface_root": "ל-ב-ב",
+        "gloss": "heart",
+        "confidence": "high",
+        "correspondence_path": "Syc ל ↔ He ל; Syc ב ↔ He ב",
+        "wiktionary_hint": "ܠܒܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "libbu",
+        "surface_root": "l-b-b",
+        "gloss": "heart, interior",
+        "confidence": "high",
+        "correspondence_path": "Akk l ↔ He ל; Akk b ↔ He ב",
+        "wiktionary_hint": "libbu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Root classification: 'לב' is traditionally treated as a biliteral noun root in comparative Semitics, though it often appears as a geminate root (ל-ב-ב) in daughter languages to accommodate morphological patterns.",
+      "Semantic range: Across Semitic languages, this root consistently denotes the 'center' or 'inner part' of physical objects or beings."
+    ]
+  }
+}

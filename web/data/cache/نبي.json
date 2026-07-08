@@ -1,0 +1,83 @@
+{
+  "query": "نبي",
+  "normalized": "نبي",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 788,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "نبي",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "نبي",
+    "extracted_root": "ن-ب-أ",
+    "root_type": "final-weak",
+    "root_confidence": "medium",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "أ/ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "נָבִיא",
+        "surface_root": "נ-ב-א",
+        "gloss": "prophet",
+        "confidence": "high",
+        "correspondence_path": "Ar ن ↔ He נ; Ar ب ↔ He ב; Ar أ ↔ He א — typical correspondence for the root n-b-ʔ",
+        "wiktionary_hint": "נביא",
+        "notes": "While the Arabic root appears final-weak (*n-b-y) in some traditional analyses due to the surface form nabi, it is commonly identified as a loanword from or cognate with the Hebrew root *n-b-ʔ (related to Akkadian nabû 'to call')."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "nabû",
+        "surface_root": "n-b-ʔ",
+        "gloss": "to call, name, appoint",
+        "confidence": "medium",
+        "correspondence_path": "Ar ن ↔ Akk n; Ar ب ↔ Akk b; Ar أ ↔ Akk ∅/ʔ — standard correspondence",
+        "wiktionary_hint": "nabû",
+        "notes": "Semantic development from 'called/proclaimed' to 'prophet' is well-attested in the West Semitic path."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The etymology of 'nabi' is highly debated; it is often considered a loanword in Arabic from a West Semitic (likely Aramaic or Hebrew) source due to the irregular behavior of the third root consonant which does not follow standard Arabic final-weak patterns."
+    ]
+  }
+}

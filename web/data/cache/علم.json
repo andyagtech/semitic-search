@@ -1,0 +1,79 @@
+{
+  "query": "علم",
+  "normalized": "علم",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 714,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "علم",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "علم",
+    "extracted_root": "ع-ل-م",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ع",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "עָלַם",
+        "surface_root": "ע-ל-מ",
+        "gloss": "to hide, conceal (distinct root/meaning check)",
+        "confidence": "medium",
+        "correspondence_path": "Ar ع ↔ He ע — regular *ʕ reflex",
+        "wiktionary_hint": "ע-ל-מ",
+        "notes": "While the form exists in Hebrew, it usually denotes 'hiding/concealment'. Cognacy with Arabic 'to know' is contested; some hypothesize a semantic development from 'mark/sign' (what is hidden becomes known), but often treated as a separate homonymous root."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܥܠܡܐ",
+        "surface_root": "ע-ל-מ",
+        "gloss": "world, eternity",
+        "confidence": "low",
+        "correspondence_path": "Ar ع ↔ Syc ܥ — regular *ʕ reflex",
+        "wiktionary_hint": null,
+        "notes": "Semantic drift is extreme; in Syriac/Aramaic this typically maps to *ʕ-l-m 'eternity/world', which may be a distinct root or a development from 'hidden/unknown time'."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ʕ-l-m exhibits significant semantic divergence across Semitic branches (Arabic 'knowledge' vs Canaanite/Aramaic 'eternity/hiding')."
+    ]
+  }
+}

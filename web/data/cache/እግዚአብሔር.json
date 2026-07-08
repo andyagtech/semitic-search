@@ -1,0 +1,87 @@
+{
+  "query": "እግዚአብሔር",
+  "normalized": "እግዚአብሔር",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4723,
+    "output_tokens": 628,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "እግዚአብሔር",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "እግዚአብሔር",
+    "extracted_root": "ገ-ზ-አ-ב-h-r",
+    "root_type": "quadriliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ገ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ዝ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*z",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "አ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 4,
+        "surface_consonant": "ብሔር",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 0.4
+          },
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 0.3
+          },
+          {
+            "proto_phoneme": "*r",
+            "weight": 0.3
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "am",
+        "language_name": "Ge'ez",
+        "surface_form": "እግዚአብሔር",
+        "surface_root": "ገ-ზ-አ-ב-h-r",
+        "gloss": "Lord, God",
+        "confidence": "high",
+        "correspondence_path": "Ethio-Semitic derivation: Compound root of ʾəgzə̄ʾ (master) + ʾəbḥēr (earth/land).",
+        "wiktionary_hint": "እግዚአብሔር",
+        "notes": "Literally 'Lord of the Earth/Land'. It is a compound: əgzəʾ (root g-z-ʔ) + bəḥēr (root b-ḥ-r). Classical Ge'ez orthography standard."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word represents a complex Ethiopic compound (ʾəgzəʾ + bəḥēr), not a single triliteral verbal root; the proto_slots analysis reflects the components of the compound.",
+      "The 4th slot mapping is a simplification of the compound component 'bəḥēr'."
+    ]
+  }
+}

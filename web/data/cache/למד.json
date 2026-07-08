@@ -1,0 +1,80 @@
+{
+  "query": "למד",
+  "normalized": "למד",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 730,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "למד",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "למד",
+    "extracted_root": "ל-מ-ד",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ד",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "لَمَدَ",
+        "surface_root": "ل-م-د",
+        "gloss": "to linger, stay, remain",
+        "confidence": "medium",
+        "correspondence_path": "Ar ل ↔ He ל; Ar م ↔ He מ; Ar د ↔ He ד — regular PS correspondences.",
+        "wiktionary_hint": "ل م د",
+        "notes": "While the form exists, the semantic derivation from 'to learn' (Hebrew) to 'to remain/linger' (Arabic) is distinct, though arguably linked via the concept of 'accustoming'."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܺܠܡܰܕ",
+        "surface_root": "ל-ܡ-ד",
+        "gloss": "to learn, to accustom",
+        "confidence": "high",
+        "correspondence_path": "Syc ל ↔ He ל; Syc م ↔ He מ; Syc ד ↔ He ד — regular PS correspondences.",
+        "wiktionary_hint": "lm d",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew root ל-מ-ד is well-attested in the sense of 'learn/teach', while the Arabic counterpart shows a semantic divergence toward 'remaining/lingering' (root l-m-d).",
+      "Cognate semantic mapping is based on historical-linguistic reconstructions common to Semitic studies but may vary by school of thought."
+    ]
+  }
+}

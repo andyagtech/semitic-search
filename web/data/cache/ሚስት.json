@@ -1,0 +1,85 @@
+{
+  "query": "ሚስት",
+  "normalized": "ሚስት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 624,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ሚስት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ሚስት",
+    "extracted_root": "מ-ש-ת",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אִשָּׁה",
+        "surface_root": "א-נ-שׁ",
+        "gloss": "woman/wife",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "While semantic similarity is high, the Hebrew form relates to *ʔ-n-š, which is likely not the same root as the common Semitic word for 'woman/wife' represented by Akkadian 'aššatu'."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "aššatu",
+        "surface_root": "א-שׁ-ת",
+        "gloss": "wife",
+        "confidence": "high",
+        "correspondence_path": "Am ს (merged) ↔ Akk š — regular *θ reflex",
+        "wiktionary_hint": "aššatu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root identification is based on the comparative Semitic reconstruction *ʔ-θ-t (wife), where Amharic 'mist' shows a secondary development of the initial laryngeal.",
+      "The Ge'ez equivalent 'mist' (ሚስት) is the direct ancestor of the Amharic term.",
+      "The Hebrew 'iššā' is widely considered a distinct etymological formation (*ʔ-n-š) compared to the wide-spread *ʔ-θ-t root found in Akkadian and Ethio-Semitic."
+    ]
+  }
+}

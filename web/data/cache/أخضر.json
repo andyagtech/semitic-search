@@ -1,0 +1,69 @@
+{
+  "query": "أخضر",
+  "normalized": "أخضر",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 681,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أخضر",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "أخضر",
+    "extracted_root": "خ-ض-ر",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "خ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ض",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḍ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "יָרוֹק",
+        "surface_root": "י-ר-ק",
+        "gloss": "green",
+        "confidence": "low",
+        "correspondence_path": "Ar خ-ض-ر ↔ He י-ר-ק. Not a direct cognate. Arabic ḫ-ḍ-r refers to verdant color/growth, whereas Hebrew y-r-q implies yellow/green hue. They represent different roots.",
+        "wiktionary_hint": "yarok",
+        "notes": "While both words denote the color green, they do not share the same etymological root. Arabic خ-ض-r is related to freshness/growth (cf. خضرة), while Hebrew י-ר-q corresponds to Ar W-R-Q (leaf/greenness)."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root ḫ-ḍ-r is semantically associated with 'greenness' in Arabic, often rooted in the concept of fresh, moist vegetation.",
+      "Note on Hebrew cognate: despite the semantic overlap, Hebrew יָרוֹק (y-r-q) is NOT a cognate of Arabic خضر (ḫ-ḍ-r). The proper Semitic cognates for Arabic ḫ-ḍ-r deal with 'verdant/fresh' and rarely span across branch-families in the same way simple nouns do."
+    ]
+  }
+}

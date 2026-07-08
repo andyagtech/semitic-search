@@ -1,0 +1,78 @@
+{
+  "query": "שש",
+  "normalized": "שש",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 559,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שש",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שש",
+    "extracted_root": "שׁ-שׁ",
+    "root_type": "geminate",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سِتَّة",
+        "surface_root": "س-ت-ت",
+        "gloss": "six",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He שׁ (*š) — standard reflex of *š; note Arabic t-t metathesis/assimilation in root origin *š-d-θ",
+        "wiktionary_hint": "ستة",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܬܐ",
+        "surface_root": "ܫ-ת",
+        "gloss": "six",
+        "confidence": "high",
+        "correspondence_path": "Syc ܫ ↔ He שׁ (*š); Syc ת ↔ He שׁ (*θ) — reflects original *š-d-θ root structure",
+        "wiktionary_hint": "ܫܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The numeral 'six' originates from a proto-root *š-d-θ. The final *θ reflects differently across branches, often assimilating to geminate forms in later stages as seen in Hebrew שש and Arabic ستة.",
+      "The Hebrew form 'שש' is technically a geminate realization of the underlying root *š-d-θ; mapping it to only two slots (שׁ-שׁ) is a surface-level simplification."
+    ]
+  }
+}

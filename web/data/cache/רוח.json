@@ -1,0 +1,91 @@
+{
+  "query": "רוח",
+  "normalized": "רוח",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 813,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "רוח",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "רוח",
+    "extracted_root": "ר-ו-ח",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ו",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "رِيح",
+        "surface_root": "ر-ي-ح",
+        "gloss": "wind",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ He ר; Ar ḥ ↔ He ח; regular reflexes of PS *r-w/y-ḥ",
+        "wiktionary_hint": "ريح",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܪܘܚܐ",
+        "surface_root": "ܪ-ܘ-ܚ",
+        "gloss": "wind, spirit",
+        "confidence": "high",
+        "correspondence_path": "Syc ܪ ↔ He ר; Syc ܚ ↔ He ח; regular reflexes of PS *r-w-ḥ",
+        "wiktionary_hint": "ܪܘܚܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šāru",
+        "surface_root": "š-ʾ-r",
+        "gloss": "wind, breath",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "While semantically identical, the root does not directly map to *r-w-ḥ; it is likely an unrelated Etymon or a different root entirely (cf. possibly *ś-w-r). Included for thematic comparison."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew word רוח is a hollow root (C2 w/y). The underlying root is reconstructed as *r-w-ḥ although *r-y-ḥ is also proposed in various diachronic models.",
+      "Akkadian cognates are often problematic for this root; the common term 'šāru' is structurally distinct and likely not a cognate to the *r-w-ḥ root family."
+    ]
+  }
+}

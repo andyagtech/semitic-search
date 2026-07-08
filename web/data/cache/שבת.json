@@ -1,0 +1,88 @@
+{
+  "query": "שבת",
+  "normalized": "שבת",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 672,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שבת",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שבת",
+    "extracted_root": "ש-ב-ת",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.4
+          },
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 0.4
+          },
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سبت",
+        "surface_root": "س-ب-ת",
+        "gloss": "Saturday; Sabath",
+        "confidence": "high",
+        "correspondence_path": "Ar س (*s) ↔ He שׂ (ambiguous reflex here, but classic shift to *s)",
+        "wiktionary_hint": "سبت",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܒܬܐ",
+        "surface_root": "ܫ-ܒ-ܬ",
+        "gloss": "Sabbath; Saturday",
+        "confidence": "high",
+        "correspondence_path": "Syc ܫ (*š) ↔ He שׁ (š)",
+        "wiktionary_hint": "ܫܒܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew root ש-ב-ת presents a classic etymological ambiguity for the first radical š: while it orthographically yields 'š', it is widely debated if the proto-form is *š, *ṯ, or *ś, as the term 'Sabbath' is often identified as a likely loan from Akkadian šapattu.",
+      "The Arabic correspondence usually expects a PS *š > s, but the ultimate provenance of this term in West Semitic is historically linked to the Akkadian 'šapattu'."
+    ]
+  }
+}

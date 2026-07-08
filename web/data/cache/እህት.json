@@ -1,0 +1,91 @@
+{
+  "query": "እህት",
+  "normalized": "እህት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 838,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "እህት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "እህት",
+    "extracted_root": "ʔ-ḥ-t",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ʔ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ḥ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "t",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أخت",
+        "surface_root": "أ-خ-ت",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔ ↔ Am ʔ (ʔalif), Ar ḫ ↔ Am ḥ (*ḫ/*ḥ merger in Amharic), Ar t ↔ Am t (regular *t reflex).",
+        "wiktionary_hint": "أخت",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אָחוֹת",
+        "surface_root": "א-ח-ת",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "He ʔ ↔ Am ʔ, He ḥ ↔ Am ḥ (regular *ḥ reflex), He t ↔ Am t (regular *t reflex).",
+        "wiktionary_hint": "אחות",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܬܐ",
+        "surface_root": "ܚ-ᱛ-א",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "Syc ḥ ↔ Am ḥ, Syc t ↔ Am t, Syc ʔ ↔ Am ʔ (final weak roots in Syriac often show orthographic variation).",
+        "wiktionary_hint": "ܚܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Proto-Semitic root is *ʔ-ḥ-t. Amharic and Ge'ez often reflect the *ḫ / *ḥ merger, where the original voiceless uvular fricative *ḫ and the pharyngeal *ḥ merged into ḥ.",
+      "Cognates in Hebrew and Arabic are direct relatives; historical sound changes in Amharic have preserved the triliteral structure surprisingly well in this specific noun."
+    ]
+  }
+}

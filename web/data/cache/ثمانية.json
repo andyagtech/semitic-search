@@ -1,0 +1,80 @@
+{
+  "query": "ثمانية",
+  "normalized": "ثمانية",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 553,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ثمانية",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ثمانية",
+    "extracted_root": "ث-م-ن",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ث",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שׁמוֹנה",
+        "surface_root": "ש-מ-נ",
+        "gloss": "eight",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ He שׁ — regular *ṯ reflex (note: Hebrew initial שׁ reflects *ṯ)",
+        "wiktionary_hint": "שמונה",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܬܡܳܢܝܳܐ",
+        "surface_root": "ܬ-ܡ-נ",
+        "gloss": "eight",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ Syc ܬ — regular *ṯ reflex",
+        "wiktionary_hint": "ܬܡܢܝܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew reflex of *ṯ is traditionally the 'shin' (ש), which is orthographically distinct from the 'taw' (ת) used in Aramaic/Syriac for the same proto-phoneme.",
+      "Root is firmly assigned to historical *ṯ-m-n representing the numeral 'eight' throughout the Semitic branch."
+    ]
+  }
+}

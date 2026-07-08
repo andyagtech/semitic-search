@@ -1,0 +1,79 @@
+{
+  "query": "قرأ",
+  "normalized": "قرأ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 676,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "قرأ",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "قرأ",
+    "extracted_root": "ق-ر-أ",
+    "root_type": "hamzated",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ق",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "קָרָא",
+        "surface_root": "ק-ר-א",
+        "gloss": "to call, to read",
+        "confidence": "high",
+        "correspondence_path": "Ar ق ↔ He ק — regular *q reflex; Ar ر ↔ He ר — regular *r reflex; Ar أ ↔ He א — regular *ʔ reflex",
+        "wiktionary_hint": "קרא",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܩܪܐ",
+        "surface_root": "ܩ-ܪ-ܐ",
+        "gloss": "to summon, to read",
+        "confidence": "high",
+        "correspondence_path": "Ar ق ↔ Syc ܩ — regular *q reflex; Ar ر ↔ Syc ܪ — regular *r reflex; Ar أ ↔ Syc ܐ — regular *ʔ reflex",
+        "wiktionary_hint": "ܩܪܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic root is treated as hamzated (*ʔ); however, in some forms, the vowel structure of *q-r-ʔ creates long vowels that can appear similar to hollow roots or 'weak' roots in certain paradigms."
+    ]
+  }
+}

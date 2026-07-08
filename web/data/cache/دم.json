@@ -1,0 +1,80 @@
+{
+  "query": "دم",
+  "normalized": "دم",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 585,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "دم",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "دم",
+    "extracted_root": "د-م",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "דָּם",
+        "surface_root": "ד-ם",
+        "gloss": "blood",
+        "confidence": "high",
+        "correspondence_path": "Ar د ↔ He ד — regular *d reflex; Ar م ↔ He מ — regular *m reflex",
+        "wiktionary_hint": "דם",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܕܡܐ",
+        "surface_root": "ܕ-ܡ-ܐ",
+        "gloss": "blood",
+        "confidence": "high",
+        "correspondence_path": "Ar د ↔ Syr ܕ — regular *d reflex; Ar م ↔ Syr ܡ — regular *m reflex",
+        "wiktionary_hint": "ܕܡܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "damu",
+        "surface_root": "d-m-",
+        "gloss": "blood",
+        "confidence": "high",
+        "correspondence_path": "Ar د ↔ Akk d — regular *d reflex; Ar م ↔ Akk m — regular *m reflex",
+        "wiktionary_hint": "damu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Note on Syr. ܕܡܐ: The final Aleph (ܐ) in the Syriac lemma acts as an augment common in Aramaic noun formation for monosyllabic weak/biliteral roots, representing a terminal vowel in the underlying Proto-Semitic state."
+    ]
+  }
+}

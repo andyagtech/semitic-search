@@ -1,0 +1,79 @@
+{
+  "query": "ذهب",
+  "normalized": "ذهب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 504,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ذهب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ذهب",
+    "extracted_root": "ذ-ه-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ذ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḏ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ه",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "זָהָב",
+        "surface_root": "ז-ה-ב",
+        "gloss": "gold",
+        "confidence": "high",
+        "correspondence_path": "Ar ذ ↔ He ז — regular *ḏ reflex",
+        "wiktionary_hint": "זָהָב",
+        "notes": "The meaning is consistent across West Semitic."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܕܗܒܐ",
+        "surface_root": "ܕ-ܗ-ܒ",
+        "gloss": "gold",
+        "confidence": "high",
+        "correspondence_path": "Ar ذ ↔ Aram ד — regular *ḏ reflex",
+        "wiktionary_hint": "ܕܗܒܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ḏ-h-b is a well-established Common Semitic term for 'gold'."
+    ]
+  }
+}

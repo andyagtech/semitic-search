@@ -1,0 +1,70 @@
+{
+  "query": "እጅ",
+  "normalized": "እጅ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 632,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "እጅ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "እጅ",
+    "extracted_root": "እ-ጅ",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "እ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ጅ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "يَد",
+        "surface_root": "ي-د",
+        "gloss": "hand",
+        "confidence": "high",
+        "correspondence_path": "Ar ي ↔ Am እ (as vocalic onset) and Ar د ↔ Am ጅ (palatalization of *d)",
+        "wiktionary_hint": "يد",
+        "notes": "Amharic 'ጅ' reflects a regular palatalization of Proto-Semitic *d (as in 'hand') when followed by front vowels/glides."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "יָד",
+        "surface_root": "י-ד",
+        "gloss": "hand",
+        "confidence": "high",
+        "correspondence_path": "He י ↔ Am እ and He ד ↔ Am ጅ (palatalization transition)",
+        "wiktionary_hint": "יד",
+        "notes": "Hebrew preserves the initial glide *y, which Amharic has replaced with the prosthetic-like 'እ' prefix common in Ethio-Semitic nouns."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Amharic root 'እጅ' is historically derived from the PS biliteral root *yad- 'hand'. The 'ጅ' is a result of the phonological palatalization *d > ǧ in many Ethiopian Semitic contexts.",
+      "The initial 'እ' in Amharic serves as a syllabic bearer for the root, representing the underlying *y (or initial vowel) of the Proto-Semitic form."
+    ]
+  }
+}

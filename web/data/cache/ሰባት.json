@@ -1,0 +1,99 @@
+{
+  "query": "ሰባት",
+  "normalized": "ሰባት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 818,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ሰባት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ሰባት",
+    "extracted_root": "ሰ-በ-ተ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ሰ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.3
+          },
+          {
+            "proto_phoneme": "*s",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "በ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ተ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سَبْعَة",
+        "surface_root": "س-ب-ع",
+        "gloss": "seven",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Am ሰ (*ś); Ar ب ↔ Am በ (*b); Ar ع ↔ Am ∅ (Amharic commonly loses pharyngeals in this position or shows secondary shifts). Note: Proto-Semitic is reconstructed as *šabʕ-.",
+        "wiktionary_hint": "سبعة",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שֶׁבַע",
+        "surface_root": "ש-ב-ע",
+        "gloss": "seven",
+        "confidence": "high",
+        "correspondence_path": "He שׁ ↔ Am ሰ (*ś); He ב ↔ Am በ (*b); He ע ↔ Am ∅ (Pharyngeal loss in Amharic).",
+        "wiktionary_hint": "שבע",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܲܒ݂ܥܵܐ",
+        "surface_root": "ܫ-ܒ-ܥ",
+        "gloss": "seven",
+        "confidence": "high",
+        "correspondence_path": "Syc ܫ ↔ Am ሰ (*š); Syc ܒ ↔ Am በ (*b); Syc ܥ ↔ Am ∅.",
+        "wiktionary_hint": "ܫܒܥܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Proto-Semitic root for 'seven' is traditionally reconstructed as *šabʕ- (or similar variants involving *ś). Amharic ሰባት (säbat) reflects a historical merger where the original *ʕ was dropped or vocalized, and the final *t is a feminine suffix common in Semitic numerals.",
+      "The orthography of Ge'ez/Amharic characters (ሰ, ሠ) often masks the original proto-pharyngeal or dental fricative quality."
+    ]
+  }
+}

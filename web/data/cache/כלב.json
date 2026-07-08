@@ -1,0 +1,79 @@
+{
+  "query": "כלב",
+  "normalized": "כלב",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 613,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "כלב",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "כלב",
+    "extracted_root": "כ-ל-ב",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "כ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "كَلب",
+        "surface_root": "ك-ل-ب",
+        "gloss": "dog",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ; Ar ل ↔ He ל; Ar ب ↔ He ב — regular consonantal correspondence",
+        "wiktionary_hint": "كلب",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܟܲܠܒܵܐ",
+        "surface_root": "ܟ-ܠ-ܒ",
+        "gloss": "dog",
+        "confidence": "high",
+        "correspondence_path": "Syc ܟ ↔ He כ; Syc ܠ ↔ He ל; Syc ܒ ↔ He ב — regular consonantal correspondence",
+        "wiktionary_hint": "ܟܠܒܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "This root demonstrates exceptionally high stability across the West Semitic branch."
+    ]
+  }
+}

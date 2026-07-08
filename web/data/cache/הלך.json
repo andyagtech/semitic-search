@@ -1,0 +1,79 @@
+{
+  "query": "הלך",
+  "normalized": "הלך",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 691,
+    "cache_read_tokens": 4009
+  },
+  "result": {
+    "input_word": "הלך",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "הלך",
+    "extracted_root": "ה-ל-כ",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "כ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "هلك",
+        "surface_root": "ه-ل-ك",
+        "gloss": "to perish, die",
+        "confidence": "high",
+        "correspondence_path": "Ar ه ↔ He ה; Ar ل ↔ He ל; Ar ك ↔ He כ — regular phonological correspondence.",
+        "wiktionary_hint": "هلك",
+        "notes": "While the Arabic root meaning shifted toward 'to perish', the formal phonological correspondence is perfect."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܙܠ",
+        "surface_root": "א-ז-ל",
+        "gloss": "to go, walk",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Syriac replaces the Proto-Semitic *h-l-k with *ʔ-z-l (Aramaic/Syriac commonly utilize different roots for basic verbs of motion). This is a functional parallel rather than a cognate of the root *h-l-k."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *h-l-k is a classic Semitic root for 'traveling/walking', but in many daughter languages, it has been supplanted or shifted in meaning (e.g., Arabic 'perish' versus Hebrew 'walk')."
+    ]
+  }
+}

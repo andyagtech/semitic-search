@@ -1,0 +1,84 @@
+{
+  "query": "בשר",
+  "normalized": "בשר",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 580,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "בשר",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "בשר",
+    "extracted_root": "ב-ש-ר",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "بشر",
+        "surface_root": "ب-ش-ر",
+        "gloss": "skin, human being",
+        "confidence": "high",
+        "correspondence_path": "Ar ش ↔ He שׂ — regular *ś reflex (Ar ش often represents former *ś)",
+        "wiktionary_hint": "بشر",
+        "notes": "Hebrew bāśār refers to 'flesh/meat', while Arabic bašar refers to 'skin/humanity'. The semantic drift is documented in canonical Semitic comparative studies."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܣܪܐ",
+        "surface_root": "ܒ-ܣ-ܪ",
+        "gloss": "flesh, meat",
+        "confidence": "high",
+        "correspondence_path": "Syc ܣ ↔ He שׂ — regular *ś reflex",
+        "wiktionary_hint": "ܒܣܪܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew letter ש (sin) in root ב-ש-ר corresponds to Proto-Semitic *ś, which is reflected in Syriac as ܣ (s) and in Arabic lexical shifts involving š.",
+      "Semantic evolution from 'skin' (Arabic) to 'flesh' (Hebrew/Syriac) is a well-noted phenomenon in Proto-Semitic studies."
+    ]
+  }
+}

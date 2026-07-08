@@ -1,0 +1,79 @@
+{
+  "query": "ܐܠܗܐ",
+  "normalized": "ܐܠܗܐ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4720,
+    "output_tokens": 531,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ܐܠܗܐ",
+    "detected_language": "syc",
+    "detected_language_name": "Syriac",
+    "normalized_form": "ܐלהܐ",
+    "extracted_root": "ܐ-ܠ-ܗ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ܐ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ܠ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ܗ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "إله",
+        "surface_root": "أ-ل-ه",
+        "gloss": "god/deity",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/ء ↔ Syc ܐ, Ar ل ↔ Syc ܠ, Ar ه ↔ Syc ܗ — regular Proto-Semitic cognate",
+        "wiktionary_hint": "إله",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֱלוֹהַּ",
+        "surface_root": "א-ל-ה",
+        "gloss": "god/deity",
+        "confidence": "high",
+        "correspondence_path": "He א ↔ Syc ܐ, He ל ↔ Syc ܠ, He ה ↔ Syc ܗ — regular Proto-Semitic cognate",
+        "wiktionary_hint": "אלוה",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ʔ-l-h is widely considered a derivative or extension of the common Semitic base *ʔil- 'god', often analyzed as *ʔil- with a suffix/enlargement."
+    ]
+  }
+}

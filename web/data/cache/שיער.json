@@ -1,0 +1,83 @@
+{
+  "query": "שיער",
+  "normalized": "שיער",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 684,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שיער",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שיער",
+    "extracted_root": "ש-ע-ר",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "شَعْر",
+        "surface_root": "ش-ع-ر",
+        "gloss": "hair",
+        "confidence": "high",
+        "correspondence_path": "Ar ش ↔ He שׁ ↔ *ś/š and Ar ع ↔ He ע ↔ *ʕ and Ar ر ↔ He ר ↔ *r",
+        "wiktionary_hint": "شعر",
+        "notes": "Regular cognate across West Semitic."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܣܥܪܐ",
+        "surface_root": "ܣ-ܥ-ܪ",
+        "gloss": "hair",
+        "confidence": "high",
+        "correspondence_path": "Syc ܣ ↔ He שׂ/שׁ and Syc ܥ ↔ He ע and Syc ܪ ↔ He ר",
+        "wiktionary_hint": "ܣܥܪܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Hebrew ש in 'שיער' is traditionally classified as *ś, though historically it stems from a root that can be complex in its sibilant development across Semitic languages."
+    ]
+  }
+}

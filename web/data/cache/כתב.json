@@ -1,0 +1,78 @@
+{
+  "query": "כתב",
+  "normalized": "כתב",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 511,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "כתב",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "כתב",
+    "extracted_root": "כ-ת-ב",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "כ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "كَتَبَ",
+        "surface_root": "ك-ت-ب",
+        "gloss": "to write",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ; Ar ت ↔ He ת; Ar ب ↔ He ב — regular *k, *t, *b reflexes",
+        "wiktionary_hint": "كتب",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܟܬܒ",
+        "surface_root": "ܟ-ܬ-ܒ",
+        "gloss": "to write",
+        "confidence": "high",
+        "correspondence_path": "Syc ܟ ↔ He כ; Syc ܬ ↔ He ת; Syc ܒ ↔ He ב — regular *k, *t, *b reflexes",
+        "wiktionary_hint": "ܟܬܒ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing."
+    ]
+  }
+}

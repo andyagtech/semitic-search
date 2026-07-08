@@ -1,0 +1,69 @@
+{
+  "query": "אח",
+  "normalized": "אח",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 607,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אח",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אח",
+    "extracted_root": "א-ח",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أخ",
+        "surface_root": "أ-خ-و",
+        "gloss": "brother",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔ ↔ He א (regular *ʔ reflex); Ar ḥ ↔ He ח (regular *ḥ reflex)",
+        "wiktionary_hint": "أخ",
+        "notes": "Arabic forms a triliteral root (أخو) due to the weak final consonant."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܚܐ",
+        "surface_root": "ܐ-ܚ-ܐ",
+        "gloss": "brother",
+        "confidence": "high",
+        "correspondence_path": "Syc ʔ ↔ He א; Syc ḥ ↔ He ח",
+        "wiktionary_hint": "ܐܚܐ",
+        "notes": "Represented with final Aleph in Syriac orthography."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'ach' (אח) is a common Semitic biliteral noun for 'brother', which often surfaces as a triliteral in languages like Arabic where the final weak consonant is realized in inflection."
+    ]
+  }
+}

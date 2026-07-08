@@ -1,0 +1,79 @@
+{
+  "query": "قدس",
+  "normalized": "قدس",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 719,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "قدس",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "قدس",
+    "extracted_root": "ق-د-س",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ق",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "קֹדֶשׁ",
+        "surface_root": "ק-ד-שׁ",
+        "gloss": "holiness, sanctuary",
+        "confidence": "high",
+        "correspondence_path": "Ar ق ↔ He ק, Ar د ↔ He ד, Ar س ↔ He שׂ (regular *s reflex, note: Hebrew root shows שׁ which is a morphophonemic variation, traditionally treated as *q-d-š)",
+        "wiktionary_hint": "קדש",
+        "notes": "Semantic mapping is near-perfect ('holy/set apart')."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܩܘܕܫܐ",
+        "surface_root": "ܩ-ܕ-ܫ",
+        "gloss": "sanctification, holiness",
+        "confidence": "high",
+        "correspondence_path": "Ar ق ↔ Syr ܩ, Ar د ↔ Syr ܕ, Ar س ↔ Syr ܫ (regular *s reflex where Syriac shifts final s to š commonly in this root)",
+        "wiktionary_hint": "ܩܘܕܫܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew/Aramaic cognates typically feature a final ש (š) rather than ס (s). This is a well-documented irregular or dialectal shift in Northwest Semitic (s > š), known as the 'shin-shift' in certain root environments."
+    ]
+  }
+}

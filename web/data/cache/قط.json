@@ -1,0 +1,80 @@
+{
+  "query": "قط",
+  "normalized": "قط",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 654,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "قط",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "قط",
+    "extracted_root": "ق-ط-ط",
+    "root_type": "geminate",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ق",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ط",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṭ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ط",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṭ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܩܛܛ",
+        "surface_root": "ܩ-ܛ-ܛ",
+        "gloss": "to cut, lop off; to pluck",
+        "confidence": "medium",
+        "correspondence_path": "Ar ق ↔ Syc ܩ (*q); Ar ط ↔ Syc ܛ (*ṭ) — regular correspondence.",
+        "wiktionary_hint": "ܩܛܛ",
+        "notes": "The Arabic sense 'ever/never' (adverbial) is likely a semantic derivative of the verb meaning 'to cut/truncate' (i.e., 'up to this point in time')."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "קטע",
+        "surface_root": "ק-ט-ע",
+        "gloss": "to cut off, sever",
+        "confidence": "low",
+        "correspondence_path": "Ar ق ↔ He ק; Ar ط ↔ He ט; Ar final ط/ض ↔ He ע (common shift of *ḍ to ʕ/ע in Northwest Semitic).",
+        "wiktionary_hint": "קטע",
+        "notes": "Semantic agreement is strong, but the Arabic root is geminate (III-ṭ), while Hebrew uses a third radical *ʕ. This may be a case where a Proto-Semitic biconsonantal base was expanded differently in different branches."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic lexeme 'قط' exists both as a verb meaning 'to cut' and as a particle (temporal adverb). This analysis mainly treats the root for the verbal sense.",
+      "The cognate relationship with Hebrew 'קטע' is speculative regarding the third radical; some scholars view these as distinct roots despite semantic similarity."
+    ]
+  }
+}

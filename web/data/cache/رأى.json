@@ -1,0 +1,79 @@
+{
+  "query": "رأى",
+  "normalized": "رأى",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 628,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "رأى",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "رأى",
+    "extracted_root": "ر-ء-ي",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ء",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "רָאָה",
+        "surface_root": "ר-א-ה",
+        "gloss": "to see",
+        "confidence": "high",
+        "correspondence_path": "Ar ر-ء-ي ↔ He ר-א-ה — regular *r-ʔ-y reflex",
+        "wiktionary_hint": "ראה",
+        "notes": "Hebrew III-y roots final vowel often appears as hey (ה) in the orthography."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܙܐ",
+        "surface_root": "ח-ז-א",
+        "gloss": "to see",
+        "confidence": "medium",
+        "correspondence_path": "Speculative semantic split; Proto-Semitic often has multiple roots for sight.",
+        "wiktionary_hint": null,
+        "notes": "While semantically equivalent, this is likely not a cognate. The standard Aramaic root for 'to see' is ח-ז-י. The root cognate to رأى historically exists in Aramaic as *ר-א-י, but archaic forms in Syriac often favor the ח-ז-י root."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is traditionally analyzed as III-y (final-weak). In Arabic, the final weak consonant surfaces as alif maqsura (ى) due to phonological contraction."
+    ]
+  }
+}

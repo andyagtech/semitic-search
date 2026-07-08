@@ -1,0 +1,83 @@
+{
+  "query": "שחור",
+  "normalized": "שחור",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 717,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שָׁחֹר",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שחור",
+    "extracted_root": "ש-ח-ר",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أَسْوَد",
+        "surface_root": "س-و-د",
+        "gloss": "black",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "While modern Hebrew שחור (black) is standard, it is likely a semantic shift from a root meaning 'dawn/morning' (cf. Akkadian šaḫuru). Arabic 'black' is unrelated (root s-w-d)."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šaḫû",
+        "surface_root": "ש-ח-ו",
+        "gloss": "to be dark/soiled (denominative)",
+        "confidence": "medium",
+        "correspondence_path": "He ש ↔ Akk š; He ח ↔ Akk ḫ; He ר (unattested in this specific Akkadian cognate)",
+        "wiktionary_hint": null,
+        "notes": "The semantic link moves from 'dawn/reddish-black' to broader darkness."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root ש-ח-ר historically refers to dawn or morning (as in 'first light'). The meaning 'black' in Hebrew is a secondary semantic development from 'darkness' associated with the morning or the twilight phase, diverging from the standard Semitic roots for 'black' like *s-w-d."
+    ]
+  }
+}

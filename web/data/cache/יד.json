@@ -1,0 +1,80 @@
+{
+  "query": "יד",
+  "normalized": "יד",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 671,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "יד",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "יד",
+    "extracted_root": "י-ד",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "י",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ד",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "يَد",
+        "surface_root": "ي-د-ي",
+        "gloss": "hand",
+        "confidence": "high",
+        "correspondence_path": "Ar ي ↔ He י (regular *y reflex) and Ar د ↔ He ד (regular *d reflex)",
+        "wiktionary_hint": "يد",
+        "notes": "Arabic reflects the root as III-y, likely due to a secondary development or influence of a nominal structure."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܝܕܐ",
+        "surface_root": "ܐ-ܝ-ܕ",
+        "gloss": "hand",
+        "confidence": "high",
+        "correspondence_path": "Syr ܝ ↔ He י (regular *y reflex) and Syr ܕ ↔ He ד (regular *d reflex)",
+        "wiktionary_hint": "ܐܝܕܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "ittu",
+        "surface_root": "ʔ-d",
+        "gloss": "hand, side, sign",
+        "confidence": "medium",
+        "correspondence_path": "Akk d ↔ He ד (regular *d reflex); note Akkadian often treats 'yad' as a construct or related to sign/side meanings",
+        "wiktionary_hint": null,
+        "notes": "Semantic broadening is evident in Akkadian, where the word commonly refers to a sign or mark in addition to a literal hand."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root יד is a classic Proto-Semitic biliteral noun. While some daughter languages incorporate a third consonant (e.g., Arabic III-y) to fit the triconsonantal morphological patterns, the original noun is *yad-."
+    ]
+  }
+}

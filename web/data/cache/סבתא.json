@@ -1,0 +1,80 @@
+{
+  "query": "סבתא",
+  "normalized": "סבתא",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 644,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "סבתא",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "סבתא",
+    "extracted_root": "ס-ב-ת",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ס",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "جدة",
+        "surface_root": "ج-د-د",
+        "gloss": "grandmother",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": "جدة",
+        "notes": "Not a cognate root; Hebrew 'סבתא' is an informal Aramaic loanword. Arabic uses j-d-d."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܣܳܒܬܳܐ",
+        "surface_root": "ܣ-ܒ-ܬ",
+        "gloss": "grandmother / old woman",
+        "confidence": "high",
+        "correspondence_path": "He ס ↔ Aram ܣ (regular *s); He ב ↔ Aram ܒ (regular *b); He ת ↔ Aram ܬ (regular *t)",
+        "wiktionary_hint": "ܣܒܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew term 'סבתא' is an Aramaic loanword meaning 'old woman', which evolved to mean 'grandmother' in Jewish Aramaic and subsequently in Hebrew. It is not an original Hebrew word for grandmother (which would be 'אם אם').",
+      "Roots of nouns referring to kinship often face idiosyncratic evolution and semantic shift; do not mistake the root for a universal Semitic kinship term."
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "query": "ጆሮ",
+  "normalized": "ጆሮ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 751,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ጆሮ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ጆሮ",
+    "extracted_root": "እ-ዝ-ነ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "እ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ዝ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḏ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*z",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ን",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أُذُن",
+        "surface_root": "أ-ذ-ن",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ Am እ, Ar ذ ↔ Am ዝ, Ar ن ↔ Am ን — regular *ʔ-ḏ-n reflex.",
+        "wiktionary_hint": "أذن",
+        "notes": "Amharic ጆሮ results from complex phonological shifts from Geʿez እዝን (ʾezn)."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֹזֶן",
+        "surface_root": "א-ז-ן",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "He א ↔ Am እ, He ז ↔ Am ዝ, He ן ↔ Am ን — regular *ʔ-ḏ-n reflex.",
+        "wiktionary_hint": "אזן",
+        "notes": "Hebrew *ḏ > z is the standard reflex."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "אֶדְנָא",
+        "surface_root": "א-ד-ן",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "Syc א ↔ He א, Syc ד ↔ He ז — regular Aramaic d/ḏ merger.",
+        "wiktionary_hint": "ܐܕܢܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Amharic surface form 'ጆሮ' (joro) is an irregular phonetic development from earlier Ethiosemitic 'እዝን' (ʾezn). The underlying Proto-Semitic root is *ʔ-ḏ-n."
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "query": "عين",
+  "normalized": "عين",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 577,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "عين",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "عين",
+    "extracted_root": "ع-ي-ن",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ع",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "עַיִן",
+        "surface_root": "ע-י-ן",
+        "gloss": "eye, spring",
+        "confidence": "high",
+        "correspondence_path": "Ar ع ↔ He ע — regular *ʕ reflex",
+        "wiktionary_hint": "ע י ן",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܥܰܝܢܳܐ",
+        "surface_root": "ע-י-ן",
+        "gloss": "eye, source, spring",
+        "confidence": "high",
+        "correspondence_path": "Ar ع ↔ Aram ע — regular *ʕ reflex",
+        "wiktionary_hint": "ܥܝܢܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "īnum",
+        "surface_root": "ʔ-y-n",
+        "gloss": "eye",
+        "confidence": "medium",
+        "correspondence_path": "Ar ع ↔ Akk ∅ (loss of pharyngeals) ↔ He/Aram ע",
+        "wiktionary_hint": "īnu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Akkadian form 'īnum' shows the regular loss of the Proto-Semitic pharyngeal *ʕ."
+    ]
+  }
+}

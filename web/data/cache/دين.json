@@ -1,0 +1,79 @@
+{
+  "query": "دين",
+  "normalized": "دين",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 684,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "دين",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "دين",
+    "extracted_root": "د-ي-ن",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܕܝܢܐ",
+        "surface_root": "ܕ-ܝ-ܢ",
+        "gloss": "judgment, law",
+        "confidence": "high",
+        "correspondence_path": "Ar د ↔ Syr ܕ — regular *d reflex; Ar ي ↔ Syr ي — regular *y reflex; Ar ن ↔ Syr ܢ — regular *n reflex",
+        "wiktionary_hint": "ܕܝܢܐ",
+        "notes": "Semantic development from 'to judge/rule' to 'judgment, law' is very strong across Aramaic and Arabic."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "דִּין",
+        "surface_root": "ד-י-ן",
+        "gloss": "judgment, law",
+        "confidence": "high",
+        "correspondence_path": "Ar د ↔ He ד — regular *d reflex; Ar ي ↔ He י — regular *y reflex; Ar ن ↔ He ן — regular *n reflex",
+        "wiktionary_hint": "דין",
+        "notes": "Direct cognate with identical semantic range in legal contexts."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *d-y-n is widespread in West Semitic (Aramaic, Hebrew) as 'to judge', though Arabic usage includes 'debt' (dīn) which is often considered a separate semantic development or historical borrowing (likely via Aramaic/Pahlavi influence for the sense of 'religion/judgment')."
+    ]
+  }
+}

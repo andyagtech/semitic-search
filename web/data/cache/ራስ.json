@@ -1,0 +1,94 @@
+{
+  "query": "ራስ",
+  "normalized": "ራስ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 751,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ራስ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ራስ",
+    "extracted_root": "ר-א-ש",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "رأس",
+        "surface_root": "ر-أ-س",
+        "gloss": "head",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ Am ר; Ar أ ↔ Am א; Ar س ↔ Am ש (regular *š reflex)",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "ראש",
+        "surface_root": "ר-א-ש",
+        "gloss": "head",
+        "confidence": "high",
+        "correspondence_path": "He ר ↔ Am ר; He א ↔ Am א; He שׁ ↔ Am ש (regular *š reflex)",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܪܝܫܐ",
+        "surface_root": "ܪ-ܝ-ܫ",
+        "gloss": "head",
+        "confidence": "high",
+        "correspondence_path": "Syc ܪ ↔ Am ר; Syc ܫ ↔ Am ש (regular *š reflex)",
+        "wiktionary_hint": null,
+        "notes": "Syriac form shows the historical long vowel/glide insertion typical of structural shifts in Aramaic."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Proto-Semitic third consonant *š vs *θ distinction is subject to complex mergers; Hebrew and Amharic both consistently treat this root with symbols derived from Proto-Semitic *š."
+    ]
+  }
+}

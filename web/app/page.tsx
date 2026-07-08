@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { SemiticSearchResult } from "@/lib/models";
+import { SearchResultTable } from "@/components/SearchResultTable";
 import { Keyboard, type KeyboardScript } from "@/components/Keyboard";
 import { canonicalSlug } from "@/lib/canonical_root";
 import { explainReflex } from "@/lib/fuzzy_canonical";
@@ -1215,10 +1216,15 @@ function Result({
 
       {r.cognates && r.cognates.length > 0 ? (
         <div>
+          {/* Comparison-table view — instant, pre-generated feel for common searches */}
+          <div className="mb-6">
+            <SearchResultTable result={r} />
+          </div>
+
           <h3 className="text-sm font-medium text-neutral-700 mb-2">
-            LLM-proposed cognates
+            Detailed cognate view
             <span className="ml-2 text-xs text-neutral-500 font-normal">
-              (may include unattested — verify)
+              (with tier badges, verification, correspondence path)
             </span>
           </h3>
           <div className="space-y-2">

@@ -1,0 +1,80 @@
+{
+  "query": "ܡܝܐ",
+  "normalized": "ܡܝܐ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 674,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ܡܝܐ",
+    "detected_language": "syc",
+    "detected_language_name": "Syriac",
+    "normalized_form": "מיא",
+    "extracted_root": "מ-ו-י",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ܡ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ܘ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ܝ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "مَاء",
+        "surface_root": "م-و-ه",
+        "gloss": "water",
+        "confidence": "high",
+        "correspondence_path": "Syc ܡ ↔ Ar م; Syc ܝ (final) ↔ Ar ه (as III-weak)",
+        "wiktionary_hint": "ماء",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "מַיִם",
+        "surface_root": "מ-י-ם",
+        "gloss": "water",
+        "confidence": "medium",
+        "correspondence_path": "Syc ܡ ↔ He מ; Syc ܝ ↔ He י. Note: Hebrew form is a pluralized fossil.",
+        "wiktionary_hint": "מים",
+        "notes": "Hebrew displays a distinct root-extension compared to the Aramaic/Arabic hollow-root structure."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root for 'water' in Semitic is notoriously unstable and subject to diverse morphological developments (reduplication, pluralization, and final-weak variations).",
+      "Syriac 'mayya' represents a plural form that has become the primary lexical item."
+    ]
+  }
+}

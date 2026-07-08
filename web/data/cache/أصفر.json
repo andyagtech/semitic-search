@@ -1,0 +1,79 @@
+{
+  "query": "أصفر",
+  "normalized": "أصفر",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 699,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أصفر",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "اصفر",
+    "extracted_root": "ص-ف-ر",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ص",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṣ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ف",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "צָפִיר",
+        "surface_root": "צ-פ-ר",
+        "gloss": "male goat / he-goat",
+        "confidence": "medium",
+        "correspondence_path": "Ar ص ↔ He צ — regular *ṣ reflex; Ar ف ↔ He פ — regular *p reflex; Ar ر ↔ He ר — regular *r reflex",
+        "wiktionary_hint": "צפיר",
+        "notes": "While the roots match perfectly, the semantic connection is distant; 'yellow' (Arabic) vs 'he-goat' (Hebrew). Both may derive from a root denoting 'hairiness' or 'coloration'."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܨܶܦܪܳܐ",
+        "surface_root": "ܨ-ܦ-ܪ",
+        "gloss": "morning",
+        "confidence": "low",
+        "correspondence_path": "Ar ص ↔ Syr ܨ — regular *ṣ reflex; Ar ف ↔ Syr ܦ — regular *p reflex; Ar ر ↔ Syr ܪ — regular *r reflex",
+        "wiktionary_hint": "ܨܦרא",
+        "notes": "Semantic divergence is significant: 'yellow' (Arabic) vs 'morning/dawn' (Syriac). It is hypothesized that the 'dawn' meaning may align with 'yellow' (the color of the morning sky)."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root ṣ-p-r shows high phonological stability across the Semitic languages, but the semantic mappings are disparate, suggesting either ancient polysemy in the root or secondary semantic derivations unrelated to a single proto-meaning."
+    ]
+  }
+}

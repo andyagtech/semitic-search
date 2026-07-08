@@ -1,0 +1,102 @@
+{
+  "query": "ثلاثة",
+  "normalized": "ثلاثة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 818,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ثلاثة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ثلاثة",
+    "extracted_root": "ث-ل-ث",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ث",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ث",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שָׁלוֹשׁ",
+        "surface_root": "שׁ-ל-שׁ",
+        "gloss": "three",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ He שׁ — regular *ṯ reflex",
+        "wiktionary_hint": "שלוש",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܬܠܬܐ",
+        "surface_root": "ܬ-լ-ܬ",
+        "gloss": "three",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ Syc ܬ — regular *ṯ reflex",
+        "wiktionary_hint": "ܬܠܬܐ",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ሦስት",
+        "surface_root": "ሦ-ስ-ት",
+        "gloss": "three",
+        "confidence": "medium",
+        "correspondence_path": "Ar ث ↔ Geʿez ሠ (→ሰ); PS *ṯ > Geʿez *ś > ሰ; note complex metathesis/internal shift in Ethio-Semitic.",
+        "wiktionary_hint": "ሦስት",
+        "notes": "Ethio-Semitic shows metathesis and phonological shifts from the reconstructed root sequence."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": " šalāš",
+        "surface_root": "š-l-š",
+        "gloss": "three",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ Akk š — regular *ṯ reflex",
+        "wiktionary_hint": "šalāš",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Ethio-Semitic descendant 'ሦስት' displays metathesis in the root order compared to the Northwest and Central Semitic branches.",
+      "Hebrew שׁ is interpreted as a reflex of *ṯ here, though its orthographic merger with *š makes strictly phonological deduction outside of comparative data ambiguous."
+    ]
+  }
+}

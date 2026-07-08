@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { runSearch } from "@/lib/search";
 import { toNative, type RomanizationScheme } from "@/lib/romanization";
 import { verifyCognates } from "@/lib/verify";
@@ -20,6 +22,28 @@ export async function POST(req: NextRequest) {
   }
 
   const input = body.scheme ? toNative(word, body.scheme) : word;
+
+  // Cache check — normalized {NFC, casefold, trim} matches the prewarm script's
+  // key. Cache hit returns instantly, no LLM call, no verifyCognates (the
+  // prewarm was generated offline; verification can be done post-hoc).
+  const normalized = input.normalize("NFC").toLocaleLowerCase();
+  try {
+    const cachePath = path.join(process.cwd(), "data", "cache", `${normalized}.json`);
+    const cached = await readFile(cachePath, "utf-8");
+    const parsed = JSON.parse(cached);
+    if (parsed && parsed.result) {
+      const resp = NextResponse.json({
+        converted_from: body.scheme ? word : null,
+        input,
+        result: parsed.result,
+        usage: parsed.usage ?? null,
+      });
+      resp.headers.set("X-Semitic-Cache", "hit");
+      return resp;
+    }
+  } catch {
+    // Cache miss (ENOENT) → fall through to LLM.
+  }
 
   try {
     const { result, usage } = await runSearch(input);

@@ -1,0 +1,69 @@
+{
+  "query": "ባል",
+  "normalized": "ባል",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 682,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ባል",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ባል",
+    "extracted_root": "በ-ል",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "በ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ል",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "بَعْل",
+        "surface_root": "ب-ع-ل",
+        "gloss": "husband, lord, master",
+        "confidence": "high",
+        "correspondence_path": "Ar ب ↔ Am በ — regular *b reflex; Am ל ↔ Ar ل — regular *l reflex; Ar ع ↔ loss in Amharic",
+        "wiktionary_hint": "بعل",
+        "notes": "The Proto-Semitic root is traditionally *b-ʕ-l. In Amharic, the pharyngeal *ʕ has been lost, causing the biliteral-like appearance."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "בַּעַל",
+        "surface_root": "ב-ע-ל",
+        "gloss": "husband, owner, Baal",
+        "confidence": "high",
+        "correspondence_path": "Ar ب ↔ He ב ↔ Am ב — regular *b reflex; Ar ع ↔ He ע ↔ Am ∅ — regular guttural reflex; Ar ل ↔ He ל ↔ Am ל — regular *l reflex",
+        "wiktionary_hint": "בעל",
+        "notes": "Standard Semitic root for 'husband/master'."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'ባል' in Amharic derives from the Proto-Semitic root *b-ʕ-l. The loss of the central pharyngeal *ʕ is a characteristic development in Amharic, rendering a historically triliteral root as a biliteral surface form."
+    ]
+  }
+}

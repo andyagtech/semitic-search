@@ -1,0 +1,90 @@
+{
+  "query": "אמר",
+  "normalized": "אמר",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 751,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אמר",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אמר",
+    "extracted_root": "א-מ-ר",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أمر",
+        "surface_root": "أ-م-ר",
+        "gloss": "to command, order",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔ ↔ He א; Ar m ↔ He מ; Ar r ↔ He ר — regular reflexes of *ʔ-m-r",
+        "wiktionary_hint": "أمر",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܡܪ",
+        "surface_root": "ܐ-ܡ-ܪ",
+        "gloss": "to say, speak",
+        "confidence": "high",
+        "correspondence_path": "Syc ʔ ↔ He א; Syc m ↔ He מ; Syc r ↔ He ר — regular reflexes of *ʔ-m-r",
+        "wiktionary_hint": "ܐܡܪ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "amāru",
+        "surface_root": "a-m-r",
+        "gloss": "to see, look at, find",
+        "confidence": "medium",
+        "correspondence_path": "Akk ∅ (reflecting *ʔ) ↔ He א; Akk m ↔ He מ; Akk r ↔ He ר — regular consonant reflex, semantic shift from 'say' to 'see'",
+        "wiktionary_hint": null,
+        "notes": "Semantic divergence: Akkadian 'to see' vs West Semitic 'to say'. These are generally considered cognate roots, though the semantic shift is significant."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Akkadian cognate shows a significant semantic shift, but is historically aligned with the root *ʔ-m-r."
+    ]
+  }
+}

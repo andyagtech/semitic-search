@@ -1,0 +1,91 @@
+{
+  "query": "لسان",
+  "normalized": "لسان",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 731,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "لسان",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "لسان",
+    "extracted_root": "ل-س-ن",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "לָשׁוֹן",
+        "surface_root": "ל-ש-ו-ן",
+        "gloss": "tongue",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He ש (via *l-š-n), reflecting Proto-Semitic metathesis or distinct root evolution",
+        "wiktionary_hint": "לשון",
+        "notes": "While the roots appear to match, standard Semitic comparativists consider these cognates despite the shifting of the sibilant/n-ending patterns across various branches."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܠܫܢܐ",
+        "surface_root": "ܠ-ܫ-ܢ",
+        "gloss": "tongue, language",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Aram ש (regular correspondence for this root), note: Syriac uses ܫ (š) for the original *s in this specific lemma",
+        "wiktionary_hint": "لسان",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "lišānu",
+        "surface_root": "l-š-n",
+        "gloss": "tongue, language",
+        "confidence": "high",
+        "correspondence_path": "Ar ل-س-ن ↔ Akk l-š-n, regular mapping for this lexical item",
+        "wiktionary_hint": "lišānu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *l-s-n exhibits complex historical development across Semitic languages regarding the middle sibilant (*s vs *š).",
+      "Comparison between Arabic 'lisān' and Hebrew 'lāšōn' necessitates acknowledgment of the specific sound change patterns for this word, often treated as a unified lexical etymon."
+    ]
+  }
+}

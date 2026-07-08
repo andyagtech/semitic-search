@@ -1,0 +1,79 @@
+{
+  "query": "עוף",
+  "normalized": "עוף",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 677,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "עוף",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "עוף",
+    "extracted_root": "ע-ו-ף",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ו",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ף",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "عَوْف",
+        "surface_root": "ع-و-ف",
+        "gloss": "bird, fowl (less common than tayr); alternatively a type of eagle or bird of prey",
+        "confidence": "high",
+        "correspondence_path": "Ar ع ↔ He ע — regular *ʕ reflex; Ar و ↔ He ו — regular *w reflex; Ar ف ↔ He פ — regular *p reflex",
+        "wiktionary_hint": "عوف",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܥܳܦܳܐ",
+        "surface_root": "ܥ-ܘ-ܦ",
+        "gloss": "bird, fowl",
+        "confidence": "high",
+        "correspondence_path": "Aram ܥ ↔ He ע — regular *ʕ reflex; Aram ܘ ↔ He ו — regular *w reflex; Aram ܦ ↔ He פ — regular *p reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ʕ-w-p is archaic; in some Semitic languages, it is largely replaced by roots derived from 'fly' (e.g., *ṭ-y-r in Arabic/Aramaic) for the general term 'bird'."
+    ]
+  }
+}

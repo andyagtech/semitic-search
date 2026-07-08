@@ -1,0 +1,79 @@
+{
+  "query": "ستة",
+  "normalized": "ستة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 717,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ستة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ستة",
+    "extracted_root": "س-ت-ت",
+    "root_type": "geminate",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ت",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ت",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שֵׁש",
+        "surface_root": "ש-ש",
+        "gloss": "six",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He שׁ (*s ↔ *ś) — Note: Arabic retains the geminate root (*s-d-t > *s-t-t), while Hebrew reflects a standard shift *ś-d-θ > *š-š.",
+        "wiktionary_hint": "שש",
+        "notes": "The root is notoriously irregular across Semitic due to historical assimilation/dissimilation (proto *š-d-θy)."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܬܐ",
+        "surface_root": "ܫ-ת",
+        "gloss": "six",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Syr ܫ (*s ↔ *ś); Ar ت ↔ Syr ת (*t ↔ *θ) — The final t in Arabic is a feminine marker, while the root is underlyingly biliteral *ś-θ.",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The number 'six' is historically attested as a highly irregular formation in Proto-Semitic (often reconstructed as *š-d-θ-). The surface triliteral extraction in Arabic (s-t-t) is a secondary development from *s-d-t."
+    ]
+  }
+}

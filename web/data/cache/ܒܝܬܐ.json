@@ -1,0 +1,95 @@
+{
+  "query": "ܒܝܬܐ",
+  "normalized": "ܒܝܬܐ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 674,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ܒܝܬܐ",
+    "detected_language": "syc",
+    "detected_language_name": "Syriac",
+    "normalized_form": "ביתא",
+    "extracted_root": "ב-י-ת",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "י",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "בַּיִת",
+        "surface_root": "ב-י-ת",
+        "gloss": "house",
+        "confidence": "high",
+        "correspondence_path": "Syc ב ↔ He ב; Syc י ↔ He י; Syc ת ↔ He ת — regular *b-y-t reconstruction",
+        "wiktionary_hint": "בית",
+        "notes": null
+      },
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "بَيْت",
+        "surface_root": "ب-ي-ת",
+        "gloss": "house",
+        "confidence": "high",
+        "correspondence_path": "Syc ב ↔ Ar ب; Syc י ↔ Ar ي; Syc ת ↔ Ar ت — regular *b-y-t reconstruction",
+        "wiktionary_hint": "بيت",
+        "notes": null
+      },
+      {
+        "language": "ug",
+        "language_name": "Ugaritic",
+        "surface_form": "bt",
+        "surface_root": "b-t",
+        "gloss": "house",
+        "confidence": "medium",
+        "correspondence_path": null,
+        "wiktionary_hint": "bt",
+        "notes": "Biliteralized form of the proto-root often seen in West Semitic."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Syriac 'ܒܝܬܐ' consists of the root b-y-t plus the emphatic state determiner '-ā'.",
+      "Proto-Semitic *t vs *θ: While Syriac ת in this root reflex is generally from *t, the distinction is historically nuanced across Northwest Semitic."
+    ]
+  }
+}

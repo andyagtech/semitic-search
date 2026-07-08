@@ -1,0 +1,90 @@
+{
+  "query": "አይን",
+  "normalized": "አይን",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 826,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "አይን",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "አይን",
+    "extracted_root": "ʔ-y-n",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "አ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ይ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ን",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "عَيْن",
+        "surface_root": "ع-ي-ن",
+        "gloss": "eye, spring",
+        "confidence": "high",
+        "correspondence_path": "Am አ ↔ Ar ع — *ʔ/ʕ reflect distinct PS phonemes historically, but the root *ʔ-y-n is widely accepted as common Semitic; note Amharic loss of *ʕ/ʔ distinction",
+        "wiktionary_hint": "عين",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "עַיִן",
+        "surface_root": "ע-י-ן",
+        "gloss": "eye, spring",
+        "confidence": "high",
+        "correspondence_path": "Am አ ↔ He ע — *ʔ merging with *ʕ in modern Ethio-Semitic",
+        "wiktionary_hint": "עין",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܥܰܝܢܳܐ",
+        "surface_root": "ע-י-ן",
+        "gloss": "eye, fountain",
+        "confidence": "high",
+        "correspondence_path": "Am አ ↔ Syc ܥ — *ʔ merging with *ʕ in modern Ethio-Semitic",
+        "wiktionary_hint": "עינא",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Amharic 'አ' (alef) here represents a historical *ʔ. While Proto-Semitic generally distinguished *ʔ and *ʕ, the root for 'eye' is reconstructed as *ʕ-y-n. Ethio-Semitic (Ge'ez/Amharic) underwent complex shifts and mergers regarding historical pharyngeals and laryngeals (guttural loss), resulting in the word surfacing with 'አ' rather than the expected reflex of *ʕ."
+    ]
+  }
+}

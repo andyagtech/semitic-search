@@ -1,0 +1,91 @@
+{
+  "query": "أخت",
+  "normalized": "أخت",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 818,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أخت",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "أخت",
+    "extracted_root": "أ-خ-و",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "خ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אָחוֹת",
+        "surface_root": "א-ח-ו",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "Ar أخw ↔ He אחw — standard correspondence of ʔaḫw- to ʔāḥōṯ (with final ṯ shift to t)",
+        "wiktionary_hint": "אחות",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܬܐ",
+        "surface_root": "א-ח-ת",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔaḫw ↔ Syc ḥətā — regular reflex of Proto-Semitic *ʔaḫat-",
+        "wiktionary_hint": "ܚܬܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "aḫāt-",
+        "surface_root": "א-ח-ת",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔ ↔ Akk ∅ (word-initial), Ar ḫ ↔ Akk ḫ, Ar t ↔ Akk t — standard reflex",
+        "wiktionary_hint": "ahattu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is historically *ʔ-ḫ-t in terms of the noun construction, but linguistically derived from *ʔ-ḫ-w because of the hollow/weak nature of the final consonant in the Proto-Semitic feminine formation.",
+      "Akkadian reflects the 't' feminine ending explicitly, while Arabic reflects it through the non-tã-marbūṭa form. This is a well-established cognate set."
+    ]
+  }
+}

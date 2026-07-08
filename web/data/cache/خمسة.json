@@ -1,0 +1,101 @@
+{
+  "query": "خمسة",
+  "normalized": "خمسة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 787,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "خمسة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "خمسة",
+    "extracted_root": "خ-م-س",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "خ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "חמש",
+        "surface_root": "ח-מ-ש",
+        "gloss": "five",
+        "confidence": "high",
+        "correspondence_path": "Ar خ ↔ He ח (ḥ) / Ar س ↔ He שׂ — regular correspondence for *ḫ-m-s",
+        "wiktionary_hint": "חמש",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܡܫܐ",
+        "surface_root": "ܚ-ܡ-ܫ",
+        "gloss": "five",
+        "confidence": "high",
+        "correspondence_path": "Ar خ ↔ Syr ܚ / Ar س ↔ Syr ܣ — regular correspondence.",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "ḫamšu",
+        "surface_root": "ḫ-m-š",
+        "gloss": "five",
+        "confidence": "high",
+        "correspondence_path": "Ar خ ↔ Akk ḫ / Ar س ↔ Akk š — regular correspondence.",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "አምስት",
+        "surface_root": "አ-م-س",
+        "gloss": "five",
+        "confidence": "medium",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Semantic agreement is high, but phonologically the Proto-Semitic *ḫ has fallen to ʾ (aleph) in Ethio-Semitic."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Proto-Semitic root is traditionally reconstructed as *ḫ-m-s."
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "query": "رجل",
+  "normalized": "رجل",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 651,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "رجل",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "رجل",
+    "extracted_root": "ر-ج-ل",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ج",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "רֶגֶל",
+        "surface_root": "ר-ג-ל",
+        "gloss": "foot, leg",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ He ר; Ar ج ↔ He ג; Ar ل ↔ He ל — regular phonological correspondence",
+        "wiktionary_hint": "רגל",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܪܓܠܐ",
+        "surface_root": "ܪ-ܓ-ܠ",
+        "gloss": "foot, leg",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ Aram ܪ; Ar ج ↔ Aram ܓ; Ar ل ↔ Aram ܠ — regular phonological correspondence",
+        "wiktionary_hint": "ܪܓܠܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šēpu",
+        "surface_root": "unknown",
+        "gloss": "foot",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Akkadian does not use the r-g-l root for 'foot' (it uses šēpu); r-g-l is generally limited to West Semitic."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic root r-j-l covers both 'man' and 'foot' (related to the ability to walk), whereas the cognates in Hebrew and Aramaic are specifically restricted to 'foot/leg'."
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "query": "روح",
+  "normalized": "روح",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 855,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "روح",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "روح",
+    "extracted_root": "ر-و-ح",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ح",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "רוּחַ",
+        "surface_root": "ר-ו-ח",
+        "gloss": "spirit, wind, breath",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ He ר, Ar و ↔ He ו, Ar ح ↔ He ח — regular reflexes",
+        "wiktionary_hint": "רוח",
+        "notes": "Semantic range overlaps almost perfectly across North-West and Arabic branches."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܪܘܚܐ",
+        "surface_root": "ܪ-ܘ-ܚ",
+        "gloss": "spirit, wind, breath",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ Syr ܪ, Ar و ↔ Syr ܘ, Ar ح ↔ Syr ܚ — regular reflexes",
+        "wiktionary_hint": "ܪܘܚܐ",
+        "notes": "Standard Aramaic cognate."
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ሩኅ",
+        "surface_root": "ر-ו-ح",
+        "gloss": "scent, odor (derivative usage)",
+        "confidence": "medium",
+        "correspondence_path": "Geʿez ር-ው-ሕ > Amharic ር-ኅ, reflecting historical merger of gutturals",
+        "wiktionary_hint": null,
+        "notes": "In Ethio-Semitic, the primary meaning often shifts toward 'breath/odor' or is supplanted by other roots for 'spirit' (e.g., Ge'ez manfas)."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is hollow (*r-w-ḥ). The reconstruction of *ḥ is supported by the Arabic ḥāʾ and Hebrew ḥet orthographies.",
+      "Be aware that in many Semitic languages, this root denotes 'wind' as a 'breathing' force, which semantically evolves into 'spirit' or 'soul'."
+    ]
+  }
+}

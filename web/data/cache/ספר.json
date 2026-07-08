@@ -1,0 +1,79 @@
+{
+  "query": "ספר",
+  "normalized": "ספר",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 662,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ספר",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "ספר",
+    "extracted_root": "ס-פ-ר",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ס",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "פ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سفر",
+        "surface_root": "س-ف-ر",
+        "gloss": "journey / book",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He ס (*s); Ar ف ↔ He פ (*p); Ar ر ↔ He ר (*r) — stable consonantal core.",
+        "wiktionary_hint": "سفر",
+        "notes": "Semantic divergence: Arabic primary meaning is 'travel/journey', while Hebrew is 'book/scroll'. Both are semantically linked as 'something written' vs 'something traveled', traditionally related to 'marking/incising'."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܣܦܪ",
+        "surface_root": "ܣ-ܦ-ܪ",
+        "gloss": "scribe / to write / to count",
+        "confidence": "high",
+        "correspondence_path": "Syc ܣ ↔ He ס (*s); Syc ܦ ↔ He פ (*p); Syc ܪ ↔ He ר (*r) — canonical Semitic correspondence.",
+        "wiktionary_hint": "ܣܦܪ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *s-p-r is notoriously polysemous across Semitic languages, covering concepts of counting, writing, and traveling; these may represent multiple homophonous roots rather than one single semantic root."
+    ]
+  }
+}

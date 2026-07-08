@@ -1,0 +1,90 @@
+{
+  "query": "חלב",
+  "normalized": "חלב",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 649,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "חלב",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "חלב",
+    "extracted_root": "ח-ל-ב",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "حَلِيب",
+        "surface_root": "ح-ل-ب",
+        "gloss": "milk",
+        "confidence": "high",
+        "correspondence_path": "Ar ح ↔ He ח, Ar ل ↔ He ל, Ar ب ↔ He ב — regular reflexes",
+        "wiktionary_hint": "حليب",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܰܠܒܳܐ",
+        "surface_root": "ܚ-ܠ-ܒ",
+        "gloss": "milk",
+        "confidence": "high",
+        "correspondence_path": "Syc ܚ ↔ He ח, Syc ܠ ↔ He ל, Syc ܒ ↔ He ב — regular reflexes",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ሀለብ",
+        "surface_root": "ሀ-ለ-ብ",
+        "gloss": "milk (Ge'ez origin)",
+        "confidence": "medium",
+        "correspondence_path": null,
+        "wiktionary_hint": "ሀለብ",
+        "notes": "Amharic generally lost the distinction between PS *ḥ and *h, shifting both to 'h' (ሀ)."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Hebrew 'חלב' can refer to 'milk' (ḥālāb) or 'fat' (ḥēleb). Both share the same root in Semitic and descend from the same proto-root."
+    ]
+  }
+}

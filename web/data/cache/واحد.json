@@ -1,0 +1,79 @@
+{
+  "query": "واحد",
+  "normalized": "واحد",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 665,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "واحد",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "واحد",
+    "extracted_root": "و-ح-د",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ح",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֶחָד",
+        "surface_root": "א-ח-ד",
+        "gloss": "one",
+        "confidence": "high",
+        "correspondence_path": "Ar و ↔ He א, Ar ح ↔ He ח, Ar د ↔ He ד — regular correspondence (Proto-Semitic *w reflex involving initial vowel shift)",
+        "wiktionary_hint": "אחד",
+        "notes": "Hebrew אֶחָד shows the common historical shift from PS *waḥad- > *ʔaḥad-."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܲܕ",
+        "surface_root": "ح-د",
+        "gloss": "one",
+        "confidence": "high",
+        "correspondence_path": "Ar ح ↔ Syc ܚ, Ar د ↔ Syc ܕ — regular reflexes",
+        "wiktionary_hint": null,
+        "notes": "Syriac shows a biliteral development of the root."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *w-ḥ-d reflects a Proto-Semitic root for 'one', but the initial *w is lost/shifted via regular phonetic development across the various branches."
+    ]
+  }
+}

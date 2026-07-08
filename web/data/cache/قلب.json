@@ -1,0 +1,80 @@
+{
+  "query": "قلب",
+  "normalized": "قلب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 736,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "قلب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "قلب",
+    "extracted_root": "ق-ل-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ق",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "לֵב",
+        "surface_root": "ל-ב",
+        "gloss": "heart",
+        "confidence": "medium",
+        "correspondence_path": "Ar ق-ل-ب ↔ He ל-ב (metathesis/loss of initial q is often posited, though debated).",
+        "wiktionary_hint": "לב",
+        "notes": "Hebrew 'lev' (l-b) lacks the initial q-reflex seen in other Semitic languages, potentially due to historical root-shortening or a distinct Proto-Semitic variation."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܠܒܐ",
+        "surface_root": "ܠ-ܒ-ܐ",
+        "gloss": "heart",
+        "confidence": "low",
+        "correspondence_path": "Ar ق ↔ Syc ∅; Ar ל ↔ Syc ל; Ar ب ↔ Syc ب — semantic match is strong, but initial consonant mismatch renders this likely a distinct formation or early loss in Aramaic branch.",
+        "wiktionary_hint": "ܠܒܐ",
+        "notes": "The Aramaic/Syriac form often displays a loss of the root-initial element associated with the Arabic 'q-l-b' form."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root q-l-b 'heart' is specifically Arabic. While Hebrew/Aramaic 'l-b' shares the semantic field and the l-b consonants, the initial 'q' in Arabic is not universally accepted as a cognate component in some historical linguistic models; it may represent a divergent root formation.",
+      "Arabic 'qalb' refers to the heart; note that in some contexts in modern Arabic it can also mean 'turning/reversing' (root q-l-b, which is a different lexeme with the same spelling)."
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "query": "سن",
+  "normalized": "سن",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 873,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "سن",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "سن",
+    "extracted_root": "س-ن-ن",
+    "root_type": "geminate",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שֵׁן",
+        "surface_root": "ש-ן",
+        "gloss": "tooth",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He ש (with historical Proto-Semitic *s shift)",
+        "wiktionary_hint": "שן",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܶܢܳܐ",
+        "surface_root": "ܫ-ܢ",
+        "gloss": "tooth",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Aram ܫ (standard reflex of *s)",
+        "wiktionary_hint": "ܫܢܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šinnu",
+        "surface_root": "š-n",
+        "gloss": "tooth",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Akk š (regular *s reflex)",
+        "wiktionary_hint": "šinnu",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ጥር",
+        "surface_root": "ט-ר",
+        "gloss": "tooth",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": "ጥር",
+        "notes": "Amharic 'ṭir' is not a cognate to 's-n-n'; the Ge'ez cognate is 'sən' (ሰን), but it is archaic. Amharic largely replaced the root."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic root is treated as a geminate (s-n-n) reflecting the Proto-Semitic biliteral root *sinn- (tooth).",
+      "Hebrew and Syriac reflect the biliteral nature of the Proto-Semitic noun, though phonological rules in daughter languages often treat them as triliteral weak roots."
+    ]
+  }
+}

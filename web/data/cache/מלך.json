@@ -1,0 +1,90 @@
+{
+  "query": "מלך",
+  "normalized": "מלך",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 820,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "מלך",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "מלך",
+    "extracted_root": "מ-ל-ך",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ך",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ملك",
+        "surface_root": "م-ل-ك",
+        "gloss": "king",
+        "confidence": "high",
+        "correspondence_path": "Ar م ↔ He מ, Ar ل ↔ He ל, Ar ك ↔ He ך — regular reflex of *m-l-k",
+        "wiktionary_hint": "ملك",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܡܠܟܐ",
+        "surface_root": "ܡ-ܠ-ܟ",
+        "gloss": "king",
+        "confidence": "high",
+        "correspondence_path": "Syc ܡ ↔ He מ, Syc ܠ ↔ He ל, Syc ܟ ↔ He ך — regular reflex of *m-l-k",
+        "wiktionary_hint": "מלכא",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "malku",
+        "surface_root": "m-l-k",
+        "gloss": "prince/ruler",
+        "confidence": "medium",
+        "correspondence_path": "Akk m ↔ He מ, Akk l ↔ He ל, Akk k ↔ He ך — regular reflex of *m-l-k; semantic shift from 'king' to 'prince' in some contexts",
+        "wiktionary_hint": null,
+        "notes": "While 'malku' appears in Akkadian, the more common word for king is 'šarru'. 'Malku' often denotes a lower-ranking ruler."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The noun 'king' (*malk-) is a widespread Semitic root, though some East Semitic (Akkadian) varieties prefer alternative terminology (e.g., šarru) for supreme rulers."
+    ]
+  }
+}

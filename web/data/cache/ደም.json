@@ -1,0 +1,91 @@
+{
+  "query": "ደም",
+  "normalized": "ደም",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 735,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ደም",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ደም",
+    "extracted_root": "দ-ም",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ደ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ም",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "دَم",
+        "surface_root": "د-م-ي",
+        "gloss": "blood",
+        "confidence": "high",
+        "correspondence_path": "Ar د ↔ Am ደ; Ar م ↔ Am ም",
+        "wiktionary_hint": "دم",
+        "notes": "Arabic reflects this as a final-weak root in usage, but it is fundamentally a biliteral base."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "דָּם",
+        "surface_root": "ד-ם",
+        "gloss": "blood",
+        "confidence": "high",
+        "correspondence_path": "He ד ↔ Am ደ; He ם ↔ Am ም",
+        "wiktionary_hint": "דם",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܕܡܐ",
+        "surface_root": "ܕ-ܡ-ܐ",
+        "gloss": "blood",
+        "confidence": "high",
+        "correspondence_path": "Syc ܕ ↔ Am ደ; Syc ܡ ↔ Am ም",
+        "wiktionary_hint": "ܕܡܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "damu",
+        "surface_root": "d-m",
+        "gloss": "blood",
+        "confidence": "high",
+        "correspondence_path": "Akk d ↔ Am ደ; Akk m ↔ Am ም",
+        "wiktionary_hint": "damu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'ደም' is a classic Semitic biliteral noun. While many Semitic languages (like Arabic) treat the root as tri-consonantal due to morphology (*d-m-y), the core is historically biliteral."
+    ]
+  }
+}

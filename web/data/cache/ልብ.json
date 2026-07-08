@@ -1,0 +1,80 @@
+{
+  "query": "ልብ",
+  "normalized": "ልብ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 640,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ልብ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ልብ",
+    "extracted_root": "ል-ብ",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ል",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ብ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "لُبّ",
+        "surface_root": "ل-ب-ب",
+        "gloss": "pith, core, heart, essence",
+        "confidence": "high",
+        "correspondence_path": "Am ል ↔ Ar ل (*l); Am ብ ↔ Ar ب (*b) — regular reflexes",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "לֵב",
+        "surface_root": "ל-ב",
+        "gloss": "heart",
+        "confidence": "high",
+        "correspondence_path": "Am ል ↔ He ל (*l); Am ብ ↔ He ב (*b) — regular reflexes",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܠܒܐ",
+        "surface_root": "ל-ב-א",
+        "gloss": "heart",
+        "confidence": "high",
+        "correspondence_path": "Am ል ↔ Syr ל (*l); Am ብ ↔ Syr ב (*b) — regular reflexes",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is historically a biliteral core *l-b, which in some languages (like Arabic) developed into a geminate root *l-b-b via standard nominalization/verbalization patterns."
+    ]
+  }
+}

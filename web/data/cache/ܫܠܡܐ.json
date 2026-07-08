@@ -1,0 +1,91 @@
+{
+  "query": "ܫܠܡܐ",
+  "normalized": "ܫܠܡܐ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 805,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ܫܠܡܐ",
+    "detected_language": "syc",
+    "detected_language_name": "Syriac",
+    "normalized_form": "שלמא",
+    "extracted_root": "ܫ-ܠ-ܡ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ܫ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ܠ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ܡ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سَلَام",
+        "surface_root": "س-ل-م",
+        "gloss": "peace, safety",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Syc ܫ (regular *š reflex); Ar ل ↔ Syc ܠ; Ar م ↔ Syc ܡ",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שָׁלוֹם",
+        "surface_root": "שׁ-ל-ם",
+        "gloss": "peace, well-being",
+        "confidence": "high",
+        "correspondence_path": "He שׁ ↔ Syc ܫ (regular *š reflex); He ל ↔ Syc ܠ; He ם ↔ Syc ܡ",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "salāmu",
+        "surface_root": "s-l-m",
+        "gloss": "to be reconciled, to be healthy",
+        "confidence": "medium",
+        "correspondence_path": "Akk s ↔ Syc ܫ (*š reflects as 's' in Akkadian), so this is a regular correspondence for *š",
+        "wiktionary_hint": null,
+        "notes": "Akkadian typically reflects PS *š as 's'; compare AkkADIAN salāmu to the common Canaanite/Aramaic *š pattern."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Syriac 'ܫ' (Shin) is a direct reflex of Proto-Semitic *š, which is consistently maintained across most Semitic languages, with the notable exception of Akkadian where *š became 's'.",
+      "Semantically, the root *š-l-m universally denotes concepts of wholeness, peace, and completion."
+    ]
+  }
+}

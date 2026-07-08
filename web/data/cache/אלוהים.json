@@ -1,0 +1,90 @@
+{
+  "query": "אלוהים",
+  "normalized": "אלוהים",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 764,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אלוהים",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אלוהים",
+    "extracted_root": "א-ל-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "إله",
+        "surface_root": "إ-ل-ه",
+        "gloss": "deity, god",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/ه ↔ He א/ה — regular correspondence for *ʔ-l-h root",
+        "wiktionary_hint": "إله",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܠܗܐ",
+        "surface_root": "ܐ-ܠ-ܗ",
+        "gloss": "God",
+        "confidence": "high",
+        "correspondence_path": "Syc ܐ/ܗ ↔ He א/ה — regular correspondence for *ʔ-l-h root",
+        "wiktionary_hint": "ܐܠܗܐ",
+        "notes": null
+      },
+      {
+        "language": "ug",
+        "language_name": "Ugaritic",
+        "surface_form": "𐎅𐎍",
+        "surface_root": "ʾ-l-h",
+        "gloss": "god",
+        "confidence": "medium",
+        "correspondence_path": "Ug ʾ ↔ He א — regular correspondence for *ʔ sound",
+        "wiktionary_hint": null,
+        "notes": "Attestation refers to the root in the context of Ugaritic 'il (god) and derived forms."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The input form 'אלוהים' is the plural construct/absolute form of 'אלוה' (Eloah). The root extraction follows the standard Semitic triliteral derivation *ʔ-l-h."
+    ]
+  }
+}

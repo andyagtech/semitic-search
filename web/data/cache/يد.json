@@ -1,0 +1,80 @@
+{
+  "query": "يد",
+  "normalized": "يد",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 688,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "يد",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "يد",
+    "extracted_root": "ي-د",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "יָד",
+        "surface_root": "י-ד",
+        "gloss": "hand",
+        "confidence": "high",
+        "correspondence_path": "Ar ي ↔ He י (*y); Ar د ↔ He ד (*d) — standard correspondence.",
+        "wiktionary_hint": "יד",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܝܕܐ",
+        "surface_root": "א-י-ד",
+        "gloss": "hand",
+        "confidence": "high",
+        "correspondence_path": "Ar ي ↔ Syr י (*y); Ar د ↔ Syr ד (*d) — standard correspondence (note: Aramaic often prefixes ʔ- to original biliterals).",
+        "wiktionary_hint": "ܐܝܕܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "qātum",
+        "surface_root": "q-t-m",
+        "gloss": "hand",
+        "confidence": "unknown",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Akkadian does not use the *y-d root for 'hand', preferring 'qātum'. The Proto-Semitic word for hand is famously *yad-."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root 'y-d' is a classic Semitic biliteral substantive. In many daughter languages, it shows up with a prosthetic aleph (Aramaic) or remains a stable biliteral core."
+    ]
+  }
+}

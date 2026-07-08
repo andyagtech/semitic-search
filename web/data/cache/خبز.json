@@ -1,0 +1,84 @@
+{
+  "query": "خبز",
+  "normalized": "خبز",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 798,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "خبز",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "خبز",
+    "extracted_root": "خ-ب-ز",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "خ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ز",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*z",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*ḏ",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "חָבַץ",
+        "surface_root": "ח-ב-ץ",
+        "gloss": "to churn/curd (speculative semantic link)",
+        "confidence": "low",
+        "correspondence_path": "Ar خ ↔ He ח (*ḫ ↔ *ḥ), Ar ب ↔ He ב (*b ↔ *b), Ar ز ↔ He צ (*z/ḏ ↔ *ṣ)",
+        "wiktionary_hint": null,
+        "notes": "While the phonological correspondences for the first two radicals are regular, the third radical (Arabic ز ↔ Hebrew צ) is generally inconsistent. The semantic connection to bread-making is debated."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܒܙܐ",
+        "surface_root": "ܚ-ב-ܙ",
+        "gloss": "bread",
+        "confidence": "high",
+        "correspondence_path": "Ar خ ↔ Syc ܚ (*ḫ ↔ *ḫ), Ar ب ↔ Syc ܒ (*b ↔ *b), Ar ز ↔ Syc ܙ (*z ↔ *z)",
+        "wiktionary_hint": "ܚܒܙܐ",
+        "notes": "Direct cognate; reflects the standard bread/baking terminology in Aramaic/Syriac."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew reflex 'חבץ' is a partial cognate at best, as Arabic 'z' should normally correspond to Hebrew 'z', while 'ṣ' (Hebrew 'tz') typically corresponds to Arabic 'ṣ' or 'ḍ'.",
+      "Roots with 'z'/'ḏ'/'ṣ' are prone to complex historical mergers in individual Semitic branches."
+    ]
+  }
+}

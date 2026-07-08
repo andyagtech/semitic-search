@@ -1,0 +1,79 @@
+{
+  "query": "طير",
+  "normalized": "طير",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 679,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "طير",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "طير",
+    "extracted_root": "ط-ي-ر",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ط",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṭ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "צִפּוֹר",
+        "surface_root": "צ-פ-ר",
+        "gloss": "bird",
+        "confidence": "low",
+        "correspondence_path": "Ar ط ↔ He צ (irregular/non-cognate)",
+        "wiktionary_hint": null,
+        "notes": "While semantically related (bird), the roots are historically distinct. Arabic forms use t-y-r (from flight), while Hebrew uses ṣ-p-r (likely onomatopoeic or unrelated)."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܛܝܪܐ",
+        "surface_root": "ܛ-י-ܪ",
+        "gloss": "bird/nest/roost",
+        "confidence": "high",
+        "correspondence_path": "Ar ط ↔ Syc ܛ — regular *ṭ reflex; Ar ي ↔ Syc ي — regular *y reflex",
+        "wiktionary_hint": "ܛܝܪܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ṭ-y-r refers specifically to flying or birds. Care must be taken not to confuse it with the *ṭ-y-r root meaning 'to enclose/nest/roost' which is a common homonym in Aramaic."
+    ]
+  }
+}

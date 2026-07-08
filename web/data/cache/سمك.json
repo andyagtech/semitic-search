@@ -1,0 +1,79 @@
+{
+  "query": "سمك",
+  "normalized": "سمك",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 627,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "سمك",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "سمك",
+    "extracted_root": "س-م-ك",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ك",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "סמך",
+        "surface_root": "ס-מ-כ",
+        "gloss": "to support/rely/lean",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He ס; Ar م ↔ He מ; Ar ك ↔ He כ — regular Proto-Semitic reflexes.",
+        "wiktionary_hint": "סמך",
+        "notes": "Semantic divergence: The Arabic noun 'samak' (fish) is likely a separate development (perhaps via 'thick' or 'scale'), while the Hebrew verb 'samakh' relates to support/leaning. However, the root s-m-k is definitely cognate."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܣܡܟ",
+        "surface_root": "ܣ-ܡ-ܟ",
+        "gloss": "to support/sustain/prop",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Aram ܣ; Ar م ↔ Aram ܡ; Ar ك ↔ Aram ܟ — regular reflexes.",
+        "wiktionary_hint": "ܣܡܟ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic noun 'samak' (fish) is likely distinct from the verb 'samaka' (to be thick/high). The root is triliteral s-m-k, but historical semantic connection between 'fish' and 'support' is weak or non-existent."
+    ]
+  }
+}

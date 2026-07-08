@@ -1,0 +1,94 @@
+{
+  "query": "ألف",
+  "normalized": "ألف",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 751,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ألف",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ألف",
+    "extracted_root": "ʔ-l-f",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ف",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*f",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֶלֶף",
+        "surface_root": "א-ל-ף",
+        "gloss": "thousand",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ He א (regular *ʔ reflex); Ar ل ↔ He ל (regular *l reflex); Ar ف ↔ He פ (regular *p reflex)",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܠܦܐ",
+        "surface_root": "א-ל-פ",
+        "gloss": "thousand",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ Syc ܐ (regular *ʔ reflex); Ar ل ↔ Syc ܠ (regular *l reflex); Ar ف ↔ Syc ܦ (regular *p reflex)",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "lim",
+        "surface_root": "l-m",
+        "gloss": "thousand",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Often compared as a potential distant cognate or root-variation, but the structural difference (biliteral outcome) complicates the derivation."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Proto-Semitic *p reflex in Hebrew and Aramaic consistently surfaces as p/f (פ/ܦ), which matches the Arabic 'f' (ف) in this root."
+    ]
+  }
+}

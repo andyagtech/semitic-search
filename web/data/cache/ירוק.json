@@ -1,0 +1,79 @@
+{
+  "query": "ירוק",
+  "normalized": "ירוק",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 649,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ירוק",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "ירוק",
+    "extracted_root": "י-ר-ק",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "י",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ק",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "وَرِق",
+        "surface_root": "و-ر-ق",
+        "gloss": "leaf/foliage (also greenness)",
+        "confidence": "high",
+        "correspondence_path": "Ar و ↔ He י (initial *w > y in Hebrew) — regular root onset shift",
+        "wiktionary_hint": "ورق",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܝܰܪܩܳܐ",
+        "surface_root": "י-ר-ק",
+        "gloss": "vegetation/green",
+        "confidence": "high",
+        "correspondence_path": "Ar وَرِق ↔ He ירוק ↔ Syr ירקא — shared Semitic root *w-r-q",
+        "wiktionary_hint": "ܝܪܩܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew root י-ר-ק derived from Proto-Semitic *w-r-q, where the initial *w typically shifts to י (y) in Hebrew in this lexical set."
+    ]
+  }
+}

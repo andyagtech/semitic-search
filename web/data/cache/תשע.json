@@ -1,0 +1,99 @@
+{
+  "query": "תשע",
+  "normalized": "תשע",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 721,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "תשע",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "תשע",
+    "extracted_root": "ת-ש-ע",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 0.95
+          },
+          {
+            "proto_phoneme": "*t",
+            "weight": 0.05
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "تِسْعَة",
+        "surface_root": "ت-س-ع",
+        "gloss": "nine",
+        "confidence": "high",
+        "correspondence_path": "Ar ت ↔ He ת — regular *ṯ reflex; Ar س ↔ He שׂ — regular *ś reflex; Ar ع ↔ He ע — regular *ʕ reflex",
+        "wiktionary_hint": "تسعة",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܬܫܥ",
+        "surface_root": "ܬ-ܫ-ܥ",
+        "gloss": "nine",
+        "confidence": "high",
+        "correspondence_path": "Syc ܬ ↔ He ת; Syc ܫ ↔ He ש; Syc ܥ ↔ He ע",
+        "wiktionary_hint": "ܬܫܥ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "išittum",
+        "surface_root": "ʔ-š-t",
+        "gloss": "nine",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": "nēšu",
+        "notes": "Akkadian 'nēšu' or variant forms for nine are notoriously non-standard due to complex sound change/metathesis in numerals."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew numeral 'nine' is feminine; the masculine form is 'תשעה'.",
+      "Proto-Semitic reconstruction of numerals is famously difficult due to widespread leveling and idiosyncratic sound changes in the base numerals."
+    ]
+  }
+}

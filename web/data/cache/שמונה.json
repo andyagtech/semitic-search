@@ -1,0 +1,94 @@
+{
+  "query": "שמונה",
+  "normalized": "שמונה",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 703,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שמונה",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שמונה",
+    "extracted_root": "ש-מ-נ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "נ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ثمانية",
+        "surface_root": "ث-م-ن",
+        "gloss": "eight",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ He שׁ — regular *θ reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܬܡܳܢܝܳܐ",
+        "surface_root": "ܬ-ܡ-נ",
+        "gloss": "eight",
+        "confidence": "high",
+        "correspondence_path": "Aram ܬ ↔ He שׁ — regular *θ reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ስምንት",
+        "surface_root": "ס-מ-נ",
+        "gloss": "eight",
+        "confidence": "high",
+        "correspondence_path": "Geʿez ሰ ↔ He שׁ (reflecting merger of *θ > s)",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew 'ש' in 'שמונה' is technically ambiguous, but comparative evidence from Arabic 'ث' confirms the Proto-Semitic *θ (interdental fricative) origin."
+    ]
+  }
+}

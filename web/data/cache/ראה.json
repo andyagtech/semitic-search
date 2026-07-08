@@ -1,0 +1,72 @@
+{
+  "query": "ראה",
+  "normalized": "ראה",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 433,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ראה",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "ראה",
+    "extracted_root": "ר-א-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "رأى",
+        "surface_root": "ر-أ-ي",
+        "gloss": "to see",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ He ר, Ar أ ↔ He א, Ar ي ↔ He ה — regular III-y correspondence",
+        "wiktionary_hint": "رأى",
+        "notes": "Arabic form is III-weak, preserving the underlying *-y consonant."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew h (ה) word-finally represents a historical *y or *w that has coalesced into a vowel phoneme in the standard orthography."
+    ]
+  }
+}

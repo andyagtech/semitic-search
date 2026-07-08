@@ -1,0 +1,68 @@
+{
+  "query": "أزرق",
+  "normalized": "أزرق",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 482,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أزرق",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ازرق",
+    "extracted_root": "ز-ر-ق",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ز",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*z",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ق",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "זָרֹק",
+        "surface_root": "ז-ר-ק",
+        "gloss": "to scatter, sprinkle",
+        "confidence": "low",
+        "correspondence_path": "Ar ز ↔ He ז, Ar ر ↔ He ר, Ar ق ↔ He ק — regular etymological sound match",
+        "wiktionary_hint": "זרק",
+        "notes": "While the radicals match perfectly, the semantic shift from 'blue' (Arabic) to 'scatter' (Hebrew) is significant. It is possible these are homophonous roots rather than direct cognates."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'أزرق' (azraq) refers to the color blue, but its etymology is often debated; some scholars have suggested it may be related to roots meaning 'to shine' or 'to flash' (connected to the sky), though other evidence is sparse."
+    ]
+  }
+}

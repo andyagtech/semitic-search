@@ -1,0 +1,94 @@
+{
+  "query": "شعر",
+  "normalized": "شعر",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 700,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "شعر",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "شعر",
+    "extracted_root": "ش-ع-ر",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ش",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ع",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שער",
+        "surface_root": "ש-ע-ר",
+        "gloss": "hair",
+        "confidence": "high",
+        "correspondence_path": "Ar ش ↔ He שׂ — regular *ś reflex (note: Ar š merges with *ś in some positions)",
+        "wiktionary_hint": "שער",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܣܥܪܐ",
+        "surface_root": "ܣ-ܥ-ܪ",
+        "gloss": "hair",
+        "confidence": "high",
+        "correspondence_path": "Ar ش ↔ Aram ܣ — regular *ś reflex (Aramaic ܣ = *ś)",
+        "wiktionary_hint": "ܣܥܪܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šārtu",
+        "surface_root": "š-r",
+        "gloss": "hair",
+        "confidence": "medium",
+        "correspondence_path": "Ar ش ↔ Akk š — regular *ś/*š reflex; Akkadian often loses the medial ʕ",
+        "wiktionary_hint": "šārtu",
+        "notes": "Akkadian form suggests a root reflecting *ś-r, with the loss of the medial pharyngeal/laryngeal often found in Akkadian lexemes."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic initial 'ش' (š) usually reflects *š, but in the context of 'hair' across the Semitic spectrum, current reconstruction often points to Proto-Semitic *ś."
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "query": "أسود",
+  "normalized": "أسود",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 639,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أسود",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "أسود",
+    "extracted_root": "س-و-د",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שָׁחֹור",
+        "surface_root": "ש-ח-ר",
+        "gloss": "black",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "While both denote the color 'black', the Arabic root *s-w-d matches *s-w-d, whereas Hebrew uses a root based on *ś-ḥ-r (dawn/blackness). They are not direct cognates, although the abstract concept is tied to the color black in Semitic traditions."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܣܘܡܩܐ",
+        "surface_root": "ܣ-ܡ-ܩ",
+        "gloss": "red",
+        "confidence": "speculative",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Included for contrast; there is no direct Syriac cognate for *s-w-d representing 'black'. One must check *š-ḥ-m or related Semitic roots for 'black' in other branches."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic term 'أسود' (black) traces back to the Proto-Semitic root *s-w-d. Direct lexical parallels for this specific root for 'black' are sparse in other branches, which often favor roots like *š-ḥ-r.",
+      "Roots of color are notoriously prone to semantic shifts across Semitic languages."
+    ]
+  }
+}

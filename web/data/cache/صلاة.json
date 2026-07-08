@@ -1,0 +1,80 @@
+{
+  "query": "صلاة",
+  "normalized": "صلاة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 648,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "صلاة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "صلاة",
+    "extracted_root": "ص-ل-و",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ص",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṣ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "תְּפִלָּה",
+        "surface_root": "פ-ל-ל",
+        "gloss": "prayer",
+        "confidence": "low",
+        "correspondence_path": "Ar ص ↔ He צ/ת (irregular shift), root semantics revolve around root *ṣ-l-y vs *p-l-l, note the potential Aramaic mediation of Ar صلاة.",
+        "wiktionary_hint": "תפילה",
+        "notes": "Arabic صلاة ('prayer') is generally considered a loanword from Aramaic (cf. Syriac ܨܠܘܬܐ). Hebrew תפילה derives from the root *p-l-l; the connection to Arabic is historically complex due to borrowing."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܨܠܘܬܐ",
+        "surface_root": "ܨ-ل-ܘ",
+        "gloss": "prayer",
+        "confidence": "high",
+        "correspondence_path": "Ar ص ↔ Syc ܨ (*ṣ); Ar ل ↔ Syc ل (*l); Ar و ↔ Syc و (*w)",
+        "wiktionary_hint": "ܨܠܘܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic word صلاة is widely accepted by historical linguists as a loanword from Aramaic/Syriac, rather than an indigenous development from the Arabic root *ṣ-l-w.",
+      "The Hebrew cognate 'תפילה' is not a cognate in the strict sense of sharing a common root; it is included for semantic context but does not share the same etymological path as the Aramaic/Arabic term."
+    ]
+  }
+}

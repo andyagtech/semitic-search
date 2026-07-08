@@ -1,0 +1,94 @@
+{
+  "query": "חמור",
+  "normalized": "חמור",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 759,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "חמור",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "חמור",
+    "extracted_root": "ח-מ-ר",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 0.95
+          },
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 0.05
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "حِمَار",
+        "surface_root": "ح-م-ר",
+        "gloss": "donkey",
+        "confidence": "high",
+        "correspondence_path": "Ar ح ↔ He ח — regular *ḥ reflex",
+        "wiktionary_hint": "حمار",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܳܡܳܪܳܐ",
+        "surface_root": "ܚ-ܡ-ܪ",
+        "gloss": "donkey",
+        "confidence": "high",
+        "correspondence_path": "Syc ܚ ↔ He ח — regular *ḥ reflex",
+        "wiktionary_hint": "ܚܡܪܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "imēru",
+        "surface_root": "ʔ-m-r",
+        "gloss": "donkey",
+        "confidence": "medium",
+        "correspondence_path": "Akk ∅ ↔ He ח — loss of pharyngeal *ḥ in Akkadian",
+        "wiktionary_hint": null,
+        "notes": "Akkadian regularly loses the initial pharyngeal *ḥ."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Akkadian form 'imēru' is traditionally reconstructed with an initial *ʔ or *ḥ; it is widely accepted as cognate despite the phonetic loss of the pharyngeal in Akkadian."
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "query": "אחות",
+  "normalized": "אחות",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 754,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אחות",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אחות",
+    "extracted_root": "א-ח-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أخت",
+        "surface_root": "أ-خ-و",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "He א ↔ Ar ء, He ח ↔ Ar خ, He ת ↔ Ar ت",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܬܐ",
+        "surface_root": "ܚ-ת-א",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "He א ↔ Syc ʔ, He ח ↔ Syc ܚ, He ת ↔ Syc ܬ",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "aḫtu",
+        "surface_root": "a-ḫ-t",
+        "gloss": "sister",
+        "confidence": "high",
+        "correspondence_path": "He א ↔ Akk ∅ (reinterpreted from *ʔ), He ח ↔ Akk ḫ, He ת ↔ Akk t",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew word אחות exhibits a feminine suffix -ot (from older -at), derived from the underlying root *ʔ-ḥ-w/y.",
+      "The root is classically identified as III-w based on Arabic أخت (ukht), though archaic alternations occur in various Semitic branches."
+    ]
+  }
+}

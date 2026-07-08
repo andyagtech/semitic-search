@@ -1,0 +1,99 @@
+{
+  "query": "בית",
+  "normalized": "בית",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 844,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "בית",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "בית",
+    "extracted_root": "ב-י-ת",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "י",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "بيت",
+        "surface_root": "ب-ي-ت",
+        "gloss": "house",
+        "confidence": "high",
+        "correspondence_path": "Ar ب ↔ He ב (regular *b); Ar ي ↔ He י (regular *y); Ar ت ↔ He ת (regular *t)",
+        "wiktionary_hint": "بيت",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܝܬܐ",
+        "surface_root": "ܒ-ܝ-ܬ",
+        "gloss": "house",
+        "confidence": "high",
+        "correspondence_path": "Syc ܒ ↔ He ב; Syc ܝ ↔ He י; Syc ܬ ↔ He ת — standard Semitic cognate",
+        "wiktionary_hint": "ܒܝܬܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "bītu",
+        "surface_root": "b-y-t",
+        "gloss": "house",
+        "confidence": "high",
+        "correspondence_path": "Akk b ↔ He ב; Akk medial ī matches hollow root reconstruction; Akk t ↔ He ת",
+        "wiktionary_hint": "bītu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is identified as *b-y-t. While often reconstructed as a biliteral origin, it functions as a hollow root in most daughter languages.",
+      "Hebrew 'ת' in final position usually reflects *t, but some etymologies debate original interdental *ṯ; however, in this specific common noun, *t is the standard consensus."
+    ]
+  }
+}

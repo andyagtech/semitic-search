@@ -1,0 +1,58 @@
+{
+  "query": "סב",
+  "normalized": "סב",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 550,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "סב",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "סב",
+    "extracted_root": "ס-ב",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ס",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أب",
+        "surface_root": "أ-ب",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ He (N/A) / Syc ܐ — Note: 'Sav' (סב) denotes grandfather, related to the kinship *ʔab class.",
+        "wiktionary_hint": "أب",
+        "notes": "Hebrew 'sav' (סב) is a kin term derivation. While the root is technically *s-b in Hebrew, it connects to the widespread Semitic *ʔab 'father' cluster via semantic extension/kinship terms."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'sav' (סב) is a common Hebrew term for 'grandfather'. It is an archaic or reconstructed kin-term sometimes associated with roots like *s-b, but carries semantic proximity to the universal Proto-Semitic *ʔab ('father'). Its etymological derivation as a simple root vs. a kinship reduplication or shortening is discussed in Semitic philology."
+    ]
+  }
+}

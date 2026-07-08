@@ -1,0 +1,90 @@
+{
+  "query": "لحم",
+  "normalized": "لحم",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 729,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "لحم",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "لحم",
+    "extracted_root": "ل-ح-م",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ح",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "לֶחֶם",
+        "surface_root": "ל-ח-ם",
+        "gloss": "bread",
+        "confidence": "high",
+        "correspondence_path": "Ar ل-ح-م ↔ He ל-ח-ם — regular reflexes (*l, *ḥ, *m)",
+        "wiktionary_hint": "לחם",
+        "notes": "Semantic shift: Arabic retains the original meaning 'flesh/meat', while Hebrew moved to 'bread' (possibly via 'food' generally)."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܠܚܡܐ",
+        "surface_root": "ܠ-ܚ-ܡ",
+        "gloss": "bread; sustenance",
+        "confidence": "high",
+        "correspondence_path": "Ar ل-ح-م ↔ Syc ל-ח-ܡ — regular reflexes (*l, *ḥ, *m)",
+        "wiktionary_hint": "ܠܚܡܐ",
+        "notes": "Similar semantic trajectory to Hebrew."
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ስጋ",
+        "surface_root": "ס-ג-א",
+        "gloss": "meat",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Not a cognate of لحم; included to contrast the vocabulary term for 'meat' in Ethio-Semitic."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The semantic shift between 'flesh/meat' (Arabic/Ugaritic) and 'bread' (Hebrew/Aramaic) is a classic example of semantic specialization in North-West Semitic."
+    ]
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "query": "אמא",
+  "normalized": "אמא",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 564,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אמא",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אמא",
+    "extracted_root": "א-מ",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أُمّ",
+        "surface_root": "أ-م-م",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔ ↔ He א — regular *ʔ reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܡܐ",
+        "surface_root": "א-מ-א",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Syc ʔ ↔ He א — regular *ʔ reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "This is a common Semitic kin term (biliteral base *ʔum-). While Arabic treats the root as geminate (أ-م-م), it is archaic and functions as a stable biliteral core across the branches.",
+      "Modern Hebrew 'אמא' is a loan/colloquial variant of the classical 'אֵם' (ēem), but they share the same etymological origin."
+    ]
+  }
+}

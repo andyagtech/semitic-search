@@ -1,0 +1,79 @@
+{
+  "query": "ወንድም",
+  "normalized": "ወንድም",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 649,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ወንድም",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ወንድም",
+    "extracted_root": "ወ-ნ-დ-ም",
+    "root_type": "quadriliteral",
+    "root_confidence": "medium",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ወ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ን",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ድ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 4,
+        "surface_consonant": "ም",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܘܠܕ",
+        "surface_root": "ܘ-ܠ-ܕ",
+        "gloss": "child/born (related via semantic linkage to 'one born of the same womb')",
+        "confidence": "speculative",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "While modern Semitists may connect Ethio-Semitic w-n-d-m to *w-l-d 'to bear/child', the presence of the nasal 'n' and labial 'm' makes this a complex development, possibly influenced by secondary derivation."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root classification for 'ወንድም' as w-n-d-m is an abstraction of the surface form. Its etymological derivation remains debated among Semitists.",
+      "There is no direct, universally accepted triliteral root for this term across the broader Semitic family; it may represent a specific Ethio-Semitic development."
+    ]
+  }
+}

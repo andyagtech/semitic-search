@@ -1,0 +1,80 @@
+{
+  "query": "אחד",
+  "normalized": "אחד",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 712,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אחד",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אחד",
+    "extracted_root": "א-ח-ד",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ד",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أحد",
+        "surface_root": "أ-ح-د",
+        "gloss": "one (someone/anyone)",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/ح/د ↔ He א/ח/ד — regular *ʔ/*ḥ/*d reflexes",
+        "wiktionary_hint": "أحد",
+        "notes": "Arabic 'aḥad' functions as both the number 'one' and an indefinite pronoun/quantifier."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܕ",
+        "surface_root": "ח-ד",
+        "gloss": "one",
+        "confidence": "medium",
+        "correspondence_path": "Syc ח/ד ↔ He א/ח/ד — loss of initial glottal stop *ʔ in Aramaic",
+        "wiktionary_hint": "ܚܕ",
+        "notes": "The initial aleph was lost in Aramaic/Syriac, resulting in a biliteral appearance."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Syriac cognate 'ܚܕ' (ḥad) exhibits the regular loss of the initial laryngeal *ʔ common in Aramaic.",
+      "The semantic range in Semitic languages for this root often oscillates between the ordinal/cardinal number 'one' and the indefinite pronoun 'someone/anyone'."
+    ]
+  }
+}

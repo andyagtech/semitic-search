@@ -1,0 +1,81 @@
+{
+  "query": "בת",
+  "normalized": "בת",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 632,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "בת",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "בת",
+    "extracted_root": "ב-ת",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "بنت",
+        "surface_root": "ب-ن-ت",
+        "gloss": "daughter",
+        "confidence": "high",
+        "correspondence_path": "He ת ↔ Ar ت — regular *t reflex with nunation/in-fix development in Arabic.",
+        "wiktionary_hint": "بنت",
+        "notes": "Arabic form is likely a noun derivative with an infixed -n- often associated with semitic feminine nouns."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܪܬܐ",
+        "surface_root": "ב-ר-ת",
+        "gloss": "daughter",
+        "confidence": "high",
+        "correspondence_path": "He ב ↔ Aram ב, He ת ↔ Aram ת — standard Semitic root for 'daughter'.",
+        "wiktionary_hint": "ܒܪܬܐ",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ብእሲት",
+        "surface_root": "ב-א-ס-ת",
+        "gloss": "woman/wife",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "While semantically related to 'woman', it likely derives from common Semitic *b-ʔ-š (human/person) rather than being a direct cognate for 'daughter'."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The noun 'daughter' reconstructed as *bint- in Proto-Semitic often shows variability with 'r' (e.g., Aramaic bar-t) vs 'n' (Arabic bint) in the second syllable/infix.",
+      "Hebrew 'bat' is the feminine form of an original biliteral *bn/bt."
+    ]
+  }
+}

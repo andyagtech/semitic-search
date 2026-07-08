@@ -1,0 +1,91 @@
+{
+  "query": "أب",
+  "normalized": "أب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 805,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "اب",
+    "extracted_root": "أ-ب",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אָב",
+        "surface_root": "א-ב",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ He א — regular *ʔ reflex; Ar ب ↔ He ב — regular *b reflex",
+        "wiktionary_hint": "אב",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܰܒ",
+        "surface_root": "א-ב",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ Syc ܐ — regular *ʔ reflex; Ar ب ↔ Syc ܒ — regular *b reflex",
+        "wiktionary_hint": "ܐܒ",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "አባት",
+        "surface_root": "א-ב-ת",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ Am አ — regular *ʔ reflex; Ar ب ↔ Am ب — regular *b reflex. The final ת is a feminine suffix often used in kinship terms.",
+        "wiktionary_hint": "አባት",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "abu",
+        "surface_root": "א-ב",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ Akk ∅/ʔ — Akkadian lost initial laryngeals; Ar ب ↔ Akk b — regular *b reflex",
+        "wiktionary_hint": "abu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is a fundamental Semitic biliteral kinship term often treated as *ʔ-b-w in later verbal formations (e.g., Arabic 'abawa 'to be a father')."
+    ]
+  }
+}

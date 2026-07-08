@@ -1,0 +1,91 @@
+{
+  "query": "الله",
+  "normalized": "الله",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 849,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "الله",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "الله",
+    "extracted_root": "إ-ل-ه",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "إ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ه",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אלוה",
+        "surface_root": "א-ל-ה",
+        "gloss": "God",
+        "confidence": "high",
+        "correspondence_path": "Ar إ ↔ He א (regular *ʔ reflex); Ar ل ↔ He ל (regular *l reflex); Ar ه ↔ He ה (regular *h reflex)",
+        "wiktionary_hint": "אלוה",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܠܗܐ",
+        "surface_root": "ܐ-ܠ-ܗ",
+        "gloss": "God",
+        "confidence": "high",
+        "correspondence_path": "Ar إ ↔ Syc ܐ (regular *ʔ reflex); Ar ل ↔ Syc ܠ (regular *l reflex); Ar ه ↔ Syc ܗ (regular *h reflex)",
+        "wiktionary_hint": "ܐܠܗܐ",
+        "notes": null
+      },
+      {
+        "language": "ug",
+        "language_name": "Ugaritic",
+        "surface_form": "𐎅𐎍𐎀",
+        "surface_root": "א-ל-ה",
+        "gloss": "El (deity)",
+        "confidence": "medium",
+        "correspondence_path": "Ar إ ↔ Ug א (*ʔ reflex); Ar ل ↔ Ug ל (*l reflex); Ar ه ↔ Ug ה (*h reflex)",
+        "wiktionary_hint": null,
+        "notes": "While the root is clearly cognate to 'El', the specific form 'Allah' is a contraction of al-ilāh."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'Allah' is historically a contraction of 'al-' (the) and 'ilāh' (god). The analysis above treats the root of 'ilāh' (ʔ-l-h).",
+      "Proto-Semitic reconstruction of the 'El' deity term is generally reconstructed as *ʔil- (biliteral), with later extensions in various Semitic branches."
+    ]
+  }
+}

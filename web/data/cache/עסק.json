@@ -1,0 +1,79 @@
+{
+  "query": "עסק",
+  "normalized": "עסק",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 811,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "עסק",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "עסק",
+    "extracted_root": "ע-ס-ק",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ס",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ק",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "عشق",
+        "surface_root": "ع-ش-ق",
+        "gloss": "passionate love, infatuation",
+        "confidence": "medium",
+        "correspondence_path": "Ar š ↔ He s. Note: While ar. 'ʕ-š-q' (passionate love) and he. 'ʕ-s-q' (business/affair) are often linked, the semantic gap is significant and the s/š correspondence is atypical (usually Ar. s = He. s).",
+        "wiktionary_hint": "عشق",
+        "notes": "There is a long-standing debate among linguists about whether these roots are truly cognates or if 'عסק' is an Aramaicized form or a unique derivation. The shift from *š to s is seen in some loanwords but is not a regular sound law for core vocabulary."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܥܣܩ",
+        "surface_root": "ܥ-ܣ-ܩ",
+        "gloss": "to be difficult, troublesome, burdensome",
+        "confidence": "high",
+        "correspondence_path": "Ar ʕ ↔ He ע ↔ Syc ܥ; Ar s ↔ He ס ↔ Syc ܣ; Ar q ↔ He ק ↔ Syc ܩ",
+        "wiktionary_hint": "ܥܣܩ",
+        "notes": "The Hebrew 'עסק' (business/affair) in Mishnaic Hebrew evolved from the sense of being involved or troubled with something, paralleling the Syriac/Aramaic meaning."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The connection between Hebrew 'עסק' and Arabic 'عشق' is often debated; the phonological mismatch (Ar. š vs He. s) suggests either a borrowing or a complex historical development."
+    ]
+  }
+}

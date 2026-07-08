@@ -1,0 +1,90 @@
+{
+  "query": "קרא",
+  "normalized": "קרא",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 807,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "קרא",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "קרא",
+    "extracted_root": "ק-ר-א",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ק",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "قرأ",
+        "surface_root": "ق-ر-أ",
+        "gloss": "to read; to recite",
+        "confidence": "high",
+        "correspondence_path": "Ar ق ↔ He ק — regular *q reflex; Ar ر ↔ He ר — regular *r reflex; Ar أ ↔ He א — regular *ʔ reflex",
+        "wiktionary_hint": "قرأ",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܩܪܐ",
+        "surface_root": "ܩ-ܪ-ܐ",
+        "gloss": "to read, call, cry out",
+        "confidence": "high",
+        "correspondence_path": "Syc ܩ ↔ He ק — regular *q reflex; Syc ܪ ↔ He ר — regular *r reflex; Syc ܐ ↔ He א — regular *ʔ reflex",
+        "wiktionary_hint": "ܩܪܐ",
+        "notes": null
+      },
+      {
+        "language": "ug",
+        "language_name": "Ugaritic",
+        "surface_form": "𐎖𐎗𐎀",
+        "surface_root": "q-r-ʾ",
+        "gloss": "to call, summon",
+        "confidence": "medium",
+        "correspondence_path": "Ug q ↔ He ק — regular *q reflex; Ug r ↔ He ר — regular *r reflex; Ug ʾ ↔ He א — regular *ʔ reflex",
+        "wiktionary_hint": null,
+        "notes": "Semantic emphasis in Ugaritic is primarily 'to call/summon' vs 'to read' in later dialects."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is a III-weak (hamzated), meaning the final consonant is the glottal stop *ʔ."
+    ]
+  }
+}

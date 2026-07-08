@@ -1,0 +1,83 @@
+{
+  "query": "መጽሐፍ",
+  "normalized": "መጽሐፍ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 666,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "መጽሐፍ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "መጽሐፍ",
+    "extracted_root": "ጸ-ሐ-ፈ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ጸ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṣ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*ḍ",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ሐ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ፈ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "كِتَاب",
+        "surface_root": "ك-ت-ب",
+        "gloss": "book",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "While both mean 'book', the Ethiopian root ጸ-ሐ-ፈ (to write/book) is etymologically distinct from the common Semitic *k-t-b."
+      },
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "صَحِيفَة",
+        "surface_root": "ص-ح-ف",
+        "gloss": "scroll, newspaper, page",
+        "confidence": "high",
+        "correspondence_path": "Ar ص ↔ Geʿez ጸ — regular *ṣ reflex; Ar ح ↔ Geʿez ሐ — regular *ḥ reflex; Ar ف ↔ Geʿez ፈ — regular *p reflex.",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Ethiopic root ጸ-ሐ-ፈ (ṣ-ḥ-f) is the native root for writing/book, which differs from the *k-t-b root found in most other Semitic languages, though it shares a high-confidence cognate with the Arabic root ص-ح-ف."
+    ]
+  }
+}

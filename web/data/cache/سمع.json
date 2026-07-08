@@ -1,0 +1,90 @@
+{
+  "query": "سمع",
+  "normalized": "سمع",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 895,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "سمع",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "سمع",
+    "extracted_root": "س-م-ع",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ع",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שָׁמַע",
+        "surface_root": "ש-מ-ע",
+        "gloss": "to hear / to listen",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He שׂ (merger of *s and *ś in some contexts, but specifically here Ar س ↔ He שׁ reflects *š, though this root is a well-known exception where Arabic س corresponds to Hebrew שׁ)",
+        "wiktionary_hint": "שמע",
+        "notes": "Classic Semitic root shared across major branches; note that Arabic 'س' typically corresponds to Hebrew 'ס', but this root is a known historical exception."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܡܰܥ",
+        "surface_root": "ܫ-ܡ-ܥ",
+        "gloss": "to hear / to listen",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Syr ܫ — note that while Ar س = *s/š, the Semitic root *š-m-ʕ often shows irregular variation in the sibilant across daughter languages.",
+        "wiktionary_hint": "ܫܡܥ",
+        "notes": "The sibilant development in this root across Semitic is complex and not always strictly regular."
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ሰማ",
+        "surface_root": "ሰ-م-ע",
+        "gloss": "to hear",
+        "confidence": "medium",
+        "correspondence_path": "Ar س ↔ Ge'ez ሰ — standard correspondence for root-initial sibilants.",
+        "wiktionary_hint": "ሰማ",
+        "notes": "The guttural 'ع' has been lost in modern Amharic pronunciation, making the root appear biliteral (ሰ-م-∅)."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ś-m-ʕ has notorious complexities regarding the initial sibilant reflex across daughter languages, which does not always follow the simple *s vs *š vs *ś correspondence rules."
+    ]
+  }
+}

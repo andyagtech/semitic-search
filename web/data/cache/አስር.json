@@ -1,0 +1,83 @@
+{
+  "query": "አስር",
+  "normalized": "አስር",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 606,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "አስር",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "አስር",
+    "extracted_root": "አ-ስ-ר",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "አ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ስ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*s",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ር",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "عشر",
+        "surface_root": "ع-ش-ר",
+        "gloss": "ten",
+        "confidence": "high",
+        "correspondence_path": "Ar ع ↔ Am አ (secondary/merger context), Ar ش ↔ Am ስ (regular loss of distinct *ś/*š/s contrast), Ar ر ↔ Am ር — regular *ʕ-ś-r reflex",
+        "wiktionary_hint": "عشر",
+        "notes": "While Arabic has *ʕ as the first radical, Amharic 'አ' frequently represents the result of the historical collapse of gutturals. The numbering system is a core Semitic trait."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "עֶשֶׂר",
+        "surface_root": "ע-ש-ר",
+        "gloss": "ten",
+        "confidence": "high",
+        "correspondence_path": "He ע ↔ Am አ, He שׂ ↔ Am ስ, He ר ↔ Am ር — regular *ʕ-ś-r reflex",
+        "wiktionary_hint": "עשר",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root for 'ten' across Semitic languages is typically *ʕ-ś-r. The Amharic initial 'አ' reflects the common merger/weakening of the voiced pharyngeal *ʕ in modern Ethio-Semitic."
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "query": "כחול",
+  "normalized": "כחול",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 691,
+    "cache_read_tokens": 4009
+  },
+  "result": {
+    "input_word": "כחול",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "כחול",
+    "extracted_root": "כ-ח-ל",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "כ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "كحل",
+        "surface_root": "ك-ح-ل",
+        "gloss": "kohl, antimony powder",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ; Ar ح ↔ He ח; Ar ل ↔ He ל — regular correspondence.",
+        "wiktionary_hint": "كحل",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܟܚܠܐ",
+        "surface_root": "ܟ-ܚ-ܠ",
+        "gloss": "antimony, kohl",
+        "confidence": "high",
+        "correspondence_path": "Syc ܟ ↔ He כ; Syc ܚ ↔ He ח; Syc ܠ ↔ He ל — regular correspondence.",
+        "wiktionary_hint": "ܟܚܠܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew term 'כחול' (blue) is widely considered a modern development; the root k-ḥ-l originally referred to the substance 'kohl' (antimony), and the color sense is likely a semantic extension or a loan-calque referring to the deep dark color of eye makeup."
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "query": "ጥርስ",
+  "normalized": "ጥርስ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 719,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ጥርስ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ጥርስ",
+    "extracted_root": "ط-ر-س",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ط",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṭ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.1
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ضِرْس",
+        "surface_root": "ض-ر-س",
+        "gloss": "molar (tooth)",
+        "confidence": "high",
+        "correspondence_path": "Ar ض ↔ Am ط — This specific root is a well-known exception or loan-related shift involving the *ḍ vs *ṭ merger in some Ethiopian Semitic languages.",
+        "wiktionary_hint": "ضرس",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "טֶרֶס",
+        "surface_root": "ט-ר-ס",
+        "gloss": "denticle / protruding part (rare)",
+        "confidence": "low",
+        "correspondence_path": "Ar ض ↔ He ט — Note: Hebrew 'tooth' is standardly שֵׁן (*šinn-), implying *ṭ-r-s might be an archaic, specialized, or dialectal loan development.",
+        "wiktionary_hint": null,
+        "notes": "Semantic agreement is limited; the standard word for tooth in Hebrew is etymologically distinct."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Amharic form uses the emphatic 'ṭ' (ጥ) which often reflects Proto-Semitic *ṭ, though this specific root shows irregular behavior across Semitic languages regarding the emphatic dental/interdental realization (Ar. *ḍ vs Am. *ṭ)."
+    ]
+  }
+}

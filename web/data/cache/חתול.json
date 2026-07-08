@@ -1,0 +1,78 @@
+{
+  "query": "חתול",
+  "normalized": "חתול",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 610,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "חתול",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "חתול",
+    "extracted_root": "ח-ת-ל",
+    "root_type": "sound",
+    "root_confidence": "medium",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "هطل",
+        "surface_root": "ه-ط-ل",
+        "gloss": "to rain heavily",
+        "confidence": "speculative",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Semantic mismatch is extreme; this is a purely phonetic possibility and likely an unrelated coincidence."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew word 'חתול' (cat) has an obscure etymology. It is often hypothesized to be a later development or a loanword rather than a direct descendant of a pan-Semitic root, making the extraction of a Proto-Semitic root highly uncertain.",
+      "The root 'ח-ת-ל' is not standard in classical Semitic comparative literature for 'cat'.",
+      "No clear cognates outside of Modern Hebrew exist; historical Hebrew uses 'חתול' but its derivation remains debated among Semitists."
+    ]
+  }
+}

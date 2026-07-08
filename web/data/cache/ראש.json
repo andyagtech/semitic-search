@@ -1,0 +1,98 @@
+{
+  "query": "ראש",
+  "normalized": "ראש",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 778,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ראש",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "ראש",
+    "extracted_root": "ר-א-ש",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.1
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.1
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "رأس",
+        "surface_root": "ر-أ-س",
+        "gloss": "head",
+        "confidence": "high",
+        "correspondence_path": "He ש ↔ Ar س (retaining Proto-Semitic *š reflex)",
+        "wiktionary_hint": "رأس",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܪܝܫܐ",
+        "surface_root": "ܪ-ܝ-ܫ",
+        "gloss": "head",
+        "confidence": "high",
+        "correspondence_path": "He ש ↔ Syr ܫ (regular correspondence)",
+        "wiktionary_hint": "ܪܝܫܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "rēšu",
+        "surface_root": "r-ē-š",
+        "gloss": "head, top",
+        "confidence": "high",
+        "correspondence_path": "He ר-א-ש ↔ Akk r-e-š (Akkadian elision of *ʔ)",
+        "wiktionary_hint": "rēšu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is stable (r-ʔ-š), but Hebrew ש reflects a merger of multiple Proto-Semitic sibilants; however, the cognates in Arabic and Akkadian strongly point to *š."
+    ]
+  }
+}

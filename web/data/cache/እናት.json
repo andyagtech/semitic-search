@@ -1,0 +1,81 @@
+{
+  "query": "እናት",
+  "normalized": "እናት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 682,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "እናት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "እናት",
+    "extracted_root": "ʔ-m-t",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ʔ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "m",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أُمّ",
+        "surface_root": "أ-م-م",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔ ↔ Am ʔ; Ar m ↔ Am m",
+        "wiktionary_hint": "أ م م",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֵם",
+        "surface_root": "א-מ-ם",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "He ʔ ↔ Am ʔ; He m ↔ Am m",
+        "wiktionary_hint": "אם",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܡܐ",
+        "surface_root": "ܐ-מ-ܐ",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Syc ʔ ↔ Am ʔ; Syc m ↔ Am m",
+        "wiktionary_hint": "ܐܡܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is historically biliteral *ʔum-. The Amharic form 'እናት' includes a suffixed feminine/nominal marker '-t' that is common in Ethio-Semitic but separate from the primary lexical root.",
+      "Amharic *ʔ is often elided or subject to complex vowel-initial phonotactics, but reflects the Proto-Semitic glottal stop distinctly in this lemma."
+    ]
+  }
+}

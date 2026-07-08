@@ -1,0 +1,88 @@
+{
+  "query": "לשון",
+  "normalized": "לשון",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 720,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "לשון",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "לשון",
+    "extracted_root": "ל-ש-ן",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.4
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ן",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "لسان",
+        "surface_root": "ل-س-ن",
+        "gloss": "tongue",
+        "confidence": "high",
+        "correspondence_path": "Ar ل-س-ن ↔ He ל-ש-ן: Regular *l-s-n root. Note: Hebrew *s (Arabic س) reflex in *לשון as 'š' (ש) is irregular in some dialects but standard for 'tongue' in Canaanite.",
+        "wiktionary_hint": "لسان",
+        "notes": "The Hebrew reflex matches *l-š-n, whereas the root is generally reconstructed as *l-ś-n for Proto-Semitic based on the broader evidence."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܠܫܢܐ",
+        "surface_root": "ܠ-ܫ-ܢ",
+        "gloss": "tongue",
+        "confidence": "high",
+        "correspondence_path": "Ar ل-س-ن ↔ He ל-ש-ן ↔ Syc ܠ-ܫ-ܢ: Regular correspondence across Aramaic and Hebrew.",
+        "wiktionary_hint": "ܠܫܢܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Proto-Semitic root for 'tongue' is definitively *l-ś-n. The shift to š in Hebrew and Aramaic is a documented pattern in North-West Semitic.",
+      "Hebrew shin (ש) in this context specifically represents a diachronic shift rather than a root-internal variation."
+    ]
+  }
+}

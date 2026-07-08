@@ -1,0 +1,90 @@
+{
+  "query": "ماء",
+  "normalized": "ماء",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 762,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ماء",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ماء",
+    "extracted_root": "م-و-ه",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ه",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "מַיִם",
+        "surface_root": "מ-י-ם",
+        "gloss": "water",
+        "confidence": "high",
+        "correspondence_path": "Ar م ↔ He מ; Ar ∅ ↔ He י (via Proto-Semitic *may-)",
+        "wiktionary_hint": "מים",
+        "notes": "Hebrew reflects the common biconsonantal base *may- with a plural suffix, while Arabic retains the root shape through the *m-w-h root."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܡܝܐ",
+        "surface_root": "מ-י-א",
+        "gloss": "water",
+        "confidence": "high",
+        "correspondence_path": "Ar م ↔ Syc מ; Ar ∅ ↔ Syc י. Ar hamza (ء) in 'māʔ' is a late development from the original proto-semitic final *h.",
+        "wiktionary_hint": "ܡܝܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "mû",
+        "surface_root": "מ-ו-א",
+        "gloss": "water",
+        "confidence": "medium",
+        "correspondence_path": "Ar م ↔ Akk m; Ar w ↔ Akk û (vowel contraction).",
+        "wiktionary_hint": "mû",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root classification is complex for this word: *m-w-h is historically accepted to explain the Arabic form (cf. muwayh 'little water'), while many other Semitic languages show a biliteral base *may- often inflected as a plural."
+    ]
+  }
+}

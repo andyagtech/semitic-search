@@ -1,0 +1,91 @@
+{
+  "query": "መቶ",
+  "normalized": "መቶ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 789,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "መቶ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "መቶ",
+    "extracted_root": "መ-አ-ት",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "m",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ʔ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "t",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "مِائَة",
+        "surface_root": "م-أ-ئ",
+        "gloss": "hundred",
+        "confidence": "high",
+        "correspondence_path": "Ar م ↔ Am መ, Ar ئ ↔ Am አ (guttural shift), Ar ت ↔ Am ት — regular reflexes for 'hundred'",
+        "wiktionary_hint": "مائة",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "מֵאָה",
+        "surface_root": "מ-א-ה",
+        "gloss": "hundred",
+        "confidence": "high",
+        "correspondence_path": "He מ ↔ Am መ, He א ↔ Am አ, He ה ↔ Am ት (metathesis/irregular innovation in Ethiopia)",
+        "wiktionary_hint": "מאה",
+        "notes": "Hebrew reflects the Proto-Semitic root *m-ʔ-t with the feminine ending -āh; the Amharic form also reflects *m-ʔ-t but involves final-consonant adjustments specific to Ge'ez/Amharic developments."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܡܐܐ",
+        "surface_root": "מ-א-א",
+        "gloss": "hundred",
+        "confidence": "high",
+        "correspondence_path": "Syc מ ↔ Am መ, Syc א ↔ Am አ — regular reflexes",
+        "wiktionary_hint": "ܡܐܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *m-ʔ-t (hundred) is a common Proto-Semitic numeral. While the consonants match well, the final consonant in early Ethio-Semitic shows developmental variance compared to the Northwest Semitic forms.",
+      "Amharic 'መቶ' (meto) is derived from Ge'ez 'መእት' (me'et) which reflects the underlying Proto-Semitic *m-ʔ-t root."
+    ]
+  }
+}

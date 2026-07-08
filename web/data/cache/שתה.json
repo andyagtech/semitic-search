@@ -1,0 +1,88 @@
+{
+  "query": "שתה",
+  "normalized": "שתה",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 802,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שתה",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שתה",
+    "extracted_root": "ש-ת-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ת",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.7
+          },
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.3
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "شَرِيَ",
+        "surface_root": "ش-ر-ي",
+        "gloss": "to drink",
+        "confidence": "high",
+        "correspondence_path": "Ar ش ↔ He ש (regular *š reflex); Ar ي (III-y) ↔ He ה (regular III-y reflex); R2 t ↔ r is a known historical divergence in this specific root.",
+        "wiktionary_hint": "شري",
+        "notes": "While the radicals involve a common shift, the R2 consonant in this root (š-t-y vs š-r-y) is problematic in comparative Semitics. It is widely accepted as a cognate despite the R2 inconsistency."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܫܬܝ",
+        "surface_root": "ܫ-ܬ-ܝ",
+        "gloss": "to drink",
+        "confidence": "high",
+        "correspondence_path": "Syc ܫ ↔ He ש; Syc ܬ ↔ He ת; Syc ܝ ↔ He ה (regular III-weak).",
+        "wiktionary_hint": "ܐܫܬܝ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root š-t-y is a classic example of erratic root second-radicals across Semitic languages (compare Arabic š-r-y vs others).",
+      "Hebrew 'ש' can represent PS *š, *ś, or *θ. Context of other Semitic branches confirms *š for 'to drink'."
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "query": "ديوان",
+  "normalized": "ديوان",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 611,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ديوان",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ديوان",
+    "extracted_root": "د-و-ن",
+    "root_type": "hollow",
+    "root_confidence": "low",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܕܘܿܝܼܵܢ",
+        "surface_root": "ܕ-ܘ-ܢ",
+        "gloss": "court, tribunal, register",
+        "confidence": "high",
+        "correspondence_path": "Ar د ↔ Syr ܕ; Ar و ↔ Syr ܘ; Ar ن ↔ Syr ܢ",
+        "wiktionary_hint": "דיואן",
+        "notes": "The Arabic word is a well-attested borrowing from Middle Persian 'dēwān', which itself entered Aramaic/Syriac via the administrative terminology of the Achaemenid and Sassanid periods."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root d-w-n is historically atypical for Semitic; the word 'dīwān' is widely accepted by etymologists as a loanword from Middle Persian 'dēwān' (archive, office). Because it is a loanword, the assignment of a 'Proto-Semitic' root is functional/structural rather than etymologically accurate."
+    ]
+  }
+}

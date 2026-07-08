@@ -1,0 +1,84 @@
+{
+  "query": "תורה",
+  "normalized": "תורה",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 644,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "תורה",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "תורה",
+    "extracted_root": "י-ר-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "י",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*h",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "رَمَى",
+        "surface_root": "ر-م-ي",
+        "gloss": "to throw, cast, shoot",
+        "confidence": "medium",
+        "correspondence_path": "He י-ר-ה ↔ Ar ر-م-ي (metathesis/semantic narrowing)",
+        "wiktionary_hint": null,
+        "notes": "While formal derivation of 'Torah' (instruction) from the root י-ר-ה (to throw/direct) is robust, morphological parallels in other Semitic languages (like Ar رَمَى) showing 'casting' are semantically distant from the 'instruction/law' meaning."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܘܪܝܬܐ",
+        "surface_root": "א-ו-ר",
+        "gloss": "Torah, Law",
+        "confidence": "high",
+        "correspondence_path": "Borrowing from Hebrew/Aramaic into Syriac lexicon",
+        "wiktionary_hint": null,
+        "notes": "This is a direct cultural loanword representing the Hebrew concept rather than a parallel cognate."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root י-ר-ה (y-r-h) is accepted in traditional and modern linguistics as the basis for 'Torah' (instruction/teaching), derived from the sense of 'directing' a cast or shot.",
+      "Proto-Semitic reconstruction of the 3rd root slot is complex due to the shift *y > ه (h) in Hebrew final-weak roots."
+    ]
+  }
+}

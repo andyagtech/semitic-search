@@ -1,0 +1,90 @@
+{
+  "query": "كتب",
+  "normalized": "كتب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 816,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "كتب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "كتب",
+    "extracted_root": "ك-ت-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ك",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ت",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "כָּתַב",
+        "surface_root": "כ-ת-ב",
+        "gloss": "to write",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ ↔ Aram ܟ (regular); Ar ت ↔ He ת ↔ Aram ܬ (regular); Ar ب ↔ He ב ↔ Aram ܒ (regular).",
+        "wiktionary_hint": "כתב",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܟܬܲܒ݂",
+        "surface_root": "ܟ-ܬ-ܒ݂",
+        "gloss": "to write, record",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ Aram ܟ; Ar ت ↔ Aram ܬ; Ar ب ↔ Aram ܒ (lenition in post-vocalic position is productive in Aramaic phonology).",
+        "wiktionary_hint": "ܟܬܒ",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ከተበ",
+        "surface_root": "ከ-ተ-በ",
+        "gloss": "to write",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ Ge'ez ክ ↔ Amharic ከ (regular); Ar ت ↔ Ge'ez ት ↔ Amharic ተ (regular); Ar ب ↔ Ge'ez ብ ↔ Amharic በ (regular).",
+        "wiktionary_hint": "ከተበ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root k-t-b shows highly stable reflexes of *k, *t, and *b across the Semitic languages, making this a canonical example of a shared lexical inheritance."
+    ]
+  }
+}

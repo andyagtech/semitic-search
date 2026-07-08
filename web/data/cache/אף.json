@@ -1,0 +1,69 @@
+{
+  "query": "אף",
+  "normalized": "אף",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 554,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אף",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אף",
+    "extracted_root": "א-נ-ף",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "נ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ף",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أنف",
+        "surface_root": "أ-ن-ف",
+        "gloss": "nose",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/ن/ف ↔ He א/נ/ף — direct correspondence of all radicals",
+        "wiktionary_hint": "أنف",
+        "notes": "Hebrew 'אף' (nose/nostril) is the standard correspondent to Arabic 'أنف'. The final radical in Hebrew Hebrew is realized as 'ף' (f) due to word-final position."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew word 'אף' undergoes a standard phonetic shift where the final *p (proto-Semitic) manifests as the fricative 'ף' (f) in absolute word-final position, even though it acts as a plosive in many morphological contexts.",
+      "Hebrew 'אף' can also act as the particle 'also/even', which is likely a separate etymological development not derived from this root."
+    ]
+  }
+}

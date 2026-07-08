@@ -1,0 +1,73 @@
+{
+  "query": "ሁለት",
+  "normalized": "ሁለት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 595,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ሁለት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ሁለት",
+    "extracted_root": "ה-ל-ד",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "h",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "l",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "t",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שְׁנַיִם",
+        "surface_root": "ש-נ-י",
+        "gloss": "two",
+        "confidence": "low",
+        "correspondence_path": "The root for 'two' is structurally irregular across Semitic (note Ge'ez ክልኤ vs Amharic ሁለት vs Hebrew שְׁנַיִם).",
+        "wiktionary_hint": null,
+        "notes": "While 'two' is a basic numeral, the root for 'two' in Ethio-Semitic (Ge'ez k-l-ʔ) is etymologically distinct from the common Central Semitic root represented by Hebrew š-n-y."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Amharic word ሁለት (hulet) derives from the Ge'ez form ክልኤ (klʔ). The initial consonant h is likely a secondary development or related to earlier Cushitic influence/phonetic shift in Ethio-Semitic.",
+      "The root extraction is based on the modern form's consonants, but the underlying Proto-Semitic numeral for 'two' is famously difficult due to widespread suppletion."
+    ]
+  }
+}

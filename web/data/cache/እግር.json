@@ -1,0 +1,80 @@
+{
+  "query": "እግር",
+  "normalized": "እግር",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 590,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "እግር",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "እግር",
+    "extracted_root": "እ-ግ-ር",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "እ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ግ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ር",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "رِجْل",
+        "surface_root": "ر-ج-ل",
+        "gloss": "foot/leg",
+        "confidence": "high",
+        "correspondence_path": "Ar ج ↔ Am ግ — regular *g reflex. Note: Arabic metathesis (r-g-l) vs. Ethio-Semitic (ʔ-g-r).",
+        "wiktionary_hint": "رجل",
+        "notes": "The semantic connection is robust, but the root shows evidence of metathesis in Arabic where the *g and *r have swapped relative positions."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šēpu",
+        "surface_root": "š-p",
+        "gloss": "foot",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Not a cognate of 'እግር', but included as a frequent lexical alternative in comparative semantics."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ʔ-g-r correlates with common Semitic forms for 'foot' (most notably Arabic *r-g-l), which suggests an ancient metathesis across the branch.",
+      "Reflexes in *g often vary in realization (e.g., Arabic ǧ, Aramaic g), but Ethio-Semitic consistently preserves 'g'."
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "query": "אבא",
+  "normalized": "אבא",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 661,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אבא",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אבא",
+    "extracted_root": "א-ב",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أَب",
+        "surface_root": "أ-ب",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ He א; Ar ب ↔ He ב — stable biliteral root *ʔab-",
+        "wiktionary_hint": "أب",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܒܐ",
+        "surface_root": "ܐ-ܒ",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Syc ܐ ↔ He א; Syc ܒ ↔ He ב — stable biliteral root *ʔab-",
+        "wiktionary_hint": "ܐܒܐ",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "አባት",
+        "surface_root": "א-ב-ת",
+        "gloss": "father",
+        "confidence": "medium",
+        "correspondence_path": "Amharic adds a feminine or nominal suffix -t to the archaic *ʔab root",
+        "wiktionary_hint": "አባት",
+        "notes": "Amharic uses the extension 'at' (t) which is common in many Semitic languages for 'father'."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ʔab is classically identified as a biliteral noun in Proto-Semitic; while often treated with a third 'root' consonant in derived forms, the core is primary.",
+      "Hebrew 'אבא' specifically is a loan/cater-to-Aramaic variant of the biblical 'אָב', which retains the more ancient form."
+    ]
+  }
+}

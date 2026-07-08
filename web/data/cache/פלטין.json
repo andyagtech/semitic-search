@@ -1,0 +1,76 @@
+{
+  "query": "פלטין",
+  "normalized": "פלטין",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4720,
+    "output_tokens": 487,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "פלטין",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "פלטין",
+    "extracted_root": "פ-ל-ט",
+    "root_type": "sound",
+    "root_confidence": "medium",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "פ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 0.95
+          },
+          {
+            "proto_phoneme": "*f",
+            "weight": 0.05
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ט",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṭ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*ṯ̣",
+            "weight": 0.1
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "بالاطين",
+        "surface_root": "ب-ل-ط",
+        "gloss": "palace",
+        "confidence": "high",
+        "correspondence_path": "Ar ب/ط ↔ He פ/ט — reflects common integration of Greek loanword *palation*",
+        "wiktionary_hint": "بالاطين",
+        "notes": "This is almost certainly a loanword from Greek 'palátion' (palace) which entered Semitic languages independently. The root is a secondary extraction from the loanword."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'פלטין' (palatin) is widely considered a loanword from Greek 'palátion' (palace). Consequently, it does not descend from a Proto-Semitic verbal root, but was 'back-formed' into a triliteral root (פ-ל-ט) in late Hebrew/Aramaic corpora."
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "query": "بيت",
+  "normalized": "بيت",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 566,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "بيت",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "بيت",
+    "extracted_root": "ب-ي-ت",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ت",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "בַּיִת",
+        "surface_root": "ב-י-ת",
+        "gloss": "house",
+        "confidence": "high",
+        "correspondence_path": "Ar ب ↔ He ב; Ar ي ↔ He י; Ar ت ↔ He ת — regular reflexes",
+        "wiktionary_hint": "בית",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܝܬܐ",
+        "surface_root": "ܒ-ܝ-ܬ",
+        "gloss": "house",
+        "confidence": "high",
+        "correspondence_path": "Ar ب ↔ Aram ב; Ar ي ↔ Aram י; Ar ت ↔ Aram ת — regular reflexes",
+        "wiktionary_hint": "ܒܝܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is a classic hollow root (*b-y-t).",
+      "Evidence for consistency across Semitic is very strong for this lemma."
+    ]
+  }
+}

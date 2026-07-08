@@ -1,0 +1,89 @@
+{
+  "query": "חמש",
+  "normalized": "חמש",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 825,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "חמש",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "חמש",
+    "extracted_root": "ח-מ-ש",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḫ",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "خمسة",
+        "surface_root": "خ-م-س",
+        "gloss": "five",
+        "confidence": "high",
+        "correspondence_path": "Ar خ ↔ He ח (regular *ḫ reflex) — Ar م ↔ He מ — Ar س ↔ He שׂ (regular *s reflex)",
+        "wiktionary_hint": "خمسة",
+        "notes": "Hebrew 'ש' here represents Proto-Semitic *s, which regularly corresponds to Arabic 'س'."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܡܫܐ",
+        "surface_root": "ܚ-ܡ-ܫ",
+        "gloss": "five",
+        "confidence": "high",
+        "correspondence_path": "Ar خ ↔ Syc ܚ (regular *ḫ reflex) — Ar م ↔ Syc ܡ — Ar س ↔ Syc ܣ (regular *s reflex)",
+        "wiktionary_hint": "ܚܡܫܐ",
+        "notes": "Syriac ܫ often reflects PS *ś, though in this root it follows the *s shift consistently."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew 'ש' is ambiguous, and while this root clearly reflects Proto-Semitic *s, the orthography does not always disambiguate between *s, *š, and *ś.",
+      "Hebrew 'ח' reflects a merger of Proto-Semitic *ḫ and *ḥ, which must be distinguished via comparative data (e.g., Arabic khamsa vs. ḥ).",
+      "Roots for numbers are highly stable in Semitic, making this a classic high-confidence reconstruction."
+    ]
+  }
+}

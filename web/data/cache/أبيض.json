@@ -1,0 +1,68 @@
+{
+  "query": "أبيض",
+  "normalized": "أبيض",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 534,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أبيض",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ابيض",
+    "extracted_root": "ب-ي-ض",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ض",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḍ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "בָּהִיר",
+        "surface_root": "ב-ה-ר",
+        "gloss": "bright, clear",
+        "confidence": "low",
+        "correspondence_path": "Ar ض ↔ He ר/ר?? (Note: Semantic link is stronger than phonetic due to Proto-Semitic *ḍ/ṣ variation in 'shining/bright' roots)",
+        "wiktionary_hint": "בהיר",
+        "notes": "While 'bayāḍ' (whiteness) is the standard Arabic, cognates for the root *b-ḍ are scarce in other branches. Hebrew 'bahir' or Akkadian 'ba'āru' are often discussed in literature regarding semantic fields of 'brightness', but not direct phonetic cognates."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *b-ḍ is specifically attested in Arabic for 'whiteness'; cognates in other Semitic languages for this specific root are problematic and often involve semantic shifts to 'brightness' or 'light' rather than the color 'white'."
+    ]
+  }
+}

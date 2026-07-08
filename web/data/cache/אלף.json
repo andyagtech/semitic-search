@@ -1,0 +1,90 @@
+{
+  "query": "אלף",
+  "normalized": "אלף",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 780,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אלף",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אלף",
+    "extracted_root": "א-ל-ף",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ף",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ألف",
+        "surface_root": "أ-ل-ف",
+        "gloss": "thousand",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ He א; Ar ل ↔ He ל; Ar ف ↔ He פ (regular *ʔ, *l, *p reflections)",
+        "wiktionary_hint": "ألف",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܠܦܐ",
+        "surface_root": "א-ל-פ",
+        "gloss": "thousand",
+        "confidence": "high",
+        "correspondence_path": "Syc ܐ ↔ He א; Syc ܠ ↔ He ל; Syc ܦ ↔ He פ (regular *ʔ, *l, *p reflections)",
+        "wiktionary_hint": "ܐܠܦܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "lim",
+        "surface_root": "l-m",
+        "gloss": "thousand",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": "lim",
+        "notes": "Akkadian 'lim' (or 'limu') represents a potential cognate, but it shows an irregular loss of the initial *ʔ and shifts/mergers in the final consonant, making it non-trivial compared to West Semitic forms."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew word 'אלף' (elef) is widely attested as 'thousand' across Northwest Semitic and Arabic, showing a very stable root *ʔ-l-p."
+    ]
+  }
+}

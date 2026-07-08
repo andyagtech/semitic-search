@@ -1,0 +1,89 @@
+{
+  "query": "שנים",
+  "normalized": "שנים",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 705,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שנים",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שנים",
+    "extracted_root": "ש-נ-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "נ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.6
+          },
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.4
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سنة",
+        "surface_root": "س-ن-و",
+        "gloss": "year",
+        "confidence": "high",
+        "correspondence_path": "He ש ↔ Ar س — regular *š reflex",
+        "wiktionary_hint": "سنة",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܢܬܐ",
+        "surface_root": "ܫ-ن-ت",
+        "gloss": "year",
+        "confidence": "high",
+        "correspondence_path": "He ש ↔ Syc ܫ — regular *š reflex",
+        "wiktionary_hint": "ܫܢܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'שנים' is the plural of 'שנה' (year), which manifests as a final-weak (III-y) root.",
+      "The Hebrew 'ש' in this root standardly reflects Proto-Semitic *š, though mergers in other branches (e.g., Ge'ez) must be handled with care.",
+      "Etymologically linked to the counting of cycles or periods."
+    ]
+  }
+}

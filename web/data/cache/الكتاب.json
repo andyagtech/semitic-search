@@ -1,0 +1,79 @@
+{
+  "query": "الكتاب",
+  "normalized": "الكتاب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 648,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "الكتاب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "الكتاب",
+    "extracted_root": "ك-ت-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ك",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ت",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "כְּתָב",
+        "surface_root": "כ-ת-ב",
+        "gloss": "writing, script, document",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ; Ar ت ↔ He ת; Ar ب ↔ He ב — regular correspondences *k, *t, *b",
+        "wiktionary_hint": "כתב",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܟܬܒܐ",
+        "surface_root": "ܟ-ܬ-ܒ",
+        "gloss": "book, scripture, writing",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ Syc ܟ; Ar ت ↔ Syc ܬ; Ar ب ↔ Syc ܒ — regular correspondences *k, *t, *b",
+        "wiktionary_hint": "ܟܬܒܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Root 'k-t-b' in Arabic is highly stable and shows regular correspondences across the major Semitic languages cited."
+    ]
+  }
+}

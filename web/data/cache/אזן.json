@@ -1,0 +1,95 @@
+{
+  "query": "אזן",
+  "normalized": "אזן",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 767,
+    "cache_read_tokens": 4009
+  },
+  "result": {
+    "input_word": "אזן",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אזן",
+    "extracted_root": "א-ז-ן",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ז",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḏ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*z",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ן",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أُذُن",
+        "surface_root": "أ-ذ-ن",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "Ar ذ ↔ He ז — regular *ḏ reflex",
+        "wiktionary_hint": "أذن",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "אֶדְנָא",
+        "surface_root": "א-ד-נ",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "He ז ↔ Aram ד — regular *ḏ reflex",
+        "wiktionary_hint": "אדנא",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "uznu",
+        "surface_root": "א-ז-נ",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "Akk z ↔ He z ↔  *ḏ reflex",
+        "wiktionary_hint": "uznu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew 'z' (ז) regularly descends from Proto-Semitic *ḏ, whereas Aramaic 'd' (ד) is the standard reflex of *ḏ in that branch.",
+      "Note that 'אזן' (ear) is a feminine noun in Hebrew; the root essentially describes the organ."
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "query": "פה",
+  "normalized": "פה",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 735,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "פה",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "פה",
+    "extracted_root": "פ-ה-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "פ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "فَم",
+        "surface_root": "ف-م",
+        "gloss": "mouth",
+        "confidence": "high",
+        "correspondence_path": "Ar ف ↔ He פ (regular *p); note: Arabic root is historically biliteral *pu/fu with secondary extension.",
+        "wiktionary_hint": "فم",
+        "notes": "Arabic uses 'famm' while Hebrew 'peh' represents a biliteral noun reflected across the Semitic languages. The third radical in Hebrew is a historical weak root extension."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܦܘܡܐ",
+        "surface_root": "ܦ-ܘ-ܡ",
+        "gloss": "mouth",
+        "confidence": "high",
+        "correspondence_path": "Syc ܦ ↔ He פ (regular *p).",
+        "wiktionary_hint": "ܦܘܡܐ",
+        "notes": "Aramaic often retains the m-suffix or an elongated form compared to the Hebrew construct."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "pû",
+        "surface_root": "p-û",
+        "gloss": "mouth",
+        "confidence": "high",
+        "correspondence_path": "Akk p ↔ He פ (regular *p).",
+        "wiktionary_hint": "pû",
+        "notes": "Akkadian shows the biliteral base."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'peh' (mouth) is famously problematic in Semitic philology because it functions as a biliteral noun in many languages but assumes a triliteral paradigm in Hebrew (e.g., construct 'pi', plural 'piyot').",
+      "The third radical in Hebrew (ה) is considered a secondary development or a filler, not a inherited Proto-Semitic radical."
+    ]
+  }
+}

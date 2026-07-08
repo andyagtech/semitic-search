@@ -1,0 +1,101 @@
+{
+  "query": "ስምንት",
+  "normalized": "ስምንት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 743,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ስምንት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ስምንት",
+    "extracted_root": "ሰ-מ-נ-ת",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ሰ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*θ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ም",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ን",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 4,
+        "surface_consonant": "ት",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ثَمَانِيَة",
+        "surface_root": "ث-م-ن",
+        "gloss": "eight",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ Am ሰ (via Ge'ez ሠ) — regular *θ reflex",
+        "wiktionary_hint": "ثمانية",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שְׁמֹנֶה",
+        "surface_root": "ש-מ-נ",
+        "gloss": "eight",
+        "confidence": "high",
+        "correspondence_path": "He שׁ ↔ Am ሰ — regular *θ reflex",
+        "wiktionary_hint": "שמונה",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܬܡܳܢܝܳܐ",
+        "surface_root": "ת-מ-נ",
+        "gloss": "eight",
+        "confidence": "high",
+        "correspondence_path": "Syc ת ↔ Am ሰ — regular *θ reflex",
+        "wiktionary_hint": "ܬܡܢܝܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The initial consonant reflects the Proto-Semitic *θ phoneme; in Ge'ez (and thus modern Amharic), this regularly appears as 'ሠ' (historically distinctive) which has merged phonetically with 'ሰ' in modern pronunciation.",
+      "The root for 'eight' is historically a biliteral base *θ-m-n-t expanded, but treated here as a consistent consonantal set."
+    ]
+  }
+}

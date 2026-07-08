@@ -1,0 +1,79 @@
+{
+  "query": "ארבע",
+  "normalized": "ארבע",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 569,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ארבע",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "ארבע",
+    "extracted_root": "ר-ב-ע",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أربع",
+        "surface_root": "ر-ب-ع",
+        "gloss": "four",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ He ר, Ar ب ↔ He ב, Ar ع ↔ He ע — regular PS reflexes",
+        "wiktionary_hint": "أربع",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܪܒܥ",
+        "surface_root": "ܪ-ܒ-ܥ",
+        "gloss": "four",
+        "confidence": "high",
+        "correspondence_path": "Syc ܪ ↔ He ר, Syc ܒ ↔ He ב, Syc ܥ ↔ He ע — regular PS reflexes",
+        "wiktionary_hint": "ארבע",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root r-b-ʕ (*r-b-ʕ) is very stable across Semitic languages with consistent reflexes at each position."
+    ]
+  }
+}

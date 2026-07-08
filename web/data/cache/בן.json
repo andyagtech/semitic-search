@@ -1,0 +1,84 @@
+{
+  "query": "בן",
+  "normalized": "בן",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 716,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "בן",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "בן",
+    "extracted_root": "ב-נ-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "נ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ابن",
+        "surface_root": "ب-ن-ي",
+        "gloss": "son",
+        "confidence": "high",
+        "correspondence_path": "Ar ب/ن ↔ He ב/נ — regular b/n reflexes; Arabic ʔibn reflects the nominal form of the same root.",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܪܐ",
+        "surface_root": "ܒ-ܪ-ܐ",
+        "gloss": "son",
+        "confidence": "medium",
+        "correspondence_path": "Syc ר ↔ He נ (irregular correspondence/metathesis or distinct root dialect variation).",
+        "wiktionary_hint": null,
+        "notes": "Classic Semitic cognate, but Syriac 'bar' replaces the expected 'bin' form found in Hebrew/Arabic, likely via dialectal variation or distinct Proto-Semitic morphology."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew word בן is a noun derived from the root b-n-y, but it functions as a biliteral base in the construct state or singular form due to the elision of the final weak consonant.",
+      "The Syriac cognate 'bar' (ܒܪܐ) is technically a related descendant from the same concept, but shows rhotacism or dialectal substitution for the expected nun."
+    ]
+  }
+}

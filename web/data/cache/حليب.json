@@ -1,0 +1,90 @@
+{
+  "query": "حليب",
+  "normalized": "حليب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 777,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "حليب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "حليب",
+    "extracted_root": "ح-ل-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ح",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܰܠܺܒܳܐ",
+        "surface_root": "ܚ-ܠ-ܒ",
+        "gloss": "milk",
+        "confidence": "high",
+        "correspondence_path": "Ar ح ↔ Syc ܚ (regular *ḥ), Ar ل ↔ Syc ܠ (regular *l), Ar ب ↔ Syc ܒ (regular *b)",
+        "wiktionary_hint": "ܚܠܒܐ",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "חָלָב",
+        "surface_root": "ח-ל-ב",
+        "gloss": "milk",
+        "confidence": "high",
+        "correspondence_path": "Ar ح ↔ He ח (regular *ḥ), Ar ل ↔ He ל (regular *l), Ar ب ↔ He ב (regular *b)",
+        "wiktionary_hint": "חלב",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šalāpu",
+        "surface_root": "š-l-p",
+        "gloss": "to pull out, extract",
+        "confidence": "speculative",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Historical etymology suggests a connection to 'milking' as 'drawing out' sustenance, but the semantic shift is significant and highly debated."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Akkadian cognate is speculative; while some earlier scholars proposed a link between the Semitic root for 'milk' and the verb 'to draw/extract', this is not universally accepted in comparative dictionary entries (e.g., CAD)."
+    ]
+  }
+}

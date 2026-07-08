@@ -1,0 +1,98 @@
+{
+  "query": "שלום",
+  "normalized": "שלום",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 792,
+    "cache_read_tokens": 4009
+  },
+  "result": {
+    "input_word": "שלום",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שלום",
+    "extracted_root": "ש-ל-ם",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.1
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ם",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سَلَام",
+        "surface_root": "س-ل-م",
+        "gloss": "peace, safety",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He שׁ — regular *š reflex",
+        "wiktionary_hint": "سلام",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܠܡܐ",
+        "surface_root": "ܫ-l-ܡ",
+        "gloss": "peace, completeness",
+        "confidence": "high",
+        "correspondence_path": "Syc ܫ ↔ He שׁ — regular *š reflex",
+        "wiktionary_hint": "ܫܠܡܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "salāmu",
+        "surface_root": "s-l-m",
+        "gloss": "to be at peace, be friendly",
+        "confidence": "high",
+        "correspondence_path": "Akk s ↔ He שׁ — regular *š reflex",
+        "wiktionary_hint": "salāmu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew ש could technically represent *š, *ś, or *θ. In the root *š-l-m, comparative evidence across all Semitic languages (Arabic salima, Akkadian salāmu) strongly confirms the proto-phoneme *š."
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "query": "አፍንጫ",
+  "normalized": "አፍንጫ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4720,
+    "output_tokens": 605,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "አፍንጫ",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "አፍንጫ",
+    "extracted_root": "አ-ፍ-ን",
+    "root_type": "sound",
+    "root_confidence": "medium",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "አ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ፍ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ን",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أنف",
+        "surface_root": "أ-ن-ف",
+        "gloss": "nose",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔ ↔ Am ʔ; Ar n ↔ Am n; Ar f ↔ Am f. Regular reflexes of *ʔnp.",
+        "wiktionary_hint": "أنف",
+        "notes": "Amharic shows metathesis of the nasal/labial components: *ʔanp- vs Am ʔafn-."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אַף",
+        "surface_root": "א-פ",
+        "gloss": "nose; anger",
+        "confidence": "medium",
+        "correspondence_path": "He ʔ ↔ Am ʔ; He p ↔ Am f. Regular reflexes of *ʔap-.",
+        "wiktionary_hint": "אף",
+        "notes": "Hebrew simplifies the root to a biliteral base (C1-C2)."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Amharic root extraction is speculative regarding the historical development of the 'ጫ' suffix, which might be a later denominal formation.",
+      "The root corresponds to Proto-Semitic *ʔ-n-p, but many Semitic languages shift the *p to *f."
+    ]
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "query": "שבע",
+  "normalized": "שבע",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 1002,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שבע",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שבע",
+    "extracted_root": "ש-ב-ע",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سَبْعَة",
+        "surface_root": "س-ب-ع",
+        "gloss": "seven",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He שׁ ↔ Aram שׁ — regular *s reflex for 'seven'",
+        "wiktionary_hint": "سبعة",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܰܒܥܳܐ",
+        "surface_root": "ܫ-ܒ-ܥ",
+        "gloss": "seven",
+        "confidence": "high",
+        "correspondence_path": "Aram ܫ ↔ He שׁ — regular *š reflex",
+        "wiktionary_hint": "ܫܒܥܐ",
+        "notes": null
+      },
+      {
+        "language": "ug",
+        "language_name": "Ugaritic",
+        "surface_form": "𐎌𐎁𐎓",
+        "surface_root": "𐎌-𐎁-𐎓",
+        "gloss": "seven",
+        "confidence": "high",
+        "correspondence_path": "Ug 𐎌 ↔ He שׁ — regular *š phoneme reflex",
+        "wiktionary_hint": "𐎌𐎁𐎓",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ሰባት",
+        "surface_root": "ሰ-ب-ት",
+        "gloss": "seven",
+        "confidence": "medium",
+        "correspondence_path": "Geʿez ሰ ↔ He שׁ (reflecting *š/ś merger) — Note: final dental *ʕ > t assimilation in later Ethio-Semitic",
+        "wiktionary_hint": "ሰባት",
+        "notes": "Ethio-Semitic shows characteristic shift of the root-final pharyngeal *ʕ into a dental stop /t/."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'seven' corresponds to Proto-Semitic *šabʕ- (or *śabʕ-).",
+      "Hebrew שׁ reflects either *š or *θ. In the case of 'seven', the reconstructed Proto-Semitic form starts with *š.",
+      "Amharic 'ሰባት' (səbat) demonstrates the regular loss of the pharyngeal *ʕ and its mutation into a dental stop in certain numerals in the Ethio-Semitic branch."
+    ]
+  }
+}

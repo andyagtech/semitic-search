@@ -1,0 +1,84 @@
+{
+  "query": "ሦስት",
+  "normalized": "ሦስት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 762,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ሦስት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ሦስት",
+    "extracted_root": "ሠ-ل-ث",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ሠ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ث",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "ثلاثة",
+        "surface_root": "ث-ل-ث",
+        "gloss": "three",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ Geʿez ሠ (for the numeral 3, *θ is the expected underlying phoneme; Ge'ez ሠ is a regular reflex for the first radical of this specific root triad *ṯ-l-ṯ)",
+        "wiktionary_hint": "ثلاثة",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שלושה",
+        "surface_root": "ש-ל-ש",
+        "gloss": "three (masculine)",
+        "confidence": "high",
+        "correspondence_path": "He שׁ ↔ Ar ث ↔ Geʿez ሠ: The Proto-Semitic *ṯ usually results in Ar ث, He שׁ, and Ge'ez ሠ",
+        "wiktionary_hint": "שלושה",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Ge'ez/Amharic root for 'three' (ሠ-ل-ث) reflects a Proto-Semitic *ṯ-l-ṯ. The Ge'ez radical ሠ is historically distinct but shifted in pronunciation to match ሰ (s) and generally corresponds to Hebrew שׁ (š) or the interdental *θ reflexes in this limited set of numerals.",
+      "Root is analyzed as triliteral *ṯ-l-ṯ given the pan-Semitic consensus on the numeral 'three'."
+    ]
+  }
+}

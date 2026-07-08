@@ -1,0 +1,83 @@
+{
+  "query": "מאה",
+  "normalized": "מאה",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 611,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "מאה",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "מאה",
+    "extracted_root": "מ-א-ה",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*h",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "مِائَة",
+        "surface_root": "م-أ-ي",
+        "gloss": "hundred",
+        "confidence": "high",
+        "correspondence_path": "Ar م-أ-ي ↔ He מ-א-ה — regular *m-ʔ-y reflex; PS *m-ʔ-y > He plural meʔōt",
+        "wiktionary_hint": "مائة",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܡܐܐ",
+        "surface_root": "ܡ-ܐ-ܐ",
+        "gloss": "hundred",
+        "confidence": "high",
+        "correspondence_path": "Ar م-أ-ي ↔ Syr מ-א-א — coalescence of final weak",
+        "wiktionary_hint": "ܡܐܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew noun 'mē'ā' (hundred) reflects the Proto-Semitic *miʔ-at- (with feminine suffix). The root is widely agreed to be *m-ʔ-y, though surface reflex in Hebrew final-weak roots often obscures the third consonant as /h/."
+    ]
+  }
+}

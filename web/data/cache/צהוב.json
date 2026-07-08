@@ -1,0 +1,72 @@
+{
+  "query": "צהוב",
+  "normalized": "צהוב",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 600,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "צהוב",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "צהוב",
+    "extracted_root": "צ-ה-ב",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "צ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṣ",
+            "weight": 0.95
+          },
+          {
+            "proto_phoneme": "*ṯ̣",
+            "weight": 0.05
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أصهب",
+        "surface_root": "ص-ه-ب",
+        "gloss": "reddish-yellow/tawny",
+        "confidence": "high",
+        "correspondence_path": "Ar ص ↔ He צ — regular *ṣ reflex; Ar ه ↔ He ה — regular *h reflex; Ar ب ↔ He ב — regular *b reflex",
+        "wiktionary_hint": "صهب",
+        "notes": "Semantic drift from 'tawny/reddish' in Arabic to 'yellow' in Hebrew."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew root צ-ה-ב (meaning yellow) is closely related to the Arabic root ص-ه-ب (meaning reddish-brown/tawny), showing a common Semitic root *ṣ-h-b for a color spectrum between tan, yellow, and red."
+    ]
+  }
+}

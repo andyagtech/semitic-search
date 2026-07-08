@@ -1,0 +1,83 @@
+{
+  "query": "קדוש",
+  "normalized": "קדוש",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 678,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "קדוש",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "קדוש",
+    "extracted_root": "ק-ד-ש",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ק",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ד",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "قدس",
+        "surface_root": "ق-د-س",
+        "gloss": "holiness, sanctuary",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He ש (both reflecting *s and *š are complicated here; Ar 'quds' typically relates to *q-d-š, but Proto-Semitic *s vs *š is notoriously unstable in these roots)",
+        "wiktionary_hint": "قدس",
+        "notes": "Arabic 'quds' (holiness) is the direct cognate; note that Arabic s ↔ Hebrew ש normally indicates *s, but this root is a well-known exception or loan-related issue in some Semitic subgroups."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܩܕܝܫܐ",
+        "surface_root": "ܩ-ܕ-ܫ",
+        "gloss": "holy, saint, sacred",
+        "confidence": "high",
+        "correspondence_path": "He ק ↔ Syc ܩ; He ד ↔ Syc ܕ; He ש ↔ Syc ܫ",
+        "wiktionary_hint": "ܩܕܝܫܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root q-d-š is widespread, but the proto-consonant for the final slot is debated due to the unexpected Arabic 's' (س) rather than 'š' (ش) in forms like 'qaddasa'. This often suggests either a specific dialectal divergence or a proto-form with *s that merged differently."
+    ]
+  }
+}

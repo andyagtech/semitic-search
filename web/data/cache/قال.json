@@ -1,0 +1,79 @@
+{
+  "query": "قال",
+  "normalized": "قال",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 576,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "قال",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "قال",
+    "extracted_root": "ق-و-ל",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ق",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*q",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "קוֹל",
+        "surface_root": "ק-ו-ל",
+        "gloss": "voice, sound",
+        "confidence": "high",
+        "correspondence_path": "Ar ق ↔ He ק (regular *q reflex), Ar و ↔ He (vowel length/realization), Ar ل ↔ He ל (regular *l reflex). Proto-root *q-w-l 'to call/sound'.",
+        "wiktionary_hint": "קול",
+        "notes": "While the Arabic is a verb 'to say' and Hebrew is a noun 'voice/sound', both derive from the Proto-Semitic root *q-w-l related to vocalization."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܩܳܠܳܐ",
+        "surface_root": "ק-ו-ל",
+        "gloss": "voice, sound, utterance",
+        "confidence": "high",
+        "correspondence_path": "Ar ق ↔ Syr ܩ, Ar و ↔ Syr ו, Ar ل ↔ Syr ל",
+        "wiktionary_hint": "ܩܳܠܳܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *q-w-l exhibits the classic 'hollow' (C2-weak) structure in Arabic, where the middle consonant surfaces as a long vowel."
+    ]
+  }
+}

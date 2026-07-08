@@ -1,0 +1,94 @@
+{
+  "query": "עשר",
+  "normalized": "עשר",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 632,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "עשר",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "עשר",
+    "extracted_root": "ע-ש-ר",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "عشر",
+        "surface_root": "ع-ش-ر",
+        "gloss": "ten",
+        "confidence": "high",
+        "correspondence_path": "Ar ع ↔ He ע; Ar ش ↔ He ש; Ar ر ↔ He ר",
+        "wiktionary_hint": "عشر",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܥܣܪ",
+        "surface_root": "ܥ-ܣ-ܪ",
+        "gloss": "ten",
+        "confidence": "high",
+        "correspondence_path": "Syc ܥ ↔ He ע; Syc ܣ ↔ He ש (reflex of *ś); Syc ܪ ↔ He ר",
+        "wiktionary_hint": "ܥܣܪ",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "አሥር",
+        "surface_root": "አ-ś-ር",
+        "gloss": "ten",
+        "confidence": "high",
+        "correspondence_path": "Am አ (historically ḥ/ʕ) ↔ He ע; Am ś ↔ He ש; Am ር ↔ He ר",
+        "wiktionary_hint": "አሥር",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew grapheme 'ש' is ambiguous. In the word 'עשר' (ten), it represents the Proto-Semitic *ś, which is distinct from *š in other roots."
+    ]
+  }
+}

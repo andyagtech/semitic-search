@@ -1,0 +1,90 @@
+{
+  "query": "أرض",
+  "normalized": "أرض",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 797,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أرض",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ارض",
+    "extracted_root": "أ-ر-ض",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ض",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḍ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֶרֶץ",
+        "surface_root": "א-ר-ץ",
+        "gloss": "earth, land",
+        "confidence": "high",
+        "correspondence_path": "Ar ض ↔ He צ — regular *ḍ reflex",
+        "wiktionary_hint": "אֶרֶץ",
+        "notes": "Hebrew צ is the standard reflex for Proto-Semitic *ḍ."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "אַרְעָא",
+        "surface_root": "א-ר-ע",
+        "gloss": "earth, land",
+        "confidence": "high",
+        "correspondence_path": "Ar ض ↔ Aram ע — regular *ḍ > ʕ reflex",
+        "wiktionary_hint": "אַרְעָא",
+        "notes": "Aramaic/Syriac commonly shows the reflex *ḍ > ʕ (ʿayin)."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "erṣetu",
+        "surface_root": "e-r-ṣ",
+        "gloss": "earth, ground",
+        "confidence": "high",
+        "correspondence_path": "Ar ض ↔ Akk ṣ — regular *ḍ reflex",
+        "wiktionary_hint": "erṣetu",
+        "notes": "Demonstrates the conservation of the emphatic quality in Akkadian."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Proto-Semitic *ḍ is a complex phoneme whose realization is debated; the cognates show clear systematic shifts (*ḍ > He צ, *ḍ > Ar ض, *ḍ > Aram ʕ, *ḍ > Akk ṣ)."
+    ]
+  }
+}

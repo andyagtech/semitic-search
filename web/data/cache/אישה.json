@@ -1,0 +1,95 @@
+{
+  "query": "אישה",
+  "normalized": "אישה",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 767,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אישה",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אישה",
+    "extracted_root": "א-נ-ש",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "נ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "إِنْسَان",
+        "surface_root": "أ-ن-س",
+        "gloss": "human being, person",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/س ↔ He א/ש — regular *ʔ-n-ś correspondence",
+        "wiktionary_hint": "إنسان",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܢܫܐ",
+        "surface_root": "ܐ-ܢ-ܫ",
+        "gloss": "man, human, person",
+        "confidence": "high",
+        "correspondence_path": "Syc ܐ/ܢ/ܫ ↔ He א/נ/ש — regular cognate",
+        "wiktionary_hint": "ܐܢܫܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "enšu",
+        "surface_root": "א-נ-ש",
+        "gloss": "weak, frail (person)",
+        "confidence": "medium",
+        "correspondence_path": "Akk ∅/n/š ↔ He א/נ/ש — semantic shift from 'person' to 'weak/frail' is debated",
+        "wiktionary_hint": null,
+        "notes": "While the consonants match (*ʔ-n-š), the semantic development in Akkadian suggests 'frail' rather than 'human'."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew word 'אישה' (iššā) is generally derived from 'א-נ-ש' via assimilation of the 'n' (i-n-š-ā -> i-š-š-ā). Some views propose derivation from 'א-י-שׁ' (man), but the feminine/plural morphology strongly favors the 'א-נ-ש' root.",
+      "The etymology of Hebrew 'אישה' (woman) is complex; it is widely accepted to be a feminine formation associated with 'איש' (man), though historical linguistics often links it to the 'human' (*ʔ-n-š) root."
+    ]
+  }
+}

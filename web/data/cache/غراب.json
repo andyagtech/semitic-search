@@ -1,0 +1,90 @@
+{
+  "query": "غراب",
+  "normalized": "غراب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 749,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "غراب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "غراب",
+    "extracted_root": "غ-ر-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "غ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ġ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "עֹרֵב",
+        "surface_root": "ע-ר-ב",
+        "gloss": "raven",
+        "confidence": "high",
+        "correspondence_path": "Ar غ ↔ He ע — regular *ġ reflex",
+        "wiktionary_hint": "עורב",
+        "notes": "Semantic agreement is precise."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܥܘܪܒܐ",
+        "surface_root": "ע-ר-ב",
+        "gloss": "raven",
+        "confidence": "high",
+        "correspondence_path": "Ar غ ↔ Aram ע — regular *ġ reflex",
+        "wiktionary_hint": null,
+        "notes": "Common Aramaic/Syriac form."
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "erebu",
+        "surface_root": "ʾ-r-b",
+        "gloss": "raven",
+        "confidence": "medium",
+        "correspondence_path": "Ar غ ↔ Akk ∅ (reconstructed) — regular loss of *ġ in Akkadian",
+        "wiktionary_hint": null,
+        "notes": "Akkadian orthography represents the original Proto-Semitic *ġ with null (vocalic initiation). The reconstruction is standard."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Proto-Semitic *ġ typically results in Arabic غ and Hebrew/Aramaic ע. In Akkadian, the *ġ is typically lost, though the root is well-attested."
+    ]
+  }
+}

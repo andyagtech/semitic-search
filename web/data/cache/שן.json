@@ -1,0 +1,74 @@
+{
+  "query": "שן",
+  "normalized": "שן",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 578,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שן",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שן",
+    "extracted_root": "ש-ן-ן",
+    "root_type": "geminate",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ן",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سِنّ",
+        "surface_root": "س-ن-ن",
+        "gloss": "tooth",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He ש — regular *s/θ reflex (Hebrew ש is ambiguous here but reconstructs to *θ)",
+        "wiktionary_hint": "سن",
+        "notes": "The Hebrew form shows a contraction of the final root consonant into the second position, characteristic of geminate nouns."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܔܾܢܳܐ",
+        "surface_root": "ש-ן-ן",
+        "gloss": "tooth",
+        "confidence": "high",
+        "correspondence_path": "Syc ܫ ↔ He ש — regular *š reflex",
+        "wiktionary_hint": "ܫܢ̈ܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Hebrew ש reflects Proto-Semitic *š, *ś, and *θ. In the case of 'tooth', the proto-form is reconstruction as *ṯinn- (or *ṯinn-).",
+      "The root is traditionally treated as a biliteral origin, but often analyzed as III-n or geminate in later stages."
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "query": "ארץ",
+  "normalized": "ארץ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 660,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ארץ",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "ארץ",
+    "extracted_root": "א-ר-צ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "צ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḍ",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*ṣ",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أرض",
+        "surface_root": "أ-ر-ض",
+        "gloss": "earth, land",
+        "confidence": "high",
+        "correspondence_path": "Ar ض ↔ He צ — regular *ḍ reflex",
+        "wiktionary_hint": "أرض",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "אַרְעָא",
+        "surface_root": "א-ר-ע",
+        "gloss": "earth, ground",
+        "confidence": "high",
+        "correspondence_path": "Syc ע ↔ He צ — regular *ḍ > ʕ reflex in Aramaic",
+        "wiktionary_hint": "ארעא",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew root צ-ר-א is historically derived from Proto-Semitic *ʔ-r-ḍ. The correspondence *ḍ > צ in Hebrew and *ḍ > ض in Arabic vs. *ḍ > ע in Aramaic is a well-established diachronic shift."
+    ]
+  }
+}

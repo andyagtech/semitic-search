@@ -1,0 +1,90 @@
+{
+  "query": "سبعة",
+  "normalized": "سبعة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 804,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "سبعة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "سبعة",
+    "extracted_root": "س-ب-ع",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ع",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שבע",
+        "surface_root": "ש-ב-ע",
+        "gloss": "seven",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He שׂ (merger), Ar ب ↔ He ב, Ar ع ↔ He ע — regular proto-Semitic *s-b-ʕ.",
+        "wiktionary_hint": "שבע",
+        "notes": "Classic cognate across all Semitic languages."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܒܥܐ",
+        "surface_root": "ܫ-ܒ-ܥ",
+        "gloss": "seven",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Syc ܫ (shift), Ar ب ↔ Syc ܒ, Ar ع ↔ Syc ܥ — regular reflexes.",
+        "wiktionary_hint": "ܫܒܥܐ",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ሰባት",
+        "surface_root": "ሰ-ב-ት",
+        "gloss": "seven",
+        "confidence": "medium",
+        "correspondence_path": "Ar س ↔ Am ሰ, Ar ب ↔ Am በ, Ar ع > ʔ (loss of gutturals) — regular correspondence with Ge'ez ancestor.",
+        "wiktionary_hint": null,
+        "notes": "The final Arabic *ʕ corresponds to the expected loss/shift to a non-guttural or glottal stop in Amharic."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew 'ש' in 'שבע' is historically 'שׂ', which merges with 'ס' in other contexts, but follows the Proto-Semitic *s root here."
+    ]
+  }
+}

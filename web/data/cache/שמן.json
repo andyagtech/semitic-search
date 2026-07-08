@@ -1,0 +1,83 @@
+{
+  "query": "שמן",
+  "normalized": "שמן",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 591,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "שמן",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "שמן",
+    "extracted_root": "ש-מ-ן",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ש",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.2
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ן",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سَمْن",
+        "surface_root": "س-م-ن",
+        "gloss": "clarified butter; ghee; fat",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He ש — regular *š reflex",
+        "wiktionary_hint": "سمن",
+        "notes": "Semantic drift from general 'fat/oil' to specific 'ghee' in Arabic."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܡܫܚܐ",
+        "surface_root": "מ-ש-ח",
+        "gloss": "oil, fat",
+        "confidence": "low",
+        "correspondence_path": "Irregular root structure (metathesis/different root variants possible)",
+        "wiktionary_hint": null,
+        "notes": "While semantically equivalent, the Syriac root מ-ש-ח (m-š-ḥ) indicates a different root *m-š-ḥ ('to smear'). The Hebrew š-m-n is distinct from the common Semitic word for 'oil' based on *m-š-ḥ."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Hebrew שמן (oil) represents a specific Proto-Semitic *š-m-n root, which should be distinguished from the root *m-š-ḥ meaning 'to smear/anoint', which is common in Aramaic and other branches as the primary word for oil."
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "query": "אכל",
+  "normalized": "אכל",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 677,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אכל",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אכל",
+    "extracted_root": "א-כ-ל",
+    "root_type": "hamzated",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "כ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أكل",
+        "surface_root": "أ-ك-ل",
+        "gloss": "to eat",
+        "confidence": "high",
+        "correspondence_path": "Ar ء ↔ He א; Ar ك ↔ He כ; Ar ل ↔ He ל — regular phonological match",
+        "wiktionary_hint": "أكل",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܟܠ",
+        "surface_root": "ܐ-ܟ-ܠ",
+        "gloss": "to eat",
+        "confidence": "high",
+        "correspondence_path": "Syc ܐ ↔ He א; Syc ܟ ↔ He כ; Syc ܠ ↔ He ל — regular phonological match",
+        "wiktionary_hint": "ܐܟܠ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "akālu",
+        "surface_root": "ʔ-k-l",
+        "gloss": "to eat",
+        "confidence": "high",
+        "correspondence_path": "Akk ∅ ↔ He א; Akk k ↔ He כ; Akk l ↔ He ל — Akkadian reflects *ʔ as ∅ or ʾ",
+        "wiktionary_hint": "akālu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is a classic triliteral hamzated verb (I-ʾ), common across the Semitic languages.",
+      "Akkadian akālu shows the typical loss of the initial laryngeal *ʔ common in that language."
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "query": "אב",
+  "normalized": "אב",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 525,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אב",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אב",
+    "extracted_root": "א-ב",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أب",
+        "surface_root": "أ-ب-و",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Ar أ (ʔ) ↔ He א (ʔ); Ar ب (b) ↔ He ב (b) — fully regular correspondence.",
+        "wiktionary_hint": "أب",
+        "notes": "Arabic reflects the root as triliteral (III-w) in inflected forms due to the final w/y extension common in Semitic kinship terms."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܒܐ",
+        "surface_root": "ܐ-ܒ",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Syc ܐ (ʔ) ↔ He א (ʔ); Syc ܒ (b) ↔ He ב (b) — regular correspondence.",
+        "wiktionary_hint": "ܐܒܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ʔ-b is a Proto-Semitic biliteral noun. While some systems treat it as *ʔ-b-w (due to the behavior of the word in constructs and plurals across daughter languages), it is best categorized analytically as a primary biliteral."
+    ]
+  }
+}

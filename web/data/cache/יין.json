@@ -1,0 +1,80 @@
+{
+  "query": "יין",
+  "normalized": "יין",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 581,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "יין",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "יין",
+    "extracted_root": "י-י-ן",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "י",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "י",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ן",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "وَيْن",
+        "surface_root": "و-ي-ن",
+        "gloss": "wine (dialectal/rare)",
+        "confidence": "low",
+        "correspondence_path": "Ar و ↔ He י (regular *w > y shift in initial position), Ar ن ↔ He ן",
+        "wiktionary_hint": null,
+        "notes": "Classic Arabic standard for wine is 'nabīḏ' or 'ḫamr'. 'Wayn' is found in specific contexts or borrowings/dialectal variants."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܡܪܐ",
+        "surface_root": "ח-מ-ר",
+        "gloss": "wine",
+        "confidence": "unknown",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Cognate strictly for the word 'wine' does not share the same root in Aramaic/Syriac; they use *ḥ-m-r."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew root י-י-ן is primarily associated with wine. It is widely considered a cultural loanword of uncertain origin within the Semitic sphere, possibly connecting to Proto-Indo-European *wóyn- (compare Greek οἶνος, Latin vīnum).",
+      "The mapping of Hebrew 'י' to Proto-Semitic '*y' is standard, but the root's status as a native Semitic root versus a very old Wanderwort is debated in comparative philology."
+    ]
+  }
+}

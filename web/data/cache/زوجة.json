@@ -1,0 +1,81 @@
+{
+  "query": "زوجة",
+  "normalized": "زوجة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 716,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "زوجة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "زوجة",
+    "extracted_root": "ز-و-ج",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ز",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*z",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ج",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "זוּג",
+        "surface_root": "ז-ו-ג",
+        "gloss": "pair, couple",
+        "confidence": "high",
+        "correspondence_path": "Ar ز ↔ He ז; Ar و ↔ He ו; Ar ج ↔ He ג — regular correspondences",
+        "wiktionary_hint": "זוג",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܙܘܓܐ",
+        "surface_root": "ܙ-ܘ-ܓ",
+        "gloss": "yoke, pair, couple",
+        "confidence": "high",
+        "correspondence_path": "Ar ز ↔ Syr ܙ; Ar و ↔ Syr ܘ; Ar ج ↔ Syr ܓ — regular correspondences",
+        "wiktionary_hint": "ܙܘܓܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic term 'زوجة' (zawja) is the feminine form of 'زوج' (zawj). The root is triliteral Z-W-G.",
+      "The noun 'pair/couple' is widely attested across Aramaic and Hebrew (often thought to be borrowed into some languages from Middle Iranian via Aramaic, though the root ZWG is genuinely Semitic and found in early Aramaic).",
+      "In some contexts, the semantic leap from 'pair' to 'spouse' is a common evolutionary path in Semitic languages."
+    ]
+  }
+}

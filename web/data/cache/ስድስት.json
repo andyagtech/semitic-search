@@ -1,0 +1,98 @@
+{
+  "query": "ስድስት",
+  "normalized": "ስድስት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 742,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ስድስት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ስድስት",
+    "extracted_root": "ሰ-ድ-ስ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ሰ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.4
+          },
+          {
+            "proto_phoneme": "*s",
+            "weight": 0.3
+          },
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.3
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ድ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ስት",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*t",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "سِتَّة",
+        "surface_root": "س-ت-ت",
+        "gloss": "six",
+        "confidence": "high",
+        "correspondence_path": "Amharic ሰ vs Arabic س reflects PS *š/*s, though Amharic preserves the triliteral structure while Arabic shows assimilation.",
+        "wiktionary_hint": "ستة",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שֵׁשׁ",
+        "surface_root": "ש-ש",
+        "gloss": "six",
+        "confidence": "high",
+        "correspondence_path": "Hebrew ש corresponds to PS *š; Hebrew form is a doublet.",
+        "wiktionary_hint": "שש",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܬܐ",
+        "surface_root": "ܫ-ܬ-ܐ",
+        "gloss": "six",
+        "confidence": "high",
+        "correspondence_path": "Syriac ܫ (PS *š) ↔ Amharic ሰ (PS *š).",
+        "wiktionary_hint": "ܫܬܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Amharic root 'ሰ-ድ-ሰ' (or 'ስ-ድ-ስ') for 'six' shows a historical metathesis or distinct development from the common Semitic 'š-d-t' pattern; the final 't' in the root is subject to complex phonological constraints in various Semitic branches."
+    ]
+  }
+}

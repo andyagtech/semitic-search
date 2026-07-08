@@ -1,0 +1,80 @@
+{
+  "query": "زوج",
+  "normalized": "زوج",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 700,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "زوج",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "زوج",
+    "extracted_root": "ز-و-ج",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ز",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*z",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "و",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ج",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "זוּג",
+        "surface_root": "ז-ו-ג",
+        "gloss": "pair, couple",
+        "confidence": "high",
+        "correspondence_path": "Ar ز ↔ He ז; Ar و ↔ He ו; Ar ج ↔ He ג — regular correspondences",
+        "wiktionary_hint": "זוג",
+        "notes": "Classic Semitic root shared across Northwest and Central Semitic."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܙܽܘܓܳܐ",
+        "surface_root": "ܙ-ܘ-ܓ",
+        "gloss": "yoke, pair, couple",
+        "confidence": "high",
+        "correspondence_path": "Ar ز ↔ Syc ܙ; Ar و ↔ Syc ܘ; Ar ج ↔ Syc ܓ — regular correspondences",
+        "wiktionary_hint": "ܙܘܓܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic root ز-و-ج is a classic hollow root. Its cognates in Hebrew and Syriac show almost phonologically perfect alignment.",
+      "Note that for Arabic ج, this corresponds to Proto-Semitic *g (the 'hard' g). The pronunciation of ج as /dʒ/ or /ʒ/ in modern Arabic does not alter the historical root mapping."
+    ]
+  }
+}

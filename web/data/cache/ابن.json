@@ -1,0 +1,84 @@
+{
+  "query": "ابن",
+  "normalized": "ابن",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 641,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ابن",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "ابن",
+    "extracted_root": "ب-ن-י",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "בֵּן",
+        "surface_root": "ב-נ-ה",
+        "gloss": "son",
+        "confidence": "high",
+        "correspondence_path": "Ar ب/ن ↔ He ב/נ — regular reflexes for *b *n; final vowel reflex corresponds to *w/y",
+        "wiktionary_hint": "בֵּן",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܪܐ",
+        "surface_root": "ܒ-ܪ-ܐ",
+        "gloss": "son",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "There is a known irregular phonetic shift in some Aramaic branches where the *n in *bn- is lost or potentially contaminated by root metathesis, though the core *b- remains."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root is traditionally analyzed as *b-n-y based on comparative evidence of the construct state and plural forms (e.g., Hebrew בָּנִים, Arabic بَنُونَ).",
+      "Aramaic forms (e.g., Syriac ܏ܒܪܐ) are notably irregular compared to the Proto-Semitic *bn-/*bny- root, often explained via dialectal sound changes or loan-processes."
+    ]
+  }
+}

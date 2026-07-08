@@ -1,0 +1,70 @@
+{
+  "query": "אם",
+  "normalized": "אם",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 491,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אם",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אם",
+    "extracted_root": "א-מ",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أُمّ",
+        "surface_root": "أ-م-م",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ He א; Ar م ↔ He מ — Common Semitic kinship term",
+        "wiktionary_hint": "أم",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܡܐ",
+        "surface_root": "א-מ-א",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Syc ܐ ↔ He א; Syc ܡ ↔ He מ — Regular correspondence",
+        "wiktionary_hint": "ܐܡܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word 'אם' is a classic example of a Proto-Semitic biliteral noun for 'mother' that often appears in daughter languages with a third radical (often *m in Arabic, or a final weak vowel in Aramaic) to fit the standard triliteral template.",
+      "Root type is classified as biliteral reflecting the primary core *ʔ-m."
+    ]
+  }
+}

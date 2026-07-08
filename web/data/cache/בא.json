@@ -1,0 +1,79 @@
+{
+  "query": "בא",
+  "normalized": "בא",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 635,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "בא",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "בא",
+    "extracted_root": "ב-ו-א",
+    "root_type": "hollow",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ו",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*w",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "بَاءَ",
+        "surface_root": "ب-و-ء",
+        "gloss": "to come",
+        "confidence": "high",
+        "correspondence_path": "Ar ب ↔ He ב; Ar و ↔ He ו; Ar ء ↔ He א (regular)",
+        "wiktionary_hint": "باء",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܒܳܐ",
+        "surface_root": "ܒ-ܘ-ܐ",
+        "gloss": "to come, enter",
+        "confidence": "high",
+        "correspondence_path": "Syc ב ↔ He ב; Syc ܘ ↔ He ו; Syc ܐ ↔ He א",
+        "wiktionary_hint": "ܒܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew form 'בא' (bā) is a hollow root (C1-w-C3) where the medial w is elided or vocalized. The underlying root is b-w-ʔ."
+    ]
+  }
+}

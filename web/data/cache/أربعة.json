@@ -1,0 +1,91 @@
+{
+  "query": "أربعة",
+  "normalized": "أربعة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 818,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أربعة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "اربعة",
+    "extracted_root": "ر-ب-ع",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ع",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אַרְבַּע",
+        "surface_root": "ר-ב-ע",
+        "gloss": "four (feminine)",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ He ר, Ar ب ↔ He ב, Ar ع ↔ He ע — regular PS *r-b-ʕ correspondence",
+        "wiktionary_hint": "ארבע",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܰܪܒܥܳܐ",
+        "surface_root": "ר-ב-ע",
+        "gloss": "four",
+        "confidence": "high",
+        "correspondence_path": "Ar ر ↔ Syr ܪ, Ar ب ↔ Syr ܒ, Ar ع ↔ Syr ܥ — regular PS *r-b-ʕ correspondence",
+        "wiktionary_hint": "ܐܪܒܥܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "erbu",
+        "surface_root": "r-b-(ʕ)",
+        "gloss": "four",
+        "confidence": "medium",
+        "correspondence_path": "Ar ر ↔ Akk r, Ar ب ↔ Akk b, Ar ع ↔ Akk ∅ (loss of pharyngeal)",
+        "wiktionary_hint": "erbu",
+        "notes": "Akkadian loss of pharyngeals makes the 3rd slot silent/dropped."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The input form 'أربعة' (arbaʿa) is the feminine cardinal; the root is clearly r-b-ʕ.",
+      "Akkadian cognate assumes the historical development *r-b-ʕ > erbu, where the final pharyngeal *ʕ is lost."
+    ]
+  }
+}

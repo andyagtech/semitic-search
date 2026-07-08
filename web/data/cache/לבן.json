@@ -1,0 +1,79 @@
+{
+  "query": "לבן",
+  "normalized": "לבן",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 615,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "לבן",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "לבן",
+    "extracted_root": "ל-ב-ן",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ב",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ן",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "لَبَن",
+        "surface_root": "ل-ب-ن",
+        "gloss": "milk",
+        "confidence": "high",
+        "correspondence_path": "Ar ل ↔ He ל; Ar ب ↔ He ב; Ar ن ↔ He ן — consistent *l-b-n root.",
+        "wiktionary_hint": "لبن",
+        "notes": "Semantic development: Hebrew uses the root for 'white' (l-b-n), while in Arabic it refers specifically to 'milk' (which is white)."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܠܒܢܐ",
+        "surface_root": "ܠ-ܒ-ܢ",
+        "gloss": "whiteness/brick",
+        "confidence": "high",
+        "correspondence_path": "Syc ܠ ↔ He ל; Syc ܒ ↔ He ב; Syc ܢ ↔ He ן — phonologically stable.",
+        "wiktionary_hint": "ܠܒܢܐ",
+        "notes": "Cognate maintains the 'white' semantic field, also associated with bricks/whitewashing."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root l-b-n universally relates to whiteness across Semitic languages, but semantic divergence (e.g., 'milk' in Arabic, 'brick' in Hebrew) illustrates the difficulty of tracking secondary lexical derivations."
+    ]
+  }
+}

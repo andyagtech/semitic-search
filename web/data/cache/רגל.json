@@ -1,0 +1,79 @@
+{
+  "query": "רגל",
+  "normalized": "רגל",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 550,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "רגל",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "רגל",
+    "extracted_root": "ר-ג-ל",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ג",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "رِجْل",
+        "surface_root": "ر-ج-ل",
+        "gloss": "foot/leg",
+        "confidence": "high",
+        "correspondence_path": "Ar ر-ج-ل ↔ He ר-ג-ל — regular *r-g-l reflex",
+        "wiktionary_hint": "رجل",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܪܶܓ݂ܠܳܐ",
+        "surface_root": "ܪ-ܓ-ܠ",
+        "gloss": "foot",
+        "confidence": "high",
+        "correspondence_path": "Syc ܪ-ܓ-ܠ ↔ He ר-ג-ל — regular *r-g-l reflex",
+        "wiktionary_hint": "ܪܓܠܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "Hebrew 'רגל' (regel) as a noun refers to 'foot' and is a well-established cognate with Arabic 'رجل' (rijl) and Aramaic 'ܪܓܠܐ' (reḡlā)."
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "query": "أم",
+  "normalized": "أم",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 689,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أم",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "أم",
+    "extracted_root": "أ-م",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֵם",
+        "surface_root": "א-מ",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ He א (reflex of *ʔ); Ar م ↔ He מ (reflex of *m)",
+        "wiktionary_hint": "אֵם",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܡܐ",
+        "surface_root": "ܐ-ܡ",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Ar أ ↔ Syc ܐ (reflex of *ʔ); Ar م ↔ Syc ܡ (reflex of *m)",
+        "wiktionary_hint": "ܐܡܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "ummum",
+        "surface_root": "u-m-m",
+        "gloss": "mother",
+        "confidence": "high",
+        "correspondence_path": "Ar ʔ ↔ Akk ∅ (laryngeal loss); Ar m ↔ Akk m (gemination occurs in Akkadian noun)",
+        "wiktionary_hint": "ummum",
+        "notes": "Akkadian exhibits typical noun-pattern gemination of the second radical."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *ʔ-m is a classic Semitic kinship biliteral, frequently treated as a noun base rather than a verbal root."
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "query": "אדום",
+  "normalized": "אדום",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 536,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אדום",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אדום",
+    "extracted_root": "א-ד-ם",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ד",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ם",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أَدَم",
+        "surface_root": "أ-د-م",
+        "gloss": "ruddy, reddish-brown (skin/complexion)",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/د/م ↔ He א/ד/מ — regular triliteral correspondence",
+        "wiktionary_hint": "أدم",
+        "notes": "Hebrew 'adom' (red) relates to the same root as Arabic 'adam' (complexion). Historically, the root *ʔ-d-m is associated with 'earth/red clay', the etymology of Adam (human) in Genesis."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing."
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "query": "כהן",
+  "normalized": "כהן",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4719,
+    "output_tokens": 635,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "כהן",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "כהן",
+    "extracted_root": "כ-ה-נ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "כ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*k",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ה",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "נ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "كاهن",
+        "surface_root": "ك-ه-ن",
+        "gloss": "priest, soothsayer",
+        "confidence": "high",
+        "correspondence_path": "Ar ك ↔ He כ; Ar ه ↔ He ה; Ar ن ↔ He נ — regular correspondents for known root *k-h-n",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܟܗܢܐ",
+        "surface_root": "ܟ-ܗ-ܢ",
+        "gloss": "priest",
+        "confidence": "high",
+        "correspondence_path": "Syc ܟ ↔ He כ; Syc ܗ ↔ He ה; Syc ܢ ↔ He נ — regular cross-dialectal cognate for *k-h-n",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *k-h-n is widely considered a Northwest Semitic innovation or borrowing from a common Semitic substratum, as its primary attestation is limited to Hebrew, Aramaic, and Arabic (likely an Aramaic loanword in Arabic).",
+      "Hebrew 'כהן' (kōhēn) originally likely derived from a participial form of a verbal root associated with 'predicting' or 'performing rites'."
+    ]
+  }
+}

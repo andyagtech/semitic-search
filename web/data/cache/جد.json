@@ -1,0 +1,80 @@
+{
+  "query": "جد",
+  "normalized": "جد",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 728,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "جد",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "جد",
+    "extracted_root": "ج-د-د",
+    "root_type": "geminate",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ج",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "د",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*d",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "גַּד",
+        "surface_root": "ג-ד-ד",
+        "gloss": "to cut, to gather",
+        "confidence": "medium",
+        "correspondence_path": "Ar ج ↔ He ג (regular *g), Ar د ↔ He ד (regular *d)",
+        "wiktionary_hint": "גדר",
+        "notes": "The meaning 'grandfather' in Arabic (jadd) is a distinct semantic development compared to the primary verbal sense of 'cutting/hewing' root *g-d-d found in cognates."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܓܕ",
+        "surface_root": "ܓ-ד-ܕ",
+        "gloss": "to cut, to harvest",
+        "confidence": "medium",
+        "correspondence_path": "Ar ج ↔ Syc ܓ (regular *g), Ar د ↔ Syc ܕ (regular *d)",
+        "wiktionary_hint": "ܓܕܕ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Arabic word 'jadd' (grandfather) is likely a semantic specialization of the root *g-d-d ('to be firm, serious, a progenitor'), while the verbal form 'jadda' (to cut/strive) is more broadly represented in the Semitic lexicon.",
+      "Geminate roots are analyzed here as C1-C2-C2 to reflect the underlying triconsonantal framework."
+    ]
+  }
+}

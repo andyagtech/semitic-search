@@ -1,0 +1,106 @@
+{
+  "query": "אוזן",
+  "normalized": "אוזן",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 864,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "אוזן",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "אוזן",
+    "extracted_root": "א-ז-ן",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ז",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḏ",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*z",
+            "weight": 0.1
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ן",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أذن",
+        "surface_root": "أ-ذ-ن",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "Ar أ/ذ/ن ↔ He א/ז/ן — regular PS *ʔ-*ḏ-*n reflexes",
+        "wiktionary_hint": "أذن",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "אודנא",
+        "surface_root": "א-ד-נ",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "Ar ذ ↔ Aram ד — regular PS *ḏ reflex",
+        "wiktionary_hint": "ܐܕܢܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "uznu",
+        "surface_root": "ʔ-z-n",
+        "gloss": "ear",
+        "confidence": "high",
+        "correspondence_path": "Akk z ↔ He ז — regular PS *ḏ reflex",
+        "wiktionary_hint": "uznu",
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ጆሮ",
+        "surface_root": "N/A",
+        "gloss": "ear",
+        "confidence": "low",
+        "correspondence_path": null,
+        "wiktionary_hint": null,
+        "notes": "Amharic uses ጆሮ (ǧoro), which is derived from a different root; rarely a Ge'ez cognate ʾəzn is found in archaic texts but it is not the productive term."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew ז in אוזן derives from PS *ḏ, which resulted in z in Hebrew and d in Aramaic.",
+      "Akkadian typically reflects PS *ḏ as z."
+    ]
+  }
+}

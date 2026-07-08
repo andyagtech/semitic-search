@@ -1,0 +1,90 @@
+{
+  "query": "شرب",
+  "normalized": "شرب",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 724,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "شرب",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "شرب",
+    "extracted_root": "ش-ر-ب",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ش",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*š",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ب",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שָׁתָה",
+        "surface_root": "ש-ת-ה",
+        "gloss": "to drink",
+        "confidence": "high",
+        "correspondence_path": "Ar ش ↔ He שׁ (historical *š vs *θ shift involved, but stems are functionally and etymologically linked within West Semitic)",
+        "wiktionary_hint": "ש-ת-ה",
+        "notes": "While modern Hebrew uses the root ש-ת-ה, the lexical base is historically related to the Semitic *š-r-b (cf. Akkadian šatû). The Hebrew root shows a common alternation or shift in the final slot."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܬܼܵܐ",
+        "surface_root": "ܫ-ܬ-ܐ",
+        "gloss": "to drink",
+        "confidence": "high",
+        "correspondence_path": "Ar ش ↔ Syr ܫ — regular *š reflex",
+        "wiktionary_hint": "ܫܬ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "šatû",
+        "surface_root": "š-t-ʔ",
+        "gloss": "to drink",
+        "confidence": "medium",
+        "correspondence_path": "Ar š ↔ Akk š — regular *š reflex",
+        "wiktionary_hint": null,
+        "notes": "Semantic agreement is strong, though consonantal structure reflects the characteristic Akkadian III-weak development."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Semitic root for 'to drink' often exhibits significant variation in the final consonant (b > t/ʔ) across branches, suggesting a potential complex historical development beyond simple root stability."
+    ]
+  }
+}

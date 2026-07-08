@@ -1,0 +1,78 @@
+{
+  "query": "أحمر",
+  "normalized": "أحمر",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 517,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "أحمر",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "أحمر",
+    "extracted_root": "ح-م-ر",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ح",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ر",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "חָמוּר",
+        "surface_root": "ח-מ-ר",
+        "gloss": "red (as in Aramaic loan influence) or donkey (homograph)",
+        "confidence": "medium",
+        "correspondence_path": "Ar ح ↔ He ח — regular *ḥ reflex",
+        "wiktionary_hint": "חמור",
+        "notes": "While 'חָמוֹר' (donkey) is the standard term, adjectival 'חָמוּר' relates to red/darkening, though semantically distinct from the color adjective usage in Semitic languages."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܚܘܡܵܪܵܐ",
+        "surface_root": "ח-מ-ר",
+        "gloss": "redness",
+        "confidence": "high",
+        "correspondence_path": "Ar ح ↔ Syr ܚ — regular *ḥ reflex",
+        "wiktionary_hint": "ܚܘܡרא",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing."
+    ]
+  }
+}

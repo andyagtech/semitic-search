@@ -1,0 +1,91 @@
+{
+  "query": "לחם",
+  "normalized": "לחם",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 752,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "לחם",
+    "detected_language": "he",
+    "detected_language_name": "Hebrew",
+    "normalized_form": "לחם",
+    "extracted_root": "ל-ח-מ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ל",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ח",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḥ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "מ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "لَحْم",
+        "surface_root": "ل-ح-מ",
+        "gloss": "meat, flesh",
+        "confidence": "high",
+        "correspondence_path": "Ar ل ↔ He ל; Ar ح ↔ He ח; Ar م ↔ He מ — regular Proto-Semitic root *l-ḥ-m",
+        "wiktionary_hint": "لحم",
+        "notes": "Semantic divergence: Hebrew means 'bread' (food/sustenance), while Arabic and Aramaic cognates generally mean 'meat/flesh'. The shift likely occurred from a general sense of 'sustenance/food' to specialized forms."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܠܚܡܐ",
+        "surface_root": "ܠ-ܚ-ܡ",
+        "gloss": "bread, food",
+        "confidence": "high",
+        "correspondence_path": "Syc ل ↔ He ל; Syc ح ↔ He ח; Syc م ↔ He מ — regular correspondences",
+        "wiktionary_hint": "ܠܚܡܐ",
+        "notes": null
+      },
+      {
+        "language": "ug",
+        "language_name": "Ugaritic",
+        "surface_form": "lḥm",
+        "surface_root": "l-ḥ-m",
+        "gloss": "to eat, food",
+        "confidence": "high",
+        "correspondence_path": "Ug l ↔ He ל; Ug ḥ ↔ He ח; Ug m ↔ He מ — regular correspondences",
+        "wiktionary_hint": null,
+        "notes": "In Ugaritic, the root primarily retains the verbal sense 'to eat' or the noun 'food'."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The semantic shift between 'food' (common in Canaanite/Aramaic) and 'meat' (common in Arabic) is a classic example of semantic specialization in Semitic languages.",
+      "Hebrew 'leḥem' (לֶחֶם) reflects the noun form derived precisely from this triconsonantal root."
+    ]
+  }
+}

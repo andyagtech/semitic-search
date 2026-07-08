@@ -1,0 +1,84 @@
+{
+  "query": "ארעא",
+  "normalized": "ארעא",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 682,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ארעא",
+    "detected_language": "syc",
+    "detected_language_name": "Aramaic (Syriac)",
+    "normalized_form": "ארעא",
+    "extracted_root": "א-ר-ע",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "א",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ר",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ע",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ḍ",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*ʕ",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أرض",
+        "surface_root": "أ-ر-ض",
+        "gloss": "earth, land",
+        "confidence": "high",
+        "correspondence_path": "Ar ض ↔ Aram ע — regular *ḍ reflex in Aramaic merging to ʕ",
+        "wiktionary_hint": "أرض",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אֶרֶץ",
+        "surface_root": "א-ר-ץ",
+        "gloss": "earth, land",
+        "confidence": "high",
+        "correspondence_path": "He צ ↔ Aram ע — regular *ḍ reflex in Hebrew as ṣ",
+        "wiktionary_hint": "ארץ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Aramaic reflex of Proto-Semitic *ḍ is typically ʕ (as seen here in ארעא), whereas Hebrew typically shows ṣ and Arabic shows ḍ.",
+      "Aramaic orthography is inherently ambiguous regarding the *ḍ/*ʕ distinction without archaic evidence; historical linguistics maps *ḍ to Aramaic ʕ conclusively."
+    ]
+  }
+}

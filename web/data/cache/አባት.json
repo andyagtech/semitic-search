@@ -1,0 +1,91 @@
+{
+  "query": "አባት",
+  "normalized": "አባት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 803,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "አባት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "አባት",
+    "extracted_root": "አ-ב-ת",
+    "root_type": "biliteral",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "አ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ብ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*b",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أب",
+        "surface_root": "أ-ب",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Am አ ↔ Ar أ — regular *ʔ reflex; Am ብ ↔ Ar ب — regular *b reflex",
+        "wiktionary_hint": "أب",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "אָב",
+        "surface_root": "א-ב",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Am አ ↔ He א — regular *ʔ reflex; Am ብ ↔ He ב — regular *b reflex",
+        "wiktionary_hint": "אָב",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܐܒܐ",
+        "surface_root": "א-ב",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Am አ ↔ Syc ܐ — regular *ʔ reflex; Am ብ ↔ Syc ܒ — regular *b reflex",
+        "wiktionary_hint": "ܐܒܐ",
+        "notes": null
+      },
+      {
+        "language": "akk",
+        "language_name": "Akkadian",
+        "surface_form": "abu",
+        "surface_root": "a-b",
+        "gloss": "father",
+        "confidence": "high",
+        "correspondence_path": "Am አ ↔ Akk ∅ (reconstructed *ʔ); Am ብ ↔ Akk b",
+        "wiktionary_hint": "abu",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Ge'ez/Amharic form 'አባት' includes the suffix '-at', which is historically associated with gender/abstract nominalization in feminine forms, though in this case it denotes 'fatherhood' or is simply a common lexicalization in Ethiopic languages for the lemma 'father'."
+    ]
+  }
+}

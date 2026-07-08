@@ -1,0 +1,83 @@
+{
+  "query": "ንጉሥነት",
+  "normalized": "ንጉሥነት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 778,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "ንጉሥነት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "ንጉሥነት",
+    "extracted_root": "נ-ג-ש",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ን",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ጉ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ሥ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.5
+          },
+          {
+            "proto_phoneme": "*š",
+            "weight": 0.5
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "نَجَاشِيّ",
+        "surface_root": "ن-ج-ش",
+        "gloss": "king (Negus), title of the Abyssinian monarch",
+        "confidence": "high",
+        "correspondence_path": "Am ን-ג-ś ↔ Ar ن-ج-ش — clear lexical correspondence",
+        "wiktionary_hint": "نجاشي",
+        "notes": "The root n-g-ś is specific to Ethio-Semitic (Ge'ez/Amharic) and is often debated as a loanword into or from other Cushitic or Semitic contacts."
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "נגש",
+        "surface_root": "נ-ג-ש",
+        "gloss": "to oppress, drive (worker)",
+        "confidence": "medium",
+        "correspondence_path": "Am ን-ג-ሥ ↔ He נ-ג-ש — regular consonant reflexes but semantic shift from 'king' to 'oppressor/driver'",
+        "wiktionary_hint": "נגש",
+        "notes": "The semantic connection between 'king/ruler' and 'oppressor' is recognized in various Semitic cognates."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root n-g-ś is distinctively Ethio-Semitic; while the consonants appear to align with North-West Semitic n-g-š, some scholars argue it is an ancient loan into Ge'ez rather than a pure cognate of the Hebrew 'oppress' root."
+    ]
+  }
+}

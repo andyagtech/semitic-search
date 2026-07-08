@@ -1,0 +1,83 @@
+{
+  "query": "ንጉሥ",
+  "normalized": "ንጉሥ",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 701,
+    "cache_read_tokens": 4009
+  },
+  "result": {
+    "input_word": "ንጉሥ",
+    "detected_language": "ti",
+    "detected_language_name": "Tigrinya",
+    "normalized_form": "ንጉሥ",
+    "extracted_root": "נ-ג-ש",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "נ (n)",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ג (g)",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ש (ś)",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ś",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*s",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "نجاشي",
+        "surface_root": "ن-ج-ش",
+        "gloss": "Negus (ruler of Ethiopia), title historically linked",
+        "confidence": "high",
+        "correspondence_path": "Ar ن-ج-ش ↔ Geʿez נ-ג-ש — regular cognate",
+        "wiktionary_hint": null,
+        "notes": "Arabic reflects the Ethio-Semitic term as a loanword or title usage."
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ንጉሥ",
+        "surface_root": "ن-ج-ش",
+        "gloss": "king",
+        "confidence": "high",
+        "correspondence_path": "Am נ-ג-ש ↔ Geʿez נ-ג-ש — direct descendant",
+        "wiktionary_hint": "ንጉሥ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The roots in Ge'ez/Ethio-Semitic for 'king' (n-g-ś) and 'be king' (n-g-ś) are ancient; etymological connection to wider Semitic is sometimes debated due to potentially unique Ethio-Semitic terminology, but the triliteral structure is standard."
+    ]
+  }
+}

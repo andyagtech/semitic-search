@@ -1,0 +1,80 @@
+{
+  "query": "فم",
+  "normalized": "فم",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4718,
+    "output_tokens": 682,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "فم",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "فم",
+    "extracted_root": "ف-و-ه",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ف",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*p",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ه",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*h",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "פֶּה",
+        "surface_root": "פ-ה",
+        "gloss": "mouth",
+        "confidence": "high",
+        "correspondence_path": "Ar ف ↔ He פ (p) — regular *p reflex; Ar final ه ↔ He ה (*h reflex); Arabic shows binary root reduction",
+        "wiktionary_hint": "פה",
+        "notes": "Arabic 'fam' (from *p-w-h) represents a noun form derived from the triliteral root, though it functions as a biliteral; Hebrew 'peh' shows the expected final *h preservation."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܦܘܡܐ",
+        "surface_root": "ܦ-ܘ-ܡ",
+        "gloss": "mouth",
+        "confidence": "medium",
+        "correspondence_path": "Ar ف ↔ Syc ܦ (p); Ar م ↔ Syc ܡ (m). Note: The Aramaic root is traditionally treated as *p-w-m.",
+        "wiktionary_hint": "ܦܘܡܐ",
+        "notes": "The Aramaic/Syriac lexicalization (p-w-m) differs from the Arabic/Hebrew (p-h) path, reflecting a common Semitic divergence in naming the 'mouth' involving secondary developments."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root p-h is one of the most debated in Semitic comparative studies due to the irregular behavior of the final weak consonant across daughter branches.",
+      "Arabic 'fam' is often analyzed as a reflex of an original *p-w-h, whereas Aramaic forms point toward a *p-w-m base."
+    ]
+  }
+}

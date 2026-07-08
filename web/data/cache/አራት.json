@@ -1,0 +1,83 @@
+{
+  "query": "አራት",
+  "normalized": "አራት",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 725,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "አራት",
+    "detected_language": "am",
+    "detected_language_name": "Amharic",
+    "normalized_form": "አራት",
+    "extracted_root": "አ-ር-ተ",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "አ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ር",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*r",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ተ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*θ",
+            "weight": 0.8
+          },
+          {
+            "proto_phoneme": "*t",
+            "weight": 0.2
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "ar",
+        "language_name": "Arabic",
+        "surface_form": "أربعة",
+        "surface_root": "ر-ب-ع",
+        "gloss": "four",
+        "confidence": "high",
+        "correspondence_path": "Am አ-ር-ተ ↔ Ar أ-ر-ب-ع. Note: The reconstructed root is *ʔ-r-b-ʕ. The Amharic form shows a significant simplification/metathesis or shift to a 't' ending common in some Ethio-Semitic numerals.",
+        "wiktionary_hint": "أربعة",
+        "notes": null
+      },
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "ארבע",
+        "surface_root": "א-ר-ב-ע",
+        "gloss": "four",
+        "confidence": "high",
+        "correspondence_path": "Semitic *ʔ-r-b-ʕ is the base for 'four'. Amharic reflects a historical shift involving the 4th radical.",
+        "wiktionary_hint": "ארבע",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The word for 'four' in Semitic is notoriously complex due to irregularities in the root *ʔ-r-b-ʕ. The correspondence between Amharic 'አራት' and the standard triliteral *ʔ-r-b-ʕ is morphologically divergent and involves sound shifts specific to the Ethio-Semitic numeral system."
+    ]
+  }
+}

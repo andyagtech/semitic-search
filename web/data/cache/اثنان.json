@@ -1,0 +1,90 @@
+{
+  "query": "اثنان",
+  "normalized": "اثنان",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4716,
+    "output_tokens": 775,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "اثنان",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "اثنان",
+    "extracted_root": "ث-ن-ي",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ث",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ṯ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ن",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*n",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שניים",
+        "surface_root": "שׁ-נ-י",
+        "gloss": "two",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ He שׁ — regular *ṯ reflex",
+        "wiktionary_hint": "שניים",
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܬܪ̈ܝܢ",
+        "surface_root": "ת-ר-י",
+        "gloss": "two",
+        "confidence": "medium",
+        "correspondence_path": "Ar ث ↔ Aram ת — regular *ṯ reflex; note the secondary r-insertion/dissimilation seen in Aramaic/Ugaritic vs Central Semitic",
+        "wiktionary_hint": "ܬܪܝܢ",
+        "notes": "Aramaic often exhibits an r-insertion or metathesis pattern common in numerals for 'two' in this branch (cf. Ugaritic ṯn)."
+      },
+      {
+        "language": "ug",
+        "language_name": "Ugaritic",
+        "surface_form": "ṯn",
+        "surface_root": "ṯ-n",
+        "gloss": "two",
+        "confidence": "high",
+        "correspondence_path": "Ar ث ↔ Ug ṯ — regular *ṯ reflex",
+        "wiktionary_hint": null,
+        "notes": "Ugaritic maintains the root without the final yod suffix observed in Arabic or Hebrew dual forms."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root ث-ن-ي is treated here as a III-y base because of the yod in the dual/nominal morphology of Arabic and Hebrew."
+    ]
+  }
+}

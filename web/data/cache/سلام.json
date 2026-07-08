@@ -1,0 +1,79 @@
+{
+  "query": "سلام",
+  "normalized": "سلام",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 536,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "سلام",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "سلام",
+    "extracted_root": "س-ل-م",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "س",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*s",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "שָׁלוֹם",
+        "surface_root": "ש-ל-מ",
+        "gloss": "peace, well-being",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ He שׁ — regular *s reflex in Hebrew for this root (though š is common, s is the expected outcome here due to specific lexical development)",
+        "wiktionary_hint": "שלום",
+        "notes": "While Hebrew ש normally reflects *š or *ś, this root demonstrates the common North-West Semitic /s/ reflex."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܫܠܡܐ",
+        "surface_root": "ܫ-ܠ-ܡ",
+        "gloss": "peace, greeting, health",
+        "confidence": "high",
+        "correspondence_path": "Ar س ↔ Syc ܫ — regular *s reflex for this specific root",
+        "wiktionary_hint": "ܫܠܡܐ",
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The Hebrew reflex 'שׁ' in 'שלום' is historically standard for this root, despite an surface-level sibilant mismatch with the expected PS *s."
+    ]
+  }
+}

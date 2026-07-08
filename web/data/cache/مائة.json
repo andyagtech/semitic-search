@@ -1,0 +1,83 @@
+{
+  "query": "مائة",
+  "normalized": "مائة",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4717,
+    "output_tokens": 731,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "مائة",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "مائة",
+    "extracted_root": "م-ʔ-y",
+    "root_type": "final-weak",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "أ",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*ʔ",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ي",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*y",
+            "weight": 0.9
+          },
+          {
+            "proto_phoneme": "*w",
+            "weight": 0.1
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "מֵאָה",
+        "surface_root": "מ-א-ה",
+        "gloss": "hundred",
+        "confidence": "high",
+        "correspondence_path": "Ar م ↔ He מ; Ar ʔ ↔ He א; Ar ي ↔ He ה (*III-y root reflex)",
+        "wiktionary_hint": "מאה",
+        "notes": "Development of the *III-y root to III-h in Hebrew is a regular feature of this lexeme."
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܡܐܐ",
+        "surface_root": "מ-א-א",
+        "gloss": "hundred",
+        "confidence": "high",
+        "correspondence_path": "Ar م ↔ Syc מ; Ar ʔ ↔ Syc א; Ar ي ↔ Syc א (*III-y weak root merger)",
+        "wiktionary_hint": "ܡܐܐ",
+        "notes": "Syriac generally merges *III-y and *III-ʔ roots in this context."
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root for 'hundred' is traditionally reconstructed as *miʔat-. The final consonant is frequently represented as *III-y or *III-ʔ in Semitic scholarship, resulting in minor orthographic variations across daughter languages."
+    ]
+  }
+}

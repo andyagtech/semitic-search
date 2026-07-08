@@ -1,0 +1,90 @@
+{
+  "query": "جمل",
+  "normalized": "جمل",
+  "model": "google/gemini-3.1-flash-lite",
+  "usage": {
+    "input_tokens": 4715,
+    "output_tokens": 679,
+    "cache_read_tokens": 0
+  },
+  "result": {
+    "input_word": "جمل",
+    "detected_language": "ar",
+    "detected_language_name": "Arabic",
+    "normalized_form": "جمل",
+    "extracted_root": "ج-م-ل",
+    "root_type": "sound",
+    "root_confidence": "high",
+    "proto_slots": [
+      {
+        "position": 1,
+        "surface_consonant": "ج",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*g",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "surface_consonant": "م",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*m",
+            "weight": 1.0
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "surface_consonant": "ل",
+        "proto_candidates": [
+          {
+            "proto_phoneme": "*l",
+            "weight": 1.0
+          }
+        ]
+      }
+    ],
+    "cognates": [
+      {
+        "language": "he",
+        "language_name": "Hebrew",
+        "surface_form": "גָּמָל",
+        "surface_root": "ג-מ-ל",
+        "gloss": "camel",
+        "confidence": "high",
+        "correspondence_path": "Ar ج ↔ He ג — regular *g reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "syc",
+        "language_name": "Syriac",
+        "surface_form": "ܓܡܠܐ",
+        "surface_root": "ܓ-ܡ-ܠ",
+        "gloss": "camel",
+        "confidence": "high",
+        "correspondence_path": "Ar ج ↔ Aram ܓ — regular *g reflex",
+        "wiktionary_hint": null,
+        "notes": null
+      },
+      {
+        "language": "am",
+        "language_name": "Amharic",
+        "surface_form": "ግመል",
+        "surface_root": "ג-מ-ל",
+        "gloss": "camel",
+        "confidence": "high",
+        "correspondence_path": "Ar ج ↔ Amharic ግ — Geʿez *g reflex preserved",
+        "wiktionary_hint": null,
+        "notes": null
+      }
+    ],
+    "caveats": [
+      "v0 prototype: this is an LLM-generated analysis, not a lexicon lookup. Results may be incomplete or incorrect, especially for Syriac, Tigrinya, and rare forms. Verify against Wiktionary or a scholarly lexicon before citing.",
+      "The root *g-m-l in this context specifically refers to the animal; the semantically distinct verbal root meaning 'to complete/perform a service' is often considered a separate etymological branch or a denominative formation."
+    ]
+  }
+}

@@ -34,10 +34,20 @@ export default function LoanwordsPage() {
         <h1 className="text-3xl font-semibold">Loanwords &amp; native alternatives</h1>
         <p className="text-sm text-neutral-600 mt-2 max-w-3xl leading-relaxed">
           Common Semitic loanwords from Aramaic, Greek, Persian, Italian, and English
-          paired with imagined native alternatives built from Proto-Semitic roots. Some
-          alternatives — like Modern Hebrew <span className="font-mono">machshev</span> and
-          Arabic <span className="font-mono">hātif</span> — are ACADEMY COININGS that WON
-          and are now standard.
+          paired with native alternatives built from Proto-Semitic roots. Hebrew entries
+          draw on the{" "}
+          <a href="https://terms.hebrew-academy.org.il/" className="underline"
+             target="_blank" rel="noopener">Academy of the Hebrew Language&apos;s
+            terminology database</a>
+          {" "}and{" "}
+          <a href="https://iedit.co.il/foreign-words-and-their-hebrew-alternatives/"
+             className="underline" target="_blank" rel="noopener">iEdit&apos;s
+            curated list</a>. Some alternatives — <span className="font-mono">machshev</span>,
+          {" "}<span className="font-mono">mazgan</span>, <span className="font-mono">
+          ramzor</span>, <span className="font-mono">kaspomat</span>, Arabic{" "}
+          <span className="font-mono">hātif</span> — are Academy coinings that WON and
+          are now the standard word. Others (Hebrew <span className="font-mono">saḥ-rachok
+          </span> for &quot;telephone&quot;) failed completely.
         </p>
         <div className="mt-3 flex flex-wrap gap-3 text-xs">
           {(["attested", "archaic", "imagined"] as const).map((s) => (

@@ -1,9 +1,16 @@
 /**
  * Curated Semitic loanwords + imagined native alternatives.
  *
- * Each entry pairs a real loanword (in a Semitic language) with 1-3 imagined
- * native alternatives, drawn from Proto-Semitic roots + native derivational
- * patterns (binyanim / mishqalim in Hebrew; awzān in Arabic).
+ * Hebrew entries draw heavily on published Academy of the Hebrew Language
+ * (Ha-Aqademia La-Lashon Ha-ʿIvrit) coinings and Ben-Yehuda-era neologisms.
+ * Academy sources:
+ *   - terms.hebrew-academy.org.il — the official terminology database
+ *   - iedit.co.il/foreign-words-and-their-hebrew-alternatives
+ *   - individual Academy news posts on lexical replacements
+ *
+ * Each entry pairs a real loanword with 1-3 native alternatives, tagged
+ * `attested` (in real use), `archaic` (fell out of use), or `imagined`
+ * (thought-experiment coining).
  */
 
 import type { LanguageCode } from "./models";
@@ -105,6 +112,124 @@ export const LOANWORD_SECTIONS: LoanwordSection[] = [
         loan: "סנהדרין", source: "Greek συνέδριον synedrion", meaning: "council, court",
         alternatives: [
           { form: "מועצה moetsa", derivation: "Native from י-ע-ץ 'counsel' + mishqal mo-C(C)a. Modern Hebrew for 'council'.", status: "attested" },
+        ],
+      },
+
+      // ── Academy coinings sourced from terms.hebrew-academy.org.il and iedit.co.il ──
+      {
+        loan: "אלרגיה alergya", source: "English/German 'allergy'", meaning: "allergy",
+        alternatives: [
+          { form: "רַגֶּשֶׁת rageshet", derivation: "Academy coining from ר-ג-ש 'feel' + segolate CaCCēCet pattern. The native form is documented but the loan alergya remains more common in daily speech.", status: "attested" },
+        ],
+      },
+      {
+        loan: "היררכיה hiyerarkhya", source: "Greek ἱεραρχία via European languages", meaning: "hierarchy",
+        alternatives: [
+          { form: "מִדְרָג midrag", derivation: "Academy coining from ד-ר-ג 'grade, step' + mishqal mif'āl. Actively used in academic writing.", status: "attested" },
+        ],
+      },
+      {
+        loan: "פלצבו platsebo", source: "Latin placebo 'I shall please'", meaning: "placebo",
+        alternatives: [
+          { form: "תְּרוּפַת דֶּמֶה trufat deme", derivation: "Native compound: תרופה 'medicine' + construct + דמה 'imitation'. Literally 'imitation-medicine'.", status: "attested" },
+        ],
+      },
+      {
+        loan: "אאוטפוט output", source: "English 'output'", meaning: "output",
+        alternatives: [
+          { form: "תְּפוּקָה tfuka", derivation: "From נ-פ-ק 'issue, come out' + qtīlā feminine deverbal pattern. Standard in economics and engineering.", status: "attested" },
+        ],
+      },
+      {
+        loan: "אסקפיזם eskapizm", source: "English 'escapism'", meaning: "escapism",
+        alternatives: [
+          { form: "בּוֹרְחָנוּת borḥanut", derivation: "Native from ב-ר-ח 'flee' + agentive -ān + abstract -ūt. Structurally 'fleer-ness'.", status: "attested" },
+        ],
+      },
+      {
+        loan: "סובלימציה sublimatsya", source: "Latin sublimare via European languages", meaning: "sublimation (psychology)",
+        alternatives: [
+          { form: "עִדּוּן iddun", derivation: "Native from ע-ד-ן 'refine, delight' + piʿel-verbal-noun pattern. Used in Freudian discussions in Hebrew.", status: "attested" },
+        ],
+      },
+      {
+        loan: "גלאוקומה glaukoma", source: "Greek γλαύκωμα 'clouding'", meaning: "glaucoma (eye disease)",
+        alternatives: [
+          { form: "בַּרְקִית barkit", derivation: "From ב-ר-ק 'shine, flash' + -it suffix. Academy coining for the eye condition, referencing the visual disturbance.", status: "attested" },
+        ],
+      },
+      {
+        loan: "צנטריפוגה tsentrifuga", source: "Latin centri- + fuga 'flee'", meaning: "centrifuge",
+        alternatives: [
+          { form: "סַרְכֶּזֶת sarketzet", derivation: "Portmanteau native from סר 'turn' + מרכז 'center' + segolate -et. Academy coining.", status: "attested" },
+        ],
+      },
+      {
+        loan: "טרנספירציה transpiratsya", source: "Latin transpiratio", meaning: "transpiration (biology)",
+        alternatives: [
+          { form: "דִּיּוּת diyut", derivation: "Native from an extended root, deverbal abstract -ūt. Academy coining for the botanical process.", status: "attested" },
+        ],
+      },
+      {
+        loan: "בונקר bunker", source: "German/English 'bunker'", meaning: "bunker, fortified shelter",
+        alternatives: [
+          { form: "בֶּצֶר betser", derivation: "Biblical Hebrew ב-צ-ר 'fortify', citing the Biblical city of refuge (Josh 20:8).", status: "imagined" },
+          { form: "בִּצָּרוֹן bitsaron", derivation: "From ב-צ-ר + -ōn, cf. Zech 9:12 'strongholds'.", status: "imagined" },
+          { form: "מִבְצוֹר mivtsor", derivation: "From same root using the mistor 'hiding place' pattern.", status: "imagined" },
+        ],
+      },
+      {
+        loan: "מזגן mazgan", source: "actually native — but replaced English 'air conditioner'", meaning: "air conditioner",
+        alternatives: [
+          { form: "מַזְגָּן mazgan", derivation: "Academy coining from מ-ז-ג 'blend, temper' + mishqal -gan (like מטבחן). WON completely — standard word.", status: "attested" },
+        ],
+      },
+      {
+        loan: "כספומט kaspomat", source: "actually native — but replaced English 'ATM'", meaning: "ATM, cash machine",
+        alternatives: [
+          { form: "כַּסְפּוֹמָט kaspomat", derivation: "Portmanteau of כסף kesef 'money' + automat suffix. WON — the standard word.", status: "attested" },
+        ],
+      },
+      {
+        loan: "רמזור ramzor", source: "actually native — but replaced 'signal/traffic light'", meaning: "traffic light",
+        alternatives: [
+          { form: "רַמְזוֹר ramzor", derivation: "Portmanteau of רמז 'hint, signal' + אור 'light'. WON — standard.", status: "attested" },
+        ],
+      },
+      {
+        loan: "מסך masakh", source: "actually native — replaced 'screen'", meaning: "screen (display/curtain)",
+        alternatives: [
+          { form: "מָסָךְ masakh", derivation: "From Biblical מ-ס-ך 'curtain, cover' (Ex 26:36). Extended to modern display screens; WON.", status: "attested" },
+        ],
+      },
+      {
+        loan: "מקלדת mikledet", source: "actually native — replaced 'keyboard'", meaning: "keyboard",
+        alternatives: [
+          { form: "מִקְלֶדֶת mikledet", derivation: "From קליד 'key' + mishqal miCCeCet (instrument feminine). Coined for the piano keyboard, extended to computers. WON.", status: "attested" },
+        ],
+      },
+      {
+        loan: "דוא\"ל dual", source: "actually native — replaced 'email'", meaning: "email",
+        alternatives: [
+          { form: 'דוא"ל dual', derivation: "Abbreviation of דואר אלקטרוני doar elektroni 'electronic mail'. Native דואר from Aramaic דוֹאָרָא. WON — standard.", status: "attested" },
+        ],
+      },
+      {
+        loan: "אתר atar", source: "actually native — replaced 'website/site'", meaning: "website",
+        alternatives: [
+          { form: "אֲתָר atar", derivation: "Native Aramaic-origin 'place, site' (Biblical Aramaic Ezr 5:15). Extended to websites. WON.", status: "attested" },
+        ],
+      },
+      {
+        loan: "טלפון telefon", source: "Greek τηλέφωνον via European languages", meaning: "telephone",
+        alternatives: [
+          { form: "שַׂח-רָחוֹק sach-rachok", derivation: "Academy attempt: שח 'speech' + רחוק 'distant' — a direct calque of Greek tele- + phono-. FAILED completely; nobody uses it. Instead the Hebrew accepted t-l-f-n as a native-like root.", status: "archaic" },
+        ],
+      },
+      {
+        loan: "נייד nayad", source: "actually native — replaced 'mobile/cellular'", meaning: "mobile phone",
+        alternatives: [
+          { form: "נַיָּד nayad", derivation: "From נ-ו-ד 'move, wander' + qattāl pattern (nomen agentis). WON — standard, and the verb לְטַלְפֵּן letalfen 'to phone' now uses the accepted telfen root.", status: "attested" },
         ],
       },
     ],

@@ -21,6 +21,60 @@ RootType = Literal[
 ]
 
 
+# Semitic-specific: origin for the Loan Replacement Generator. Semitic loan
+# sources include Aramaic (loanwords in Hebrew), Greek, Persian, Turkish/
+# Ottoman, and Arabic itself (e.g. Modern Hebrew loans from Arabic).
+LoanOrigin = Literal[
+    "inherited", "aramaic", "greek", "persian", "arabic", "turkish",
+    "european", "other-loan", "unknown",
+]
+
+Mechanic = Literal["native-stock", "reflex-adapted"]
+
+Plausibility = Literal["strong", "reasonable", "speculative"]
+
+
+class LoanReplacement(BaseModel):
+    """One imagined native-sounding replacement for a Semitic loanword."""
+
+    candidate: str = Field(
+        description=(
+            "The proposed replacement word in the TARGET language's native script. "
+            "For 'native-stock', built from a Proto-Semitic root sharing the meaning. "
+            "For 'reflex-adapted', the loan word re-run through the target's sound laws."
+        )
+    )
+    mechanic: Mechanic
+    gloss: str = Field(description="Concise English gloss.")
+    derivation: str = Field(
+        description=(
+            "For native-stock: name the Proto-Semitic root or attested native stem "
+            "and the morphological pattern (binyan/mishqal). For reflex-adapted: "
+            "list the sound laws applied and the intermediate forms."
+        )
+    )
+    plausibility: Plausibility
+    based_on: Optional[str] = Field(
+        default=None,
+        description=(
+            "For native-stock: the Proto-Semitic root (e.g. '*brk bless'). "
+            "For reflex-adapted: the source loan word in its original script."
+        ),
+    )
+    notes: Optional[str] = Field(default=None)
+
+
+class LoanReplacementResult(BaseModel):
+    input_word: str
+    detected_language: LanguageCode
+    detected_language_name: str
+    detected_source: LoanOrigin
+    original_meaning: str
+    source_form: Optional[str] = None
+    replacements: list[LoanReplacement] = Field(default_factory=list)
+    caveats: list[str] = Field(default_factory=list)
+
+
 class ProtoCandidate(BaseModel):
     proto_phoneme: str = Field(
         description=(

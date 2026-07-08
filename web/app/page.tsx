@@ -548,6 +548,9 @@ export default function Home() {
             <Link href="/tables" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
               Tables
             </Link>
+            <Link href="/replace" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
+              Replace loans
+            </Link>
             <Link href="/polyglot" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
               Polyglot table
             </Link>

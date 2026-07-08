@@ -544,6 +544,9 @@ export default function Home() {
             <Link href="/roots" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
               Roots
             </Link>
+            <Link href="/tables" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
+              Tables
+            </Link>
             <Link href="/polyglot" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
               Polyglot table
             </Link>

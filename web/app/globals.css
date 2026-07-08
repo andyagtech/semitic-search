@@ -168,6 +168,68 @@ textarea::placeholder {
   border-color: color-mix(in oklab, var(--accent-showcase) 65%, transparent);
 }
 
+/* Branch tint tokens for comparison-table columns. Muted-warm chroma so
+   they read as gentle "column-groups" against parchment. */
+:root {
+  --branch-east:       #b8d4d4;   /* soft teal — Akkadian anchor */
+  --branch-northwest:  #bcccdc;   /* soft blue — Ugaritic + Canaanite + Aramaic */
+  --branch-central:    #e4c9b0;   /* soft pink-ochre — Arabic */
+  --branch-south-arabian: #c9dcb8; /* mint — Sabaean */
+  --branch-ethio-semitic: #d4c1e0; /* soft lavender — Ge'ez, Amharic, Tigrinya */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --branch-east:          #3a5252;
+    --branch-northwest:     #364353;
+    --branch-central:       #5c4635;
+    --branch-south-arabian: #3f5537;
+    --branch-ethio-semitic: #4a3d55;
+  }
+}
+.branch-east            { --branch-tint: var(--branch-east); }
+.branch-northwest       { --branch-tint: var(--branch-northwest); }
+.branch-central         { --branch-tint: var(--branch-central); }
+.branch-south-arabian   { --branch-tint: var(--branch-south-arabian); }
+.branch-ethio-semitic   { --branch-tint: var(--branch-ethio-semitic); }
+
+.comparison-table th.branch,
+.comparison-table td.branch {
+  background: color-mix(in oklab, var(--branch-tint) 22%, transparent);
+}
+.comparison-table th.branch-header {
+  background: color-mix(in oklab, var(--branch-tint) 45%, transparent);
+  color: var(--foreground);
+  font-weight: 600;
+}
+.comparison-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.comparison-table th,
+.comparison-table td {
+  border: 1px solid color-mix(in oklab, var(--foreground) 15%, transparent);
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.comparison-table td.row-label {
+  background: color-mix(in oklab, var(--foreground) 5%, transparent);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.comparison-table td.row-proto {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: var(--accent-proto);
+  white-space: nowrap;
+}
+.comparison-table td.empty { color: color-mix(in oklab, var(--foreground) 30%, transparent); }
+.comparison-table caption {
+  caption-side: top; text-align: left;
+  padding-bottom: 8px; font-size: 12px;
+  color: color-mix(in oklab, var(--foreground) 65%, transparent);
+}
+
 /* Print stylesheet — intended for /roots/[slug] researcher reference cards.
    Hide nav/footer/interactive bits, unify to black-on-white, keep all the
    linguistic content dense and readable. */

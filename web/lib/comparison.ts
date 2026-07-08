@@ -330,6 +330,78 @@ export const TABLES: ComparisonTable[] = [
     ],
   },
   {
+    slug: "colors",
+    title: "Colors",
+    description:
+      "Basic color terms across Semitic. Shows the *l/*b root of 'white' (*labn-), the *r-w-t root of 'blackness', and how Arabic's afʕal color pattern (aḥmar, aḫḍar, azraq) contrasts with Hebrew's CāCōC pattern (adom, yarok, kaḥol).",
+    kind: "vocabulary",
+    rows: [
+      {
+        label: "black", proto: "*šḥr / *ʔdm variant",
+        cells: {
+          akk: ["ṣalmu"],
+          ug: ["𐎌𐎈𐎗", "šḥr"], he: ["שָׁחוֹר", "šāḥōr"], arc: ["אֻכָּמָא", "ʾukkāmā"], syc: ["ܐܘܟܡܐ", "ʾukkāmā"],
+          ar: ["أسود", "ʾaswad"],
+          sab: ["𐩱𐩪𐩥𐩵", "ʔswd"],
+          gez: ["ጸሊም", "ṣallim"], am: ["ጥቁር", "ṭəqur"], ti: ["ጸሊም", "ṣälim"],
+        },
+      },
+      {
+        label: "white", proto: "*labn-",
+        cells: {
+          akk: ["peṣû"],
+          ug: ["𐎍𐎁𐎐", "lbn"], he: ["לָבָן", "lāvān"], arc: ["חִוָּר", "ḥiwwār"], syc: ["ܚܘܪܐ", "ḥewwārā"],
+          ar: ["أبيض", "ʾabyaḍ"],
+          sab: ["𐩱𐩨𐩺𐩳", "ʔbyḍ"],
+          gez: ["ጸዓዳ", "ṣaʿadā"], am: ["ነጭ", "näč"], ti: ["ጻዕዳ", "ṣäʿda"],
+        },
+      },
+      {
+        label: "red", proto: "*ʔdm / *ḥmr",
+        cells: {
+          akk: ["sāmu"],
+          ug: ["𐎀𐎄𐎎", "ʾadm"], he: ["אָדֹם", "ʾādōm"], arc: ["סוּמָּקָא", "summāqā"], syc: ["ܣܘܡܩܐ", "summāqā"],
+          ar: ["أحمر", "ʾaḥmar"],
+          sab: ["𐩱𐩢𐩣𐩧", "ʔḥmr"],
+          gez: ["ቀይሕ", "qayyəḥ"], am: ["ቀይ", "qäy"], ti: ["ቀይሕ", "qäyəḥ"],
+        },
+        note: "Semitic has two competing 'red' roots: *ʔdm (Hebrew) and *ḥmr (Arabic). The latter is the source of Spanish/English 'amber'.",
+      },
+      {
+        label: "yellow", proto: "*ṣpr / *ṣhb",
+        cells: {
+          akk: ["arqu"],
+          ug: ["𐎊𐎗𐎖", "yrq"], he: ["צָהֹב", "ṣāhōv"], arc: ["צהוב"], syc: ["ܙܪܝܩܐ", "zrīqā"],
+          ar: ["أصفر", "ʾaṣfar"],
+          sab: [],
+          gez: ["ብጫ", "bəṭča"], am: ["ቢጫ", "biṭča"], ti: ["ብጫ", "bəṭča"],
+        },
+      },
+      {
+        label: "green", proto: "*yrq",
+        cells: {
+          akk: ["arqu"],
+          ug: ["𐎊𐎗𐎖", "yrq"], he: ["יָרֹק", "yārōq"], arc: ["ירוק"], syc: ["ܝܘܪܩܐ", "yūrāqā"],
+          ar: ["أخضر", "ʾaḫḍar"],
+          sab: [],
+          gez: ["ሐመልማል", "ḥamalmāl"], am: ["አረንጓዴ", "aräng(w)ade"], ti: ["ቀጠልያ", "qäṭälya"],
+        },
+        note: "Arabic innovates ʾaḫḍar (< 'moist, fresh') while Hebrew/Aramaic keep *yrq. Hebrew also uses יָרֹק for 'yellow-green'; the yellow/green boundary was fuzzy in ancient Semitic.",
+      },
+      {
+        label: "blue", proto: "no clear PS — later innovations",
+        cells: {
+          akk: ["uqnû (lapis-lazuli color)"],
+          ug: [], he: ["כָּחֹל", "kāḥōl"], arc: [], syc: [],
+          ar: ["أزرق", "ʾazraq"],
+          sab: [],
+          gez: [], am: ["ሰማያዊ", "sämayawi (sky-color)"], ti: ["ሰማያዊ", "sämayawi"],
+        },
+        note: "'Blue' has no reconstructible Proto-Semitic root — each language coined its own from various sources (lapis lazuli, kohl, sky).",
+      },
+    ],
+  },
+  {
     slug: "kinship",
     title: "Kinship",
     description:

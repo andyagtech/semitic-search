@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LOANWORD_SECTIONS } from "@/lib/loanwords";
+import { LoanwordsView } from "./LoanwordsView";
 
 export const metadata = {
   title: "Loanwords & native alternatives — Semitic Search",
@@ -35,9 +36,8 @@ export default function LoanwordsPage() {
         <p className="text-sm text-neutral-600 mt-2 max-w-3xl leading-relaxed">
           The <strong>most commonly used foreign words</strong> in Hebrew, Arabic, and
           Amharic, paired with native alternatives. Includes modern high-frequency loans
-          (aḥla, walla, sababa, yalla in colloquial Hebrew; banṭalūn, bank, otobus in
-          colloquial Arabic) alongside classical Aramaic/Greek/Persian layers. Hebrew
-          entries draw on the{" "}
+          (telefon, otobus, kafe, internet, banṭalūn, bank) alongside classical
+          Aramaic/Greek/Persian layers. Hebrew entries draw on the{" "}
           <a href="https://terms.hebrew-academy.org.il/" className="underline"
              target="_blank" rel="noopener">Academy of the Hebrew Language&apos;s
             terminology database</a>
@@ -63,45 +63,7 @@ export default function LoanwordsPage() {
         </div>
       </header>
 
-      <div className="space-y-8">
-        {LOANWORD_SECTIONS.map((section) => (
-          <section key={section.language} id={section.language}>
-            <div className="border-b border-neutral-200 pb-2 mb-4">
-              <h2 className="text-xl font-semibold">
-                {section.languageName}
-                <span className="ml-3 text-xs text-neutral-500 font-mono">{section.language}</span>
-              </h2>
-              <p className="text-xs text-neutral-600 mt-1 max-w-3xl leading-relaxed">{section.intro}</p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-3">
-              {section.loans.map((l) => (
-                <div key={l.loan} className="bg-white border border-neutral-200 rounded-lg p-4">
-                  <div className="flex items-baseline gap-2 flex-wrap mb-1">
-                    <span className="font-mono font-semibold text-lg accent-loans" dir="auto">{l.loan}</span>
-                    <span className="text-xs text-neutral-500">&quot;{l.meaning}&quot;</span>
-                  </div>
-                  <div className="text-xs text-neutral-500 mb-3" dir="auto">from {l.source}</div>
-
-                  <div className="space-y-2 border-t border-neutral-200 pt-3">
-                    {l.alternatives.map((a, i) => (
-                      <div key={i}>
-                        <div className="flex items-baseline gap-2 flex-wrap">
-                          <span className="font-mono font-semibold accent-proto" dir="auto">{a.form}</span>
-                          <span className={`text-[10px] uppercase tracking-wider font-mono px-1.5 py-0.5 rounded border ${STATUS_CLASS[a.status]}`}>
-                            {a.status}
-                          </span>
-                        </div>
-                        <p className="mt-1 text-xs text-neutral-600 leading-relaxed">{a.derivation}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
+      <LoanwordsView sections={LOANWORD_SECTIONS} />
 
       <footer className="mt-10 pt-6 border-t border-neutral-200 text-xs text-neutral-500 flex flex-wrap gap-x-4">
         <Link href="/replace" className="hover:underline">→ Generate more with the Loan Replacement Generator</Link>

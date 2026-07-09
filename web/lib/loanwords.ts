@@ -233,38 +233,7 @@ export const LOANWORD_SECTIONS: LoanwordSection[] = [
         ],
       },
 
-      // ─── Modern high-frequency colloquial loans ────────────────────
-      // Includes the significant colloquial Palestinian Arabic layer that
-      // marks casual spoken Modern Hebrew (aḥla, walla, sababa, yalla).
-      {
-        loan: "אחלה aḥla", source: "Colloquial Arabic أحلى ʔaḥla 'sweetest'",
-        meaning: "great! awesome! (informal)",
-        alternatives: [
-          { form: "מְעֻלֶּה meʿulle", derivation: "Native from ע-ל-ה 'ascend' + puʿal past participle. 'Excellent'. Formal alternative.", status: "attested" },
-          { form: "נהדר nehdar", derivation: "Native from ה-ד-ר 'glory'. 'Wonderful'. Neutral register.", status: "attested" },
-        ],
-      },
-      {
-        loan: "וואלה walla", source: "Colloquial Arabic والله 'by God'",
-        meaning: "really! wow! seriously (informal)",
-        alternatives: [
-          { form: "באמת beemet", derivation: "Native from אמת 'truth'. 'Really, truly'. Standard alternative but doesn't carry the same emphatic emotional charge.", status: "attested" },
-        ],
-      },
-      {
-        loan: "סבבה sababa", source: "Colloquial Palestinian Arabic صبابة",
-        meaning: "cool, OK, fine (informal)",
-        alternatives: [
-          { form: "בסדר beseder", derivation: "Native 'in order' — בְּ- + סדר 'order'. Ubiquitous standard 'OK'.", status: "attested" },
-        ],
-      },
-      {
-        loan: "יאללה yalla", source: "Colloquial Arabic يا الله 'O God'",
-        meaning: "come on! let's go! (informal)",
-        alternatives: [
-          { form: "קדימה qadima", derivation: "Native from קדם 'front, forward'. 'Forward! onward!'. Standard alternative.", status: "attested" },
-        ],
-      },
+      // ─── Modern high-frequency loans ───────────────────────────────
       {
         loan: "טלפון telefon", source: "Greek τηλέφωνον via European languages",
         meaning: "telephone",

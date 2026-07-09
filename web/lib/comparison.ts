@@ -839,6 +839,154 @@ export const TABLES: ComparisonTable[] = [
     ],
   },
   {
+    slug: "verb-ktb-perfect",
+    title: "Verb conjugation: *k-t-b 'write' — perfect (G-stem)",
+    description:
+      "The pan-Semitic root k-t-b 'write' conjugated in the SUFFIX conjugation (perfect / past). The Semitic perfect marks person + gender + number with SUFFIXES only (unlike the imperfect, which uses prefixes). The stem *katab- surfaces almost identically across Central, NW, and Old South Arabian; Akkadian and Ethio-Semitic substitute their own preferred 'write' roots (šaṭāru, ṣ-ḥ-f).",
+    kind: "vocabulary",
+    rows: [
+      {
+        label: "he wrote (3ms)", proto: "*kataba",
+        cells: {
+          akk: ["išṭur (šaṭāru)"],
+          ug: ["𐎋𐎚𐎁", "ktb"], he: ["כָּתַב", "kāṯav"], arc: ["כְּתַב", "kəṯav"], syc: ["ܟܼܬܼܒ", "kṯaḇ"],
+          ar: ["كتب", "kataba"],
+          sab: ["𐩫𐩩𐩨", "ktb"],
+          gez: ["ጸሐፈ", "ṣäḥafa (ṣ-ḥ-f)"], am: ["ጻፈ", "ṣafä (ṣ-f)"], ti: ["ጸሐፈ", "ṣäḥafä"],
+        },
+        note: "3ms is the DICTIONARY-CITATION form throughout Semitic — bare stem, no suffix. Akkadian dropped the *katab- root in favor of šaṭāru; Ethio-Semitic uses ṣ-ḥ-f (Ge'ez, Ti) or ṣ-f (Am).",
+      },
+      {
+        label: "she wrote (3fs)", proto: "*katabat",
+        cells: {
+          akk: ["išṭur (same as 3ms)"],
+          ug: ["𐎋𐎚𐎁𐎚", "ktbt"], he: ["כָּתְבָה", "kāṯəvāh"], arc: ["כִּתְבַת", "kiṯbaṯ"], syc: ["ܟܼܬܼܒܼܬ", "kiṯḇaṯ"],
+          ar: ["كتبت", "katabat"],
+          sab: ["𐩫𐩩𐩨𐩩", "ktbt"],
+          gez: ["ጸሐፈት", "ṣäḥafat"], am: ["ጻፈች", "ṣafäččə"], ti: ["ጸሐፈት", "ṣäḥafät"],
+        },
+        note: "Feminine marker *-at is preserved from PS across NW + Central + South Semitic. Amharic evolves -čč (< -at + -a).",
+      },
+      {
+        label: "you wrote (2ms)", proto: "*katabta",
+        cells: {
+          akk: ["tašṭur"],
+          ug: ["𐎋𐎚𐎁𐎚", "ktbt"], he: ["כָּתַבְתָּ", "kāṯavtā"], arc: ["כְּתַבְתְּ", "kəṯavt"], syc: ["ܟܼܬܼܒܼܬ", "kṯaḇt"],
+          ar: ["كتبت", "katabta"],
+          sab: ["𐩫𐩩𐩨𐩫", "ktbk"],
+          gez: ["ጸሐፍከ", "ṣäḥafka"], am: ["ጻፍክ", "ṣafk"], ti: ["ጸሐፍካ", "ṣäḥafka"],
+        },
+        note: "2ms afformative *-tā (from PS pronoun *ʔantā) preserved everywhere. Ethio-Semitic uses -k (from a different pronoun *kā).",
+      },
+      {
+        label: "I wrote (1cs)", proto: "*katabtu",
+        cells: {
+          akk: ["ašṭur"],
+          ug: ["𐎋𐎚𐎁𐎚", "ktbt"], he: ["כָּתַבְתִּי", "kāṯavtī"], arc: ["כִּתְבֵית", "kiṯvēṯ"], syc: ["ܟܼܬܼܒܼܬ", "kiṯḇeṯ"],
+          ar: ["كتبت", "katabtu"],
+          sab: ["𐩫𐩩𐩨𐩫", "ktbk"],
+          gez: ["ጸሐፍኩ", "ṣäḥafku"], am: ["ጻፍኩ", "ṣafku"], ti: ["ጸሐፍኩ", "ṣäḥafku"],
+        },
+        note: "1cs afformative *-tu (from PS pronoun *ʔanākū). Hebrew and Aramaic add a further vowel (-tī, -ēṯ); Ge'ez keeps -ku.",
+      },
+      {
+        label: "they wrote (3mp)", proto: "*katabū",
+        cells: {
+          akk: ["išṭurū"],
+          ug: ["𐎋𐎚𐎁𐎜", "ktbw"], he: ["כָּתְבוּ", "kāṯəvū"], arc: ["כְּתַבוּ", "kəṯavū"], syc: ["ܟܼܬܼܒܼܘ", "kṯaḇw"],
+          ar: ["كتبوا", "katabū"],
+          sab: ["𐩫𐩩𐩨𐩥", "ktbw"],
+          gez: ["ጸሐፉ", "ṣäḥafu"], am: ["ጻፉ", "ṣafu"], ti: ["ጸሐፉ", "ṣäḥafu"],
+        },
+      },
+      {
+        label: "we wrote (1cp)", proto: "*katabnā",
+        cells: {
+          akk: ["nišṭur"],
+          ug: ["𐎋𐎚𐎁𐎐", "ktbn"], he: ["כָּתַבְנוּ", "kāṯavnū"], arc: ["כְּתַבְנָא", "kəṯavnā"], syc: ["ܟܼܬܼܒܼܢ", "kṯaḇn"],
+          ar: ["كتبنا", "katabnā"],
+          sab: ["𐩫𐩩𐩨𐩬", "ktbn"],
+          gez: ["ጸሐፍነ", "ṣäḥafna"], am: ["ጻፍን", "ṣafnä"], ti: ["ጸሐፍና", "ṣäḥafna"],
+        },
+        note: "1cp *-nā/*-nū is nearly identical across the entire family — one of the most conservative morphemes in Semitic.",
+      },
+    ],
+  },
+  {
+    slug: "verb-ktb-imperfect",
+    title: "Verb conjugation: *k-t-b 'write' — imperfect / yiktub",
+    description:
+      "The PREFIX conjugation — Semitic's imperfect/present/future tense. This is the ancient PS conjugation whose subject-marker system is the mirror image of the perfect: person is marked BEFORE the root (prefix) and, for some persons, also AFTER (suffix). The prefixes ʔ- (1cs), t- (2/3fs), y- (3ms), n- (1cp) are near-universal across the family.",
+    kind: "vocabulary",
+    rows: [
+      {
+        label: "he writes / will write (3ms)", proto: "*ya-ktub-u",
+        cells: {
+          akk: ["išaṭṭar"],
+          ug: ["𐎊𐎋𐎚𐎁", "yktb"], he: ["יִכְתֹּב", "yiḵtōv"], arc: ["יִכְתּוֹב"], syc: ["ܢܸܟܼܬܘܿܒ", "neḵtōḇ"],
+          ar: ["يكتب", "yaktubu"],
+          sab: ["𐩺𐩫𐩩𐩨", "yktb"],
+          gez: ["ይጽሕፍ", "yəṣəḥəf"], am: ["ይጽፋል", "yəṣəfal"], ti: ["ይጽሕፍ", "yəṣəḥəf"],
+        },
+        note: "The 3ms prefix y- (< PS *ya-) is the flagship Semitic morpheme. Syriac reanalyzed as n- (< *ny-); this is a defining feature of Eastern Aramaic.",
+      },
+      {
+        label: "she writes (3fs)", proto: "*ta-ktub-u",
+        cells: {
+          akk: ["tašaṭṭar"],
+          ug: ["𐎚𐎋𐎚𐎁", "tktb"], he: ["תִּכְתֹּב", "tiḵtōv"], arc: ["תִּכְתּוֹב"], syc: ["ܬܸܟܼܬܘܿܒ", "teḵtōḇ"],
+          ar: ["تكتب", "taktubu"],
+          sab: ["𐩩𐩫𐩩𐩨", "tktb"],
+          gez: ["ትጽሕፍ", "təṣəḥəf"], am: ["ትጽፋለች", "təṣəfalläčč"], ti: ["ትጽሕፍ", "təṣəḥəf"],
+        },
+      },
+      {
+        label: "you write (2ms)", proto: "*ta-ktub-u",
+        cells: {
+          akk: ["tašaṭṭar"],
+          ug: ["𐎚𐎋𐎚𐎁", "tktb"], he: ["תִּכְתֹּב", "tiḵtōv"], arc: ["תִּכְתּוֹב"], syc: ["ܬܸܟܼܬܘܿܒ", "teḵtōḇ"],
+          ar: ["تكتب", "taktubu"],
+          sab: ["𐩩𐩫𐩩𐩨", "tktb"],
+          gez: ["ትጽሕፍ", "təṣəḥəf"], am: ["ትጽፋለህ", "təṣəfalläh"], ti: ["ትጽሕፍ", "təṣəḥəf"],
+        },
+        note: "IDENTICAL in form to 3fs across most of the family — one of Semitic's classic ambiguities, disambiguated only by context.",
+      },
+      {
+        label: "I write (1cs)", proto: "*ʔa-ktub-u",
+        cells: {
+          akk: ["ašaṭṭar"],
+          ug: ["𐎀𐎋𐎚𐎁", "aktb"], he: ["אֶכְתֹּב", "ʾeḵtōv"], arc: ["אֶכְתּוֹב"], syc: ["ܐܸܟܼܬܘܿܒ", "ʾeḵtōḇ"],
+          ar: ["أكتب", "ʾaktubu"],
+          sab: ["𐩱𐩫𐩩𐩨", "ʔktb"],
+          gez: ["እጽሕፍ", "ʾəṣəḥəf"], am: ["እጽፋለሁ", "əṣəfallähu"], ti: ["እጽሕፍ", "ʾəṣəḥəf"],
+        },
+        note: "1cs prefix ʔ- (glottal stop) is the ancient Proto-Semitic mark, from pronoun *ʔanākū 'I'.",
+      },
+      {
+        label: "they write (3mp)", proto: "*ya-ktub-ū",
+        cells: {
+          akk: ["išaṭṭarū"],
+          ug: ["𐎊𐎋𐎚𐎁𐎐", "yktbn"], he: ["יִכְתְּבוּ", "yiḵtəḇū"], arc: ["יִכְתְּבוּן"], syc: ["ܢܸܟܼܬܒܘܿܢ", "neḵtḇōn"],
+          ar: ["يكتبون", "yaktubūna"],
+          sab: ["𐩺𐩫𐩩𐩨𐩬", "yktbn"],
+          gez: ["ይጽሕፉ", "yəṣəḥəfu"], am: ["ይጽፋሉ", "yəṣəfallu"], ti: ["ይጽሕፉ", "yəṣəḥəfu"],
+        },
+        note: "Notice how NW Semitic (Aramaic, Ugaritic, Sabaean) preserved the ancient FINAL -n suffix — the 'energic ending' that Hebrew and Ge'ez lost.",
+      },
+      {
+        label: "we write (1cp)", proto: "*na-ktub-u",
+        cells: {
+          akk: ["nišaṭṭar"],
+          ug: ["𐎐𐎋𐎚𐎁", "nktb"], he: ["נִכְתֹּב", "niḵtōv"], arc: ["נִכְתּוֹב"], syc: ["ܢܸܟܼܬܘܿܒ", "neḵtōḇ"],
+          ar: ["نكتب", "naktubu"],
+          sab: ["𐩬𐩫𐩩𐩨", "nktb"],
+          gez: ["ንጽሕፍ", "nəṣəḥəf"], am: ["እንጽፋለን", "ənəṣəfallän"], ti: ["ንጽሕፍ", "nəṣəḥəf"],
+        },
+        note: "1cp prefix n- (from PS *naḥnu 'we') is universal. In Syriac 3ms (nektōḇ) is IDENTICAL to 1cp — a famous Eastern Aramaic ambiguity.",
+      },
+    ],
+  },
+  {
     slug: "sound-laws",
     title: "Sound-law isoglosses",
     description:

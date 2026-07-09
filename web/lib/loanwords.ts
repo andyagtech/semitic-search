@@ -232,6 +232,88 @@ export const LOANWORD_SECTIONS: LoanwordSection[] = [
           { form: "נַיָּד nayad", derivation: "From נ-ו-ד 'move, wander' + qattāl pattern (nomen agentis). WON — standard, and the verb לְטַלְפֵּן letalfen 'to phone' now uses the accepted telfen root.", status: "attested" },
         ],
       },
+
+      // ─── Modern high-frequency colloquial loans ────────────────────
+      // Includes the significant colloquial Palestinian Arabic layer that
+      // marks casual spoken Modern Hebrew (aḥla, walla, sababa, yalla).
+      {
+        loan: "אחלה aḥla", source: "Colloquial Arabic أحلى ʔaḥla 'sweetest'",
+        meaning: "great! awesome! (informal)",
+        alternatives: [
+          { form: "מְעֻלֶּה meʿulle", derivation: "Native from ע-ל-ה 'ascend' + puʿal past participle. 'Excellent'. Formal alternative.", status: "attested" },
+          { form: "נהדר nehdar", derivation: "Native from ה-ד-ר 'glory'. 'Wonderful'. Neutral register.", status: "attested" },
+        ],
+      },
+      {
+        loan: "וואלה walla", source: "Colloquial Arabic والله 'by God'",
+        meaning: "really! wow! seriously (informal)",
+        alternatives: [
+          { form: "באמת beemet", derivation: "Native from אמת 'truth'. 'Really, truly'. Standard alternative but doesn't carry the same emphatic emotional charge.", status: "attested" },
+        ],
+      },
+      {
+        loan: "סבבה sababa", source: "Colloquial Palestinian Arabic صبابة",
+        meaning: "cool, OK, fine (informal)",
+        alternatives: [
+          { form: "בסדר beseder", derivation: "Native 'in order' — בְּ- + סדר 'order'. Ubiquitous standard 'OK'.", status: "attested" },
+        ],
+      },
+      {
+        loan: "יאללה yalla", source: "Colloquial Arabic يا الله 'O God'",
+        meaning: "come on! let's go! (informal)",
+        alternatives: [
+          { form: "קדימה qadima", derivation: "Native from קדם 'front, forward'. 'Forward! onward!'. Standard alternative.", status: "attested" },
+        ],
+      },
+      {
+        loan: "טלפון telefon", source: "Greek τηλέφωνον via European languages",
+        meaning: "telephone",
+        alternatives: [
+          { form: "נַיָּד nayad", derivation: "For 'mobile'; native from נ-ו-ד. Won for the specific mobile-phone meaning; landline 'telefon' remains the loan.", status: "attested" },
+        ],
+      },
+      {
+        loan: "אוטובוס otobus", source: "French autobus",
+        meaning: "bus",
+        alternatives: [
+          { form: "רב-קו rav-qav", derivation: "Native compound: 'many-line'. Actually a proper name for Israel's transit smart-card system, not a general 'bus' word.", status: "attested" },
+        ],
+      },
+      {
+        loan: "קפה kafe", source: "Turkish kahve < Arabic qahwa",
+        meaning: "coffee (also café)",
+        alternatives: [
+          { form: "בית קפה", derivation: "Native compound bayit 'house' + kafe. But 'kafe' itself is the loanword. Coffee has no ancient Hebrew word — it entered the region in the Ottoman period.", status: "attested" },
+        ],
+      },
+      {
+        loan: "פיצה pizza", source: "Italian",
+        meaning: "pizza",
+        alternatives: [
+          { form: "—", derivation: "No native alternative; pizza is universally borrowed.", status: "imagined" },
+        ],
+      },
+      {
+        loan: "ג'ינס jeans", source: "English",
+        meaning: "jeans (denim trousers)",
+        alternatives: [
+          { form: "מכנסי ג'ינס mikhnesey jeans", derivation: "Hybrid: native mikhnasayim 'trousers' + loan. No fully-native alternative — the item is imported.", status: "attested" },
+        ],
+      },
+      {
+        loan: "אוקיי OK", source: "English",
+        meaning: "OK, alright",
+        alternatives: [
+          { form: "בסדר beseder", derivation: "Native standard. Also טוב tov 'good' works.", status: "attested" },
+        ],
+      },
+      {
+        loan: "אינטרנט internet", source: "English",
+        meaning: "internet",
+        alternatives: [
+          { form: "מרשתת mireshet", derivation: "Academy coining from רשת 'net' + prefix mi- + geminate. Rarely used in practice — the loan won.", status: "attested" },
+        ],
+      },
     ],
   },
   {
@@ -280,6 +362,85 @@ export const LOANWORD_SECTIONS: LoanwordSection[] = [
         loan: "تلفزيون tilfazyūn", source: "French télévision", meaning: "television",
         alternatives: [
           { form: "مِرْآة miryāt", derivation: "Native from ر-أ-ي 'see' + mishqal mif'āl. Imagined native calque.", status: "imagined" },
+        ],
+      },
+
+      // ─── Common colloquial + modern loans in daily Arabic ──────────
+      {
+        loan: "بنطلون banṭalūn", source: "French pantalon",
+        meaning: "trousers, pants",
+        alternatives: [
+          { form: "سِرْوَال sirwāl", derivation: "Native root — 'traditional loose trousers'. Standard alternative for pants but has a folk-dress connotation.", status: "attested" },
+        ],
+      },
+      {
+        loan: "قميص qamīṣ", source: "Latin camisia via Aramaic",
+        meaning: "shirt",
+        alternatives: [
+          { form: "—", derivation: "Universally borrowed; entered Arabic so long ago it feels native. Modern Standard Arabic accepts it.", status: "attested" },
+        ],
+      },
+      {
+        loan: "بوليس būlīs", source: "French police",
+        meaning: "police",
+        alternatives: [
+          { form: "شرطة šurṭa", derivation: "Native from ش-ر-ط 'stipulation, condition'. Standard MSA — has completely displaced būlīs in formal writing.", status: "attested" },
+        ],
+      },
+      {
+        loan: "فيلم film", source: "English film",
+        meaning: "film, movie",
+        alternatives: [
+          { form: "شريط sinemāʔī", derivation: "Native but analytical: 'cinematic strip'. Loan wins in daily use.", status: "attested" },
+        ],
+      },
+      {
+        loan: "بنك bank", source: "Italian banco via European",
+        meaning: "bank",
+        alternatives: [
+          { form: "مَصْرِف maṣrif", derivation: "Native from ص-ر-ف 'exchange, spend' + mishqal maf'il. Fully standard alternative in MSA.", status: "attested" },
+        ],
+      },
+      {
+        loan: "أوتيل ʔūtīl", source: "French hôtel",
+        meaning: "hotel",
+        alternatives: [
+          { form: "فُنْدُق funduq", derivation: "Native root — 'inn, hotel'. Standard MSA. Historical root from Greek πάνδοκος but naturalized so early it's treated as native.", status: "attested" },
+        ],
+      },
+      {
+        loan: "راديو rādyo", source: "English radio",
+        meaning: "radio",
+        alternatives: [
+          { form: "مِذْيَاع miḏyāʿ", derivation: "Native from ذ-ي-ع 'broadcast' + mishqal mif'āl. Academy coining; used in formal writing.", status: "attested" },
+        ],
+      },
+      {
+        loan: "أوتوبيس ʔutūbīs", source: "French autobus",
+        meaning: "bus",
+        alternatives: [
+          { form: "حَافِلَة ḥāfila", derivation: "Native from ح-ف-ل 'gather'. Fully standard MSA — has won in formal contexts.", status: "attested" },
+        ],
+      },
+      {
+        loan: "سيگارة sīgāra", source: "French cigarette",
+        meaning: "cigarette",
+        alternatives: [
+          { form: "—", derivation: "No traditional Arabic alternative; universally borrowed.", status: "attested" },
+        ],
+      },
+      {
+        loan: "شاي šāy", source: "Persian < Chinese chá",
+        meaning: "tea",
+        alternatives: [
+          { form: "—", derivation: "The plant itself came via trade, so the word travelled with it. No native alternative.", status: "attested" },
+        ],
+      },
+      {
+        loan: "قهوة qahwa", source: "actually native — 'coffee'",
+        meaning: "coffee",
+        alternatives: [
+          { form: "قَهْوَة qahwa", derivation: "Native Arabic word from an Ethio-Semitic root — the plant originated in Ethiopia. Traveled OUT of Arabic to European languages (coffee, café).", status: "attested" },
         ],
       },
     ],

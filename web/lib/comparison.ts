@@ -494,6 +494,351 @@ export const TABLES: ComparisonTable[] = [
     ],
   },
   {
+    slug: "weather-sky",
+    title: "Weather & sky",
+    description:
+      "Celestial and atmospheric vocabulary. The Proto-Semitic root *šmš (sun) and *lyl (night) are stunningly stable — nearly identical across the whole family for 4,000+ years.",
+    kind: "vocabulary",
+    rows: [
+      {
+        label: "sun", proto: "*šamš-",
+        cells: {
+          akk: ["šamaš, šamšu"],
+          ug: ["𐎌𐎔𐎌", "špš"], he: ["שֶׁמֶשׁ", "šémeš"], arc: ["שִׁמְשָׁא", "šimšā"], syc: ["ܫܡܫܐ", "šemšā"],
+          ar: ["شمس", "šams"],
+          sab: ["𐩦𐩣𐩪", "s̆ms"],
+          gez: ["ፀሓይ", "ṣaḥay"], am: ["ፀሐይ", "ṣähay"], ti: ["ጸሓይ", "ṣäḥay"],
+        },
+        note: "Ethio-Semitic replaces *šmš with *ṣḥy (originally 'be bright, shine'). Ugaritic špš with *š→p is a spirantization.",
+      },
+      {
+        label: "moon", proto: "*warḫ- (also 'month')",
+        cells: {
+          akk: ["arḫu"],
+          ug: ["𐎊𐎗𐎃", "yrḫ"], he: ["יָרֵחַ", "yārēaḥ"], arc: ["יַרְחָא", "yarḥā"], syc: ["ܝܪܚܐ", "yarḥā"],
+          ar: ["قمر", "qamar"],
+          sab: ["𐩥𐩧𐩭", "wrḫ"],
+          gez: ["ወርሕ", "warḥ"], am: ["ጨረቃ", "č̣äräqa"], ti: ["ወርሒ", "wärḥi"],
+        },
+        note: "Arabic innovates qamar. Ge'ez/Ti keep the ancestral *warḫ- (also meaning 'month'). Semantic dual 'moon' = 'month' is universal in Semitic.",
+      },
+      {
+        label: "star", proto: "*kabkab-",
+        cells: {
+          akk: ["kakkabu"],
+          ug: ["𐎋𐎁𐎋𐎁", "kbkb"], he: ["כּוֹכָב", "kōḵāv"], arc: ["כּוֹכְבָא", "kōḵəḇā"], syc: ["ܟܘܟܒܐ", "kawkəḇā"],
+          ar: ["كوكب", "kawkab"],
+          sab: ["𐩫𐩥𐩫𐩨", "kwkb"],
+          gez: ["ኮከብ", "kokäb"], am: ["ኮከብ", "kokäb"], ti: ["ኮኸብ", "koḵäb"],
+        },
+        note: "Beautiful reduplicated biliteral *k-b-k-b, preserved almost identically across every branch.",
+      },
+      {
+        label: "sky, heaven", proto: "*šamāy- (dual/plural)",
+        cells: {
+          akk: ["šamû"],
+          ug: ["𐎌𐎎𐎎", "šmm"], he: ["שָׁמַיִם", "šāmayim"], arc: ["שְׁמַיָּא", "šəmayyā"], syc: ["ܫܡܝܐ", "šmayā"],
+          ar: ["سماء", "samāʔ"],
+          sab: ["𐩪𐩣𐩺", "smy"],
+          gez: ["ሰማይ", "sämay"], am: ["ሰማይ", "sämay"], ti: ["ሰማይ", "sämay"],
+        },
+        note: "The Hebrew plural שָׁמַיִם ('waters above') is an intensive plural — the sky is grammatically plural or dual across the family.",
+      },
+      {
+        label: "rain", proto: "*maṭar-",
+        cells: {
+          akk: ["zunnu, meṭu"],
+          ug: ["𐎎𐎉𐎗", "mṭr"], he: ["מָטָר", "māṭār"], arc: ["מִטְרָא", "miṭrā"], syc: ["ܡܛܪܐ", "meṭrā"],
+          ar: ["مطر", "maṭar"],
+          sab: ["𐩣𐩷𐩧", "mṭr"],
+          gez: ["ዝናም", "zənām"], am: ["ዝናብ", "zənab"], ti: ["ዝናብ", "zənam"],
+        },
+        note: "Ethio-Semitic uses a different root *zVnV(m/b)-. Everywhere else *m-ṭ-r is preserved.",
+      },
+      {
+        label: "cloud", proto: "*ġaym-  /  *ʕanan-",
+        cells: {
+          akk: ["upû, erpetu"],
+          ug: ["𐎓𐎐𐎐", "ʕnn"], he: ["עָנָן", "ʿānān"], arc: ["עֲנָנָא", "ʿănānā"], syc: ["ܥܢܢܐ", "ʿnānā"],
+          ar: ["سحاب, غيم", "saḥāb, ġaym"],
+          sab: [],
+          gez: ["ደመና", "dammanā"], am: ["ደመና", "dämmäna"], ti: ["ደበና", "däbäna"],
+        },
+      },
+      {
+        label: "wind, spirit", proto: "*rīḥ-",
+        cells: {
+          akk: ["šāru"],
+          ug: ["𐎗𐎈", "rḥ"], he: ["רוּחַ", "rūaḥ"], arc: ["רוּחָא", "rūḥā"], syc: ["ܪܘܚܐ", "rūḥā"],
+          ar: ["ريح", "rīḥ"],
+          sab: ["𐩧𐩢", "rḥ"],
+          gez: ["ነፋስ", "näfas"], am: ["ነፋስ", "näfas"], ti: ["ንፋስ", "nəfas"],
+        },
+        note: "The Hebrew רוּחַ 'wind, spirit, breath' polysemy runs across the whole family. Ethio-Semitic uses *nfs (also 'soul' in Arabic نفس).",
+      },
+      {
+        label: "fire", proto: "*ʔišš- / *nūr-",
+        cells: {
+          akk: ["išātu"],
+          ug: ["𐎀𐎌𐎚", "išt"], he: ["אֵשׁ", "ʾēš"], arc: ["אֶשָּׁתָא", "ʾeššātā"], syc: ["ܢܘܪܐ", "nūrā"],
+          ar: ["نار", "nār"],
+          sab: ["𐩱𐩪", "ʔs"],
+          gez: ["እሳት", "ʾəsat"], am: ["እሳት", "əsat"], ti: ["ሓዊ", "ḥawi"],
+        },
+        note: "Two competing roots — *ʔišš- (preserved in Hebrew, Akkadian, Ge'ez, and Ugaritic) and *nūr- (Aramaic/Syriac/Arabic). The nuːr- root is likely a semantic shift from 'light'.",
+      },
+    ],
+  },
+  {
+    slug: "animals",
+    title: "Animals",
+    description:
+      "Domestic and iconic animals. The words for dog (*kalb-), horse (*sūs-), and camel (*gamal-) are pan-Semitic; some names travelled to English through Greek and Latin (camel, gazelle).",
+    kind: "vocabulary",
+    rows: [
+      {
+        label: "dog", proto: "*kalb-",
+        cells: {
+          akk: ["kalbu"],
+          ug: ["𐎋𐎍𐎁", "klb"], he: ["כֶּלֶב", "kelev"], arc: ["כַּלְבָּא", "kalbā"], syc: ["ܟܠܒܐ", "kalbā"],
+          ar: ["كلب", "kalb"],
+          sab: ["𐩫𐩡𐩨", "klb"],
+          gez: ["ከልብ", "kalb"], am: ["ውሻ", "wəša"], ti: ["ከልቢ", "kälbi"],
+        },
+        note: "One of the most perfectly-preserved biliterals in Semitic. Amharic ውሻ is an Agaw substrate loan.",
+      },
+      {
+        label: "horse", proto: "*sūs-",
+        cells: {
+          akk: ["sīsû"],
+          ug: ["𐎒𐎒𐎆", "ssw"], he: ["סוּס", "sūs"], arc: ["סוּסָא", "sūsā"], syc: ["ܣܘܣܝܐ", "sūsyā"],
+          ar: ["فرس, حصان", "faras, ḥiṣān"],
+          sab: [],
+          gez: ["ፈረስ", "färäs"], am: ["ፈረስ", "färäs"], ti: ["ፈረስ", "färäs"],
+        },
+        note: "Arabic innovates faras/ḥiṣān; the *sūs word is retained everywhere else and even entered Egyptian as swsw.",
+      },
+      {
+        label: "camel", proto: "*gamal-",
+        cells: {
+          akk: ["gammalu"],
+          ug: ["𐎂𐎎𐎍", "gml"], he: ["גָּמָל", "gāmāl"], arc: ["גַּמְלָא", "gamlā"], syc: ["ܓܡܠܐ", "gamlā"],
+          ar: ["جمل", "ǧamal"],
+          sab: ["𐩴𐩣𐩡", "gml"],
+          gez: ["ግምል", "gəməl"], am: ["ግመል", "gəmäl"], ti: ["ግመል", "gəmäl"],
+        },
+        note: "The English word 'camel' descends from this exact root via Greek κάμηλος from a Semitic source.",
+      },
+      {
+        label: "ox, bull", proto: "*ṯawr-",
+        cells: {
+          akk: ["šūru"],
+          ug: ["𐎘𐎗", "ṯr"], he: ["שׁוֹר", "šōr"], arc: ["תּוֹרָא", "tōrā"], syc: ["ܬܘܪܐ", "tōrā"],
+          ar: ["ثور", "ṯawr"],
+          sab: ["𐩻𐩥𐩧", "ṯwr"],
+          gez: ["ሶር", "sor"], am: ["በሬ", "bäre"], ti: ["ብዕራይ", "bəʿray"],
+        },
+        note: "Flagship *ṯ correspondence row: Ar ث, He שׁ, Aram ת, Akk š, Ug ṯ.",
+      },
+      {
+        label: "sheep, lamb", proto: "*ṯaʔ-  /  *ʕanz-",
+        cells: {
+          akk: ["immeru, ṣēnu"],
+          ug: ["𐎌𐎀𐎜", "šʔu"], he: ["שֶׂה", "śeh"], arc: ["חוּרְפָא, שֵׂה"], syc: ["ܥܡܪܐ", "ʿemrā"],
+          ar: ["شاة", "šāh"],
+          sab: [],
+          gez: ["በግዕ", "bagəʿ"], am: ["በግ", "bäg"], ti: ["በጊዕ", "bägəʿ"],
+        },
+      },
+      {
+        label: "fish", proto: "*nūn- / *dāg-",
+        cells: {
+          akk: ["nūnu"],
+          ug: ["𐎄𐎂", "dg"], he: ["דָּג", "dāg"], arc: ["נוּנָא", "nūnā"], syc: ["ܢܘܢܐ", "nūnā"],
+          ar: ["سمك", "samak"],
+          sab: [],
+          gez: ["ዓሣ", "ʿāśā"], am: ["ዓሣ", "asa"], ti: ["ዓሳ", "asa"],
+        },
+        note: "TWO Proto-Semitic roots: *nūn- (Akk, Aram) and *dāg- (Ug, He). Arabic innovates samak; Ethio-Semitic uses *ʿśš.",
+      },
+      {
+        label: "lion", proto: "*labiʔ- / *ʔaryē-",
+        cells: {
+          akk: ["labbu, nēšu"],
+          ug: ["𐎍𐎁𐎜", "lbʔ"], he: ["אַרְיֵה", "ʾaryēh"], arc: ["אַרְיָא", "ʾaryā"], syc: ["ܐܪܝܐ", "ʾaryā"],
+          ar: ["أسد", "ʾasad"],
+          sab: [],
+          gez: ["አንበሳ", "ʾanbasā"], am: ["አንበሳ", "anbäsa"], ti: ["ኣንበሳ", "ʾanbäsa"],
+        },
+      },
+      {
+        label: "snake", proto: "*ḥayy- / *naḥaš-",
+        cells: {
+          akk: ["ṣerru"],
+          ug: ["𐎁𐎘𐎐", "bṯn"], he: ["נָחָשׁ", "nāḥāš"], arc: ["חִוְיָא", "ḥiwyā"], syc: ["ܚܘܝܐ", "ḥewyā"],
+          ar: ["حيّة", "ḥayya"],
+          sab: [],
+          gez: ["እባብ", "ʾəbab"], am: ["እባብ", "əbab"], ti: ["ተመን", "tämän"],
+        },
+      },
+    ],
+  },
+  {
+    slug: "motion-verbs",
+    title: "Motion verbs",
+    description:
+      "Basic verbs of motion and posture (given in the perfect 3ms — the citation form in most Semitic dictionaries). Some of the oldest and stablest roots in the family.",
+    kind: "vocabulary",
+    rows: [
+      {
+        label: "go, walk", proto: "*hlk / *ʔty",
+        cells: {
+          akk: ["alāku"],
+          ug: ["𐎅𐎍𐎋", "hlk"], he: ["הָלַךְ", "hāláḵ"], arc: ["הֲלַךְ, אֲזַל"], syc: ["ܗܠܟ, ܐܙܠ"],
+          ar: ["ذهب, مشى", "ḏahaba, mašā"],
+          sab: ["𐩠𐩡𐩫"],
+          gez: ["ሖረ", "ḥorä"], am: ["ሄደ", "hedä"], ti: ["ከደ", "kedä"],
+        },
+      },
+      {
+        label: "come", proto: "*bwʔ / *ʔty",
+        cells: {
+          akk: ["mâʔu, wašābu"],
+          ug: ["𐎀𐎚𐎊", "aty"], he: ["בָּא", "bā"], arc: ["אֲתָא", "ʾatā"], syc: ["ܐܬܐ", "ʾetā"],
+          ar: ["أتى, جاء", "ʾatā, ǧāʔa"],
+          sab: [],
+          gez: ["መጽአ", "maṣʔa"], am: ["መጣ", "mäṭṭa"], ti: ["መጸ", "mäṣä"],
+        },
+      },
+      {
+        label: "sit, dwell", proto: "*yṯb / *wṯb",
+        cells: {
+          akk: ["wašābu"],
+          ug: ["𐎊𐎘𐎁", "yṯb"], he: ["יָשַׁב", "yāšav"], arc: ["יְתֵב", "yəṯēḇ"], syc: ["ܝܬܒ", "yiteb"],
+          ar: ["جلس", "ǧalasa"],
+          sab: [],
+          gez: ["ነበረ", "nabärä"], am: ["ተቀመጠ", "täqämmäṭä"], ti: ["ተቐመጠ", "täqʼämmätä"],
+        },
+        note: "Arabic innovates ǧ-l-s (the source of majlis 'council'). The pan-Semitic *y/wṯb survives elsewhere.",
+      },
+      {
+        label: "stand, rise", proto: "*qwm",
+        cells: {
+          akk: ["izuzzu"],
+          ug: ["𐎖𐎎", "qm"], he: ["קָם", "qām"], arc: ["קָם", "qām"], syc: ["ܩܡ", "qām"],
+          ar: ["قام", "qāma"],
+          sab: [],
+          gez: ["ቆመ", "qomä"], am: ["ቆመ", "qomä"], ti: ["ቆመ", "qomä"],
+        },
+        note: "A universally-preserved hollow root (medial-weak *q-w-m).",
+      },
+      {
+        label: "return, come back", proto: "*šwb",
+        cells: {
+          akk: ["târu"],
+          ug: ["𐎘𐎁", "ṯb"], he: ["שָׁב", "šāv"], arc: ["תָּב", "tāḇ"], syc: ["ܬܒ", "tāḇ"],
+          ar: ["ثاب, رجع", "ṯāba, raǧaʿa"],
+          sab: [],
+          gez: ["ገብአ", "gäbʔa"], am: ["ተመለሰ", "tämälläsä"], ti: ["ተመልሰ", "tämälsä"],
+        },
+      },
+      {
+        label: "cross, pass", proto: "*ʕbr",
+        cells: {
+          akk: ["ebēru"],
+          ug: ["𐎓𐎁𐎗", "ʕbr"], he: ["עָבַר", "ʿāvar"], arc: ["עֲבַר", "ʿăḇar"], syc: ["ܥܒܪ", "ʿḇar"],
+          ar: ["عبر", "ʿabara"],
+          sab: ["𐩲𐩨𐩧", "ʕbr"],
+          gez: ["ዓደወ", "ʿadäwä"], am: ["አለፈ", "aläfä"], ti: ["ሓለፈ", "ḥaläfä"],
+        },
+        note: "The root of 'Hebrew' (ʿivri) itself — 'one who crossed over' (the Euphrates).",
+      },
+      {
+        label: "run", proto: "*rwṣ",
+        cells: {
+          akk: ["lasāmu"],
+          ug: ["𐎗𐎕", "rṣ"], he: ["רָץ", "rāṣ"], arc: ["רְהַט"], syc: ["ܪܗܛ"],
+          ar: ["ركض, جرى", "rakaḍa, ǧarā"],
+          sab: [],
+          gez: ["ሮጠ", "roṭä"], am: ["ሮጠ", "roṭä"], ti: ["ጎየ", "goyä"],
+        },
+      },
+    ],
+  },
+  {
+    slug: "time-seasons",
+    title: "Time & seasons",
+    description:
+      "Divisions of time. Day, night, and year use the most stable pan-Semitic roots. Words for 'week' are a later innovation everywhere.",
+    kind: "vocabulary",
+    rows: [
+      {
+        label: "day", proto: "*yawm-",
+        cells: {
+          akk: ["ūmu"],
+          ug: ["𐎊𐎎", "ym"], he: ["יוֹם", "yōm"], arc: ["יוֹמָא", "yōmā"], syc: ["ܝܘܡܐ", "yawmā"],
+          ar: ["يوم", "yawm"],
+          sab: ["𐩺𐩥𐩣", "ywm"],
+          gez: ["ዕለት", "ʿəlät"], am: ["ቀን", "qän"], ti: ["መዓልቲ", "mäʿalti"],
+        },
+        note: "Ethio-Semitic uses different roots. Everywhere else *yawm- is preserved.",
+      },
+      {
+        label: "night", proto: "*layl-",
+        cells: {
+          akk: ["mūšu"],
+          ug: ["𐎍𐎍", "ll"], he: ["לַיְלָה", "layəlāh"], arc: ["לֵילְיָא", "lēləyā"], syc: ["ܠܠܝܐ", "lelyā"],
+          ar: ["ليل", "layl"],
+          sab: ["𐩡𐩺𐩡", "lyl"],
+          gez: ["ሌሊት", "lelit"], am: ["ሌሊት", "lelit"], ti: ["ለይቲ", "läyti"],
+        },
+      },
+      {
+        label: "year", proto: "*šan(a)t-",
+        cells: {
+          akk: ["šattu"],
+          ug: ["𐎌𐎐𐎚", "šnt"], he: ["שָׁנָה", "šānāh"], arc: ["שַׁתָּא", "šattā"], syc: ["ܫܢܬܐ", "šnattā"],
+          ar: ["سنة", "sana"],
+          sab: ["𐩪𐩬𐩩", "snt"],
+          gez: ["ዓመት", "ʿāmät"], am: ["ዓመት", "amät"], ti: ["ዓመት", "amät"],
+        },
+      },
+      {
+        label: "morning", proto: "*bqr-  /  *ṣbḥ-",
+        cells: {
+          akk: ["šēru, ṣīt šamši"],
+          ug: [], he: ["בֹּקֶר", "bōqer"], arc: ["צַפְרָא", "ṣaprā"], syc: ["ܨܦܪܐ", "ṣaprā"],
+          ar: ["صباح", "ṣabāḥ"],
+          sab: [],
+          gez: ["ጽባሕ", "ṣəbaḥ"], am: ["ጠዋት", "ṭäwat"], ti: ["ንጉሆ", "nguho"],
+        },
+        note: "Hebrew uses *bqr (from 'to break, split' — 'day-break') while Aramaic and Arabic prefer *ṣbḥ.",
+      },
+      {
+        label: "evening", proto: "*ʕrb-",
+        cells: {
+          akk: ["līlātu"],
+          ug: ["𐎓𐎗𐎁", "ʕrb"], he: ["עֶרֶב", "ʿerev"], arc: ["רַמְשָׁא"], syc: ["ܪܡܫܐ"],
+          ar: ["مساء", "masāʔ"],
+          sab: [],
+          gez: ["ምሴት", "məset"], am: ["ማታ", "mata"], ti: ["ምሸት", "məšät"],
+        },
+        note: "The word 'Arab' itself descends from this root — either 'wandering' or 'sunset/west'.",
+      },
+      {
+        label: "hour, time", proto: "loan: *šaʕat- (all from Aramaic)",
+        cells: {
+          akk: ["adannu"],
+          ug: [], he: ["שָׁעָה", "šāʿāh"], arc: ["שַׁעְתָּא", "šaʿtā"], syc: ["ܫܥܬܐ", "šaʿtā"],
+          ar: ["ساعة", "sāʕa"],
+          sab: [],
+          gez: ["ሰዓት", "säʿat"], am: ["ሰዓት", "säʿat"], ti: ["ሰዓት", "säʿat"],
+        },
+        note: "The word 'hour' spread FROM Aramaic to everywhere in the Semitic-speaking world (and beyond — Turkish saat, Hindi saʔat).",
+      },
+    ],
+  },
+  {
     slug: "sound-laws",
     title: "Sound-law isoglosses",
     description:

@@ -113,7 +113,7 @@ const SCRIPTS: ScriptEntry[] = [
     sample: "ܒܪܝܫܝܬ ܒܪܐ ܐܠܗܐ",
     fonts: [
       { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
-        note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts. Press + after a stretchable letter to widen." },
+        note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on beth ܒ, dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts. Press + after a stretchable letter to widen." },
       { id: "sans",  label: "Noto Sans Syriac",  file: "NotoSansSyriac.ttf", family: "FL_NotoSansSyriac" },
       { id: "serif", label: "Noto Serif Syriac (Estrangela-leaning)", file: "NotoSerifSyriac.ttf", family: "FL_NotoSerifSyriac" },
     ],
@@ -1013,7 +1013,7 @@ export function FontLab() {
               </button>
               <span className="text-neutral-500 text-[11px]">
                 one-click column justification — kashidas placed on{" "}
-                {syriacStretchActive ? "ܕ ܪ ܬ" : "ד ה ל ם ר ת"}
+                {syriacStretchActive ? "ܒ ܕ ܪ ܬ" : "ד ה ל ם ר ת"}
               </span>
             </div>
           )}
@@ -1431,9 +1431,9 @@ function BulkColorControls({
 // users know which keys can be stretched.
 const STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
 
-// Which letters our stretch fonts widen. Hebrew: ד ה ל ם ר ת. Syriac: ܕ ܪ ܬ.
+// Which letters our stretch fonts widen. Hebrew: ד ה ל ם ר ת. Syriac: ܒ ܕ ܪ ܬ.
 const HEBREW_STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
-const SYRIAC_STRETCHABLE = new Set(["ܕ", "ܪ", "ܬ"]);
+const SYRIAC_STRETCHABLE = new Set(["ܒ", "ܕ", "ܪ", "ܬ"]);
 
 // Auto-justify: given a paragraph, a target column width in px, and the
 // active font settings, place U+05C6 stretches on scribally-appropriate

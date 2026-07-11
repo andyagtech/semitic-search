@@ -632,6 +632,12 @@ NOTO_SANS_SYRIAC = {
         # (bar + descending left leg). leg_max_y catches the descender
         # portion so it doesn't drag horizontally with the bar shift.
         0x072C: {"name": "taw",    "class": "leg", "bar_bottom": 400, "bar_top": 700, "leg_max_y": 200, "x_cutoff": 350},
+        # Beth: Estrangela beth has a flat top bar from x≈385 to x≈721 at
+        # y≈423, with a left-curl foot at x=49-300 below y=100. Widen the
+        # whole left half of the letter (curl + rise + left bar) as a
+        # unit — bar zone spans the entire body y range so the shifted
+        # left half stays continuous with the rise/curl.
+        0x0712: {"name": "beth",   "class": "bar", "bar_bottom": 0, "bar_top": 429, "x_cutoff": 550},
     },
 }
 
@@ -666,7 +672,10 @@ NOTO_RASHI = {
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 500, "bar_top": 655, "leg_max_y": 400, "x_cutoff": 260},
         0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 500, "bar_top": 620, "arm_min_y": 620, "x_cutoff": 200, "arm_top_y": 883,
                  "chain_bar_top": 590},
-        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 280},
+        # finalmem ם deliberately omitted: Rashi's natural ם is a rounded
+        # form, and the mechanical box-class widening produces an ungainly
+        # elongated rectangle that reads as un-scribal. Rashi commentators
+        # historically stretched ד ה ל ר ת only.
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 500, "bar_top": 655, "x_cutoff": 220,
                  "chain_bar_top": 590},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 450, "bar_top": 655, "leg_max_y": 400, "x_cutoff": 280},

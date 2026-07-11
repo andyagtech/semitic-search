@@ -652,13 +652,24 @@ NOTO_RASHI = {
     "import_marks": ARABIC_MARKS,
     # Rashi has no U+FB33/34/... presentation-form dagesh glyphs — Rashi text
     # is unpointed in practice, so no ALIAS_DAGESH entries needed.
+    #
+    # Rashi's letters have a decorative upper-left "hook / ear" peaking at
+    # y≈650, while the flat bar sits at y≈590. We need bar_top HIGH ENOUGH
+    # to include the ear in the shift zone (so it translates left with the
+    # bar); otherwise the ear stays anchored while the bar slides out from
+    # under it, breaking the contour. chain_bar_top pulls the OVERFLOW
+    # rectangle back down to the flat bar y so the chain seam doesn't
+    # tower above the natural body.
     "letters": {
-        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 500, "bar_top": 620, "x_cutoff": 220},
-        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 500, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 260},
-        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 500, "bar_top": 620, "arm_min_y": 620, "x_cutoff": 200, "arm_top_y": 883},
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 500, "bar_top": 655, "x_cutoff": 220,
+                 "chain_bar_top": 590},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 500, "bar_top": 655, "leg_max_y": 400, "x_cutoff": 260},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 500, "bar_top": 620, "arm_min_y": 620, "x_cutoff": 200, "arm_top_y": 883,
+                 "chain_bar_top": 590},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 280},
-        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 500, "bar_top": 620, "x_cutoff": 220},
-        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 280},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 500, "bar_top": 655, "x_cutoff": 220,
+                 "chain_bar_top": 590},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 450, "bar_top": 655, "leg_max_y": 400, "x_cutoff": 280},
     },
 }
 

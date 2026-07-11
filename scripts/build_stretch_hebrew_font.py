@@ -635,11 +635,39 @@ NOTO_SANS_SYRIAC = {
     },
 }
 
+# Noto Rashi Hebrew (Google, OFL) — UPM=1000. Semi-cursive Rashi script,
+# historically used to typeset medieval commentaries alongside the biblical
+# text in narrow justified columns — exactly the use-case for kashida
+# widening. Letters are DISCRETE (non-joining), so no shaping complications.
+# Initial values from bounds inspection: bars sit at y≈500-620, bar-descenders
+# (he right leg, tav left leg) drop from ~400 down to baseline.
+NOTO_RASHI = {
+    "id": "noto-rashi-hebrew",
+    "source": "NotoRashiHebrew.ttf",
+    "output": "SemiticStretchRashi.ttf",
+    "family": "Semitic Stretch Rashi",
+    "postscript": "SemiticStretchRashi",
+    "internal_id": "SemiticSearch-SemiticStretchRashi-1.0",
+    "step": 150,
+    "import_marks": ARABIC_MARKS,
+    # Rashi has no U+FB33/34/... presentation-form dagesh glyphs — Rashi text
+    # is unpointed in practice, so no ALIAS_DAGESH entries needed.
+    "letters": {
+        0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 500, "bar_top": 620, "x_cutoff": 220},
+        0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 500, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 260},
+        0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 500, "bar_top": 620, "arm_min_y": 620, "x_cutoff": 200, "arm_top_y": 883},
+        0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 280},
+        0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 500, "bar_top": 620, "x_cutoff": 220},
+        0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 280},
+    },
+}
+
 CONFIGS = [
     FRANK_RUHL, KETER_ARAM_TSOVA, SHMULIK, HILLEL, GLADIA,
     NOTO_SANS_HEBREW, NOTO_SERIF_HEBREW, SHOFAR,
     FREE_MONO, NACHLIELI, MIRIAM_MONO, EZRA_SIL,
     STAM_ASHKENAZ, SHLOMO_SEMISTAM,
+    NOTO_RASHI,
     NOTO_SANS_SYRIAC,
 ]
 

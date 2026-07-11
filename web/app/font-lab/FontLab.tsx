@@ -67,12 +67,11 @@ const SCRIPTS: ScriptEntry[] = [
         note: "Miriam Mono CLM (Culmus, GPL); monospace serif with stretch." },
       { id: "stretchfreemono", label: "Semitic Stretch FreeMono", file: "SemiticStretchFreeMono.ttf", family: "FL_StretchFreeMono",
         note: "GNU FreeMono (GPL) — monospace; stretch breaks the monospacing for stretched letters." },
-      // ─── Standard (non-stretch) Hebrew fonts follow ───
-      { id: "sans",       label: "Noto Sans Hebrew",   file: "NotoSansHebrew.ttf", family: "FL_NotoSansHebrew" },
-      { id: "serif",      label: "Noto Serif Hebrew",  file: "NotoSerifHebrew.ttf", family: "FL_NotoSerifHebrew",
-        note: "stylistic sets ss01–ss20 + cv01–cv20 character variants" },
-      { id: "frankruhl",  label: "Frank Ruhl Libre",   file: "FrankRuhlLibre.ttf", family: "FL_FrankRuhlLibre",
-        note: "classical revival; cv01–cv22 character variants" },
+      // ─── Non-stretch Hebrew fonts — only those without a stretch build ───
+      // (Noto Sans/Serif Hebrew, Frank Ruhl Libre, Keter Aram Tsova, and
+      // Shofar were dropped because Semitic Stretch versions already cover
+      // them 1:1 — the un-widened variant is just the same font without the
+      // extender GSUB, so it's redundant.)
       { id: "davidlibre", label: "David Libre",        file: "DavidLibre-Regular.ttf", family: "FL_DavidLibre",
         note: "digital revival of David; Jerusalem style" },
       { id: "heebo",      label: "Heebo",              file: "Heebo.ttf", family: "FL_Heebo",
@@ -82,15 +81,11 @@ const SCRIPTS: ScriptEntry[] = [
       { id: "alef",       label: "Alef",               file: "Alef-Regular.ttf", family: "FL_Alef",
         note: "modern Israeli geometric sans" },
       { id: "miriam",     label: "Miriam Libre",       file: "MiriamLibre-Regular.ttf", family: "FL_Miriam",
-        note: "clean modern Hebrew sans" },
+        note: "clean modern Hebrew sans (Miriam Libre — the serif; distinct from Miriam Mono which has a stretch build above)" },
       { id: "taameyfrank",label: "Taamey Frank CLM",   file: "TaameyFrankCLM-Medium.ttf", family: "FL_TaameyFrank",
         note: "Culmus / Yoram Gnat (GPL). jalt + salt + niqqud + te'amim positioning" },
       { id: "keteryg",    label: "Keter YG",           file: "KeterYG-Medium.ttf", family: "FL_KeterYG",
-        note: "Culmus (GPL). jalt + salt for proper wide forms" },
-      { id: "keteram",    label: "Keter Aram Tsova",   file: "KeterAramTsova.ttf", family: "FL_KeterAram",
-        note: "Culmus (GPL), scholarly. jalt + salt with Aleppo-codex letter shapes" },
-      { id: "shofar",     label: "Shofar",             file: "ShofarRegular.ttf", family: "FL_Shofar",
-        note: "Culmus (GPL). Karaitic-inspired; calt + jalt + salt" },
+        note: "Culmus (GPL). jalt + salt for proper wide forms (distinct from Keter Aram Tsova; that one has a stretch build above)" },
       { id: "rashi",      label: "Noto Rashi Hebrew",  file: "NotoRashiHebrew.ttf", family: "FL_NotoRashi",
         note: "semi-cursive, medieval commentary style" },
       { id: "solitreo",   label: "Solitreo",           file: "Solitreo-Regular.ttf", family: "FL_Solitreo",
@@ -521,11 +516,20 @@ export function FontLab() {
   // the sample fits the column at the new font's metrics. Without this,
   // switching from Semitic Stretch FreeMono (step 600) to Nachlieli
   // (step ~165) leaves the demo looking wildly over- or under-stretched.
+  //
+  // AND if the user swaps to a NON-stretch font (David Libre, Solitreo,
+  // Rashi, etc.), strip every U+05C6 — those fonts have no ligature that
+  // consumes them, so they'd render as a literal "c" glyph in the preview.
   const lastJustifiedFontRef = useRef<string>("");
   useEffect(() => {
     if (!fontReady) return;
-    if (!stretchFontActive) return;
     if (!text.includes(HEBREW_STRETCH)) return;
+    if (!stretchFontActive) {
+      // Non-stretch font active but text still has extenders — strip them.
+      setText((prev) => prev.replace(/׆/g, ""));
+      lastJustifiedFontRef.current = "";
+      return;
+    }
     if (lastJustifiedFontRef.current === font.family) return;
     lastJustifiedFontRef.current = font.family;
     // Defer to next frame so bbox measurement uses the freshly-loaded font.

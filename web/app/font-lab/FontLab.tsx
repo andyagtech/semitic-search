@@ -38,6 +38,36 @@ const SCRIPTS: ScriptEntry[] = [
     id: "hebrew", label: "Hebrew (square)", dir: "rtl",
     sample: "בְּרֵאשִׁית בָּרָא אֱלֹהִים",
     fonts: [
+      // ─── Semitic Stretch fonts — grouped at the top since they're the flagship ───
+      { id: "stretch",    label: "Semitic Stretch Hebrew", file: "SemiticStretchHebrew.ttf", family: "FL_StretchHebrew",
+        note: "custom derivative of Frank Ruhl Libre (OFL). Kashida-like widening via + / − keys." },
+      { id: "stretchketer", label: "Semitic Stretch Keter Aram Tsova", file: "SemiticStretchKeterAramTsova.ttf", family: "FL_StretchKeterAram",
+        note: "Keter Aram Tsova (Culmus, GPL). Aleppo-codex letterforms with kashida-like widening." },
+      { id: "stretchshmulik", label: "Semitic Stretch Shmulik CLM", file: "SemiticStretchShmulikCLM.ttf", family: "FL_StretchShmulik",
+        note: "Culmus (GPL) by Yoram Gnat. Display serif with kashida-like widening." },
+      { id: "stretchhillel", label: "Semitic Stretch Hillel CLM", file: "SemiticStretchHillelCLM.ttf", family: "FL_StretchHillel",
+        note: "Culmus (GPL) by Maxim Iorsh. Modern Hebrew, consonants only (no niqqud)." },
+      { id: "stretchgladia", label: "Semitic Stretch Gladia CLM", file: "SemiticStretchGladiaCLM.ttf", family: "FL_StretchGladia",
+        note: "Culmus (GPL) by Maxim Iorsh. Bold display Hebrew, consonants only." },
+      { id: "stretchnotosanshebrew", label: "Semitic Stretch Noto Sans Hebrew", file: "SemiticStretchNotoSansHebrew.ttf", family: "FL_StretchNotoSansHebrew",
+        note: "Noto Sans Hebrew (OFL) with stretch ligatures." },
+      { id: "stretchnotoserifhebrew", label: "Semitic Stretch Noto Serif Hebrew", file: "SemiticStretchNotoSerifHebrew.ttf", family: "FL_StretchNotoSerifHebrew",
+        note: "Noto Serif Hebrew (OFL) with stretch ligatures." },
+      { id: "stretchshofar", label: "Semitic Stretch Shofar", file: "SemiticStretchShofar.ttf", family: "FL_StretchShofar",
+        note: "Shofar (Culmus, GPL); Karaitic-inspired with stretch ligatures." },
+      { id: "stretchezrasil", label: "Semitic Stretch Ezra SIL SR", file: "SemiticStretchEzraSIL.ttf", family: "FL_StretchEzraSIL",
+        note: "Ezra SIL SR (SIL OFL); scholarly Bible font with stretch." },
+      { id: "stretchstamashkenaz", label: "Semitic Stretch Stam Ashkenaz CLM", file: "SemiticStretchStamAshkenazCLM.ttf", family: "FL_StretchStamAshkenaz",
+        note: "Stam Ashkenaz CLM (Culmus, GPL); Ashkenazi Torah-scribal with stretch." },
+      { id: "stretchshlomosemistam", label: "Semitic Stretch Shlomo SemiStam", file: "SemiticStretchShlomoSemiStam.ttf", family: "FL_StretchShlomoSemiStam",
+        note: "Shlomo SemiStam (CC BY-SA / OFL); derived from Ezra SIL SR with full cantillation." },
+      { id: "stretchnachlieli", label: "Semitic Stretch Nachlieli CLM", file: "SemiticStretchNachlieliCLM.ttf", family: "FL_StretchNachlieli",
+        note: "Nachlieli CLM Light (Culmus, GPL); airy serif Hebrew with stretch." },
+      { id: "stretchmiriammono", label: "Semitic Stretch Miriam Mono CLM", file: "SemiticStretchMiriamMonoCLM.ttf", family: "FL_StretchMiriamMono",
+        note: "Miriam Mono CLM (Culmus, GPL); monospace serif with stretch." },
+      { id: "stretchfreemono", label: "Semitic Stretch FreeMono", file: "SemiticStretchFreeMono.ttf", family: "FL_StretchFreeMono",
+        note: "GNU FreeMono (GPL) — monospace; stretch breaks the monospacing for stretched letters." },
+      // ─── Standard (non-stretch) Hebrew fonts follow ───
       { id: "sans",       label: "Noto Sans Hebrew",   file: "NotoSansHebrew.ttf", family: "FL_NotoSansHebrew" },
       { id: "serif",      label: "Noto Serif Hebrew",  file: "NotoSerifHebrew.ttf", family: "FL_NotoSerifHebrew",
         note: "stylistic sets ss01–ss20 + cv01–cv20 character variants" },
@@ -53,34 +83,6 @@ const SCRIPTS: ScriptEntry[] = [
         note: "modern Israeli geometric sans" },
       { id: "miriam",     label: "Miriam Libre",       file: "MiriamLibre-Regular.ttf", family: "FL_Miriam",
         note: "clean modern Hebrew sans" },
-      { id: "stretch",    label: "Semitic Stretch Hebrew", file: "SemiticStretchHebrew.ttf", family: "FL_StretchHebrew",
-        note: "custom derivative of Frank Ruhl Libre (OFL). Supports true kashida-like widening via +/- keys" },
-      { id: "stretchketer", label: "Semitic Stretch Keter Aram Tsova", file: "SemiticStretchKeterAramTsova.ttf", family: "FL_StretchKeterAram",
-        note: "custom derivative of Keter Aram Tsova (Culmus, GPL). Same kashida-like widening as Semitic Stretch Hebrew, but with Aleppo-codex letterforms" },
-      { id: "stretchshmulik", label: "Semitic Stretch Shmulik CLM", file: "SemiticStretchShmulikCLM.ttf", family: "FL_StretchShmulik",
-        note: "Culmus fancy (GPL) by Yoram Gnat. Display serif with kashida-like widening." },
-      { id: "stretchhillel", label: "Semitic Stretch Hillel CLM", file: "SemiticStretchHillelCLM.ttf", family: "FL_StretchHillel",
-        note: "Culmus fancy (GPL) by Maxim Iorsh. Modern Hebrew with kashida-like widening; consonants only (no niqqud)." },
-      { id: "stretchgladia", label: "Semitic Stretch Gladia CLM", file: "SemiticStretchGladiaCLM.ttf", family: "FL_StretchGladia",
-        note: "Culmus fancy (GPL) by Maxim Iorsh. Bold display Hebrew with kashida-like widening; consonants only." },
-      { id: "stretchnotosanshebrew", label: "Semitic Stretch Noto Sans Hebrew", file: "SemiticStretchNotoSansHebrew.ttf", family: "FL_StretchNotoSansHebrew",
-        note: "Noto Sans Hebrew (OFL) with stretch ligatures." },
-      { id: "stretchnotoserifhebrew", label: "Semitic Stretch Noto Serif Hebrew", file: "SemiticStretchNotoSerifHebrew.ttf", family: "FL_StretchNotoSerifHebrew",
-        note: "Noto Serif Hebrew (OFL) with stretch ligatures." },
-      { id: "stretchshofar", label: "Semitic Stretch Shofar", file: "SemiticStretchShofar.ttf", family: "FL_StretchShofar",
-        note: "Shofar (Culmus, GPL); Karaitic-inspired with stretch ligatures." },
-      { id: "stretchfreemono", label: "Semitic Stretch FreeMono", file: "SemiticStretchFreeMono.ttf", family: "FL_StretchFreeMono",
-        note: "GNU FreeMono (GPL) — monospace; stretch breaks the monospacing for stretched letters." },
-      { id: "stretchnachlieli", label: "Semitic Stretch Nachlieli CLM", file: "SemiticStretchNachlieliCLM.ttf", family: "FL_StretchNachlieli",
-        note: "Nachlieli CLM Light (Culmus, GPL); airy serif Hebrew with stretch." },
-      { id: "stretchmiriammono", label: "Semitic Stretch Miriam Mono CLM", file: "SemiticStretchMiriamMonoCLM.ttf", family: "FL_StretchMiriamMono",
-        note: "Miriam Mono CLM (Culmus, GPL); monospace serif with stretch." },
-      { id: "stretchezrasil", label: "Semitic Stretch Ezra SIL SR", file: "SemiticStretchEzraSIL.ttf", family: "FL_StretchEzraSIL",
-        note: "Ezra SIL SR (SIL OFL); scholarly Bible font with stretch." },
-      { id: "stretchstamashkenaz", label: "Semitic Stretch Stam Ashkenaz CLM", file: "SemiticStretchStamAshkenazCLM.ttf", family: "FL_StretchStamAshkenaz",
-        note: "Stam Ashkenaz CLM (Culmus, GPL); Ashkenazi Torah-scribal with stretch. Closest match to 'Taamey Ashkenaz'." },
-      { id: "stretchshlomosemistam", label: "Semitic Stretch Shlomo SemiStam", file: "SemiticStretchShlomoSemiStam.ttf", family: "FL_StretchShlomoSemiStam",
-        note: "Shlomo SemiStam (CC BY-SA / OFL); derived from Ezra SIL SR with full cantillation, with stretch." },
       { id: "taameyfrank",label: "Taamey Frank CLM",   file: "TaameyFrankCLM-Medium.ttf", family: "FL_TaameyFrank",
         note: "Culmus / Yoram Gnat (GPL). jalt + salt + niqqud + te'amim positioning" },
       { id: "keteryg",    label: "Keter YG",           file: "KeterYG-Medium.ttf", family: "FL_KeterYG",
@@ -115,10 +117,10 @@ const SCRIPTS: ScriptEntry[] = [
     id: "syriac", label: "Syriac", dir: "rtl",
     sample: "ܒܪܝܫܝܬ ܒܪܐ ܐܠܗܐ",
     fonts: [
-      { id: "sans",  label: "Noto Sans Syriac",  file: "NotoSansSyriac.ttf", family: "FL_NotoSansSyriac" },
-      { id: "serif", label: "Noto Serif Syriac (Estrangela-leaning)", file: "NotoSerifSyriac.ttf", family: "FL_NotoSerifSyriac" },
       { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
         note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts. Press + after a stretchable letter to widen." },
+      { id: "sans",  label: "Noto Sans Syriac",  file: "NotoSansSyriac.ttf", family: "FL_NotoSansSyriac" },
+      { id: "serif", label: "Noto Serif Syriac (Estrangela-leaning)", file: "NotoSerifSyriac.ttf", family: "FL_NotoSerifSyriac" },
     ],
   },
   {
@@ -290,6 +292,103 @@ function ensureFontLoaded(family: string, file: string): Promise<void> {
   });
 }
 
+// Short script-native sample used inside the FontPicker dropdown so each
+// entry visually renders in the font it names — much clearer than the
+// system-font-rendered browser-default <option> text.
+const PICKER_SAMPLE: Record<string, string> = {
+  hebrew:    "אבגד הוזח טיכל מנסע",
+  syriac:    "ܐܒܓܕ ܗܘܙ ܚܛܝ ܟܠܡ",
+  arabic:    "ابجد هوز حطي كلمن",
+  paleo:     "\u{10900}\u{10901}\u{10902} \u{10903}\u{10904}\u{10905}",
+  samaritan: "ࠀࠁࠂ ࠃࠄࠅ",
+  aramaic:   "\u{10840}\u{10841}\u{10842} \u{10843}\u{10844}",
+  mandaic:   "ࡀࡁࡂ ࡃࡄࡅ",
+};
+
+// Custom font picker — replaces the native <select> so each option renders
+// in its own font-family instead of the browser's chrome font. Loads every
+// font in the current script when opened so options paint with real glyphs.
+function FontPicker({
+  fonts, value, onChange, sampleText, dir,
+}: {
+  fonts: FontEntry[];
+  value: string;
+  onChange: (id: string) => void;
+  sampleText: string;
+  dir: "rtl" | "ltr";
+}) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const current = fonts.find((f) => f.id === value) ?? fonts[0];
+
+  // Preload every font in this script the first time the picker opens so
+  // the options render in their own faces without a flash of fallback text.
+  useEffect(() => {
+    if (!open) return;
+    for (const f of fonts) ensureFontLoaded(f.family, f.file);
+  }, [open, fonts]);
+
+  useEffect(() => {
+    function onMouseDown(e: MouseEvent) {
+      if (!containerRef.current) return;
+      if (!containerRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative mt-1">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full text-left px-2 py-1.5 border border-neutral-300 rounded text-sm bg-white hover:bg-neutral-50 flex items-center justify-between gap-2"
+      >
+        <span className="flex flex-col leading-tight min-w-0 flex-1">
+          <span className="truncate">{current.label}</span>
+          <span
+            className="truncate text-lg text-neutral-800"
+            style={{ fontFamily: `"${current.family}", system-ui`, direction: dir }}
+          >
+            {sampleText}
+          </span>
+        </span>
+        <span className="text-neutral-500 shrink-0">▾</span>
+      </button>
+      {open && (
+        <div className="absolute z-30 left-0 right-0 top-full mt-1 max-h-[28rem] overflow-y-auto bg-white border border-neutral-300 rounded shadow-lg">
+          {fonts.map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => { onChange(f.id); setOpen(false); }}
+              className={`w-full text-left px-3 py-2 border-b border-neutral-100 last:border-b-0 hover:bg-amber-50 ${f.id === value ? "bg-amber-50/70" : ""}`}
+            >
+              <div className="text-xs text-neutral-700">{f.label}</div>
+              <div
+                className="mt-0.5 text-xl text-neutral-900 truncate"
+                style={{ fontFamily: `"${f.family}", system-ui`, direction: dir }}
+              >
+                {sampleText}
+              </div>
+              {f.note && (
+                <div className="mt-0.5 text-[11px] text-neutral-500 leading-snug">{f.note}</div>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Default landing state: Hebrew + our custom stretch font, with the ל in
 // שלום already elongated (5 × U+E010 after ל) so first-time visitors
 // immediately see what the tool does.
@@ -416,6 +515,33 @@ export function FontLab() {
     });
     return () => { cancelled = true; };
   }, [font.family, font.file]);
+
+  // Re-justify the demo per font: whenever the stretch font changes and the
+  // current text already contains stretches, recompute the U+05C6 counts so
+  // the sample fits the column at the new font's metrics. Without this,
+  // switching from Semitic Stretch FreeMono (step 600) to Nachlieli
+  // (step ~165) leaves the demo looking wildly over- or under-stretched.
+  const lastJustifiedFontRef = useRef<string>("");
+  useEffect(() => {
+    if (!fontReady) return;
+    if (!stretchFontActive) return;
+    if (!text.includes(HEBREW_STRETCH)) return;
+    if (lastJustifiedFontRef.current === font.family) return;
+    lastJustifiedFontRef.current = font.family;
+    // Defer to next frame so bbox measurement uses the freshly-loaded font.
+    requestAnimationFrame(() => {
+      setText((prev) => {
+        if (!prev.includes(HEBREW_STRETCH)) return prev;
+        return autoJustifySemitic(
+          prev, justifyWidthPx, font.family, fontSize,
+          fontFeatureSettings,
+          syriacStretchActive ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE,
+        );
+      });
+    });
+    // Intentionally omit `text` from deps so this only fires on font change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [font.family, fontReady, stretchFontActive]);
 
   // Reset palette + wide-set when the cluster count changes.
   useEffect(() => {
@@ -730,21 +856,16 @@ export function FontLab() {
               ))}
             </select>
           </label>
-          <label id="fl-font-select" className="block">
+          <div id="fl-font-select" className="block">
             <span className="text-xs uppercase tracking-wider text-neutral-500">Font</span>
-            <select
-              suppressHydrationWarning
-              className="mt-1 block w-full px-2 py-1.5 border border-neutral-300 rounded text-sm"
+            <FontPicker
+              fonts={script.fonts}
               value={fontId}
-              onChange={(e) => setFontId(e.target.value)}
-            >
-              {script.fonts.map((f) => (
-                <option key={f.id} value={f.id}>
-                  {f.label}{f.note ? ` — ${f.note}` : ""}
-                </option>
-              ))}
-            </select>
-          </label>
+              onChange={setFontId}
+              sampleText={PICKER_SAMPLE[script.id] ?? script.sample.slice(0, 20)}
+              dir={script.dir}
+            />
+          </div>
         </div>
 
         {script.id === "hebrew" && (
@@ -755,12 +876,29 @@ export function FontLab() {
                 key={s.label}
                 type="button"
                 onClick={() => {
-                  setText(s.text);
-                  // Stretches only render against a Semitic Stretch font
-                  // — switch automatically if the user is on a different
-                  // Hebrew font, so the kashida demo actually shows.
-                  if (s.text.includes(HEBREW_STRETCH) && !fontId.startsWith("stretch")) {
+                  const wantJustify = s.text.includes(HEBREW_STRETCH);
+                  const clean = s.text.replace(/׆/g, "");
+                  // Sample expects stretch but user isn't on a stretch font
+                  // — flip to the default stretch font so the demo shows.
+                  let targetFont = font;
+                  if (wantJustify && !fontId.startsWith("stretch")) {
                     setFontId(DEFAULT_FONT);
+                    targetFont = script.fonts.find((f) => f.id === DEFAULT_FONT) ?? font;
+                  }
+                  if (wantJustify || fontId.startsWith("stretch")) {
+                    // Auto-justify per font so every stretch font's demo fits
+                    // the target column width (each font has different step
+                    // metrics; pre-baked counts only fit one font).
+                    ensureFontLoaded(targetFont.family, targetFont.file).then(() => {
+                      requestAnimationFrame(() => {
+                        setText(autoJustifySemitic(
+                          clean, justifyWidthPx, targetFont.family, fontSize,
+                          fontFeatureSettings, HEBREW_STRETCHABLE,
+                        ));
+                      });
+                    });
+                  } else {
+                    setText(clean);
                   }
                   requestAnimationFrame(() => textareaRef.current?.focus());
                 }}
@@ -774,7 +912,12 @@ export function FontLab() {
         )}
 
         <label className="block mt-3">
-          <span className="text-xs uppercase tracking-wider text-neutral-500">Text</span>
+          <span className="text-xs uppercase tracking-wider text-neutral-500">
+            Text source
+            <span className="ml-2 normal-case tracking-normal text-neutral-500/80">
+              — edit here; the coloured SVG preview below reflects it
+            </span>
+          </span>
           <div id="fl-textarea" className="relative">
             <textarea
               suppressHydrationWarning
@@ -836,9 +979,9 @@ export function FontLab() {
                   );
                 }}
                 className="px-2.5 py-1 rounded border border-amber-300 bg-amber-50 hover:bg-amber-100 font-semibold accent-showcase"
-                title="Automatically place kashidas on stretchable letters so each line reaches the target column width. Distributes evenly across every stretchable letter in the line, respecting the 16-level cap per letter."
+                title="Modifies the text source above: places kashidas (U+05C6) on stretchable letters so each line reaches the target column width. The SVG preview below updates automatically. Distributes evenly across every stretchable letter, capped at 16 levels per letter."
               >
-                auto-justify to column
+                auto-justify text ▸
               </button>
               <label className="flex items-center gap-1">
                 width:
@@ -1021,6 +1164,15 @@ export function FontLab() {
           Syriac marks) correctly. Each grapheme is one <span> with its
           own color — the paint is on top of shaped glyphs. */}
       <section className="mb-4 bg-white border border-neutral-200 rounded-lg p-4 overflow-x-auto">
+        <div className="mb-2 flex items-center justify-between gap-2 text-xs uppercase tracking-wider text-neutral-500">
+          <span>
+            Coloured SVG preview
+            <span className="ml-2 normal-case tracking-normal text-neutral-500/80">
+              — read-only render of the text source above
+            </span>
+          </span>
+          <span className="font-mono lowercase tracking-normal">read-only</span>
+        </div>
         <div
           ref={previewRef}
           className="inline-block w-full"

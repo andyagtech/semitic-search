@@ -433,6 +433,34 @@ const HEBREW_SAMPLES: { label: string; text: string; hint: string }[] = [
   },
 ];
 
+// Peshitta samples for the Syriac script. Broken into short lines so
+// auto-justify has room to add stretches on ܒ ܕ ܪ ܬ. Without newlines
+// the single-line width already exceeds a normal column, and auto-justify
+// (which fills whitespace to a target width) has nothing to fill.
+const SYRIAC_SAMPLES: { label: string; text: string; hint: string }[] = [
+  {
+    label: "ܐܠܗܐ",
+    text: "ܐܠܗܐ",
+    hint: "Basic stretch target — press + after ܕ / ܪ / ܒ / ܬ to widen",
+  },
+  {
+    label: "Peshitta Genesis 1:1 (column)",
+    text:
+      "ܒܪܝܫܝܬ\n" +
+      "ܒܪܐ ܐܠܗܐ\n" +
+      "ܝܬ ܫܡܝܐ\n" +
+      "ܘܝܬ ܐܪܥܐ",
+    hint: "Multi-line short lines — auto-justify stretches ܒ ܕ ܪ ܬ to fill each row to the column width",
+  },
+  {
+    label: "ܐܒܘܢ ܕܒܫܡܝܐ",
+    text:
+      "ܐܒܘܢ\n" +
+      "ܕܒܫܡܝܐ",
+    hint: "Lord's Prayer opener — short lines with room to stretch",
+  },
+];
+
 export function FontLab() {
   const [scriptId, setScriptId] = useState(DEFAULT_SCRIPT);
   const script = SCRIPTS.find((s) => s.id === scriptId)!;
@@ -872,24 +900,28 @@ export function FontLab() {
           </div>
         </div>
 
-        {script.id === "hebrew" && (
+        {(script.id === "hebrew" || script.id === "syriac") && (
           <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
             <span className="text-neutral-500 uppercase tracking-wider">Samples</span>
-            {HEBREW_SAMPLES.map((s) => (
+            {(script.id === "hebrew" ? HEBREW_SAMPLES : SYRIAC_SAMPLES).map((s) => (
               <button
                 key={s.label}
                 type="button"
                 onClick={() => {
                   const wantJustify = s.text.includes(HEBREW_STRETCH);
                   const clean = s.text.replace(/׆/g, "");
+                  const stretchable = script.id === "syriac" ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE;
                   // Sample expects stretch but user isn't on a stretch font
                   // — flip to the default stretch font so the demo shows.
                   let targetFont = font;
+                  const stretchFontId = script.id === "syriac" ? "stretchsyriac" : DEFAULT_FONT;
                   if (wantJustify && !fontId.startsWith("stretch")) {
-                    setFontId(DEFAULT_FONT);
-                    targetFont = script.fonts.find((f) => f.id === DEFAULT_FONT) ?? font;
+                    setFontId(stretchFontId);
+                    targetFont = script.fonts.find((f) => f.id === stretchFontId) ?? font;
                   }
-                  if (wantJustify || fontId.startsWith("stretch")) {
+                  const stretchActive = fontId.startsWith("stretch") ||
+                    (script.id === "syriac" && fontId === "stretchsyriac");
+                  if (wantJustify || stretchActive || script.id === "syriac") {
                     // Auto-justify per font so every stretch font's demo fits
                     // the target column width (each font has different step
                     // metrics; pre-baked counts only fit one font).
@@ -897,7 +929,7 @@ export function FontLab() {
                       requestAnimationFrame(() => {
                         setText(autoJustifySemitic(
                           clean, justifyWidthPx, targetFont.family, fontSize,
-                          fontFeatureSettings, HEBREW_STRETCHABLE,
+                          fontFeatureSettings, stretchable,
                         ));
                       });
                     });

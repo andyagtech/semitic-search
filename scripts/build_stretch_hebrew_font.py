@@ -129,6 +129,7 @@ KETER_ARAM_TSOVA = {
     "postscript": "SemiticStretchKeterAramTsova",
     "internal_id": "SemiticSearch-SemiticStretchKeterAramTsova-1.0",
     "step": 300,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         # dalet: single-contour topology (one closed outline that traces
@@ -205,6 +206,7 @@ SHMULIK = {
     "postscript": "SemiticStretchShmulikCLM",
     "internal_id": "SemiticSearch-SemiticStretchShmulikCLM-1.0",
     "step": 300,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         # Shmulik's body bars sit at y=1050 with serifs reaching y=1186.
@@ -294,6 +296,7 @@ HILLEL = {
     # per level across all UPM=1000 fonts. Was 130 because Hillel renders
     # smaller; normalizing makes side-by-side comparisons fair.
     "step": 150,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 280},
@@ -317,6 +320,7 @@ GLADIA = {
     "postscript": "SemiticStretchGladiaCLM",
     "internal_id": "SemiticSearch-SemiticStretchGladiaCLM-1.0",
     "step": 150,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 380},
@@ -338,6 +342,7 @@ NOTO_SANS_HEBREW = {
     "postscript": "SemiticStretchNotoSansHebrew",
     "internal_id": "SemiticSearch-SemiticStretchNotoSansHebrew-1.0",
     "step": 150,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
@@ -362,6 +367,7 @@ NOTO_SERIF_HEBREW = {
     "postscript": "SemiticStretchNotoSerifHebrew",
     "internal_id": "SemiticSearch-SemiticStretchNotoSerifHebrew-1.0",
     "step": 150,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 300,
@@ -386,6 +392,7 @@ SHOFAR = {
     "postscript": "SemiticStretchShofar",
     "internal_id": "SemiticSearch-SemiticStretchShofar-1.0",
     "step": 300,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
@@ -445,6 +452,7 @@ NACHLIELI = {
     "postscript": "SemiticStretchNachlieliCLM",
     "internal_id": "SemiticSearch-SemiticStretchNachlieliCLM-1.0",
     "step": 165,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 420, "bar_top": 620, "x_cutoff": 350,
@@ -498,6 +506,7 @@ EZRA_SIL = {
     "postscript": "SemiticStretchEzraSIL",
     "internal_id": "SemiticSearch-SemiticStretchEzraSIL-1.0",
     "step": 300,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 1000, "bar_top": 1500, "x_cutoff": 700,
@@ -585,6 +594,7 @@ SHLOMO_SEMISTAM = {
     "postscript": "SemiticStretchShlomoSemiStam",
     "internal_id": "SemiticSearch-SemiticStretchShlomoSemiStam-1.0",
     "step": 300,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 700,
@@ -628,6 +638,7 @@ NOTO_SANS_SYRIAC = {
     "postscript": "SemiticStretchNotoSansSyriac",
     "internal_id": "SemiticSearch-SemiticStretchNotoSansSyriac-1.0",
     "step": 150,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "language_system": "syrc",  # Syriac script tag (as opposed to hebr)
     "letters": {
         # Dalath: bar-class. Bar zone is the flat top portion; x_cutoff picks
@@ -664,6 +675,7 @@ NOTO_RASHI = {
     "postscript": "SemiticStretchRashi",
     "internal_id": "SemiticSearch-SemiticStretchRashi-1.0",
     "step": 150,
+    "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
     # Rashi has no U+FB33/34/... presentation-form dagesh glyphs — Rashi text
     # is unpointed in practice, so no ALIAS_DAGESH entries needed.

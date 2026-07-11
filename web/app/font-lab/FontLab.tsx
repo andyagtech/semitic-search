@@ -117,6 +117,8 @@ const SCRIPTS: ScriptEntry[] = [
     fonts: [
       { id: "sans",  label: "Noto Sans Syriac",  file: "NotoSansSyriac.ttf", family: "FL_NotoSansSyriac" },
       { id: "serif", label: "Noto Serif Syriac (Estrangela-leaning)", file: "NotoSerifSyriac.ttf", family: "FL_NotoSerifSyriac" },
+      { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
+        note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts. Press + after a stretchable letter to widen." },
     ],
   },
   {
@@ -375,15 +377,20 @@ export function FontLab() {
   // indices where jalt (justification alternates) should apply. Non-joining
   // scripts only — wrapping a span breaks Arabic/Syriac shaping.
   const [wideClusters, setWideClusters] = useState<Set<number>>(new Set());
+  // Auto-justify target column width in pixels. Default matches a typical
+  // scribal column. User can tune before clicking the button.
+  const [justifyWidthPx, setJustifyWidthPx] = useState<number>(680);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  // The Hebrew stretch font supports a REAL kashida-style extender via
-  // U+E010 insertion, indefinite widening. Other Hebrew fonts fall back
-  // to per-letter jalt substitution.
+  // Our Semitic-Stretch fonts (Hebrew and Syriac) support a real kashida-
+  // style extender via U+05C6 insertion, indefinite widening. Other fonts
+  // fall back to per-letter jalt substitution.
   const hebrewStretchActive = script.id === "hebrew" && font.id.startsWith("stretch");
-  const supportsKashida = script.id === "arabic" || script.id === "syriac" || hebrewStretchActive;
+  const syriacStretchActive = script.id === "syriac" && font.id === "stretchsyriac";
+  const stretchFontActive = hebrewStretchActive || syriacStretchActive;
+  const supportsKashida = script.id === "arabic" || (script.id === "syriac" && !syriacStretchActive) || stretchFontActive;
   const supportsWideHebrew = script.id === "hebrew";
   // Hebrew (non-stretch font): widening via jalt is per-letter via OT feature.
   const supportsJaltWiden = script.id === "hebrew" && !hebrewStretchActive;
@@ -449,9 +456,13 @@ export function FontLab() {
       if (!markRe.test(text[i])) { next = text[i]; break; }
     }
 
-    if (hebrewStretchActive) {
-      const prevIsHebrew = /[֐-׿]/.test(prev);
-      if (!prevIsHebrew && prev !== HEBREW_STRETCH) return;
+    if (stretchFontActive) {
+      // U+05C6 stretch trigger sits in the Hebrew script block; it works
+      // equally for the Syriac stretch font because both fonts declare it
+      // in their cmap and GSUB. `prev` can be a Hebrew letter (֐-׿)
+      // or a Syriac letter (܀-ݏ) or another trigger.
+      const prevIsSemiticStretchable = /[֐-׿܀-ݏ]/.test(prev);
+      if (!prevIsSemiticStretchable && prev !== HEBREW_STRETCH) return;
       const updated = text.slice(0, pos) + HEBREW_STRETCH + text.slice(pos);
       setText(updated);
       requestAnimationFrame(() => {
@@ -472,7 +483,7 @@ export function FontLab() {
       ta.focus();
       ta.setSelectionRange(pos + 1, pos + 1);
     });
-  }, [text, hebrewStretchActive]);
+  }, [text, stretchFontActive]);
 
   /** Generic single-char insertion at cursor — used by Arabic-mark
    *  buttons (shaddah / tanwin). Combining marks attach to the preceding
@@ -549,7 +560,7 @@ export function FontLab() {
       const newPos = pos > idx ? pos - 1 : pos;
       ta.setSelectionRange(newPos, newPos);
     });
-  }, [text, hebrewStretchActive]);
+  }, [text, stretchFontActive]);
 
   /** Cluster index at (or immediately before) the given character position
    *  in `text`. Handles multi-char grapheme clusters by walking from start
@@ -805,6 +816,57 @@ export function FontLab() {
               <span className="text-neutral-500">
                 in text: use <kbd className="px-1 py-0.5 rounded bg-neutral-100 border border-neutral-300 font-mono">+</kbd> / <kbd className="px-1 py-0.5 rounded bg-neutral-100 border border-neutral-300 font-mono">−</kbd> keys
                 {hebrewStretchActive && <> · press multiple times to widen indefinitely</>}
+              </span>
+            </div>
+          )}
+          {stretchFontActive && (
+            <div className="mt-2 flex items-center gap-2 text-xs text-neutral-600 flex-wrap">
+              <button
+                type="button"
+                onClick={() => {
+                  setText(
+                    autoJustifySemitic(
+                      text,
+                      justifyWidthPx,
+                      font.family,
+                      fontSize,
+                      fontFeatureSettings,
+                      syriacStretchActive ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE,
+                    ),
+                  );
+                }}
+                className="px-2.5 py-1 rounded border border-amber-300 bg-amber-50 hover:bg-amber-100 font-semibold accent-showcase"
+                title="Automatically place kashidas on stretchable letters so each line reaches the target column width. Distributes evenly across every stretchable letter in the line, respecting the 16-level cap per letter."
+              >
+                auto-justify to column
+              </button>
+              <label className="flex items-center gap-1">
+                width:
+                <input
+                  type="number"
+                  min={100}
+                  max={2000}
+                  step={10}
+                  value={justifyWidthPx}
+                  onChange={(e) => setJustifyWidthPx(Math.max(100, Number(e.target.value) || 680))}
+                  className="w-16 rounded border border-neutral-300 px-1 py-0.5 text-xs font-mono"
+                />
+                px
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  // Strip all stretches from current text.
+                  setText(text.replace(/׆/g, ""));
+                }}
+                className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-600"
+                title="Remove every U+05C6 kashida from the text"
+              >
+                clear stretches
+              </button>
+              <span className="text-neutral-500 text-[11px]">
+                one-click column justification — kashidas placed on{" "}
+                {syriacStretchActive ? "ܕ ܪ ܬ" : "ד ה ל ם ר ת"}
               </span>
             </div>
           )}
@@ -1212,6 +1274,91 @@ function BulkColorControls({
 // glyph by the GSUB liga rule. Highlighted in the on-screen keyboard so
 // users know which keys can be stretched.
 const STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
+
+// Which letters our stretch fonts widen. Hebrew: ד ה ל ם ר ת. Syriac: ܕ ܪ ܬ.
+const HEBREW_STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
+const SYRIAC_STRETCHABLE = new Set(["ܕ", "ܪ", "ܬ"]);
+
+// Auto-justify: given a paragraph, a target column width in px, and the
+// active font settings, place U+05C6 stretches on scribally-appropriate
+// letters to make each line's rendered width close the deficit to the
+// target width. Font-agnostic — measures pixels-per-stretch-level from the
+// live DOM rather than reading per-font UPM/step config.
+//
+// Distribution policy: split the deficit evenly across every stretchable
+// position in the line, capping any single letter at MAX_LEVELS (16) to
+// avoid triggering the overflow-chain machinery on any one glyph. If the
+// cap is hit before the deficit closes, we accept the residual gap.
+function autoJustifySemitic(
+  text: string,
+  targetWidthPx: number,
+  fontFamily: string,
+  fontSizePx: number,
+  featureSettings: string,
+  stretchable: Set<string>,
+): string {
+  const STRETCH = "׆";
+  const MAX_LEVELS_PER_LETTER = 16;
+
+  const scratch = document.createElement("div");
+  scratch.style.cssText =
+    `position:absolute;visibility:hidden;top:-9999px;left:-9999px;` +
+    `font:${fontSizePx}px "${fontFamily}";` +
+    `font-feature-settings:${featureSettings};` +
+    `direction:rtl;white-space:nowrap;`;
+  document.body.appendChild(scratch);
+  try {
+    const measure = (s: string): number => {
+      scratch.textContent = s;
+      return scratch.getBoundingClientRect().width;
+    };
+
+    const lines = text.split("\n");
+    const out = lines.map((line) => {
+      // Strip any existing stretches so we start from a clean baseline.
+      const clean = line.replace(new RegExp(STRETCH, "g"), "");
+      if (!clean.trim()) return line;
+
+      const natural = measure(clean);
+      const deficit = targetWidthPx - natural;
+      if (deficit <= 1) return clean;
+
+      const positions: number[] = [];
+      for (let i = 0; i < clean.length; i++) {
+        if (stretchable.has(clean[i])) positions.push(i);
+      }
+      if (positions.length === 0) return clean;
+
+      // Sample any stretchable letter in this line to compute px per level.
+      const letter = clean[positions[positions.length - 1]];
+      const SAMPLE_LEVELS = 8;
+      const pxPerLevel =
+        (measure(letter + STRETCH.repeat(SAMPLE_LEVELS)) - measure(letter)) / SAMPLE_LEVELS;
+      if (pxPerLevel <= 0.1) return clean;
+
+      const totalLevels = Math.max(0, Math.round(deficit / pxPerLevel));
+      const per = Math.floor(totalLevels / positions.length);
+      const remainder = totalLevels - per * positions.length;
+      const distribution = positions.map((_, i) =>
+        Math.min(MAX_LEVELS_PER_LETTER, per + (i < remainder ? 1 : 0)),
+      );
+
+      // Insert from last position backwards so earlier positions stay valid.
+      let result = clean;
+      for (let i = positions.length - 1; i >= 0; i--) {
+        const pos = positions[i];
+        const count = distribution[i];
+        if (count > 0) {
+          result = result.slice(0, pos + 1) + STRETCH.repeat(count) + result.slice(pos + 1);
+        }
+      }
+      return result;
+    });
+    return out.join("\n");
+  } finally {
+    document.body.removeChild(scratch);
+  }
+}
 
 // --- Coach marks --------------------------------------------------------
 

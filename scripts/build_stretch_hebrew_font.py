@@ -595,11 +595,52 @@ SHLOMO_SEMISTAM = {
     },
 }
 
+
+# ─── Syriac ──────────────────────────────────────────────────────────
+#
+# Extends the same bar/arm/leg/box framework to Noto Sans Syriac. Syriac
+# is cursive (letters typically JOIN their neighbors), so this stretch
+# targets the ISOLATED forms only — good enough for word-final and
+# stand-alone letters where scribal justification happens most.
+#
+# Chosen letters based on glyph-geometry inspection of Noto Sans Syriac
+# (UPM=1000):
+#   dalath ܕ  U+0715  x=[44..465] y=[-18..426]
+#   rish   ܪ  U+072A  x=[44..465] y=[-18..610]
+#   taw    ܬ  U+072C  x=[65..688] y=[-29..713]
+# Dalath and rish share the classic "kaf-like" curved-top-and-tail shape;
+# taw has a clearer horizontal cross-bar. All three are traditional
+# scribal justification anchors in Estrangela and Serto manuscripts.
+NOTO_SANS_SYRIAC = {
+    "id": "noto-sans-syriac",
+    "source": "NotoSansSyriac.ttf",
+    "output": "SemiticStretchNotoSansSyriac.ttf",
+    "family": "Semitic Stretch Noto Sans Syriac",
+    "postscript": "SemiticStretchNotoSansSyriac",
+    "internal_id": "SemiticSearch-SemiticStretchNotoSansSyriac-1.0",
+    "step": 150,
+    "language_system": "syrc",  # Syriac script tag (as opposed to hebr)
+    "letters": {
+        # Dalath: bar-class. Bar zone is the flat top portion; x_cutoff picks
+        # a point between the stretchable left curve and the anchored right
+        # tail. Conservative values pending visual verification.
+        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 250, "bar_top": 420, "x_cutoff": 220},
+        # Rish: same shape as dalath but with the additional dot/serif
+        # above (higher y-max). Same bar zone.
+        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 250, "bar_top": 420, "x_cutoff": 220},
+        # Taw: has a horizontal cross-bar higher up. Treat as leg-class
+        # (bar + descending left leg). leg_max_y catches the descender
+        # portion so it doesn't drag horizontally with the bar shift.
+        0x072C: {"name": "taw",    "class": "leg", "bar_bottom": 400, "bar_top": 700, "leg_max_y": 200, "x_cutoff": 350},
+    },
+}
+
 CONFIGS = [
     FRANK_RUHL, KETER_ARAM_TSOVA, SHMULIK, HILLEL, GLADIA,
     NOTO_SANS_HEBREW, NOTO_SERIF_HEBREW, SHOFAR,
     FREE_MONO, NACHLIELI, MIRIAM_MONO, EZRA_SIL,
     STAM_ASHKENAZ, SHLOMO_SEMISTAM,
+    NOTO_SANS_SYRIAC,
 ]
 
 # Stretching model (matches Torah scribal widening):
@@ -1510,9 +1551,14 @@ def build_one(config: dict) -> int:
     # followed by triggers won't match because the dagesh sits between the
     # letter and the first trigger. With IgnoreMarks, (ת + [skip dagesh] +
     # U+05C6 × N) → tav_sN correctly.
+    # Pick the OpenType script tag. Hebrew fonts use `hebr`; Syriac fonts
+    # use `syrc`. If a config declares `language_system`, use that; else
+    # default to Hebrew. Both scripts share the same underlying stretch
+    # machinery — only the `languagesystem` line changes.
+    script_tag = config.get("language_system", "hebr")
     fea_lines = [
         "languagesystem DFLT dflt;",
-        "languagesystem hebr dflt;",
+        f"languagesystem {script_tag} dflt;",
         "",
     ]
     # Helper lookups for the overflow chain. Defined OUTSIDE the feature

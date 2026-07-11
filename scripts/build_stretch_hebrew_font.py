@@ -81,6 +81,15 @@ FRANK_RUHL = {
     "internal_id": "SemiticSearch-SemiticStretchHebrew-2.0",
     "step": 150,
     "import_marks": ARABIC_MARKS,
+    # Mono mode: after the leftward stretch shift, translate the whole glyph
+    # rightward by the same total_shift. Result — the letter's LEFT edge
+    # sits at its natural cursor-relative position (no overlap into the
+    # preceding letter), and the widening extends RIGHTWARD into the space
+    # the grown advance created. Fixes "hey too close to shin" and
+    # "final mem too far" from the shift-mode baseline. Aesthetic trade:
+    # the bar visually extends rightward from natural-left rather than
+    # leftward from natural-right.
+    "lsb_mode": "mono",
     "letters": {
         # dalet/resh/lamed all opt into overflow chains: kashidas beyond
         # MAX_LEVELS substitute into bar segments that tile leftward of the

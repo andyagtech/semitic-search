@@ -41,7 +41,7 @@ const SCRIPTS: ScriptEntry[] = [
     ],
   },
   {
-    id: "hebrew", label: "Hebrew (square)", dir: "rtl",
+    id: "hebrew", label: "Hebrew", dir: "rtl",
     sample: "בְּרֵאשִׁית בָּרָא אֱלֹהִים",
     fonts: [
       // ─── Semitic Stretch fonts — grouped at the top since they're the flagship ───
@@ -115,7 +115,7 @@ const SCRIPTS: ScriptEntry[] = [
     ],
   },
   {
-    id: "syriac", label: "Syriac", dir: "rtl",
+    id: "syriac", label: "Assyrian (Syriac)", dir: "rtl",
     // Peshitta Genesis 1:1, split into four short lines so auto-justify
     // has room to insert tatweel triggers on each row.
     sample:
@@ -163,7 +163,7 @@ const SCRIPTS: ScriptEntry[] = [
     ],
   },
   {
-    id: "ethiopic", label: "Ethiopic (Ge'ez, Amharic, Tigrinya)", dir: "ltr",
+    id: "ethiopic", label: "Amharic (Ge'ez, Tigrinya)", dir: "ltr",
     sample: "በስመ አብ ወወልድ",
     fonts: [
       { id: "sans",  label: "Noto Sans Ethiopic",  file: "NotoSansEthiopic.ttf", family: "FL_NotoSansEthiopic" },
@@ -512,6 +512,32 @@ const SYRIAC_SAMPLES: { label: string; text: string; hint: string }[] = [
       "ܐܒܘܢ\n" +
       "ܕܒܫܡܝܐ",
     hint: "Lord's Prayer opener — short lines with room to stretch",
+  },
+];
+
+// Arabic samples — all secular literary / civil text (not Qur'anic).
+const ARABIC_SAMPLES: { label: string; text: string; hint: string }[] = [
+  {
+    label: "Genesis 1:1 (Van Dyck)",
+    text:
+      "فِي الْبَدْءِ خَلَقَ اللهُ\n" +
+      "السَّمَاوَاتِ\n" +
+      "وَالأَرْضَ",
+    hint: "Van Dyck Arabic Bible — 19th-century Arabic Christian translation. Multi-line for auto-justify.",
+  },
+  {
+    label: "Al-Mutanabbi (classical poem)",
+    text:
+      "الْخَيْلُ وَاللَّيْلُ وَالْبَيْدَاءُ تَعْرِفُنِي\n" +
+      "وَالسَّيْفُ وَالرُّمْحُ وَالْقِرْطَاسُ وَالْقَلَمُ",
+    hint: "Al-Mutanabbi (10th c.) — 'The horses, the night, and the desert know me; as do the sword, the spear, the parchment, and the pen.' Secular boasting verse.",
+  },
+  {
+    label: "محمد بن سلمان",
+    text: "مُحَمَّدُ بْنُ سَلْمَانَ\n" +
+          "بْنُ عَبْدِ الْعَزِيزِ\n" +
+          "آلِ سُعُودٍ",
+    hint: "Full name of the Crown Prince of Saudi Arabia — long civil / political phrase, multi-line for justification.",
   },
 ];
 
@@ -962,9 +988,19 @@ export function FontLab() {
               value={scriptId}
               onChange={(e) => setScriptId(e.target.value)}
             >
-              {SCRIPTS.map((s) => (
-                <option key={s.id} value={s.id}>{s.label}</option>
-              ))}
+              {/* Living / modern script order: Arabic → Assyrian (Syriac)
+                  → Amharic → Hebrew. Then an "Ancient scripts" optgroup
+                  bundling the historical inscription scripts together. */}
+              {(["arabic", "syriac", "ethiopic", "hebrew"] as const).map((id) => {
+                const s = SCRIPTS.find((x) => x.id === id);
+                return s ? <option key={s.id} value={s.id}>{s.label}</option> : null;
+              })}
+              <optgroup label="Ancient scripts">
+                {SCRIPTS.filter((s) => !["arabic", "syriac", "ethiopic", "hebrew"].includes(s.id))
+                  .map((s) => (
+                    <option key={s.id} value={s.id}>{s.label}</option>
+                  ))}
+              </optgroup>
             </select>
           </label>
           <div id="fl-font-select" className="block">
@@ -979,10 +1015,12 @@ export function FontLab() {
           </div>
         </div>
 
-        {(script.id === "hebrew" || script.id === "syriac") && (
+        {(script.id === "hebrew" || script.id === "syriac" || script.id === "arabic") && (
           <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
             <span className="text-neutral-500 uppercase tracking-wider">Samples</span>
-            {(script.id === "hebrew" ? HEBREW_SAMPLES : SYRIAC_SAMPLES).map((s) => (
+            {(script.id === "hebrew" ? HEBREW_SAMPLES
+              : script.id === "syriac" ? SYRIAC_SAMPLES
+              : ARABIC_SAMPLES).map((s) => (
               <button
                 key={s.label}
                 type="button"
@@ -995,28 +1033,26 @@ export function FontLab() {
                   // — flip to the default stretch font so the demo shows.
                   let targetFont = font;
                   const stretchFontId = script.id === "syriac" ? "stretchsyriac" : DEFAULT_FONT;
-                  if (wantJustify && !fontId.startsWith("stretch")) {
+                  if (wantJustify && !fontId.startsWith("stretch") && script.id !== "arabic") {
                     setFontId(stretchFontId);
                     targetFont = script.fonts.find((f) => f.id === stretchFontId) ?? font;
                   }
                   const stretchActive = fontId.startsWith("stretch");
-                  if (wantJustify || stretchActive || script.id === "syriac") {
+                  if (wantJustify || stretchActive || script.id === "syriac" || script.id === "arabic") {
                     // Auto-justify per font so every stretch font's demo fits
-                    // the target column width (each font has different step
-                    // metrics; pre-baked counts only fit one font). Syriac
-                    // uses Arabic-style tatweel insertion regardless of font.
+                    // the target column width. Syriac (non-Nohadra) and
+                    // Arabic use tatweel-between-letters; Nohadra uses
+                    // widening-clustered-on-stretchable-letters; Hebrew
+                    // uses U+05C6 clustered on stretchable letters.
                     ensureFontLoaded(targetFont.family, targetFont.file).then(() => {
                       requestAnimationFrame(() => {
-                        // Nohadra: cluster tatweels after stretchable letters
-                        // so the widening ligature fires. Cursive Syriac +
-                        // Arabic: distribute tatweels between joining letters.
                         const isNohadra = script.id === "syriac" && targetFont.id.startsWith("stretchnohadra");
                         if (isNohadra) {
                           setText(autoJustifySemitic(
                             clean, justifyWidthPx, targetFont.family, fontSize,
                             fontFeatureSettings, SYRIAC_STRETCHABLE, SYRIAC_WIDENING,
                           ));
-                        } else if (script.id === "syriac") {
+                        } else if (script.id === "syriac" || script.id === "arabic") {
                           setText(autoJustifyArabic(
                             clean, justifyWidthPx, targetFont.family, fontSize, fontFeatureSettings,
                           ));

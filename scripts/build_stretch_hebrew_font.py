@@ -1692,6 +1692,24 @@ def build_one(config: dict) -> int:
                 order.append(variant_name)
             font.setGlyphOrder(order)
             variants.append(variant_name)
+        # Positional-form aliases. Cursive scripts (Syriac, Arabic) run
+        # init/medi/fina/med2/fin2/fin3 lookups BEFORE `liga`, so by the
+        # time our ligature fires the letter's glyph is no longer
+        # `uni0712` but e.g. `uni0712.init`. Add every positional form
+        # of the source glyph to the alias list so our stretch ligature
+        # fires regardless of the cursive form the shaper picked.
+        # Reuses the ISOLATED stretched variants — the widened bar is
+        # wide enough that the join stub blends in visually.
+        POSITIONAL_SUFFIXES = (".init", ".medi", ".fina", ".isol",
+                               ".init.short", ".medi.short", ".fina.short",
+                               ".initB", ".mediB", ".finaB",
+                               ".init2", ".medi2", ".fina2",
+                               ".fin2", ".fin3", ".med2")
+        for suffix in POSITIONAL_SUFFIXES:
+            positional = src_glyph + suffix
+            if positional in font.getGlyphOrder():
+                aliases.append(positional)
+
         letter_variants[src_glyph] = {"variants": variants, "aliases": aliases}
         alias_note = f" + aliases {aliases}" if aliases else ""
         print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}")

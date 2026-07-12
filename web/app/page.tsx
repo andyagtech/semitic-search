@@ -180,6 +180,7 @@ type Suggestion = {
 
 const SCRIPTS = [
   { id: "native", label: "Native script", placeholder: "كتب · שלום · ܫܠܡܐ · ሰላም" },
+  { id: "free", label: "Free text", placeholder: "shalom · 7abibi · marhaba · shlama" },
   { id: "buckwalter", label: "Buckwalter (Arabic)", placeholder: "ktb · slAm · kAtib" },
   { id: "sbl-he", label: "SBL (Hebrew)", placeholder: "shlm · ktb · mlk" },
 ] as const;
@@ -205,6 +206,10 @@ export default function Home() {
   const [highlighted, setHighlighted] = useState(-1);
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [kbScript, setKbScript] = useState<KeyboardScript>("ar");
+  const [freeCandidates, setFreeCandidates] = useState<
+    { script: "ar" | "he" | "syr"; text: string; confidence: "high" | "medium" | "low"; why: string }[] | null
+  >(null);
+  const [freeLoading, setFreeLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const suppressNextFetch = useRef(false);
 
@@ -240,7 +245,7 @@ export default function Home() {
       suppressNextFetch.current = false;
       return;
     }
-    if (word.trim().length < 2) {
+    if (word.trim().length < 2 || mode === "free") {
       setSuggestions([]);
       return;
     }
@@ -380,6 +385,38 @@ export default function Home() {
     }
   }
 
+  async function onFreeText(q: string) {
+    if (!q || freeLoading) return;
+    setFreeLoading(true);
+    setFreeCandidates(null);
+    setError(null);
+    try {
+      const res = await fetch("/api/free_text", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ text: q }),
+      });
+      const json = await res.json();
+      const cands = (json.candidates ?? []) as {
+        script: "ar" | "he" | "syr"; text: string;
+        confidence: "high" | "medium" | "low"; why: string
+      }[];
+      // If there's exactly one high-confidence candidate, auto-run search.
+      const highs = cands.filter((c) => c.confidence === "high");
+      if (highs.length === 1) {
+        setFreeCandidates(cands);
+        setFreeLoading(false);
+        onSearch(highs[0].text);
+        return;
+      }
+      setFreeCandidates(cands);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setFreeLoading(false);
+    }
+  }
+
   async function onSearch(overrideWord?: string) {
     const q = (overrideWord ?? word).trim();
     if (!q || loading) return;
@@ -405,7 +442,10 @@ export default function Home() {
     setStreamPhase("calling model...");
     try {
       const body: { word: string; scheme?: "buckwalter" | "sbl-he" } = { word: q };
-      if (!overrideWord && mode !== "native") body.scheme = mode;
+      // Free-text mode routes through onFreeText → picks a candidate → passes
+      // the native-script query in as overrideWord; here we should NOT
+      // forward the scheme to the search API.
+      if (!overrideWord && (mode === "buckwalter" || mode === "sbl-he")) body.scheme = mode;
       const res = await fetch("/api/search/stream", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -512,7 +552,10 @@ export default function Home() {
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (!showSuggestions || suggestions.length === 0) {
-      if (e.key === "Enter") onSearch();
+      if (e.key === "Enter") {
+        if (mode === "free") onFreeText(word.trim());
+        else onSearch();
+      }
       return;
     }
     if (e.key === "ArrowDown") {
@@ -524,6 +567,7 @@ export default function Home() {
     } else if (e.key === "Enter") {
       e.preventDefault();
       if (highlighted >= 0 && highlighted < suggestions.length) pick(suggestions[highlighted]);
+      else if (mode === "free") onFreeText(word.trim());
       else onSearch();
     } else if (e.key === "Escape") {
       setShowSuggestions(false);
@@ -659,6 +703,7 @@ export default function Home() {
                 onChange={(e) => {
                   setWord(e.target.value);
                   setShowSuggestions(true);
+                  if (mode === "free" && freeCandidates) setFreeCandidates(null);
                 }}
                 onFocus={() => setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 120)}
@@ -670,11 +715,11 @@ export default function Home() {
                 spellCheck={false}
               />
               <button
-                onClick={() => onSearch()}
-                disabled={loading || !word.trim()}
+                onClick={() => (mode === "free" ? onFreeText(word.trim()) : onSearch())}
+                disabled={loading || freeLoading || !word.trim()}
                 className="px-5 py-2 bg-neutral-900 text-white rounded disabled:opacity-50 min-w-24"
               >
-                {loading ? <span className="inline-flex items-center gap-1"><span className="inline-block w-1.5 h-1.5 bg-white rounded-full animate-pulse" />…</span> : "Search"}
+                {loading || freeLoading ? <span className="inline-flex items-center gap-1"><span className="inline-block w-1.5 h-1.5 bg-white rounded-full animate-pulse" />…</span> : "Search"}
               </button>
             </div>
 
@@ -715,10 +760,45 @@ export default function Home() {
             )}
           </div>
 
+          {mode === "free" && freeCandidates && (
+            <div className="mt-3 border border-neutral-200 rounded p-3 bg-neutral-50">
+              <div className="text-xs text-neutral-600 mb-2">
+                Candidates for <span className="font-mono">{word.trim()}</span> — pick one to search.
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {freeCandidates.map((c) => (
+                  <button
+                    key={`${c.script}|${c.text}`}
+                    onClick={() => onSearch(c.text)}
+                    className="px-3 py-1.5 rounded border border-neutral-300 bg-white hover:border-neutral-500 flex items-center gap-2 text-left"
+                    title={c.why}
+                  >
+                    <span className="text-[10px] font-semibold uppercase text-neutral-500">
+                      {c.script}
+                    </span>
+                    <span dir="rtl" className="text-lg">{c.text}</span>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded border ${
+                      c.confidence === "high" ? "bg-emerald-50 border-emerald-300 text-emerald-800"
+                      : c.confidence === "medium" ? "bg-amber-50 border-amber-300 text-amber-800"
+                      : "bg-neutral-100 border-neutral-300 text-neutral-600"
+                    }`}>{c.confidence}</span>
+                  </button>
+                ))}
+              </div>
+              {freeCandidates.length === 0 && (
+                <div className="text-xs text-neutral-500">No candidates. Try a fuller word or add Arabizi digits (7 for ح, 3 for ع).</div>
+              )}
+            </div>
+          )}
+
           <div className="flex items-center justify-between mt-2">
-            {mode !== "native" ? (
+            {mode === "buckwalter" || mode === "sbl-he" ? (
               <p className="text-xs text-neutral-500">
                 Type in {mode === "buckwalter" ? "Buckwalter ASCII" : "SBL-style romanization"}; we convert before searching.
+              </p>
+            ) : mode === "free" ? (
+              <p className="text-xs text-neutral-500">
+                Free-text mode: Latin letters + Arabizi digits (7=ح, 3=ع, 5=خ, …). We propose candidate scripts.
               </p>
             ) : (
               <span className="text-xs text-neutral-400">Or type in any Semitic script directly.</span>

@@ -1,6 +1,28 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { convert, type Script as ConvertScript, SCRIPT_LABELS as CONVERT_LABELS } from "@/lib/script_convert";
+
+// FontLab script-id → cross-script converter script-id. Only scripts
+// with an entry here can act as source or target for the converter.
+const CONVERTIBLE: Record<string, ConvertScript> = {
+  hebrew: "he",
+  syriac: "syr",
+  arabic: "ar",
+  paleo: "paleo",
+  samaritan: "samaritan",
+  aramaic: "aramaic",
+  ugaritic: "ugaritic",
+};
+const CONVERT_TO_FONTLAB: Record<ConvertScript, string> = {
+  he: "hebrew",
+  syr: "syriac",
+  ar: "arabic",
+  paleo: "paleo",
+  samaritan: "samaritan",
+  aramaic: "aramaic",
+  ugaritic: "ugaritic",
+};
 
 // All fonts local under /public/fonts/. Open licenses: SIL OFL for the
 // Google Noto family + Amiri + Solitreo, GPL for Ktav Yad CLM (Culmus
@@ -560,6 +582,7 @@ export function FontLab() {
   // default. On subsequent script changes, fall through to the script's
   // own sample text.
   const [text, setText] = useState(DEFAULT_TEXT);
+  const [convertWarnings, setConvertWarnings] = useState<string[]>([]);
   const sampleAppliedRef = useRef(false);
   useEffect(() => {
     if (!sampleAppliedRef.current) { sampleAppliedRef.current = true; return; }
@@ -1014,6 +1037,50 @@ export function FontLab() {
             />
           </div>
         </div>
+
+        {CONVERTIBLE[script.id] && (
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-neutral-500 uppercase tracking-wider">Convert to</span>
+            {(Object.keys(CONVERTIBLE) as string[])
+              .filter((fid) => fid !== script.id)
+              .map((fid) => {
+                const targetConv = CONVERTIBLE[fid];
+                return (
+                  <button
+                    key={fid}
+                    type="button"
+                    onClick={() => {
+                      const from = CONVERTIBLE[script.id];
+                      const to = targetConv;
+                      const r = convert(text, from, to);
+                      setText(r.output);
+                      setConvertWarnings(r.warnings);
+                      setScriptId(CONVERT_TO_FONTLAB[to]);
+                    }}
+                    className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100"
+                    title={`Convert current text from ${CONVERT_LABELS[CONVERTIBLE[script.id]]} to ${CONVERT_LABELS[targetConv]}`}
+                  >
+                    {CONVERT_LABELS[targetConv]}
+                  </button>
+                );
+              })}
+          </div>
+        )}
+        {convertWarnings.length > 0 && (
+          <div className="mt-2 text-xs bg-amber-50 border border-amber-200 rounded p-2">
+            <div className="font-semibold text-amber-900 mb-1">Conversion notes</div>
+            <ul className="list-disc ml-4 space-y-0.5 text-amber-900">
+              {convertWarnings.map((w, i) => (<li key={i}>{w}</li>))}
+            </ul>
+            <button
+              type="button"
+              onClick={() => setConvertWarnings([])}
+              className="mt-1 text-[10px] text-amber-800 underline hover:no-underline"
+            >
+              dismiss
+            </button>
+          </div>
+        )}
 
         {(script.id === "hebrew" || script.id === "syriac" || script.id === "arabic") && (
           <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">

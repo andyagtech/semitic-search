@@ -261,7 +261,10 @@ const HEBREW_WIDE_INVERSE: Record<string, string> = Object.fromEntries(
  *  (e.g. Solitreo, some sans Arabic faces) can render their consonantal
  *  skeleton cleanly. */
 const DIACRITICS: Record<string, RegExp> = {
-  hebrew: /[֑-ׇ]/g,          // niqqud + te'amim + cantillation
+  // Hebrew niqqud + te'amim + cantillation, EXCLUDING U+05C6 (Nun Hafukha)
+  // which we use as our stretch trigger. Range U+0591–U+05C7 minus U+05C6
+  // splits into two subranges: U+0591–U+05C5 and U+05C7.
+  hebrew: /[֑-ׇׅ]/g,
   arabic: /[ً-ٰٟۖ-ۭ]/g, // harakat + Quranic marks
   syriac: /[ܰ-݊]/g,          // Syriac vowels + diacritics
   ethiopic: /[፝-፟]/g,        // Ethiopic combining marks (rare)

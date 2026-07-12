@@ -1604,9 +1604,15 @@ function autoJustifyArabic(
       scratch.textContent = s;
       return scratch.getBoundingClientRect().width;
     };
-    const isArabicLetter = (ch: string): boolean => {
+    // "Joining letter" here means Arabic OR Syriac — both scripts use the
+    // Arabic-style tatweel-between-letters justification path. Restricting
+    // to only the Arabic block would silently make Syriac auto-justify a
+    // no-op, since Syriac letters would fail the `next` test.
+    const isJoiningLetter = (ch: string): boolean => {
       const cp = ch.charCodeAt(0);
-      return (cp >= 0x0621 && cp <= 0x064A) || (cp >= 0x066E && cp <= 0x06D3);
+      return (cp >= 0x0621 && cp <= 0x064A)   // Arabic
+          || (cp >= 0x066E && cp <= 0x06D3)   // Arabic Supplement
+          || (cp >= 0x0712 && cp <= 0x072F);  // Syriac letters
     };
     const isCombiningMark = (ch: string): boolean => /\p{M}/u.test(ch);
 
@@ -1628,7 +1634,7 @@ function autoJustifyArabic(
         if (prevIdx < 0) continue;
         const prev = clean[prevIdx];
         const next = clean[i];
-        if (canTakeKashidaAfter(prev) && isArabicLetter(next)) {
+        if (canTakeKashidaAfter(prev) && isJoiningLetter(next)) {
           positions.push(i);
         }
       }

@@ -736,6 +736,16 @@ NOHADRA_SAPNA = {
         # Ascender's LEFT edge is right of x_cutoff so it stays anchored while
         # the bar's left half shifts leftward.
         0x072C: {"name": "taw",    "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 200},
+        # ─── Extended set: common letters with full-width flat tops at y=303
+        # (measured via glyph geometry survey). Adding these gives auto-justify
+        # something to stretch on every Peshitta line — the base 4-letter set
+        # left most lines with only 0-1 stretchable positions.
+        0x0710: {"name": "alaph",  "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
+        0x0717: {"name": "he",     "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
+        0x0718: {"name": "waw",    "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 220},
+        0x0721: {"name": "mim",    "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 300},
+        0x0723: {"name": "semkath","class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
+        0x072B: {"name": "shin",   "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
     },
 }
 

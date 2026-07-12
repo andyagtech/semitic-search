@@ -127,7 +127,7 @@ const SCRIPTS: ScriptEntry[] = [
       { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
         note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on beth ܒ, dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts." },
       { id: "stretchnohadrasapna", label: "Semitic Stretch Nohadra Sapna", file: "SemiticStretchNohadraSapna.ttf", family: "FL_StretchNohadraSapna",
-        note: "Custom Nohadra Sapna derivative (SIL OFL, Sargis Yonan). Block-style geometric Syriac with kashida widening on ܒ ܕ ܪ ܬ. Converted from CFF to TrueType before stretch synthesis." },
+        note: "Custom Nohadra Sapna derivative (SIL OFL, Sargis Yonan). Block-style geometric Syriac with kashida widening on ܐ ܒ ܕ ܗ ܘ ܡ ܣ ܪ ܫ ܬ. Converted from CFF to TrueType before stretch synthesis." },
       { id: "stretchnohadraamedia", label: "Semitic Stretch Nohadra Amedia", file: "SemiticStretchNohadraAmedia.ttf", family: "FL_StretchNohadraAmedia",
         note: "Custom Nohadra Amedia derivative (SIL OFL, Sargis Yonan). Same geometric design as Sapna, alternate weight/style." },
       { id: "nohadrasapna", label: "Nohadra Sapna", file: "NohadraSyriacSapna.ttf", family: "FL_NohadraSapna",
@@ -1564,9 +1564,11 @@ function BulkColorControls({
 // users know which keys can be stretched.
 const STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
 
-// Which letters our stretch fonts widen. Hebrew: ד ה ל ם ר ת. Syriac: ܒ ܕ ܪ ܬ.
+// Which letters our stretch fonts widen. Hebrew: ד ה ל ם ר ת.
+// Syriac (Nohadra): ܐ ܒ ܕ ܗ ܘ ܡ ܣ ܪ ܫ ܬ — expanded from the original 4
+// so Peshitta lines have several stretchable positions per row.
 const HEBREW_STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
-const SYRIAC_STRETCHABLE = new Set(["ܒ", "ܕ", "ܪ", "ܬ"]);
+const SYRIAC_STRETCHABLE = new Set(["ܐ", "ܒ", "ܕ", "ܗ", "ܘ", "ܡ", "ܣ", "ܪ", "ܫ", "ܬ"]);
 
 // Auto-justify: given a paragraph, a target column width in px, and the
 // active font settings, place U+05C6 stretches on scribally-appropriate

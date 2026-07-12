@@ -587,10 +587,14 @@ export function FontLab() {
     requestAnimationFrame(() => {
       setText((prev) => {
         if (!prev.includes(trigger)) return prev;
+        // Syriac uses Arabic-style tatweel insertion between joining letters.
+        if (syriacStretchActive) {
+          return autoJustifyArabic(prev, justifyWidthPx, font.family, fontSize, fontFeatureSettings);
+        }
         return autoJustifySemitic(
           prev, justifyWidthPx, font.family, fontSize,
           fontFeatureSettings,
-          syriacStretchActive ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE,
+          HEBREW_STRETCHABLE,
           trigger,
         );
       });
@@ -948,13 +952,20 @@ export function FontLab() {
                   if (wantJustify || stretchActive || script.id === "syriac") {
                     // Auto-justify per font so every stretch font's demo fits
                     // the target column width (each font has different step
-                    // metrics; pre-baked counts only fit one font).
+                    // metrics; pre-baked counts only fit one font). Syriac
+                    // uses Arabic-style tatweel insertion regardless of font.
                     ensureFontLoaded(targetFont.family, targetFont.file).then(() => {
                       requestAnimationFrame(() => {
-                        setText(autoJustifySemitic(
-                          clean, justifyWidthPx, targetFont.family, fontSize,
-                          fontFeatureSettings, stretchable, trigger,
-                        ));
+                        if (script.id === "syriac") {
+                          setText(autoJustifyArabic(
+                            clean, justifyWidthPx, targetFont.family, fontSize, fontFeatureSettings,
+                          ));
+                        } else {
+                          setText(autoJustifySemitic(
+                            clean, justifyWidthPx, targetFont.family, fontSize,
+                            fontFeatureSettings, stretchable, trigger,
+                          ));
+                        }
                       });
                     });
                   } else {
@@ -1022,12 +1033,18 @@ export function FontLab() {
               </span>
             </div>
           )}
-          {(stretchFontActive || script.id === "arabic") && (
+          {(stretchFontActive || script.id === "arabic" || script.id === "syriac") && (
             <div className="mt-2 flex items-center gap-2 text-xs text-neutral-600 flex-wrap">
               <button
                 type="button"
                 onClick={() => {
-                  if (script.id === "arabic") {
+                  // Syriac uses the same tatweel-insertion logic as Arabic —
+                  // the font's own U+0640 glyph bridges joining letters as a
+                  // horizontal bar, which matches scribal tradition. Custom
+                  // stretch fonts still get to fire their per-letter widening
+                  // ligature on top when triggers cluster on a stretchable
+                  // letter, but the base spacing is inter-letter tatweel.
+                  if (script.id === "arabic" || script.id === "syriac") {
                     setText(
                       autoJustifyArabic(
                         text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
@@ -1037,16 +1054,15 @@ export function FontLab() {
                     setText(
                       autoJustifySemitic(
                         text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
-                        syriacStretchActive ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE,
-                        syriacStretchActive ? TATWEEL : HEBREW_STRETCH,
+                        HEBREW_STRETCHABLE, HEBREW_STRETCH,
                       ),
                     );
                   }
                 }}
                 className="px-2.5 py-1 rounded border border-amber-300 bg-amber-50 hover:bg-amber-100 font-semibold accent-showcase"
                 title={
-                  script.id === "arabic"
-                    ? "Inserts tatweels (U+0640) between joining Arabic letters so each line reaches the target column width. Distributes evenly across every valid joining seam, capped at 12 per position."
+                  script.id === "arabic" || script.id === "syriac"
+                    ? "Inserts tatweels (U+0640) between joining letters so each line reaches the target column width. Distributes evenly across every valid joining seam, capped at 12 per position."
                     : "Modifies the text source above: places kashidas (U+05C6) on stretchable letters so each line reaches the target column width."
                 }
               >
@@ -1077,10 +1093,26 @@ export function FontLab() {
               >
                 clear stretches
               </button>
+              {script.id === "hebrew" && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Strip Hebrew niqqud + te'amim from the text source (all
+                    // Mn / cantillation marks in U+0591–U+05C7). Useful when a
+                    // font like Hillel CLM doesn't have niqqud glyphs and the
+                    // marks render as empty boxes.
+                    setText(text.replace(/[֑-ׇ]/g, ""));
+                  }}
+                  className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-600"
+                  title="Remove all Hebrew niqqud (vowel points) and te'amim (cantillation marks) from the text source"
+                >
+                  clear niqqud
+                </button>
+              )}
               <span className="text-neutral-500 text-[11px]">
-                one-click column justification — {script.id === "arabic"
+                one-click column justification — {script.id === "arabic" || script.id === "syriac"
                   ? "tatweels placed between joining letters"
-                  : `kashidas placed on ${syriacStretchActive ? "ܒ ܕ ܪ ܬ" : "ד ה ל ם ר ת"}`}
+                  : "kashidas placed on ד ה ל ם ר ת"}
               </span>
             </div>
           )}

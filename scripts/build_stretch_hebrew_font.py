@@ -1421,6 +1421,96 @@ def build_overflow_chain(
     return start_name, int_name, tail_name
 
 
+def _splice_original_gsub_back(font, original_gsub_bytes):
+    """After feaLib REBUILT the GSUB with only our stretch features,
+    splice the source font's original GSUB (init/medi/fina/ccmp/rlig/...)
+    back in. Preserves cursive joining for Syriac and non-critical
+    features for Hebrew.
+
+    Merge strategy: original lookups get appended AFTER our new lookups;
+    all references (lookup indices in features, in chained subtables,
+    and in script lang-sys feature indices) are shifted accordingly.
+    """
+    from fontTools.ttLib import newTable
+
+    # Decompile the original GSUB bytes into an OT table structure.
+    original_gsub = newTable("GSUB")
+    original_gsub.decompile(original_gsub_bytes, font)
+
+    new_table = font["GSUB"].table
+    orig_table = original_gsub.table
+
+    orig_lookups = list(orig_table.LookupList.Lookup) if orig_table.LookupList else []
+    orig_features = list(orig_table.FeatureList.FeatureRecord) if orig_table.FeatureList else []
+    orig_scripts = list(orig_table.ScriptList.ScriptRecord) if orig_table.ScriptList else []
+
+    n_new_lookups = len(new_table.LookupList.Lookup) if new_table.LookupList else 0
+    n_new_features = len(new_table.FeatureList.FeatureRecord) if new_table.FeatureList else 0
+
+    # 1. Shift internal lookup references inside each original lookup
+    #    (Type 5 / 6 chained lookups embed lookup indices in their subtables).
+    for lookup in orig_lookups:
+        for st in lookup.SubTable or []:
+            for attr in ("SubstLookupRecord", "PosLookupRecord"):
+                recs = getattr(st, attr, None)
+                if not recs:
+                    continue
+                for rec in recs:
+                    rec.LookupListIndex += n_new_lookups
+
+    # 2. Append original lookups AFTER our new lookups.
+    if new_table.LookupList is None:
+        new_table.LookupList = ot.LookupList()
+        new_table.LookupList.Lookup = []
+    new_table.LookupList.Lookup.extend(orig_lookups)
+    new_table.LookupList.LookupCount = len(new_table.LookupList.Lookup)
+
+    # 3. Shift lookup indices inside each original feature, then append.
+    for fr in orig_features:
+        fr.Feature.LookupListIndex = [i + n_new_lookups for i in fr.Feature.LookupListIndex]
+        fr.Feature.LookupCount = len(fr.Feature.LookupListIndex)
+    if new_table.FeatureList is None:
+        new_table.FeatureList = ot.FeatureList()
+        new_table.FeatureList.FeatureRecord = []
+    new_table.FeatureList.FeatureRecord.extend(orig_features)
+    new_table.FeatureList.FeatureCount = len(new_table.FeatureList.FeatureRecord)
+
+    # 4. Merge script records — feature indices reference the feature list
+    #    (which now has our new features first, then original features).
+    #    Original scripts' feature indices must be shifted by n_new_features.
+    def _shift_langsys(ls):
+        if ls is None:
+            return
+        ls.FeatureIndex = [i + n_new_features for i in ls.FeatureIndex]
+        ls.FeatureCount = len(ls.FeatureIndex)
+
+    for sr in orig_scripts:
+        _shift_langsys(sr.Script.DefaultLangSys)
+        for lsr in (sr.Script.LangSysRecord or []):
+            _shift_langsys(lsr.LangSys)
+
+    # Merge into existing script list. If a script tag is already present
+    # (feaLib made one for our features), MERGE the LangSys feature indices;
+    # else append the whole ScriptRecord.
+    if new_table.ScriptList is None:
+        new_table.ScriptList = ot.ScriptList()
+        new_table.ScriptList.ScriptRecord = []
+    existing_scripts = {sr.ScriptTag: sr for sr in new_table.ScriptList.ScriptRecord}
+    for sr in orig_scripts:
+        if sr.ScriptTag in existing_scripts:
+            existing = existing_scripts[sr.ScriptTag]
+            if existing.Script.DefaultLangSys and sr.Script.DefaultLangSys:
+                existing.Script.DefaultLangSys.FeatureIndex.extend(sr.Script.DefaultLangSys.FeatureIndex)
+                existing.Script.DefaultLangSys.FeatureCount = len(existing.Script.DefaultLangSys.FeatureIndex)
+            elif sr.Script.DefaultLangSys:
+                existing.Script.DefaultLangSys = sr.Script.DefaultLangSys
+            existing.Script.LangSysRecord = (existing.Script.LangSysRecord or []) + (sr.Script.LangSysRecord or [])
+            existing.Script.LangSysCount = len(existing.Script.LangSysRecord)
+        else:
+            new_table.ScriptList.ScriptRecord.append(sr)
+    new_table.ScriptList.ScriptCount = len(new_table.ScriptList.ScriptRecord)
+
+
 def build_one(config: dict) -> int:
     src_path = FONTS_DIR / config["source"]
     out_path = FONTS_DIR / config["output"]
@@ -1699,7 +1789,25 @@ def build_one(config: dict) -> int:
         fea_lines.append(f"}} liga;")
         overflow_rules += 4
     fea_src = "\n".join(fea_lines)
+    # addOpenTypeFeaturesFromString REPLACES the entire GSUB table with a
+    # fresh build from the FEA source — losing every existing feature the
+    # source font already had (ccmp, locl, init, medi, fina, rlig, stch,
+    # ...). For Syriac and other cursive scripts, init/medi/fina/rlig are
+    # what produce cursive joining; without them each letter renders as
+    # its isolated form and the word doesn't connect.
+    #
+    # Save the original GSUB, let feaLib build the new one, then splice
+    # the original's lookups and features back in with shifted indices.
+    original_gsub_bytes = None
+    if "GSUB" in font:
+        try:
+            original_gsub_bytes = font["GSUB"].compile(font)
+        except Exception:
+            # Some source fonts have broken GSUB — skip preservation.
+            original_gsub_bytes = None
     addOpenTypeFeaturesFromString(font, fea_src)
+    if original_gsub_bytes is not None:
+        _splice_original_gsub_back(font, original_gsub_bytes)
     overflow_note = f" + {overflow_rules} overflow chain rules" if overflow_rules else ""
     print(f"  wired {total_rules} multi-component ligature rules via feaLib{overflow_note}")
 

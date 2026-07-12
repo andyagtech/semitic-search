@@ -645,15 +645,23 @@ NOTO_SANS_SYRIAC = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "language_system": "syrc",  # Syriac script tag (as opposed to hebr)
-    "stretch_codepoint": 0x0640,  # tatweel — script=Common, stays in Syriac run
+    # Widening trigger: U+2060 (Word Joiner), NOT U+0640 tatweel.
+    # Reason: separates the two behaviors — Word Joiner fires the widening
+    # ligature (letter → widened variant), while U+0640 stays available as
+    # the font's natural cursive tatweel for baseline bridging. Both are
+    # script=Common so they stay in the Syriac shaping run.
+    "stretch_codepoint": 0x2060,
     "letters": {
         # Dalath: bar-class. Bar zone is the flat top portion; x_cutoff picks
         # a point between the stretchable left curve and the anchored right
         # tail. Conservative values pending visual verification.
-        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 250, "bar_top": 420, "x_cutoff": 220},
+        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 300, "bar_top": 420, "x_cutoff": 220},
         # Rish: same shape as dalath but with the additional dot/serif
-        # above (higher y-max). Same bar zone.
-        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 250, "bar_top": 420, "x_cutoff": 220},
+        # above (higher y-max). Same bar zone. bar_bottom raised from 250
+        # to 300 so the shift stops short of the rounded lower transition
+        # of the bar — fixes the awkward bottom edge at low stretch levels
+        # (image 53/54).
+        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 300, "bar_top": 420, "x_cutoff": 220},
         # Taw: has a horizontal cross-bar higher up. Treat as leg-class
         # (bar + descending left leg). leg_max_y catches the descender
         # portion so it doesn't drag horizontally with the bar shift.
@@ -722,7 +730,12 @@ NOHADRA_SAPNA = {
     "step": 150,
     "lsb_mode": "mono",
     "language_system": "syrc",
-    "stretch_codepoint": 0x0640,  # tatweel — script=Common, stays in Syriac run
+    # Widening trigger: U+2060 (Word Joiner), NOT U+0640 tatweel.
+    # Reason: separates the two behaviors — Word Joiner fires the widening
+    # ligature (letter → widened variant), while U+0640 stays available as
+    # the font's natural cursive tatweel for baseline bridging. Both are
+    # script=Common so they stay in the Syriac shaping run.
+    "stretch_codepoint": 0x2060,
     # Nohadra is non-cursive block-style. Auto-justify clusters tatweels on
     # stretchable letters, and our widening ligature consumes every one into
     # a widened variant. Override the font's natural baseline-height (y≈101)

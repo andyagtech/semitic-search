@@ -113,7 +113,17 @@ const SCRIPTS: ScriptEntry[] = [
     sample: "ܒܪܝܫܝܬ ܒܪܐ ܐܠܗܐ",
     fonts: [
       { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
-        note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on beth ܒ, dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts. Press + after a stretchable letter to widen." },
+        note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on beth ܒ, dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts." },
+      { id: "stretchnohadrasapna", label: "Semitic Stretch Nohadra Sapna", file: "SemiticStretchNohadraSapna.ttf", family: "FL_StretchNohadraSapna",
+        note: "Custom Nohadra Sapna derivative (SIL OFL, Sargis Yonan). Block-style geometric Syriac with kashida widening on ܒ ܕ ܪ ܬ. Converted from CFF to TrueType before stretch synthesis." },
+      { id: "stretchnohadraamedia", label: "Semitic Stretch Nohadra Amedia", file: "SemiticStretchNohadraAmedia.ttf", family: "FL_StretchNohadraAmedia",
+        note: "Custom Nohadra Amedia derivative (SIL OFL, Sargis Yonan). Same geometric design as Sapna, alternate weight/style." },
+      { id: "nohadrasapna", label: "Nohadra Sapna", file: "NohadraSyriacSapna.ttf", family: "FL_NohadraSapna",
+        note: "Sargis Yonan (SIL OFL). Block-style geometric Syriac; unstretched original." },
+      { id: "nohadraamedia", label: "Nohadra Amedia", file: "NohadraSyriacAmedia.ttf", family: "FL_NohadraAmedia",
+        note: "Sargis Yonan (SIL OFL). Companion to Sapna; unstretched original." },
+      { id: "idiqlat", label: "Idiqlat", file: "Idiqlat-Regular.ttf", family: "FL_Idiqlat",
+        note: "SIL Idiqlat (OFL). Calligraphic Syriac. Not stretchable — its top-strokes are curved rather than flat, so the bar/leg framework produces discontinuities." },
       { id: "sans",  label: "Noto Sans Syriac",  file: "NotoSansSyriac.ttf", family: "FL_NotoSansSyriac" },
       { id: "serif", label: "Noto Serif Syriac (Estrangela-leaning)", file: "NotoSerifSyriac.ttf", family: "FL_NotoSerifSyriac" },
     ],
@@ -510,7 +520,7 @@ export function FontLab() {
   // style extender via U+05C6 insertion, indefinite widening. Other fonts
   // fall back to per-letter jalt substitution.
   const hebrewStretchActive = script.id === "hebrew" && font.id.startsWith("stretch");
-  const syriacStretchActive = script.id === "syriac" && font.id === "stretchsyriac";
+  const syriacStretchActive = script.id === "syriac" && font.id.startsWith("stretch");
   const stretchFontActive = hebrewStretchActive || syriacStretchActive;
   const supportsKashida = script.id === "arabic" || (script.id === "syriac" && !syriacStretchActive) || stretchFontActive;
   const supportsWideHebrew = script.id === "hebrew";
@@ -919,8 +929,7 @@ export function FontLab() {
                     setFontId(stretchFontId);
                     targetFont = script.fonts.find((f) => f.id === stretchFontId) ?? font;
                   }
-                  const stretchActive = fontId.startsWith("stretch") ||
-                    (script.id === "syriac" && fontId === "stretchsyriac");
+                  const stretchActive = fontId.startsWith("stretch");
                   if (wantJustify || stretchActive || script.id === "syriac") {
                     // Auto-justify per font so every stretch font's demo fits
                     // the target column width (each font has different step

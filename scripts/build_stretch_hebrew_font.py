@@ -703,13 +703,54 @@ NOTO_RASHI = {
     },
 }
 
+# Nohadra Sapna (Sargis Yonan, OFL) — block-style geometric Syriac.
+# UPM=1000, converted from CFF to TT via scripts/convert_nohadra.py.
+# Very clean geometry: flat bar at y=303 across every stretchable letter.
+NOHADRA_SAPNA = {
+    "id": "nohadra-sapna",
+    "source": "NohadraSyriacSapna.ttf",
+    "output": "SemiticStretchNohadraSapna.ttf",
+    "family": "Semitic Stretch Nohadra Sapna",
+    "postscript": "SemiticStretchNohadraSapna",
+    "internal_id": "SemiticSearch-SemiticStretchNohadraSapna-1.0",
+    "step": 150,
+    "lsb_mode": "mono",
+    "language_system": "syrc",
+    "letters": {
+        # beth: flat bar y=303 (x=177-555), left foot x=51-177 at y=0-101.
+        # bar_zone spans entire body so foot travels with the bar shift.
+        0x0712: {"name": "beth",   "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
+        # dalath: simple flat bar y=303 across the letter.
+        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 200},
+        # rish: dalath body + dot above at y=303-455 (x=125-273). Bar_top=303
+        # keeps the dot outside the shift zone → it stays at natural position.
+        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 200},
+        # taw: dalath body + short vertical ascender at x=234-356, y=303-505.
+        # Ascender's LEFT edge is right of x_cutoff so it stays anchored while
+        # the bar's left half shifts leftward.
+        0x072C: {"name": "taw",    "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 200},
+    },
+}
+
+# Nohadra Amedia — same design as Sapna, slightly different weight/style.
+# Same geometry (verified via bbox sampling), so same config values.
+NOHADRA_AMEDIA = {
+    **NOHADRA_SAPNA,
+    "id": "nohadra-amedia",
+    "source": "NohadraSyriacAmedia.ttf",
+    "output": "SemiticStretchNohadraAmedia.ttf",
+    "family": "Semitic Stretch Nohadra Amedia",
+    "postscript": "SemiticStretchNohadraAmedia",
+    "internal_id": "SemiticSearch-SemiticStretchNohadraAmedia-1.0",
+}
+
 CONFIGS = [
     FRANK_RUHL, KETER_ARAM_TSOVA, SHMULIK, HILLEL, GLADIA,
     NOTO_SANS_HEBREW, NOTO_SERIF_HEBREW, SHOFAR,
     FREE_MONO, NACHLIELI, MIRIAM_MONO, EZRA_SIL,
     STAM_ASHKENAZ, SHLOMO_SEMISTAM,
     NOTO_RASHI,
-    NOTO_SANS_SYRIAC,
+    NOTO_SANS_SYRIAC, NOHADRA_SAPNA, NOHADRA_AMEDIA,
 ]
 
 # Stretching model (matches Torah scribal widening):

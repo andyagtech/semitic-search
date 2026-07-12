@@ -186,17 +186,19 @@ def main() -> int:
             # first, Targum Onkelos (c. 2nd c. CE), Mishnah (c. 200 CE), then
             # Qur'an (c. 610 CE). Within a source, book_order breaks ties.
             # Priority ordering (older first): Tanakh → Onkelos/Neofiti/Jerusalem →
-            # Jonathan → Mishnah → Qur'an. Targums and Mishnah are both 2nd c. CE
-            # but scripture-parallel Targums are ordered before rabbinic Mishnah.
+            # Jonathan → Mishnah → Mu'allaqat → Qur'an. Targums and Mishnah are
+            # both 2nd c. CE but scripture-parallel Targums are ordered before
+            # rabbinic Mishnah. The Mu'allaqat (6th c. CE Jahiliyya poetry) are
+            # the pre-Islamic Arabic anchor — ordered before the Qur'an.
             src_priority = {
                 "tanakh": 0, "onkelos": 1, "neofiti": 1, "jerusalem": 1,
-                "jonathan": 2, "mishnah": 3, "quran": 4,
+                "jonathan": 2, "mishnah": 3, "mualaqat": 4, "quran": 5,
             }.get(att["source"], 9)
             candidate = (src_priority, att["order"])
             current = f["earliest_attestation"]
             current_pri = {
                 "tanakh": 0, "onkelos": 1, "neofiti": 1, "jerusalem": 1,
-                "jonathan": 2, "mishnah": 3, "quran": 4,
+                "jonathan": 2, "mishnah": 3, "mualaqat": 4, "quran": 5,
             }.get(current["source"] if current else "", 9)
             if current is None or candidate < (current_pri, current["order"]):
                 f["earliest_attestation"] = {

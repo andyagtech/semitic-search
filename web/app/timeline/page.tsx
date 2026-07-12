@@ -41,6 +41,8 @@ const ERAS: { label: string; range: string; sources: string[] }[] = [
     sources: ["jonathan"] },
   { label: "Mishnah",              range: "c. 200 CE (rabbinic Hebrew)",
     sources: ["mishnah"] },
+  { label: "Jahiliyya poetry (Mu'allaqāt)", range: "6th c. CE (pre-Islamic Arabic odes)",
+    sources: ["mualaqat"] },
   { label: "Qur'an",               range: "c. 610 – 632 CE",
     sources: ["quran"] },
 ];
@@ -62,6 +64,7 @@ export default function TimelinePage() {
   for (const f of withBook) {
     const key =
       f.ea.source === "quran"    ? "Qur'an" :
+      f.ea.source === "mualaqat" ? "Jahiliyya poetry (Mu'allaqāt)" :
       f.ea.source === "onkelos"  ? "Targumim — Torah" :
       f.ea.source === "neofiti"  ? "Targumim — Torah" :
       f.ea.source === "jerusalem"? "Targumim — Torah" :
@@ -89,10 +92,12 @@ export default function TimelinePage() {
           </h1>
           <p className="text-neutral-600 mt-3 text-sm max-w-2xl">
             Of the {families.length} polyglot root families in the curated set,
-            <b> {eligible.length} have a first textual attestation</b> in
-            either the Tanakh or the Qur&apos;an. Here they are in
-            chronological order, bucketed by the textual era of their first
-            appearance. Each root links to its full cross-script family page.
+            <b> {eligible.length} have a first textual attestation</b> —
+            spanning the Hebrew Bible, Aramaic Targumim, the Mishnah, the
+            pre-Islamic Arabic <i>Mu&apos;allaqāt</i>, and the Qur&apos;an.
+            Here they are in chronological order, bucketed by the textual era
+            of first appearance. Each root links to its full cross-script
+            family page.
           </p>
         </header>
 
@@ -133,6 +138,7 @@ export default function TimelinePage() {
                       </Link>
                       <span className="text-xs text-neutral-500 font-mono">
                         {f.ea.source === "quran" ? `Q ${f.ea.citation.replace("Q.", "")}` :
+                          f.ea.source === "mualaqat" ? f.ea.citation.replace(/^mu'allaqa of /, "") :
                           `${BOOK_NAMES[f.book] ?? f.book} ${f.ch}:${f.v}`}
                       </span>
                     </li>

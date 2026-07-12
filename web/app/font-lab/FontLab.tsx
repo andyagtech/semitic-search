@@ -1007,24 +1007,32 @@ export function FontLab() {
               </span>
             </div>
           )}
-          {stretchFontActive && (
+          {(stretchFontActive || script.id === "arabic") && (
             <div className="mt-2 flex items-center gap-2 text-xs text-neutral-600 flex-wrap">
               <button
                 type="button"
                 onClick={() => {
-                  setText(
-                    autoJustifySemitic(
-                      text,
-                      justifyWidthPx,
-                      font.family,
-                      fontSize,
-                      fontFeatureSettings,
-                      syriacStretchActive ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE,
-                    ),
-                  );
+                  if (script.id === "arabic") {
+                    setText(
+                      autoJustifyArabic(
+                        text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
+                      ),
+                    );
+                  } else {
+                    setText(
+                      autoJustifySemitic(
+                        text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
+                        syriacStretchActive ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE,
+                      ),
+                    );
+                  }
                 }}
                 className="px-2.5 py-1 rounded border border-amber-300 bg-amber-50 hover:bg-amber-100 font-semibold accent-showcase"
-                title="Modifies the text source above: places kashidas (U+05C6) on stretchable letters so each line reaches the target column width. The SVG preview below updates automatically. Distributes evenly across every stretchable letter, capped at 16 levels per letter."
+                title={
+                  script.id === "arabic"
+                    ? "Inserts tatweels (U+0640) between joining Arabic letters so each line reaches the target column width. Distributes evenly across every valid joining seam, capped at 12 per position."
+                    : "Modifies the text source above: places kashidas (U+05C6) on stretchable letters so each line reaches the target column width."
+                }
               >
                 auto-justify text ▸
               </button>
@@ -1044,17 +1052,21 @@ export function FontLab() {
               <button
                 type="button"
                 onClick={() => {
-                  // Strip all stretches from current text.
-                  setText(text.replace(/׆/g, ""));
+                  if (script.id === "arabic") {
+                    setText(text.replace(/ـ/g, ""));
+                  } else {
+                    setText(text.replace(/׆/g, ""));
+                  }
                 }}
                 className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-600"
-                title="Remove every U+05C6 kashida from the text"
+                title={script.id === "arabic" ? "Remove every U+0640 tatweel from the text" : "Remove every U+05C6 kashida from the text"}
               >
                 clear stretches
               </button>
               <span className="text-neutral-500 text-[11px]">
-                one-click column justification — kashidas placed on{" "}
-                {syriacStretchActive ? "ܒ ܕ ܪ ܬ" : "ד ה ל ם ר ת"}
+                one-click column justification — {script.id === "arabic"
+                  ? "tatweels placed between joining letters"
+                  : `kashidas placed on ${syriacStretchActive ? "ܒ ܕ ܪ ܬ" : "ד ה ל ם ר ת"}`}
               </span>
             </div>
           )}
@@ -1486,6 +1498,91 @@ const SYRIAC_STRETCHABLE = new Set(["ܒ", "ܕ", "ܪ", "ܬ"]);
 // position in the line, capping any single letter at MAX_LEVELS (16) to
 // avoid triggering the overflow-chain machinery on any one glyph. If the
 // cap is hit before the deficit closes, we accept the residual gap.
+/** Auto-justify Arabic — inserts tatweels (U+0640) between joining
+ *  letters so each line reaches the target column width. Same shape as
+ *  autoJustifySemitic but uses tatweel and finds positions BETWEEN two
+ *  Arabic letters where the previous one is left-joining. */
+function autoJustifyArabic(
+  text: string,
+  targetWidthPx: number,
+  fontFamily: string,
+  fontSizePx: number,
+  featureSettings: string,
+): string {
+  const TATWEEL = "ـ";
+  const MAX_PER_POSITION = 12;
+
+  const scratch = document.createElement("div");
+  scratch.style.cssText =
+    `position:absolute;visibility:hidden;top:-9999px;left:-9999px;` +
+    `font:${fontSizePx}px "${fontFamily}";` +
+    `font-feature-settings:${featureSettings};` +
+    `direction:rtl;white-space:nowrap;`;
+  document.body.appendChild(scratch);
+  try {
+    const measure = (s: string): number => {
+      scratch.textContent = s;
+      return scratch.getBoundingClientRect().width;
+    };
+    const isArabicLetter = (ch: string): boolean => {
+      const cp = ch.charCodeAt(0);
+      return (cp >= 0x0621 && cp <= 0x064A) || (cp >= 0x066E && cp <= 0x06D3);
+    };
+    const isCombiningMark = (ch: string): boolean => /\p{M}/u.test(ch);
+
+    const lines = text.split("\n");
+    const out = lines.map((line) => {
+      const clean = line.replace(new RegExp(TATWEEL, "g"), "");
+      if (!clean.trim()) return line;
+      const natural = measure(clean);
+      const deficit = targetWidthPx - natural;
+      if (deficit <= 1) return clean;
+
+      // Find positions BETWEEN two connecting letters. Insertion index i
+      // means: insert BEFORE clean[i]. So prev = clean[i-1], next = clean[i].
+      // Skip combining marks: walk back to find effective prev letter.
+      const positions: number[] = [];
+      for (let i = 1; i < clean.length; i++) {
+        let prevIdx = i - 1;
+        while (prevIdx >= 0 && isCombiningMark(clean[prevIdx])) prevIdx--;
+        if (prevIdx < 0) continue;
+        const prev = clean[prevIdx];
+        const next = clean[i];
+        if (canTakeKashidaAfter(prev) && isArabicLetter(next)) {
+          positions.push(i);
+        }
+      }
+      if (positions.length === 0) return clean;
+
+      // Measure pxPerLevel by inserting 8 tatweels at a mid-line position.
+      const testPos = positions[Math.floor(positions.length / 2)];
+      const testStr = clean.slice(0, testPos) + TATWEEL.repeat(8) + clean.slice(testPos);
+      const pxPerLevel = (measure(testStr) - natural) / 8;
+      if (pxPerLevel <= 0.1) return clean;
+
+      const totalLevels = Math.max(0, Math.round(deficit / pxPerLevel));
+      const per = Math.floor(totalLevels / positions.length);
+      const remainder = totalLevels - per * positions.length;
+      const distribution = positions.map((_, i) =>
+        Math.min(MAX_PER_POSITION, per + (i < remainder ? 1 : 0)),
+      );
+
+      let result = clean;
+      for (let i = positions.length - 1; i >= 0; i--) {
+        const pos = positions[i];
+        const count = distribution[i];
+        if (count > 0) {
+          result = result.slice(0, pos) + TATWEEL.repeat(count) + result.slice(pos);
+        }
+      }
+      return result;
+    });
+    return out.join("\n");
+  } finally {
+    document.body.removeChild(scratch);
+  }
+}
+
 function autoJustifySemitic(
   text: string,
   targetWidthPx: number,

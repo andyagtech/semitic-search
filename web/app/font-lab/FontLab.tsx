@@ -303,6 +303,45 @@ function canTakeKashidaAfter(ch: string): boolean {
   return false;
 }
 
+// Background guides for the SVG preview. Lines mode draws a single
+// baseline per text row (notebook-paper look); grid mode draws top,
+// midline, and baseline (scribal-practice look). The line-height 1.4
+// puts baseline at ~1.0em from the top of the line-box for most
+// fonts; midline at ~0.6em; top of ascenders at ~0.2em.
+function guideBackground(
+  mode: "none" | "lines" | "grid",
+  fontSize: number,
+): React.CSSProperties {
+  if (mode === "none") return {};
+  const period = fontSize * 1.4;
+  const baseline = fontSize * 1.0;
+  const midline = fontSize * 0.6;
+  const top = fontSize * 0.2;
+  const strong = "rgba(59, 130, 246, 0.35)";
+  const soft = "rgba(59, 130, 246, 0.18)";
+
+  const stops = mode === "lines"
+    ? `transparent 0, transparent ${baseline - 0.5}px,
+       ${strong} ${baseline - 0.5}px, ${strong} ${baseline + 0.5}px,
+       transparent ${baseline + 0.5}px, transparent ${period}px`
+    : `transparent 0, transparent ${top - 0.5}px,
+       ${soft} ${top - 0.5}px, ${soft} ${top + 0.5}px,
+       transparent ${top + 0.5}px, transparent ${midline - 0.5}px,
+       ${soft} ${midline - 0.5}px, ${soft} ${midline + 0.5}px,
+       transparent ${midline + 0.5}px, transparent ${baseline - 0.5}px,
+       ${strong} ${baseline - 0.5}px, ${strong} ${baseline + 0.5}px,
+       transparent ${baseline + 0.5}px, transparent ${period}px`;
+
+  return {
+    backgroundImage: `repeating-linear-gradient(to bottom, ${stops})`,
+    // Align gradient origin with the content box (inside padding) so the
+    // first period starts exactly at the first text line-box.
+    backgroundOrigin: "content-box",
+    backgroundClip: "content-box",
+    backgroundRepeat: "repeat",
+  };
+}
+
 // Hebrew "wide" letter presentation forms. Used in traditional scribal
 // justification of Torah columns. Font support varies — serif Hebrew fonts
 // render distinct glyphs; sans may fall back.
@@ -613,6 +652,7 @@ export function FontLab() {
   // Auto-justify target column width in pixels. Default matches a typical
   // scribal column. User can tune before clicking the button.
   const [justifyWidthPx, setJustifyWidthPx] = useState<number>(680);
+  const [bgGuide, setBgGuide] = useState<"none" | "lines" | "grid">("none");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -1436,6 +1476,29 @@ export function FontLab() {
           </span>
         </div>
 
+        <div className="mt-2 flex items-center gap-3 flex-wrap text-xs">
+          <span className="text-neutral-500 uppercase tracking-wider">Guides</span>
+          {(["none", "lines", "grid"] as const).map((g) => (
+            <button
+              key={g}
+              type="button"
+              onClick={() => setBgGuide(g)}
+              className={`px-2 py-0.5 rounded border ${
+                bgGuide === g
+                  ? "bg-neutral-900 text-white border-neutral-900"
+                  : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+              }`}
+              title={
+                g === "none" ? "No background lines"
+                : g === "lines" ? "Notebook-style baseline per row"
+                : "Three ruled lines per row — top, midline, baseline"
+              }
+            >
+              {g}
+            </button>
+          ))}
+        </div>
+
         <div className="mt-2 flex items-center gap-3 flex-wrap text-xs text-neutral-600">
           <span className="text-neutral-500 uppercase tracking-wider">OpenType</span>
           {(["liga", "calt", "salt", "dlig", "jalt", "ss01", "ss02", "ss03", "ss04"] as const).map((feat) => (
@@ -1488,9 +1551,8 @@ export function FontLab() {
             padding: "24px",
             minHeight: `${fontSize * 1.4 + 48}px`,
             fontFeatureSettings,
-            // Preserve newlines in the source text so multi-line samples
-            // (Genesis 1:1 column, Psalms 1) render as separate lines.
             whiteSpace: "pre-wrap",
+            ...guideBackground(bgGuide, fontSize),
           }}
         >
           {(() => {

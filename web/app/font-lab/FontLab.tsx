@@ -536,6 +536,12 @@ export function FontLab() {
   // fall back to per-letter jalt substitution.
   const hebrewStretchActive = script.id === "hebrew" && font.id.startsWith("stretch");
   const syriacStretchActive = script.id === "syriac" && font.id.startsWith("stretch");
+  // Nohadra is block-style non-cursive Syriac. Its stretchable letters
+  // (ܒ ܕ ܪ ܬ) widen via our per-letter GSUB ligature, which requires N
+  // triggers CLUSTERED after the letter — the same insertion pattern the
+  // Hebrew fonts use. Cursive Syriac fonts (Noto Sans Syriac etc.) use
+  // the Arabic-style tatweel-between-letters approach instead.
+  const nohadraStretchActive = script.id === "syriac" && font.id.startsWith("stretchnohadra");
   const stretchFontActive = hebrewStretchActive || syriacStretchActive;
   const supportsKashida = script.id === "arabic" || (script.id === "syriac" && !syriacStretchActive) || stretchFontActive;
   const supportsWideHebrew = script.id === "hebrew";
@@ -590,7 +596,14 @@ export function FontLab() {
     requestAnimationFrame(() => {
       setText((prev) => {
         if (!prev.includes(trigger)) return prev;
-        // Syriac uses Arabic-style tatweel insertion between joining letters.
+        // Nohadra: cluster tatweels on stretchable letters (Hebrew-style).
+        // Cursive Syriac: distribute between joining letters (Arabic-style).
+        if (nohadraStretchActive) {
+          return autoJustifySemitic(
+            prev, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
+            SYRIAC_STRETCHABLE, TATWEEL,
+          );
+        }
         if (syriacStretchActive) {
           return autoJustifyArabic(prev, justifyWidthPx, font.family, fontSize, fontFeatureSettings);
         }
@@ -959,7 +972,16 @@ export function FontLab() {
                     // uses Arabic-style tatweel insertion regardless of font.
                     ensureFontLoaded(targetFont.family, targetFont.file).then(() => {
                       requestAnimationFrame(() => {
-                        if (script.id === "syriac") {
+                        // Nohadra: cluster tatweels after stretchable letters
+                        // so the widening ligature fires. Cursive Syriac +
+                        // Arabic: distribute tatweels between joining letters.
+                        const isNohadra = script.id === "syriac" && targetFont.id.startsWith("stretchnohadra");
+                        if (isNohadra) {
+                          setText(autoJustifySemitic(
+                            clean, justifyWidthPx, targetFont.family, fontSize,
+                            fontFeatureSettings, SYRIAC_STRETCHABLE, TATWEEL,
+                          ));
+                        } else if (script.id === "syriac") {
                           setText(autoJustifyArabic(
                             clean, justifyWidthPx, targetFont.family, fontSize, fontFeatureSettings,
                           ));
@@ -1041,13 +1063,22 @@ export function FontLab() {
               <button
                 type="button"
                 onClick={() => {
-                  // Syriac uses the same tatweel-insertion logic as Arabic —
-                  // the font's own U+0640 glyph bridges joining letters as a
-                  // horizontal bar, which matches scribal tradition. Custom
-                  // stretch fonts still get to fire their per-letter widening
-                  // ligature on top when triggers cluster on a stretchable
-                  // letter, but the base spacing is inter-letter tatweel.
-                  if (script.id === "arabic" || script.id === "syriac") {
+                  // Routing:
+                  //  - Nohadra (block-style, non-cursive): CLUSTER tatweels
+                  //    after stretchable letters so the per-letter widening
+                  //    ligature fires cleanly (Hebrew-style path).
+                  //  - Cursive Syriac + Arabic: distribute tatweels between
+                  //    joining letters so the font's own tatweel glyph
+                  //    bridges the joins.
+                  //  - Hebrew: cluster U+05C6 on stretchable letters.
+                  if (nohadraStretchActive) {
+                    setText(
+                      autoJustifySemitic(
+                        text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
+                        SYRIAC_STRETCHABLE, TATWEEL,
+                      ),
+                    );
+                  } else if (script.id === "arabic" || script.id === "syriac") {
                     setText(
                       autoJustifyArabic(
                         text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,

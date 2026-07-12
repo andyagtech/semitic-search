@@ -238,9 +238,18 @@ function canTakeKashidaAfter(ch: string): boolean {
     if (nonJoining.includes(cp)) return false;
     return true;
   }
-  // Syriac block (all letters in the basic Syriac range can generally accept
-  // a following tatweel; Noto Syriac fonts render them as stretched joins)
-  if (cp >= 0x0712 && cp <= 0x072F) return true;
+  // Syriac block. Eight letters do NOT connect to the following letter
+  // (they're right-joining only), so inserting a tatweel after them
+  // creates a stub with nothing to bridge to. Traditional Syriac scribal
+  // stretching skips these letters entirely.
+  //   Ālap 0x0710, Dālat 0x0715, Hē 0x0717, Waw 0x0718,
+  //   Zayn 0x0719, Ṣāḏē 0x0729, Rēš 0x072A, Taw 0x072C
+  if (cp >= 0x0712 && cp <= 0x072F) {
+    const syriacNonConnectors = [0x0710, 0x0715, 0x0717, 0x0718,
+                                 0x0719, 0x0729, 0x072A, 0x072C];
+    if (syriacNonConnectors.includes(cp)) return false;
+    return true;
+  }
   return false;
 }
 
@@ -1058,7 +1067,12 @@ export function FontLab() {
               </span>
             </div>
           )}
-          {(stretchFontActive || script.id === "arabic" || script.id === "syriac") && (
+          {/* Plain Nohadra fonts are block-style non-cursive with no
+              widening ligature — auto-justify would only insert baseline
+              tatweel blocks (image 50 "railroad" pattern). Hide the
+              button and steer the user to the Semitic Stretch variants. */}
+          {(stretchFontActive || script.id === "arabic" ||
+            (script.id === "syriac" && font.id !== "nohadrasapna" && font.id !== "nohadraamedia")) && (
             <div className="mt-2 flex items-center gap-2 text-xs text-neutral-600 flex-wrap">
               <button
                 type="button"

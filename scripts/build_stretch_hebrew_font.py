@@ -38,6 +38,11 @@ FONTS_DIR = Path(__file__).resolve().parents[1] / "web" / "public" / "fonts"
 # Hafukha) instead: script=Hebrew → stays in the Hebrew run, so the
 # ligature substitution fires. It's non-combining (gc=Po) and extremely
 # rare in real text (only appears a few times in Torah — Numbers 10:35-36).
+#
+# For SYRIAC fonts, U+05C6 has script=Hebrew so HarfBuzz splits the run at
+# every trigger — same problem as PUA. Syriac fonts override this to
+# U+0640 (Arabic tatweel), which has script=Common and stays in whatever
+# run it's placed in. See `stretch_codepoint` on NOTO_SANS_SYRIAC + Nohadra.
 STRETCH_CODEPOINT = 0x05C6
 STRETCH_GLYPH = f"uni{STRETCH_CODEPOINT:04X}"
 MAX_LEVELS = 16        # number of stretch variants per letter
@@ -640,6 +645,7 @@ NOTO_SANS_SYRIAC = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "language_system": "syrc",  # Syriac script tag (as opposed to hebr)
+    "stretch_codepoint": 0x0640,  # tatweel — script=Common, stays in Syriac run
     "letters": {
         # Dalath: bar-class. Bar zone is the flat top portion; x_cutoff picks
         # a point between the stretchable left curve and the anchored right
@@ -716,6 +722,7 @@ NOHADRA_SAPNA = {
     "step": 150,
     "lsb_mode": "mono",
     "language_system": "syrc",
+    "stretch_codepoint": 0x0640,  # tatweel — script=Common, stays in Syriac run
     "letters": {
         # beth: flat bar y=303 (x=177-555), left foot x=51-177 at y=0-101.
         # bar_zone spans entire body so foot travels with the bar shift.
@@ -1553,6 +1560,12 @@ def _splice_original_gsub_back(font, original_gsub_bytes):
 
 
 def build_one(config: dict) -> int:
+    # Per-font stretch trigger codepoint. Default is Hebrew nun hafukha for
+    # Hebrew scripts; Syriac fonts override to Arabic tatweel U+0640 so the
+    # trigger stays in the Syriac shaping run (script=Common).
+    global STRETCH_CODEPOINT, STRETCH_GLYPH
+    STRETCH_CODEPOINT = config.get("stretch_codepoint", 0x05C6)
+    STRETCH_GLYPH = f"uni{STRETCH_CODEPOINT:04X}"
     src_path = FONTS_DIR / config["source"]
     out_path = FONTS_DIR / config["output"]
     family = config["family"]

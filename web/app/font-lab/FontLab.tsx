@@ -24,7 +24,13 @@ type ScriptEntry = {
 const SCRIPTS: ScriptEntry[] = [
   {
     id: "arabic", label: "Arabic", dir: "rtl",
-    sample: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+    // Van Dyck Arabic translation of Genesis 1:1 — "In the beginning God
+    // created the heavens and the earth". Multi-line so auto-justify has
+    // room to insert tatweels on each row.
+    sample:
+      "فِي الْبَدْءِ خَلَقَ اللهُ\n" +
+      "السَّمَاوَاتِ\n" +
+      "وَالأَرْضَ",
     fonts: [
       { id: "amiri",    label: "Amiri (classical Naskh)", file: "Amiri-Regular.ttf", family: "FL_Amiri" },
       { id: "naskh",    label: "Noto Naskh Arabic",       file: "NotoNaskhArabic.ttf", family: "FL_NaskhArabic" },
@@ -110,7 +116,13 @@ const SCRIPTS: ScriptEntry[] = [
   },
   {
     id: "syriac", label: "Syriac", dir: "rtl",
-    sample: "ܒܪܝܫܝܬ ܒܪܐ ܐܠܗܐ ܝܬ ܫܡܝܐ ܘܝܬ ܐܪܥܐ",
+    // Peshitta Genesis 1:1, split into four short lines so auto-justify
+    // has room to insert tatweel triggers on each row.
+    sample:
+      "ܒܪܝܫܝܬ\n" +
+      "ܒܪܐ ܐܠܗܐ\n" +
+      "ܝܬ ܫܡܝܐ\n" +
+      "ܘܝܬ ܐܪܥܐ",
     fonts: [
       { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
         note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on beth ܒ, dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts." },
@@ -561,10 +573,11 @@ export function FontLab() {
   const lastJustifiedFontRef = useRef<string>("");
   useEffect(() => {
     if (!fontReady) return;
-    if (!text.includes(HEBREW_STRETCH)) return;
+    const trigger = syriacStretchActive ? TATWEEL : HEBREW_STRETCH;
+    if (!text.includes(trigger)) return;
     if (!stretchFontActive) {
       // Non-stretch font active but text still has extenders — strip them.
-      setText((prev) => prev.replace(/׆/g, ""));
+      setText((prev) => prev.replace(/׆/g, "").replace(/ـ/g, ""));
       lastJustifiedFontRef.current = "";
       return;
     }
@@ -573,11 +586,12 @@ export function FontLab() {
     // Defer to next frame so bbox measurement uses the freshly-loaded font.
     requestAnimationFrame(() => {
       setText((prev) => {
-        if (!prev.includes(HEBREW_STRETCH)) return prev;
+        if (!prev.includes(trigger)) return prev;
         return autoJustifySemitic(
           prev, justifyWidthPx, font.family, fontSize,
           fontFeatureSettings,
           syriacStretchActive ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE,
+          trigger,
         );
       });
     });
@@ -625,13 +639,13 @@ export function FontLab() {
     }
 
     if (stretchFontActive) {
-      // U+05C6 stretch trigger sits in the Hebrew script block; it works
-      // equally for the Syriac stretch font because both fonts declare it
-      // in their cmap and GSUB. `prev` can be a Hebrew letter (֐-׿)
-      // or a Syriac letter (܀-ݏ) or another trigger.
+      // Hebrew stretch fonts use U+05C6 as the trigger; Syriac stretch
+      // fonts use U+0640 tatweel (U+05C6 has script=Hebrew, which would
+      // split the Syriac shaping run and prevent the ligature firing).
+      const trigger = syriacStretchActive ? TATWEEL : HEBREW_STRETCH;
       const prevIsSemiticStretchable = /[֐-׿܀-ݏ]/.test(prev);
-      if (!prevIsSemiticStretchable && prev !== HEBREW_STRETCH) return;
-      const updated = text.slice(0, pos) + HEBREW_STRETCH + text.slice(pos);
+      if (!prevIsSemiticStretchable && prev !== HEBREW_STRETCH && prev !== TATWEEL) return;
+      const updated = text.slice(0, pos) + trigger + text.slice(pos);
       setText(updated);
       requestAnimationFrame(() => {
         ta.focus();
@@ -918,9 +932,10 @@ export function FontLab() {
                 key={s.label}
                 type="button"
                 onClick={() => {
-                  const wantJustify = s.text.includes(HEBREW_STRETCH);
-                  const clean = s.text.replace(/׆/g, "");
+                  const wantJustify = s.text.includes(HEBREW_STRETCH) || s.text.includes(TATWEEL);
+                  const clean = s.text.replace(/[׆ـ]/g, "");
                   const stretchable = script.id === "syriac" ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE;
+                  const trigger = script.id === "syriac" ? TATWEEL : HEBREW_STRETCH;
                   // Sample expects stretch but user isn't on a stretch font
                   // — flip to the default stretch font so the demo shows.
                   let targetFont = font;
@@ -938,7 +953,7 @@ export function FontLab() {
                       requestAnimationFrame(() => {
                         setText(autoJustifySemitic(
                           clean, justifyWidthPx, targetFont.family, fontSize,
-                          fontFeatureSettings, stretchable,
+                          fontFeatureSettings, stretchable, trigger,
                         ));
                       });
                     });
@@ -1023,6 +1038,7 @@ export function FontLab() {
                       autoJustifySemitic(
                         text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
                         syriacStretchActive ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE,
+                        syriacStretchActive ? TATWEEL : HEBREW_STRETCH,
                       ),
                     );
                   }
@@ -1052,14 +1068,12 @@ export function FontLab() {
               <button
                 type="button"
                 onClick={() => {
-                  if (script.id === "arabic") {
-                    setText(text.replace(/ـ/g, ""));
-                  } else {
-                    setText(text.replace(/׆/g, ""));
-                  }
+                  // Strip whichever trigger the current script uses. Hebrew =
+                  // U+05C6, Syriac and Arabic = U+0640 tatweel.
+                  setText(text.replace(/[׆ـ]/g, ""));
                 }}
                 className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-600"
-                title={script.id === "arabic" ? "Remove every U+0640 tatweel from the text" : "Remove every U+05C6 kashida from the text"}
+                title="Remove every stretch trigger from the text (U+05C6 for Hebrew, U+0640 tatweel for Syriac / Arabic)"
               >
                 clear stretches
               </button>
@@ -1590,8 +1604,9 @@ function autoJustifySemitic(
   fontSizePx: number,
   featureSettings: string,
   stretchable: Set<string>,
+  stretchChar: string = "׆",
 ): string {
-  const STRETCH = "׆";
+  const STRETCH = stretchChar;
   const MAX_LEVELS_PER_LETTER = 16;
 
   const scratch = document.createElement("div");

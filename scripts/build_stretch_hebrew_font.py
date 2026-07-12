@@ -723,6 +723,13 @@ NOHADRA_SAPNA = {
     "lsb_mode": "mono",
     "language_system": "syrc",
     "stretch_codepoint": 0x0640,  # tatweel — script=Common, stays in Syriac run
+    # Nohadra is non-cursive block-style. Auto-justify clusters tatweels on
+    # stretchable letters, and our widening ligature consumes every one into
+    # a widened variant. Override the font's natural baseline-height (y≈101)
+    # tatweel glyph with our 1×1 invisible placeholder so any unmatched
+    # tatweel doesn't render as a low block that mismatches the widened
+    # letters' y=303 bar height (the "gaps in bars" from image 43).
+    "override_trigger_glyph": True,
     "letters": {
         # beth: flat bar y=303 (x=177-555), left foot x=51-177 at y=0-101.
         # bar_zone spans entire body so foot travels with the bar shift.
@@ -1594,29 +1601,32 @@ def build_one(config: dict) -> int:
     # --- 1. Trigger glyph. Zero-advance placeholder for chain-substitution:
     # our GSUB ligature consumes (letter, N × trigger) → stretched variant.
     #
-    # Hebrew uses U+05C6 (Nun Hafukha) as the trigger — extremely rare in
-    # real text (only in Torah, Numbers 10:35-36), so replacing its glyph
-    # with a 1×1 invisible placeholder is fine and keeps un-matched
-    # triggers from adding random gaps.
+    # Three cases:
+    #  1. Codepoint not yet in font's cmap (Hebrew fonts without U+05C6
+    #     mapped): install our 1×1 invisible placeholder.
+    #  2. Codepoint already present + font is CURSIVE (has positional
+    #     forms — Noto Sans Syriac, Idiqlat, etc.): preserve the font's
+    #     natural tatweel glyph. Auto-justify inserts tatweels BETWEEN
+    #     joining letters and the natural tatweel bridges them into a
+    #     horizontal bar — the whole point for cursive scripts.
+    #  3. Codepoint present + font is NON-CURSIVE (Nohadra): overwrite
+    #     with 1×1 placeholder. Non-cursive fonts widen via our ligature
+    #     which consumes every tatweel into a widened letter variant.
+    #     Unmatched tatweels showing at baseline height (y≈0-101) would
+    #     mismatch the widened bar height (y≈303), producing the
+    #     "gaps in bars" artifact from image 43.
     #
-    # Syriac uses U+0640 (Arabic tatweel), which IS common in real Syriac
-    # text — the font's own tatweel glyph is what bridges joining letters
-    # into a horizontal bar. If we overwrite it with our 1×1 placeholder,
-    # unmatched tatweels (inserted between non-stretchable letters, or
-    # beyond the 16-level cap after a stretchable letter) render as
-    # invisible 40-unit gaps → the "letters that should be connected
-    # aren't" artifact.
-    #
-    # So: only install our placeholder when the codepoint isn't already
-    # present. If the font already has U+0640 (or U+05C6), preserve its
-    # natural outline and just make sure the glyph is in the order list.
+    # `override_trigger_glyph` config field forces case 3 for non-cursive
+    # fonts that happen to have the codepoint in their source cmap.
     order = font.getGlyphOrder()
-    if STRETCH_GLYPH not in order:
+    force_override = config.get("override_trigger_glyph", False)
+    if STRETCH_GLYPH not in order or force_override:
         pen = TTGlyphPen(None)
         pen.moveTo((0, 0)); pen.lineTo((1, 0)); pen.lineTo((1, 1)); pen.lineTo((0, 1)); pen.closePath()
         trigger_glyph = pen.glyph()
-        order.append(STRETCH_GLYPH)
-        font.setGlyphOrder(order)
+        if STRETCH_GLYPH not in order:
+            order.append(STRETCH_GLYPH)
+            font.setGlyphOrder(order)
         font["glyf"][STRETCH_GLYPH] = trigger_glyph
         font["hmtx"].metrics[STRETCH_GLYPH] = (40, 0)
         # Map the codepoint.

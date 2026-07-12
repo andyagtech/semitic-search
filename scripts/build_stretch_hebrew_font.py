@@ -1646,6 +1646,50 @@ def build_one(config: dict) -> int:
             print(f"  skip {letter_name}: not in cmap")
             continue
 
+        # Helper to build MAX_LEVELS stretched variants from ANY source glyph
+        # (isolated or positional form). Positional forms in cursive fonts
+        # (Syriac beth.init/.medi/.fina, etc.) need their OWN stretched
+        # variants so cursive joining chains stay intact — the .init form
+        # widened must still have its left-joining stub, else adjacent
+        # letters render dangling stubs into the widened body.
+        def build_form_variants(src_name: str, variant_prefix: str) -> list[str]:
+            if src_name not in font["hmtx"].metrics:
+                return []
+            base_adv = font["hmtx"].metrics[src_name][0]
+            forms_variants: list[str] = []
+            order = font.getGlyphOrder()
+            for n in range(1, MAX_LEVELS + 1):
+                vn = f"{variant_prefix}_s{n}"
+                shift_ = step * n
+                new_g = stretch_glyph(
+                    font, src_name, shift_,
+                    letter_class=letter_class,
+                    bar_bottom=bar_bottom, bar_top=bar_top,
+                    arm_min_y=arm_min_y, leg_max_y=leg_max_y,
+                    x_cutoff=x_cut_int,
+                    shift_contours=shift_contours,
+                    underside_y_max=underside_y_max,
+                    underside_x_min=underside_x_min,
+                )
+                lsb_mode_ = config.get("lsb_mode", "shift")
+                if lsb_mode_ == "mono":
+                    for i in range(len(new_g.coordinates)):
+                        x, y = new_g.coordinates[i]
+                        new_g.coordinates[i] = (x + shift_, y)
+                    new_g.recalcBounds(font["glyf"])
+                    new_l = new_g.xMin
+                elif lsb_mode_ == "natural":
+                    new_l = new_g.xMin
+                else:
+                    new_l = 0
+                font["glyf"][vn] = new_g
+                font["hmtx"].metrics[vn] = (base_adv + shift_, new_l)
+                if vn not in order:
+                    order.append(vn)
+                font.setGlyphOrder(order)
+                forms_variants.append(vn)
+            return forms_variants
+
         base_advance = font["hmtx"].metrics[src_glyph][0]
         variants: list[str] = []
         for n in range(1, MAX_LEVELS + 1):
@@ -1705,27 +1749,38 @@ def build_one(config: dict) -> int:
                 order.append(variant_name)
             font.setGlyphOrder(order)
             variants.append(variant_name)
-        # Positional-form aliases. Cursive scripts (Syriac, Arabic) run
+        # Positional-form variants. Cursive scripts (Syriac, Arabic) run
         # init/medi/fina/med2/fin2/fin3 lookups BEFORE `liga`, so by the
-        # time our ligature fires the letter's glyph is no longer
-        # `uni0712` but e.g. `uni0712.init`. Add every positional form
-        # of the source glyph to the alias list so our stretch ligature
-        # fires regardless of the cursive form the shaper picked.
-        # Reuses the ISOLATED stretched variants — the widened bar is
-        # wide enough that the join stub blends in visually.
+        # time our ligature fires the letter's glyph is `uni0712.init`
+        # (or .medi/.fina) — no longer `uni0712`. Earlier we mapped these
+        # forms to the ISOLATED widened glyph, but that produced dangling
+        # joining stubs on adjacent letters (they'd been shaped expecting
+        # to connect to init's left stub, which isn't there on isolated).
+        # Instead build a SEPARATE stretched set for each positional form
+        # from THAT form's outline; joining chains stay intact at every
+        # stretch level.
         POSITIONAL_SUFFIXES = (".init", ".medi", ".fina", ".isol",
                                ".init.short", ".medi.short", ".fina.short",
                                ".initB", ".mediB", ".finaB",
                                ".init2", ".medi2", ".fina2",
                                ".fin2", ".fin3", ".med2")
+        positional_variants: dict[str, list[str]] = {}
         for suffix in POSITIONAL_SUFFIXES:
             positional = src_glyph + suffix
             if positional in font.getGlyphOrder():
-                aliases.append(positional)
+                pos_prefix = f"{letter_name}{suffix}"
+                pos_vars = build_form_variants(positional, pos_prefix)
+                if pos_vars:
+                    positional_variants[positional] = pos_vars
 
-        letter_variants[src_glyph] = {"variants": variants, "aliases": aliases}
+        letter_variants[src_glyph] = {
+            "variants": variants,
+            "aliases": aliases,
+            "positional_variants": positional_variants,
+        }
         alias_note = f" + aliases {aliases}" if aliases else ""
-        print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}")
+        pos_note = f" + positional-form sets [{', '.join(positional_variants.keys())}]" if positional_variants else ""
+        print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}{pos_note}")
 
         # Overflow tatweel-style chain. Default-enabled for bar/arm class
         # letters in shift-mode fonts (the math for natural/mono modes
@@ -1814,12 +1869,21 @@ def build_one(config: dict) -> int:
     for src_glyph, payload in letter_variants.items():
         variants = payload["variants"]
         aliases = payload.get("aliases", [])
-        first_glyphs = [src_glyph] + [a for a in aliases if a in font.getGlyphOrder()]
-        for first in first_glyphs:
-            # Emit longest first (MAX_LEVELS components) down to shortest.
+        positional_variants = payload.get("positional_variants", {})
+        # Isolated form + non-positional aliases (dagesh presentation forms)
+        # both map to the isolated stretched set.
+        isolated_firsts = [src_glyph] + [a for a in aliases if a in font.getGlyphOrder()]
+        for first in isolated_firsts:
             for n in range(len(variants), 0, -1):
                 comps = " ".join([first] + [STRETCH_GLYPH] * n)
                 fea_lines.append(f"    sub {comps} by {variants[n - 1]};")
+                total_rules += 1
+        # Each positional form maps to its OWN per-form stretched set so
+        # the joining stub survives the widening.
+        for pos_form, pos_vars in positional_variants.items():
+            for n in range(len(pos_vars), 0, -1):
+                comps = " ".join([pos_form] + [STRETCH_GLYPH] * n)
+                fea_lines.append(f"    sub {comps} by {pos_vars[n - 1]};")
                 total_rules += 1
     # --- Overflow chain. AFTER all the multi-component ligatures so the
     # max-level ligature consumes its full quota of kashidas first, then

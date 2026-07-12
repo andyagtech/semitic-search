@@ -1591,28 +1591,38 @@ def build_one(config: dict) -> int:
 
     font = TTFont(str(src_path))
 
-    # --- 1. Design the U+E010 control/stretch glyph (zero-advance placeholder
-    # for chain-substitution). It acts as the trigger codepoint the user
-    # types; GSUB ligatures consume pairs of (letter, U+E010) → stretched.
-    pen = TTGlyphPen(None)
-    pen.moveTo((0, 0))
-    pen.lineTo((1, 0))
-    pen.lineTo((1, 1))
-    pen.lineTo((0, 1))
-    pen.closePath()
-    trigger_glyph = pen.glyph()
+    # --- 1. Trigger glyph. Zero-advance placeholder for chain-substitution:
+    # our GSUB ligature consumes (letter, N × trigger) → stretched variant.
+    #
+    # Hebrew uses U+05C6 (Nun Hafukha) as the trigger — extremely rare in
+    # real text (only in Torah, Numbers 10:35-36), so replacing its glyph
+    # with a 1×1 invisible placeholder is fine and keeps un-matched
+    # triggers from adding random gaps.
+    #
+    # Syriac uses U+0640 (Arabic tatweel), which IS common in real Syriac
+    # text — the font's own tatweel glyph is what bridges joining letters
+    # into a horizontal bar. If we overwrite it with our 1×1 placeholder,
+    # unmatched tatweels (inserted between non-stretchable letters, or
+    # beyond the 16-level cap after a stretchable letter) render as
+    # invisible 40-unit gaps → the "letters that should be connected
+    # aren't" artifact.
+    #
+    # So: only install our placeholder when the codepoint isn't already
+    # present. If the font already has U+0640 (or U+05C6), preserve its
+    # natural outline and just make sure the glyph is in the order list.
     order = font.getGlyphOrder()
     if STRETCH_GLYPH not in order:
+        pen = TTGlyphPen(None)
+        pen.moveTo((0, 0)); pen.lineTo((1, 0)); pen.lineTo((1, 1)); pen.lineTo((0, 1)); pen.closePath()
+        trigger_glyph = pen.glyph()
         order.append(STRETCH_GLYPH)
-    font.setGlyphOrder(order)
-    font["glyf"][STRETCH_GLYPH] = trigger_glyph
-    # Keep advance small so unmatched extenders at word-end aren't huge.
-    font["hmtx"].metrics[STRETCH_GLYPH] = (40, 0)
-
-    # Map the codepoint.
-    for t in font["cmap"].tables:
-        if t.isUnicode() or t.platformID == 3:
-            t.cmap[STRETCH_CODEPOINT] = STRETCH_GLYPH
+        font.setGlyphOrder(order)
+        font["glyf"][STRETCH_GLYPH] = trigger_glyph
+        font["hmtx"].metrics[STRETCH_GLYPH] = (40, 0)
+        # Map the codepoint.
+        for t in font["cmap"].tables:
+            if t.isUnicode() or t.platformID == 3:
+                t.cmap[STRETCH_CODEPOINT] = STRETCH_GLYPH
 
     # --- 2. For each stretch letter, generate MAX_LEVELS variant glyphs.
     # letter_variants: src_glyph -> {"variants": [s1..sMAX], "aliases": [...]}

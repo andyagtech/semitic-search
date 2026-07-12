@@ -665,7 +665,12 @@ NOTO_SANS_SYRIAC = {
         # Taw: has a horizontal cross-bar higher up. Treat as leg-class
         # (bar + descending left leg). leg_max_y catches the descender
         # portion so it doesn't drag horizontally with the bar shift.
-        0x072C: {"name": "taw",    "class": "leg", "bar_bottom": 400, "bar_top": 700, "leg_max_y": 200, "x_cutoff": 350},
+        # x_cutoff dropped from 350 → 250 so taw's vertical ascender
+        # (roughly x=280-350, y=400-713) sits fully to the right of the
+        # cutoff and stays anchored. Previous value caught the ascender's
+        # base in the shift zone while its top (y>bar_top=700) stayed put
+        # — producing the triangular tear in image 60.
+        0x072C: {"name": "taw",    "class": "leg", "bar_bottom": 400, "bar_top": 700, "leg_max_y": 200, "x_cutoff": 250},
         # Beth: Estrangela beth has a flat top bar from x≈385 to x≈721 at
         # y≈423, with a left-curl foot at x=49-300 below y=100. Widen the
         # whole left half of the letter (curl + rise + left bar) as a

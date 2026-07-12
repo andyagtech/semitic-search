@@ -138,6 +138,14 @@ const SCRIPTS: ScriptEntry[] = [
         note: "SIL Idiqlat (OFL). Calligraphic Syriac. Not stretchable — its top-strokes are curved rather than flat, so the bar/leg framework produces discontinuities." },
       { id: "sans",  label: "Noto Sans Syriac",  file: "NotoSansSyriac.ttf", family: "FL_NotoSansSyriac" },
       { id: "serif", label: "Noto Serif Syriac (Estrangela-leaning)", file: "NotoSerifSyriac.ttf", family: "FL_NotoSerifSyriac" },
+      // Meltho fonts (Beth Mardutho: The Syriac Institute) — one per
+      // classical Syriac script tradition.
+      { id: "meltho-edessa", label: "Estrangelo Edessa (Estrangela)", file: "MelthoEdessa.ttf", family: "FL_MelthoEdessa",
+        note: "Classical Estrangela — the oldest Syriac script tradition. Beth Mardutho SIL Meltho family." },
+      { id: "meltho-adiabene", label: "East Syriac Adiabene (Madnhaya)", file: "MelthoAdiabene.ttf", family: "FL_MelthoAdiabene",
+        note: "Madnhaya (East Syriac) — used by the Assyrian Church of the East and Chaldean Catholic Church. Beth Mardutho SIL Meltho family." },
+      { id: "meltho-jerusalem", label: "Serto Jerusalem (Serta)", file: "MelthoJerusalem.ttf", family: "FL_MelthoJerusalem",
+        note: "Serta / West Syriac cursive — used by the Syriac Orthodox Church and Maronites. Beth Mardutho SIL Meltho family." },
     ],
   },
   {

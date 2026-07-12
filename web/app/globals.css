@@ -28,7 +28,7 @@
    components that hard-code those class names shift automatically. */
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --background: #f5efe0;        /* parchment cream */
   --foreground: #2a1e14;        /* warm ebony */
 
@@ -67,10 +67,11 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
-/* Dark mode: warm ebony + warm ivory. Neutrals warm-tinted so every
-   bg-white / bg-neutral-* / text-neutral-* utility flips automatically. */
-@media (prefers-color-scheme: dark) {
-  :root {
+/* Dark-mode auto-switch removed per user preference — the parchment-cream
+   light theme is the intended aesthetic regardless of the OS setting.
+   Dark styles preserved below and only apply when an explicit `.dark`
+   class is set on the html/body element (future opt-in toggle). */
+.dark {
     --background: #1a1614;      /* warm ebony */
     --foreground: #e8dfcf;      /* warm ivory */
 
@@ -108,7 +109,6 @@ body {
     --color-violet-100: rgba(201, 163, 122, 0.20);
     --color-sky-50:     rgba(216, 176, 74, 0.08);
     --color-red-50:     rgba(209, 132, 102, 0.12);
-  }
 }
 
 input,
@@ -177,14 +177,12 @@ textarea::placeholder {
   --branch-south-arabian: #c9dcb8; /* mint — Sabaean */
   --branch-ethio-semitic: #d4c1e0; /* soft lavender — Ge'ez, Amharic, Tigrinya */
 }
-@media (prefers-color-scheme: dark) {
-  :root {
+.dark {
     --branch-east:          #3a5252;
     --branch-northwest:     #364353;
     --branch-central:       #5c4635;
     --branch-south-arabian: #3f5537;
     --branch-ethio-semitic: #4a3d55;
-  }
 }
 .branch-east            { --branch-tint: var(--branch-east); }
 .branch-northwest       { --branch-tint: var(--branch-northwest); }

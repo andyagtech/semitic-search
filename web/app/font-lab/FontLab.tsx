@@ -196,10 +196,16 @@ const SCRIPTS: ScriptEntry[] = [
 // Bright, vibrant defaults — picked so EVERY swatch (incl. the first
 // cluster) reads clearly on both the dark and light themes. The previous
 // palette led with #111827 (near-black), invisible on dark backgrounds.
+// Rainbow palette applied when the user clicks "Reset palette". Default
+// on load is a single ink colour (see DEFAULT_INK) so first-time visitors
+// see the text as normal calligraphy rather than a colour spectrum.
 const DEFAULT_COLORS = [
   "#fbbf24", "#f87171", "#fb923c", "#34d399", "#60a5fa",
   "#a78bfa", "#f472b6", "#22d3ee", "#a3e635", "#facc15",
 ];
+// Single-ink default — dark neutral so it reads well on both the light
+// paper-cream page background and the parchment SVG preview.
+const DEFAULT_INK = "#111827";
 
 // --- Kashida / tatweel ----------------------------------------------------
 
@@ -646,7 +652,9 @@ export function FontLab() {
 
   // Reset palette + wide-set when the cluster count changes.
   useEffect(() => {
-    setColors(clusters.map((_, i) => DEFAULT_COLORS[i % DEFAULT_COLORS.length]));
+    // Start every letter in a single ink colour. Users who want the
+    // rainbow can click "Reset palette".
+    setColors(clusters.map(() => DEFAULT_INK));
     setWideClusters((prev) => {
       // Preserve entries that are still in-range; drop anything past new end.
       const next = new Set<number>();

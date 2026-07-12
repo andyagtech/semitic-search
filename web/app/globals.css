@@ -1,6 +1,9 @@
-@import "tailwindcss";
+/* CSS @import rules must precede all non-@import rules. After the
+   Tailwind v4 upgrade, `@import "tailwindcss"` gets expanded inline
+   ahead of downstream rules — so we now source Google Fonts BEFORE
+   the Tailwind import to keep the fonts @import at the top.
 
-/* Per-language script/font variants — all open-source.
+   Per-language script/font variants — all open-source.
    · Hebrew: Rashi + Solitreo + Paleo (Phoenician block) + Samaritan
    · Arabic: Amiri (SIL OFL), Reem Kufi, Noto Nastaliq Urdu
    · Syriac: Noto Sans Syriac {Eastern, Western} + Noto Serif Syriac (Estrangela)
@@ -9,6 +12,7 @@
    · Ktav Yad CLM (GPL from Culmus Project) is hosted locally in /fonts/.
 */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Rashi+Hebrew:wght@400;500;600&family=Solitreo&family=Noto+Sans+Phoenician&family=Noto+Sans+Samaritan&family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Noto+Sans+Syriac:wght@400;500&family=Noto+Sans+Syriac+Eastern:wght@400;500&family=Noto+Sans+Syriac+Western:wght@400;500&family=Noto+Serif+Syriac:wght@400;500&family=Noto+Serif+Ethiopic:wght@400;500&family=Noto+Sans+Cuneiform&family=Abyssinica+SIL&display=swap");
+@import "tailwindcss";
 
 @font-face {
   font-family: "KtavYad CLM";

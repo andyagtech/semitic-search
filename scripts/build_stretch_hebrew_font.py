@@ -743,6 +743,14 @@ NOHADRA_SAPNA = {
     # tatweel doesn't render as a low block that mismatches the widened
     # letters' y=303 bar height (the "gaps in bars" from image 43).
     "override_trigger_glyph": True,
+    # Nohadra letters have significant natural right padding in their base
+    # advance (base_adv=958 vs xMax=555 for beth → 400 units of trailing
+    # whitespace). Widened variants inherit that padding, and when placed
+    # adjacent, the gap between one letter's rightmost bar point and the
+    # next letter's leftmost bar point shows as a dark stripe (image 57).
+    # Fill each widened variant's advance area with a bar strip at the
+    # correct y-range so the bars butt up cleanly across letter boundaries.
+    "fill_advance_with_bar": {"bar_bottom": 200, "bar_top": 303},
     "letters": {
         # beth: flat bar y=303 (x=177-555), left foot x=51-177 at y=0-101.
         # bar_zone spans entire body so foot travels with the bar shift.
@@ -1725,8 +1733,46 @@ def build_one(config: dict) -> int:
                     new_l = new_g.xMin
                 else:
                     new_l = 0
+                new_adv = base_adv + shift_
+                # Non-cursive block fonts (Nohadra) have significant natural
+                # right padding baked into base advance — visible whitespace
+                # between letters. For plain natural text that's fine, but
+                # widened letters need their bars to butt up to the next
+                # letter's bar with only a hairline seam. Add a "trailing
+                # bar cap" from natural xMax to the advance boundary at
+                # bar height, so the widened letter's outline actually
+                # fills its advance. Governed by `fill_advance_with_bar`
+                # config field which encodes {bar_bottom, bar_top}.
+                fill_bar = config.get("fill_advance_with_bar")
+                if fill_bar and new_adv > new_g.xMax + 2:
+                    bb, bt = int(fill_bar["bar_bottom"]), int(fill_bar["bar_top"])
+                    from fontTools.pens.ttGlyphPen import TTGlyphPen as _Pen
+                    cap = _Pen(None)
+                    cap.moveTo((new_g.xMax, bb))
+                    cap.lineTo((new_adv, bb))
+                    cap.lineTo((new_adv, bt))
+                    cap.lineTo((new_g.xMax, bt))
+                    cap.closePath()
+                    cap_g = cap.glyph()
+                    # Merge cap contours into the variant glyph.
+                    orig_coords = list(new_g.coordinates)
+                    orig_flags = list(new_g.flags)
+                    orig_ends = list(new_g.endPtsOfContours)
+                    orig_pt_count = len(orig_coords)
+                    for c, ff in zip(cap_g.coordinates, cap_g.flags):
+                        orig_coords.append(c)
+                        orig_flags.append(ff)
+                    for ep in cap_g.endPtsOfContours:
+                        orig_ends.append(orig_pt_count + ep)
+                    from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
+                    new_g.coordinates = GlyphCoordinates(orig_coords)
+                    import array as _array
+                    new_g.flags = _array.array("B", orig_flags)
+                    new_g.endPtsOfContours = orig_ends
+                    new_g.numberOfContours = len(orig_ends)
+                    new_g.recalcBounds(font["glyf"])
                 font["glyf"][vn] = new_g
-                font["hmtx"].metrics[vn] = (base_adv + shift_, new_l)
+                font["hmtx"].metrics[vn] = (new_adv, new_l)
                 if vn not in order:
                     order.append(vn)
                 font.setGlyphOrder(order)

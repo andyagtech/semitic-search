@@ -1,7 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { convert, type Script as ConvertScript, SCRIPT_LABELS as CONVERT_LABELS } from "@/lib/script_convert";
+import {
+  convert,
+  type Script as ConvertScript,
+  SCRIPT_LABELS as CONVERT_LABELS,
+  MODERN_SCRIPTS as CONVERT_MODERN,
+  ANCIENT_SCRIPTS as CONVERT_ANCIENT,
+} from "@/lib/script_convert";
 
 // FontLab script-id → cross-script converter script-id. Only scripts
 // with an entry here can act as source or target for the converter.
@@ -9,6 +15,7 @@ const CONVERTIBLE: Record<string, ConvertScript> = {
   hebrew: "he",
   syriac: "syr",
   arabic: "ar",
+  ethiopic: "eth",
   paleo: "paleo",
   samaritan: "samaritan",
   aramaic: "aramaic",
@@ -18,6 +25,7 @@ const CONVERT_TO_FONTLAB: Record<ConvertScript, string> = {
   he: "hebrew",
   syr: "syriac",
   ar: "arabic",
+  eth: "ethiopic",
   paleo: "paleo",
   samaritan: "samaritan",
   aramaic: "aramaic",
@@ -1038,34 +1046,49 @@ export function FontLab() {
           </div>
         </div>
 
-        {CONVERTIBLE[script.id] && (
-          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-            <span className="text-neutral-500 uppercase tracking-wider">Convert to</span>
-            {(Object.keys(CONVERTIBLE) as string[])
-              .filter((fid) => fid !== script.id)
-              .map((fid) => {
-                const targetConv = CONVERTIBLE[fid];
-                return (
+        {CONVERTIBLE[script.id] && (() => {
+          const runConversion = (targetConv: ConvertScript) => {
+            const from = CONVERTIBLE[script.id];
+            const r = convert(text, from, targetConv);
+            setText(r.output);
+            setConvertWarnings(r.warnings);
+            setScriptId(CONVERT_TO_FONTLAB[targetConv]);
+          };
+          const modernTargets = CONVERT_MODERN.filter((s) => s !== CONVERTIBLE[script.id]);
+          const ancientTargets = CONVERT_ANCIENT.filter((s) => s !== CONVERTIBLE[script.id]);
+          return (
+            <div className="mt-3 space-y-1.5">
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <span className="text-neutral-500 uppercase tracking-wider">Convert to</span>
+                {modernTargets.map((targetConv) => (
                   <button
-                    key={fid}
+                    key={targetConv}
                     type="button"
-                    onClick={() => {
-                      const from = CONVERTIBLE[script.id];
-                      const to = targetConv;
-                      const r = convert(text, from, to);
-                      setText(r.output);
-                      setConvertWarnings(r.warnings);
-                      setScriptId(CONVERT_TO_FONTLAB[to]);
-                    }}
-                    className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100"
+                    onClick={() => runConversion(targetConv)}
+                    className="px-2.5 py-1 rounded border border-neutral-400 bg-white hover:bg-neutral-100 font-medium"
                     title={`Convert current text from ${CONVERT_LABELS[CONVERTIBLE[script.id]]} to ${CONVERT_LABELS[targetConv]}`}
                   >
                     {CONVERT_LABELS[targetConv]}
                   </button>
-                );
-              })}
-          </div>
-        )}
+                ))}
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <span className="text-neutral-400 uppercase tracking-wider">Ancient</span>
+                {ancientTargets.map((targetConv) => (
+                  <button
+                    key={targetConv}
+                    type="button"
+                    onClick={() => runConversion(targetConv)}
+                    className="px-2 py-0.5 rounded border border-neutral-200 bg-neutral-50 text-neutral-600 hover:bg-white text-[11px]"
+                    title={`Convert current text from ${CONVERT_LABELS[CONVERTIBLE[script.id]]} to ${CONVERT_LABELS[targetConv]}`}
+                  >
+                    {CONVERT_LABELS[targetConv]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
         {convertWarnings.length > 0 && (
           <div className="mt-2 text-xs bg-amber-50 border border-amber-200 rounded p-2">
             <div className="font-semibold text-amber-900 mb-1">Conversion notes</div>

@@ -19,6 +19,7 @@ export type Script =
   | "he"        // Hebrew square (22 letters + 5 finals)
   | "syr"       // Syriac (22 letters, cursive)
   | "ar"        // Arabic (28 letters — 22 + 6 extras)
+  | "eth"       // Ge'ez / Ethiopic syllabary (~28 consonants × 7 vowel orders)
   | "paleo"     // Phoenician / Paleo-Hebrew block (22 letters)
   | "samaritan" // Samaritan block (22 letters)
   | "aramaic"   // Imperial Aramaic block (22 letters)
@@ -28,11 +29,17 @@ export const SCRIPT_LABELS: Record<Script, string> = {
   he: "Hebrew",
   syr: "Syriac",
   ar: "Arabic",
+  eth: "Ethiopic (Ge'ez)",
   paleo: "Paleo-Hebrew / Phoenician",
   samaritan: "Samaritan",
   aramaic: "Imperial Aramaic",
   ugaritic: "Ugaritic",
 };
+
+// Living/modern scripts — shown first in the converter UI. Ancient
+// scripts get grouped separately.
+export const MODERN_SCRIPTS: Script[] = ["he", "syr", "ar", "eth"];
+export const ANCIENT_SCRIPTS: Script[] = ["paleo", "samaritan", "aramaic", "ugaritic"];
 
 // Common-Semitic slot IDs. The 22 core slots are the NW-Semitic abjad;
 // the 6 extras (ṯ ḏ ḫ ḍ ẓ ġ) exist in Arabic + Ugaritic and were merged
@@ -95,7 +102,72 @@ const SLOT_TO_GLYPH: Record<Script, Partial<Record<Slot, string>>> = {
     p: "\u{10394}", "ṣ": "\u{10395}", q: "\u{10396}", r: "\u{10397}",
     "ṯ": "\u{10398}", "ġ": "\u{10399}", t: "\u{1039A}",
   },
+  // Ge'ez / Ethiopic is a syllabary — each consonant has 7 vowel-order
+  // fidels. We emit the 6th-order (ə) form to represent a "vowel-less"
+  // consonant skeleton, which matches how Ethiopian Semiticists cite
+  // consonant roots. Slot → 6th-order fidel; reverse lookup walks all
+  // seven orders per series (see ETHIOPIC_SERIES).
+  eth: {
+    "ʾ": "እ",   // ETHIOPIC SYLLABLE GLOTTAL E   (U+12A5, from አ series)
+    b: "ብ",     // ETHIOPIC SYLLABLE BE          (U+1265, from በ)
+    g: "ግ",     // ETHIOPIC SYLLABLE GE          (U+130D, from ገ)
+    d: "ድ",     // ETHIOPIC SYLLABLE DE          (U+12F5, from ደ)
+    h: "ህ",     // ETHIOPIC SYLLABLE HE          (U+1205, from ሀ)
+    w: "ው",     // ETHIOPIC SYLLABLE WE          (U+12CD, from ወ)
+    z: "ዝ",     // ETHIOPIC SYLLABLE ZE          (U+12DD, from ዘ)
+    "ḥ": "ሕ",   // ETHIOPIC SYLLABLE HHE         (U+1215, from ሐ)
+    "ṭ": "ጥ",   // ETHIOPIC SYLLABLE THE         (U+1325, from ጠ)
+    y: "ይ",     // ETHIOPIC SYLLABLE YE          (U+12ED, from የ)
+    k: "ክ",     // ETHIOPIC SYLLABLE KE          (U+12AD, from ከ)
+    l: "ል",     // ETHIOPIC SYLLABLE LE          (U+120D, from ለ)
+    m: "ም",     // ETHIOPIC SYLLABLE ME          (U+121D, from መ)
+    n: "ን",     // ETHIOPIC SYLLABLE NE          (U+1295, from ነ)
+    s: "ስ",     // ETHIOPIC SYLLABLE SE          (U+1235, from ሰ)
+    "ʿ": "ዕ",   // ETHIOPIC SYLLABLE PHARYNGEAL E (U+12ED, from ዐ)
+    p: "ፍ",     // ETHIOPIC SYLLABLE FE          (U+134D, from ፈ; Ge'ez uses f for foreign p)
+    "ṣ": "ጽ",   // ETHIOPIC SYLLABLE TSE         (U+133D, from ጸ)
+    q: "ቅ",     // ETHIOPIC SYLLABLE QE          (U+1245, from ቀ)
+    r: "ር",     // ETHIOPIC SYLLABLE RE          (U+122D, from ረ)
+    "š": "ሽ",   // ETHIOPIC SYLLABLE SHE (Amharic) (U+123D, from ሸ)
+    t: "ት",     // ETHIOPIC SYLLABLE TE          (U+1275, from ተ)
+    // Ge'ez preserves ḫ (ኀ series) and ḍ (ፀ series) — like Ugaritic.
+    "ḫ": "ኅ",   // ETHIOPIC SYLLABLE XE          (U+1285, from ኀ)
+    "ḍ": "ፅ",   // ETHIOPIC SYLLABLE TZE         (U+1345, from ፀ)
+    // ṯ, ḏ, ẓ, ġ merge — no independent series in Ge'ez.
+  },
 };
+
+// Ethiopic reverse lookup: enumerate the 7 canonical fidels per
+// consonant series so any character in the block resolves back to its
+// slot. Series start = 1st-order (ä-vowel) code point.
+const ETHIOPIC_SERIES: Array<{ slot: Slot; base: number }> = [
+  { slot: "h",   base: 0x1200 },  // ሀ
+  { slot: "l",   base: 0x1208 },  // ለ
+  { slot: "ḥ",   base: 0x1210 },  // ሐ
+  { slot: "m",   base: 0x1218 },  // መ
+  { slot: "š",   base: 0x1220 },  // ሠ (Ge'ez śa, merged with š)
+  { slot: "r",   base: 0x1228 },  // ረ
+  { slot: "s",   base: 0x1230 },  // ሰ
+  { slot: "š",   base: 0x1238 },  // ሸ (Amharic šä)
+  { slot: "q",   base: 0x1240 },  // ቀ
+  { slot: "b",   base: 0x1260 },  // በ
+  { slot: "t",   base: 0x1270 },  // ተ
+  { slot: "ḫ",   base: 0x1280 },  // ኀ
+  { slot: "n",   base: 0x1290 },  // ነ
+  { slot: "ʾ",   base: 0x12A0 },  // አ
+  { slot: "k",   base: 0x12A8 },  // ከ
+  { slot: "w",   base: 0x12C8 },  // ወ
+  { slot: "ʿ",   base: 0x12D0 },  // ዐ
+  { slot: "z",   base: 0x12D8 },  // ዘ
+  { slot: "y",   base: 0x12E8 },  // የ
+  { slot: "d",   base: 0x12F0 },  // ደ
+  { slot: "g",   base: 0x1308 },  // ገ
+  { slot: "ṭ",   base: 0x1320 },  // ጠ
+  { slot: "ṣ",   base: 0x1338 },  // ጸ
+  { slot: "ḍ",   base: 0x1340 },  // ፀ
+  { slot: "p",   base: 0x1348 },  // ፈ (Ge'ez fä; treated as p for cross-script)
+  { slot: "p",   base: 0x1350 },  // ፐ (labial pä — Amharic)
+];
 
 // Merge fallback for slots that don't exist in a target script.
 const MERGE_TARGET: Record<Slot, Slot> = {
@@ -105,7 +177,10 @@ const MERGE_TARGET: Record<Slot, Slot> = {
   "ṯ": "š", "ḏ": "z", "ḫ": "ḥ", "ḍ": "ṣ", "ẓ": "ṣ", "ġ": "ʿ",
 };
 
-// Inverse of SLOT_TO_GLYPH per script. Built once.
+// Inverse of SLOT_TO_GLYPH per script. Built once. For Ethiopic we
+// also expand each consonant series across its 7 vowel-order fidels
+// so any fidel resolves back to its consonant slot (the vowel is
+// dropped during conversion).
 const GLYPH_TO_SLOT: Record<Script, Record<string, Slot>> = (() => {
   const out = {} as Record<Script, Record<string, Slot>>;
   for (const script of Object.keys(SLOT_TO_GLYPH) as Script[]) {
@@ -114,6 +189,12 @@ const GLYPH_TO_SLOT: Record<Script, Record<string, Slot>> = (() => {
       if (glyph !== undefined) m[glyph] = slot as Slot;
     }
     out[script] = m;
+  }
+  // Ethiopic series expansion: base..base+6 → same slot.
+  for (const { slot, base } of ETHIOPIC_SERIES) {
+    for (let order = 0; order < 7; order++) {
+      out.eth[String.fromCodePoint(base + order)] = slot;
+    }
   }
   return out;
 })();
@@ -135,6 +216,7 @@ const STRIP_RANGES: Array<[number, number]> = [
   [0x06d6, 0x06ed],
   [0x0730, 0x074a],
   [0x0816, 0x082d],
+  [0x135d, 0x135f],  // Ethiopic combining marks
 ];
 function stripMarks(text: string): string {
   const out: string[] = [];
@@ -182,6 +264,14 @@ export function convert(text: string, from: Script, to: Script): ConvertResult {
   const warnings: string[] = [];
   const warnedMerges = new Set<string>();
   const warnedGuesses = new Set<string>();
+
+  if (to === "eth" && from !== "eth") {
+    warnings.push(
+      "Ethiopic is a syllabary (every character carries a vowel); " +
+      "used the 6th-order (ə) form as a consonant-skeleton placeholder. " +
+      "Original vowels would need to be reconstructed for a natural reading.",
+    );
+  }
 
   for (let i = 0; i < chars.length; i++) {
     const ch = chars[i];

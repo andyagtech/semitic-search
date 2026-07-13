@@ -669,8 +669,8 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Mixed Hebrew + Arabic letters",
         description:
-          "Modern Hebrew borrows an ASCII apostrophe (׳ geresh) to mark Arabic-origin phonemes it lacks: ג׳ = \"j\", ח׳ = \"kh\", ע׳ = \"gh\", צ׳ = \"ch\". A more precise mixed-script rendering uses the actual Arabic base letter — no geresh needed. Shown: Ghajar village (Wikipedia: רג׳ר) becomes غג׳ר with Arabic ghayn (غ) taking over from ayin-geresh; Khartoum (Wikipedia: ח׳רטום) becomes خרטום with Arabic khāʾ (خ) replacing het-geresh. Browser font-fallback per-character makes this render even though no single font has both scripts.",
-        text: "غג׳ר (Ghajar)  ·  خרטום (Khartoum)",
+          "Modern Hebrew borrows an ASCII apostrophe (׳ geresh) to mark Arabic-origin phonemes it lacks: ג׳ = \"j\", ח׳ = \"kh\", ע׳ = \"gh\", צ׳ = \"ch\". A more precise mixed-script rendering uses the actual Arabic base letter — no geresh needed. To make the Arabic letter render in its INITIAL positional form (looks like the start of an Arabic word), append U+200D ZWJ so the shaper picks the initial variant instead of the isolated one. Shown: Ghajar village (Wikipedia: רג׳ר) becomes غ‍ג׳ר with initial-form ghayn; Khartoum (Wikipedia: ח׳רטום) becomes خ‍רטום with initial-form khāʾ.",
+        text: "غ‍ג׳ר (Ghajar)  ·  خ‍רטום (Khartoum)",
         status: "experimental",
       },
       {

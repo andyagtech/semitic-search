@@ -805,6 +805,20 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         status: "live",
       },
       {
+        title: "Word-divider justification",
+        description:
+          "Ge'ez manuscript convention for column justification: repeat the ፡ (U+1361) word-divider between words to fill a line. Distinct from Arabic tatweel — Ethiopic fidels are block-style, so widening happens between words rather than inside letters. Auto-justify now supports this: switch to Ethiopic, load a multi-line sample, click auto-justify text.",
+        text: "አንድ፡፡፡ሁለት፡፡፡ሶስት፡፡፡አራት",
+        status: "live",
+      },
+      {
+        title: "Ge'ez calligraphic letter widening (proposed)",
+        description:
+          "Illuminated Ge'ez manuscripts (14th–19th c.) extend the horizontal decorative strokes of certain fidels in titles/headings. Prime candidates: መ (ma, 943 units wide), ጠ (ṭa, 981), ሠ (śa, 912), ሐ (ḥa, 827), ወ (wa, 734). Requires building a Semitic Stretch Ethiopic font with per-fidel GSUB widening — ~280 glyph variants (5 series × 7 orders × 8 stretch levels).",
+        text: "መ ጠ ሠ ሐ ወ  (candidates for stretch)",
+        status: "proposed",
+      },
+      {
         title: "Vowel-order picker (proposed)",
         description:
           "Click a consonant → dropdown of its 7 fidels for quick correction. Useful when you know the consonant but need to pick the vowel — same interaction as niqqud picker for Hebrew.",
@@ -977,6 +991,28 @@ const ARABIC_SAMPLES: { label: string; text: string; hint: string }[] = [
           "بْنُ عَبْدِ الْعَزِيزِ\n" +
           "آلِ سُعُودٍ",
     hint: "Full name of the Crown Prince of Saudi Arabia — long civil / political phrase, multi-line for justification.",
+  },
+];
+
+const ETHIOPIC_SAMPLES: { label: string; text: string; hint: string }[] = [
+  {
+    label: "Genesis 1:1 (Ge'ez)",
+    text:
+      "በቀዳሚ፡ገብረ፡እግዚአብሔር\n" +
+      "ሰማየ፡ወምድረ",
+    hint: "Ge'ez Genesis 1:1 — 'In the beginning God created heaven and earth.' Multi-line for auto-justify with ፡ repetition.",
+  },
+  {
+    label: "Amharic greeting",
+    text:
+      "ሰላም፡ለሁ፡ወዳጆቼ\n" +
+      "እንደምን፡አላችሁ",
+    hint: "Amharic — 'Peace to you my friends; how are you all.'",
+  },
+  {
+    label: "Ge'ez numerals",
+    text: "፩ ፪ ፫ ፬ ፭ ፮ ፯ ፰ ፱ ፲ ፳ ፴ ፵ ፶",
+    hint: "Ethiopic numerals 1-10, 20, 30, 40, 50. Independent number system (no positional notation).",
   },
 ];
 
@@ -1520,11 +1556,12 @@ export function FontLab() {
           </div>
         )}
 
-        {(script.id === "hebrew" || script.id === "syriac" || script.id === "arabic") && (
+        {(script.id === "hebrew" || script.id === "syriac" || script.id === "arabic" || script.id === "ethiopic") && (
           <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
             <span className="text-neutral-500 uppercase tracking-wider">Samples</span>
             {(script.id === "hebrew" ? HEBREW_SAMPLES
               : script.id === "syriac" ? SYRIAC_SAMPLES
+              : script.id === "ethiopic" ? ETHIOPIC_SAMPLES
               : ARABIC_SAMPLES).map((s) => (
               <button
                 key={s.label}
@@ -1638,7 +1675,7 @@ export function FontLab() {
               widening ligature — auto-justify would only insert baseline
               tatweel blocks (image 50 "railroad" pattern). Hide the
               button and steer the user to the Semitic Stretch variants. */}
-          {(stretchFontActive || script.id === "arabic" ||
+          {(stretchFontActive || script.id === "arabic" || script.id === "ethiopic" ||
             (script.id === "syriac" && font.id !== "nohadrasapna" && font.id !== "nohadraamedia")) && (
             <div className="mt-2 flex items-center gap-2 text-xs text-neutral-600 flex-wrap">
               <button
@@ -1651,6 +1688,9 @@ export function FontLab() {
                   //  - Cursive Syriac + Arabic: distribute tatweels between
                   //    joining letters so the font's own tatweel glyph
                   //    bridges the joins.
+                  //  - Ethiopic: repeat ፡ (U+1361 word-divider) between
+                  //    words to fill the line. Classical Ge'ez manuscript
+                  //    convention; no cursive joining to stretch.
                   //  - Hebrew: cluster U+05C6 on stretchable letters.
                   if (nohadraStretchActive) {
                     setText(
@@ -1662,6 +1702,12 @@ export function FontLab() {
                   } else if (script.id === "arabic" || script.id === "syriac") {
                     setText(
                       autoJustifyArabic(
+                        text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
+                      ),
+                    );
+                  } else if (script.id === "ethiopic") {
+                    setText(
+                      autoJustifyEthiopic(
                         text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
                       ),
                     );
@@ -2407,6 +2453,75 @@ function autoJustifyArabic(
         if (count > 0) {
           result = result.slice(0, pos) + TATWEEL.repeat(count) + result.slice(pos);
         }
+      }
+      return result;
+    });
+    return out.join("\n");
+  } finally {
+    document.body.removeChild(scratch);
+  }
+}
+
+// Ethiopic auto-justify: repeat the ፡ word-divider (U+1361) between
+// words to fill the line. Modelled on the classical Ge'ez manuscript
+// tradition of widening/repeating dividers for column justification.
+// Non-cursive script — this is inter-word widening, not intra-letter.
+//
+// Approach:
+//   1. Split each line by whitespace + existing ፡ into words.
+//   2. For each gap, measure how many extra ፡ fit before hitting target.
+//   3. Distribute extras across gaps evenly.
+function autoJustifyEthiopic(
+  text: string,
+  targetWidthPx: number,
+  fontFamily: string,
+  fontSizePx: number,
+  featureSettings: string,
+): string {
+  const DIVIDER = "፡"; // ETHIOPIC WORDSPACE
+  const MAX_PER_GAP = 8;
+  const scratch = document.createElement("div");
+  scratch.style.cssText =
+    `position:absolute;visibility:hidden;top:-9999px;left:-9999px;` +
+    `font:${fontSizePx}px "${fontFamily}";` +
+    `font-feature-settings:${featureSettings};` +
+    `white-space:nowrap;`;
+  document.body.appendChild(scratch);
+  try {
+    const measure = (s: string): number => {
+      scratch.textContent = s;
+      return scratch.getBoundingClientRect().width;
+    };
+    const out = text.split("\n").map((line) => {
+      // Strip any existing dividers we added on a prior justify pass so
+      // repeated clicks don't compound. Preserve single ፡ between words
+      // that already had one (Ethiopic native usage).
+      const collapsed = line.replace(new RegExp(`${DIVIDER}+`, "g"), DIVIDER);
+      if (!collapsed.trim()) return line;
+      const natural = measure(collapsed);
+      const deficit = targetWidthPx - natural;
+      if (deficit <= 1) return collapsed;
+      // Gap positions = every whitespace or ፡ character where we can
+      // insert additional dividers.
+      const positions: number[] = [];
+      for (let i = 0; i < collapsed.length; i++) {
+        const ch = collapsed[i];
+        if (ch === " " || ch === "\t" || ch === DIVIDER) positions.push(i + 1);
+      }
+      if (positions.length === 0) return collapsed;
+      // Calibrate: 4 extra dividers at mid-line → pxPerLevel.
+      const testPos = positions[Math.floor(positions.length / 2)];
+      const test = collapsed.slice(0, testPos) + DIVIDER.repeat(4) + collapsed.slice(testPos);
+      const pxPerLevel = (measure(test) - natural) / 4;
+      if (pxPerLevel <= 0.1) return collapsed;
+      const total = Math.max(0, Math.round(deficit / pxPerLevel));
+      const per = Math.floor(total / positions.length);
+      const rem = total - per * positions.length;
+      const dist = positions.map((_, i) => Math.min(MAX_PER_GAP, per + (i < rem ? 1 : 0)));
+      let result = collapsed;
+      for (let i = positions.length - 1; i >= 0; i--) {
+        const n = dist[i];
+        if (n > 0) result = result.slice(0, positions[i]) + DIVIDER.repeat(n) + result.slice(positions[i]);
       }
       return result;
     });

@@ -304,45 +304,67 @@ function canTakeKashidaAfter(ch: string): boolean {
 }
 
 // Background guides for the SVG preview.
-//   baselines — single strong baseline per text row (notebook paper)
-//   all       — top + dashed midline + baseline (scribal-practice sheet)
-//   grid      — same horizontals plus vertical rules at 1em spacing
-// Line-height 1.4 puts baseline at ~1.0em from the top of the line-box
-// for most fonts; midline at ~0.6em; top of ascenders at ~0.2em.
+//   baselines — single baseline per row (notebook paper)
+//   all       — cap-height + dashed x-height + baseline (scribal sheet)
+//   grid      — same horizontals plus vertical em-fraction rules
+//                (major every 1em, minor every 0.25em)
 //
-// Implemented as SVG data-URI background(s) because CSS gradients
-// can't do dashed patterns cleanly. One tall 1px-wide SVG paints all
-// horizontals; a second short SVG paints the verticals for `grid`.
+// Positions are snapped to REAL font metrics — ascent / descent /
+// x-height / cap-height read from the font's OS/2 + hhea tables.
+// Fall back to sensible defaults for fonts that don't report
+// x-height or cap-height (some display faces omit them).
+//
+// The CSS line-box uses hhea ascent+descent for the em-box, then
+// splits any extra line-height leading half above / half below.
 type GuideMode = "none" | "baselines" | "all" | "grid";
-function guideBackground(mode: GuideMode, fontSize: number): React.CSSProperties {
+const LINE_HEIGHT = 1.4;
+function guideBackground(
+  mode: GuideMode,
+  fontSize: number,
+  metrics: FontMetrics | null,
+): React.CSSProperties {
   if (mode === "none") return {};
-  const period = fontSize * 1.4;
-  const baselineY = fontSize * 1.0;
-  const midY = fontSize * 0.6;
-  const topY = fontSize * 0.2;
-  const cellW = fontSize * 1.0;
 
-  const strong = "rgba(59, 130, 246, 0.45)";  // baseline
-  const soft = "rgba(59, 130, 246, 0.30)";    // top of ascenders
-  const mid = "rgba(59, 130, 246, 0.35)";     // midline (dashed)
-  const vertical = "rgba(59, 130, 246, 0.16)"; // grid verticals — subtler
+  // Fallback to heuristic ratios if metrics haven't loaded yet.
+  const m: FontMetrics = metrics ?? {
+    ascent: 0.85, descent: -0.15, xHeight: 0.5, capHeight: 0.7,
+  };
+  const emHeight = m.ascent - m.descent;                     // em
+  const leading = Math.max(0, LINE_HEIGHT - emHeight) / 2;   // em
+  // Line box: [leading | ascent | descent | leading], all in em.
+  const topOfEm = leading * fontSize;                        // px
+  const baselineY = (leading + m.ascent) * fontSize;         // px
+  const xHeightY = baselineY - (m.xHeight || 0.5) * fontSize;
+  const capHeightY = baselineY - (m.capHeight || 0.7) * fontSize;
+  const descentY = baselineY - m.descent * fontSize;         // descent is negative
+  const period = LINE_HEIGHT * fontSize;                     // px
 
-  // Tile width: 1px is fine for solid lines (they tile seamlessly), but
-  // dashed lines need horizontal resolution — stroke-dasharray uses the
-  // SVG's coordinate space, so a 1px-wide tile would collapse the dash
-  // pattern. Use a wider tile whenever we're drawing the dashed midline.
-  const withUpperLines = mode !== "baselines";
-  const tileW = withUpperLines ? 100 : 1;
-  const parts: string[] = [
-    `<line x1="0" y1="${baselineY}" x2="${tileW}" y2="${baselineY}" stroke="${strong}" stroke-width="1.5"/>`,
-  ];
-  if (withUpperLines) {
-    parts.push(
-      `<line x1="0" y1="${topY}" x2="${tileW}" y2="${topY}" stroke="${soft}" stroke-width="0.75"/>`,
-      // Midline: thinner + dashed. 4 3 pattern reads as notebook-style
-      // dashes at roughly letter-width scale.
-      `<line x1="0" y1="${midY}" x2="${tileW}" y2="${midY}" stroke="${mid}" stroke-width="0.5" stroke-dasharray="4 3"/>`,
-    );
+  const strong = "rgba(59, 130, 246, 0.55)";  // baseline
+  const soft = "rgba(59, 130, 246, 0.30)";    // cap-height
+  const mid = "rgba(59, 130, 246, 0.40)";     // x-height (dashed)
+  const faint = "rgba(59, 130, 246, 0.18)";   // ascent / descent extremes
+  const major = "rgba(59, 130, 246, 0.25)";   // grid major verticals
+  const minor = "rgba(59, 130, 246, 0.10)";   // grid minor verticals
+
+  const withUpper = mode !== "baselines";
+  // Dashed line needs horizontal resolution — a 1px-wide tile would
+  // collapse the dash pattern. Widen the tile whenever we draw dashes.
+  const tileW = withUpper ? 200 : 1;
+
+  const parts: string[] = [];
+  // Baseline always drawn — the strong anchor.
+  parts.push(hLine(0, baselineY, tileW, strong, 1.5));
+  if (withUpper) {
+    // Cap-height (top of most letter bodies) — solid, thin.
+    parts.push(hLine(0, capHeightY, tileW, soft, 1));
+    // x-height (median) — dashed, thinner. Cluster width tracks fontSize
+    // so dashes look consistent across sizes.
+    const dashUnit = Math.max(3, Math.round(fontSize * 0.06));
+    parts.push(hLine(0, xHeightY, tileW, mid, 0.75, `${dashUnit} ${dashUnit}`));
+    // Ascent + descent extremes — very faint, so they don't distract but
+    // still give you the em-box outline for measuring vertical bearings.
+    parts.push(hLine(0, topOfEm, tileW, faint, 0.5));
+    parts.push(hLine(0, descentY, tileW, faint, 0.5));
   }
   const hSvg =
     `<svg xmlns="http://www.w3.org/2000/svg" width="${tileW}" height="${period}" ` +
@@ -355,16 +377,24 @@ function guideBackground(mode: GuideMode, fontSize: number): React.CSSProperties
   };
 
   if (mode === "grid") {
+    // Em-fraction verticals: major every 1em, minor every 0.25em.
+    // Tile width = 1em (fontSize). Lines at 0 (major), 0.25em, 0.5em,
+    // 0.75em (minor). Next tile's 0-position is at x=1em → next major.
+    const em = fontSize;
+    const vParts = [
+      vLine(0, em, major, 1),
+      vLine(em * 0.25, em, minor, 0.5),
+      vLine(em * 0.5, em, minor, 0.5),
+      vLine(em * 0.75, em, minor, 0.5),
+    ];
     const vSvg =
-      `<svg xmlns="http://www.w3.org/2000/svg" width="${cellW}" height="1" ` +
-      `preserveAspectRatio="none">` +
-      `<line x1="0" y1="0" x2="0" y2="1" stroke="${vertical}" stroke-width="1"/>` +
-      `</svg>`;
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${em}" height="1" ` +
+      `preserveAspectRatio="none">${vParts.join("")}</svg>`;
     const vUri = `url("data:image/svg+xml;utf8,${encodeURIComponent(vSvg)}")`;
     return {
       ...base,
       backgroundImage: `${hUri}, ${vUri}`,
-      backgroundSize: `${tileW}px ${period}px, ${cellW}px 1px`,
+      backgroundSize: `${tileW}px ${period}px, ${em}px 1px`,
       backgroundRepeat: "repeat, repeat",
     };
   }
@@ -374,6 +404,19 @@ function guideBackground(mode: GuideMode, fontSize: number): React.CSSProperties
     backgroundSize: `${tileW}px ${period}px`,
     backgroundRepeat: "repeat",
   };
+}
+function hLine(
+  x: number, y: number, w: number, color: string, width: number, dash?: string,
+): string {
+  const dashAttr = dash ? ` stroke-dasharray="${dash}"` : "";
+  return `<line x1="${x}" y1="${y}" x2="${x + w}" y2="${y}" stroke="${color}" ` +
+         `stroke-width="${width}" vector-effect="non-scaling-stroke"${dashAttr}/>`;
+}
+function vLine(
+  x: number, h: number, color: string, width: number,
+): string {
+  return `<line x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="${color}" ` +
+         `stroke-width="${width}" vector-effect="non-scaling-stroke"/>`;
 }
 
 // Hebrew "wide" letter presentation forms. Used in traditional scribal
@@ -420,6 +463,44 @@ function graphemes(text: string): string[] {
   } catch {
     return [...text];
   }
+}
+
+// Font metrics extracted directly from the OpenType tables. All values
+// are in em units (i.e. divided by the font's `unitsPerEm`) so callers
+// just multiply by the CSS font-size in pixels to get exact positions.
+export type FontMetrics = {
+  ascent: number;      // em, positive
+  descent: number;     // em, negative (descenders go below baseline)
+  xHeight: number;     // em, positive (0 if font doesn't report it)
+  capHeight: number;   // em, positive (0 if font doesn't report it)
+};
+
+const metricsCache = new Map<string, Promise<FontMetrics | null>>();
+async function loadFontMetrics(file: string): Promise<FontMetrics | null> {
+  if (metricsCache.has(file)) return metricsCache.get(file)!;
+  const p = (async () => {
+    try {
+      const opentype = await import("opentype.js");
+      const buf = await (await fetch(`/fonts/${file}`)).arrayBuffer();
+      const font = opentype.parse(buf);
+      const upem = font.unitsPerEm || 1000;
+      // OS/2 table is optional but reliable when present. hhea gives
+      // the vertical metrics the browser actually uses for line-box
+      // layout, so prefer it for ascent/descent.
+      const os2 = (font.tables as { os2?: { sxHeight?: number; sCapHeight?: number } }).os2;
+      const hhea = font.tables.hhea as { ascender?: number; descender?: number };
+      const ascent = (hhea.ascender ?? font.ascender ?? upem) / upem;
+      const descent = (hhea.descender ?? font.descender ?? -upem * 0.2) / upem;
+      const xHeight = (os2?.sxHeight ?? 0) / upem;
+      const capHeight = (os2?.sCapHeight ?? 0) / upem;
+      return { ascent, descent, xHeight, capHeight };
+    } catch (e) {
+      console.warn(`font-metrics parse failed for ${file}:`, e);
+      return null;
+    }
+  })();
+  metricsCache.set(file, p);
+  return p;
 }
 
 // Register @font-face for the selected font so the browser can render it.
@@ -687,6 +768,7 @@ export function FontLab() {
   // scribal column. User can tune before clicking the button.
   const [justifyWidthPx, setJustifyWidthPx] = useState<number>(680);
   const [bgGuide, setBgGuide] = useState<GuideMode>("none");
+  const [fontMetrics, setFontMetrics] = useState<FontMetrics | null>(null);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -724,8 +806,12 @@ export function FontLab() {
   useEffect(() => {
     let cancelled = false;
     setFontReady(false);
+    setFontMetrics(null);
     ensureFontLoaded(font.family, font.file).then(() => {
       if (!cancelled) setFontReady(true);
+    });
+    loadFontMetrics(font.file).then((m) => {
+      if (!cancelled) setFontMetrics(m);
     });
     return () => { cancelled = true; };
   }, [font.family, font.file]);
@@ -1512,6 +1598,14 @@ export function FontLab() {
 
         <div className="mt-2 flex items-center gap-3 flex-wrap text-xs">
           <span className="text-neutral-500 uppercase tracking-wider">Guides</span>
+          {fontMetrics && bgGuide !== "none" && (
+            <span className="ml-auto order-2 sm:order-none text-[10px] font-mono text-neutral-500">
+              asc {fontMetrics.ascent.toFixed(2)}em ·
+              desc {fontMetrics.descent.toFixed(2)}em ·
+              x-height {fontMetrics.xHeight ? `${fontMetrics.xHeight.toFixed(2)}em` : "n/a"} ·
+              cap {fontMetrics.capHeight ? `${fontMetrics.capHeight.toFixed(2)}em` : "n/a"}
+            </span>
+          )}
           {(["none", "baselines", "all lines", "grid"] as const).map((label) => {
             const g: GuideMode =
               label === "none" ? "none"
@@ -1594,7 +1688,7 @@ export function FontLab() {
             minHeight: `${fontSize * 1.4 + 48}px`,
             fontFeatureSettings,
             whiteSpace: "pre-wrap",
-            ...guideBackground(bgGuide, fontSize),
+            ...guideBackground(bgGuide, fontSize, fontMetrics),
           }}
         >
           {(() => {

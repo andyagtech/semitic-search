@@ -194,7 +194,13 @@ const SCRIPTS: ScriptEntry[] = [
   },
   {
     id: "ethiopic", label: "Amharic (Ge'ez, Tigrinya)", dir: "ltr",
-    sample: "በስመ አብ ወወልድ",
+    // Ge'ez Genesis 1:1 — "In the beginning God created heaven and earth."
+    // Multi-line so auto-justify has multiple rows to widen. Every line
+    // contains at least one stretchable fidel (መ ጠ ሠ ሐ ወ series) so
+    // the letter-widening path fires on every row.
+    sample:
+      "በቀዳሚ ገብረ እግዚአብሔር\n" +
+      "ሰማየ ወምድረ",
     fonts: [
       { id: "stretchethiopic", label: "Semitic Stretch Noto Serif Ethiopic", file: "SemiticStretchNotoSerifEthiopic.ttf", family: "FL_StretchNotoSerifEthiopic",
         note: "custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Trigger is U+2060 (Word Joiner) clustered after the fidel." },
@@ -656,6 +662,13 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
           "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Scribes actually used Hebrew niqqud (dagesh for gemination, sheva/shva for vowel-less consonants) — a direct parallel to Arabic's shadda + sukun. Shown: Arabic كِتَابْ (kitāb, book), Allah اللَّهْ, and Hebrew rendering with equivalent Hebrew niqqud.",
         text: "كِتَابْ · اللَّهْ  ⇢  כִּתָב · אַלָּה",
         font: "taameyfrank",
+        status: "experimental",
+      },
+      {
+        title: "Mixed Hebrew + Arabic letters",
+        description:
+          "Modern Hebrew borrows an ASCII apostrophe (׳ geresh) to mark Arabic-origin phonemes it lacks: ג׳ = \"j\", ח׳ = \"kh\", ע׳ = \"gh\", צ׳ = \"ch\". A more precise mixed-script rendering uses the actual Arabic base letter — no geresh needed. Shown: Ghajar village (Wikipedia: רג׳ר) becomes غג׳ר with Arabic ghayn (غ) taking over from ayin-geresh; Khartoum (Wikipedia: ח׳רטום) becomes خרטום with Arabic khāʾ (خ) replacing het-geresh. Browser font-fallback per-character makes this render even though no single font has both scripts.",
+        text: "غג׳ר (Ghajar)  ·  خרטום (Khartoum)",
         status: "experimental",
       },
       {
@@ -1684,6 +1697,7 @@ export function FontLab() {
             <div className="mt-2 flex items-center gap-2 text-xs text-neutral-600 flex-wrap">
               <button
                 type="button"
+                disabled={!fontReady}
                 onClick={() => {
                   // Routing:
                   //  - Nohadra (block-style, non-cursive): CLUSTER tatweels

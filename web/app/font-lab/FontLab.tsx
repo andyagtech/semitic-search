@@ -622,6 +622,245 @@ function FontPicker({
   );
 }
 
+// Cross-script feature showcase — each item is a "try me" preset that
+// loads text (and optionally a font) into the editor. Some are LIVE
+// (already implemented, click reproduces working output), some are
+// EXPERIMENTAL (browser renders it, may look weird — that's the point),
+// and some are PROPOSED (not implemented yet — surfaces what we could
+// add for a script).
+type ShowcaseItem = {
+  title: string;
+  description: string;
+  text: string;
+  font?: string;
+  status: "live" | "experimental" | "proposed";
+};
+const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] = [
+  {
+    section: "Hebrew",
+    scriptId: "hebrew",
+    items: [
+      {
+        title: "Full niqqud + te'amim (cantillation)",
+        description:
+          "Standard Masoretic pointing: niqqud (vowel points) + te'amim (cantillation accents). Rendered by any font with Hebrew combining-mark tables.",
+        text: "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃",
+        status: "live",
+      },
+      {
+        title: "Shadda on Hebrew consonants (Arabic mark)",
+        description:
+          "Arabic gemination mark U+0651 stacked on Hebrew letters. Historically dagesh chazak (בּ) plays this role in Hebrew; shadda is what the same gemination would look like in Arabic tradition applied to Hebrew glyphs.",
+        text: "בּّ תّוֹרָה שׁّוֹפֵט מّשֶׁה",
+        status: "experimental",
+      },
+      {
+        title: "Kashida-style stretch justification",
+        description:
+          "Semitic Stretch fonts add a custom GSUB kashida on 8 stretchable letters (א ד ה ל ם ר ת ט). Trigger is U+05C6 clustered after the letter. Auto-justify does this per line.",
+        text: "בְּרֵאשִׁ׆׆׆ית בָּרָ׆׆׆א אֱלֹהִים",
+        font: "stretch",
+        status: "live",
+      },
+      {
+        title: "Wide letter presentation forms",
+        description:
+          "Traditional Torah-scribal wide letters (U+FB21–FB28: ﬡ ﬢ ﬣ ﬤ ﬥ ﬦ ﬧ ﬨ). Distinct from `jalt` — these are separate Unicode codepoints. Rendering depends on font.",
+        text: "וְאֵת ﬡרֶץ הַזֹּאת ﬤתָב ﬥאֹמֵר ﬧב",
+        status: "live",
+      },
+      {
+        title: "Rafeh (rare cantillation mark)",
+        description:
+          "U+05BF — soft-consonant marker (opposite of dagesh). Attested in the Aleppo Codex but rarely used in modern typesetting.",
+        text: "בֿ גֿ דֿ כֿ פֿ תֿ",
+        status: "live",
+      },
+    ],
+  },
+  {
+    section: "Arabic",
+    scriptId: "arabic",
+    items: [
+      {
+        title: "Full harakat + Qur'anic marks",
+        description:
+          "Fatha/kasra/damma + shadda + sukun + tanwin, plus small-alif (U+0670) and dagger vowels used in Qur'anic orthography.",
+        text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ٱلْحَمْدُ لِلَّهِ",
+        status: "live",
+      },
+      {
+        title: "Niqqud on Arabic (Hebrew marks)",
+        description:
+          "Hebrew niqqud (U+05B0–U+05BC) stacked on Arabic letters. Semantically parallel to harakat but visually distinct — the two traditions independently developed pointing systems ~7th c. CE.",
+        text: "بְ تִ جֻ دַ هֶ",
+        status: "experimental",
+      },
+      {
+        title: "Tatweel/Kashida — classical stretch",
+        description:
+          "U+0640 (Arabic tatweel) inserted between joining letters to widen the line. Standard justification technique in classical typography and calligraphy.",
+        text: "بِســـمِ اللـــهِ الرَّحـــمَـــنِ",
+        status: "live",
+      },
+      {
+        title: "Lam-alef ligature stack",
+        description:
+          "The Arabic lam+alef combines via the `liga` GSUB into a single glyph. Also shown: hamza-on-alef variants (أ إ آ) that participate in the ligature.",
+        text: "لا لأ لإ لآ الله",
+        status: "live",
+      },
+      {
+        title: "Vertical stacking (Nastaliq)",
+        description:
+          "Persian/Urdu Nastaliq hand cascades letters diagonally downward within a word. The `Noto Nastaliq Urdu` font implements the full contextual-alternate stack.",
+        text: "بسم اللہ الرحمن الرحیم",
+        font: "nastaliq",
+        status: "live",
+      },
+    ],
+  },
+  {
+    section: "Assyrian (Syriac)",
+    scriptId: "syriac",
+    items: [
+      {
+        title: "Full Syriac pointing (siyāme + qushshaya/rukkakha)",
+        description:
+          "Siyāme (plural marker — two dots above), qushshaya (hard-stop dot), rukkakha (soft-stop dot). East Syriac tradition; West Syriac uses different marks.",
+        text: "ܡܵܪܝܵܐ ܡܸܠܸ݂ܟ݂ ܐܲܠܵܗܵܐ ܟ݁ܬ݂ܵܒ݂ܹ̈ܐ",
+        status: "live",
+      },
+      {
+        title: "Kashida on Idiqlat (cursive Syriac)",
+        description:
+          "Native U+0640 tatweel between joining letters — same mechanism as Arabic. Idiqlat is a proper connected Syriac hand.",
+        text: "ܒܪܹܫܝـــܬ ܒـــܪܐ ܐܲܠـــܵܗܵܐ",
+        font: "stretchidiqlat",
+        status: "live",
+      },
+      {
+        title: "Widening on Nohadra (block-style)",
+        description:
+          "Nohadra Sapna/Amedia don't join like a cursive script. Instead we widen individual letters via U+2060 (Word Joiner) trigger, keeping their block character. 10 stretchable letters.",
+        text: "ܐ⁠⁠⁠ܒ⁠⁠⁠ܘ ܗ⁠⁠⁠ܘܝ ܡ⁠⁠⁠ܘܝ",
+        font: "stretchnohadrasapna",
+        status: "live",
+      },
+      {
+        title: "Three script traditions side-by-side",
+        description:
+          "Same phrase (\"our Lord\") in Estrangela, Serto (Western), Madnhaya (Eastern). Font swap only — the underlying Unicode is identical.",
+        text: "ܡܪܢ · ܡܪܢ · ܡܪܢ",
+        status: "live",
+      },
+      {
+        title: "Non-connectors — 8 right-only joiners",
+        description:
+          "Syriac has 8 letters (ܐ ܕ ܗ ܘ ܙ ܨ ܪ ܬ) that connect only on their right side. Kashida after these letters would be visually wrong — the stretch build skips tatweel-insertion after them.",
+        text: "ܐܒ ܕܡ ܗܝ ܘܢ ܙܟ ܨܪ ܪܙ ܬܡ",
+        status: "live",
+      },
+    ],
+  },
+  {
+    section: "Ethiopic (Amharic / Ge'ez / Tigrinya)",
+    scriptId: "ethiopic",
+    items: [
+      {
+        title: "Seven vowel orders of a single consonant",
+        description:
+          "Every Ethiopic consonant has 7 fidels: 1st=ä, 2nd=u, 3rd=i, 4th=ā (long a), 5th=ē, 6th=ə (schwa), 7th=o. Shown here for ba (በ series).",
+        text: "በ ቡ ቢ ባ ቤ ብ ቦ",
+        status: "live",
+      },
+      {
+        title: "Ge'ez preserves ḫ (ኀ) and ḍ (ፀ)",
+        description:
+          "Two Proto-Semitic phonemes that merged in Hebrew/Syriac/Arabic (partially) but stayed distinct in Ge'ez — like Ugaritic. The converter respects this.",
+        text: "ኀብ ኁ ኂ ኃ ኄ ኅ ኆ  ·  ፀ ፁ ፂ ፃ ፄ ፅ ፆ",
+        status: "live",
+      },
+      {
+        title: "Ethiopic punctuation & numerals",
+        description:
+          "Word divider ፡ (U+1361), section divider ። (U+1362), question mark ፧ (U+1367). Numerals ፩–፲ (1–10) — an independent number system that doesn't use positional notation.",
+        text: "አንድ፡ሁለት፡ሶስት፡  ፩ ፪ ፫ ፬ ፭ ፮ ፯ ፰ ፱ ፲",
+        status: "live",
+      },
+      {
+        title: "Vowel-order picker (proposed)",
+        description:
+          "Click a consonant → dropdown of its 7 fidels for quick correction. Useful when you know the consonant but need to pick the vowel — same interaction as niqqud picker for Hebrew.",
+        text: "ንጉሥ · click ን → { ነ ኑ ኒ ና ኔ ን ኖ }",
+        status: "proposed",
+      },
+      {
+        title: "Labiovelar variants (proposed)",
+        description:
+          "Ethiopic has labiovelar (kw / gw / qw / hw) variants that Unicode encodes at scattered offsets (U+1247–U+124F, U+1288–U+128F, U+12B0–U+12B7, U+1310–U+1317). Not currently handled by the converter — would require special-casing during reverse lookup.",
+        text: "ቈ ቊ ቋ ቌ ቍ  ·  ኈ ኊ ኋ ኌ ኍ  ·  ኰ ኲ ኳ ኴ ኵ  ·  ጐ ጒ ጓ ጔ ጕ",
+        status: "proposed",
+      },
+      {
+        title: "Amharic-only palatalized additions (proposed)",
+        description:
+          "Amharic added ሸ (šä), ቸ (čä), ኘ (ñä), ዠ (žä), ጀ (jä), ጨ (č̣ä) beyond the Ge'ez inventory. The converter currently folds šä into š but ignores the rest — could expand for Amharic-source text.",
+        text: "ሸ ቸ ኘ ዠ ጀ ጨ",
+        status: "proposed",
+      },
+    ],
+  },
+  {
+    section: "Ancient scripts",
+    scriptId: "paleo",
+    items: [
+      {
+        title: "Paleo-Hebrew (Phoenician block)",
+        description:
+          "The pre-exilic Hebrew script, encoded in the Phoenician Unicode block (U+10900–U+10915). Same 22-letter order as square Hebrew.",
+        text: "\u{10900}\u{10901}\u{10902} \u{10903}\u{10904}\u{10905} \u{10906}\u{10907}\u{10908}",
+        status: "live",
+      },
+      {
+        title: "Samaritan Hebrew",
+        description:
+          "Descendant of Paleo-Hebrew still used by the Samaritan community. Continuous tradition since c. 1000 BCE.",
+        text: "ࠀࠁࠂ ࠃࠄࠅ ࠆࠇࠈ",
+        status: "live",
+      },
+      {
+        title: "Imperial Aramaic",
+        description:
+          "Chancery script of the Achaemenid empire (c. 500 BCE). Descendant of Phoenician, ancestor of Syriac + Hebrew square.",
+        text: "\u{10840}\u{10841}\u{10842} \u{10843}\u{10844}\u{10845} \u{10846}\u{10847}\u{10848}",
+        status: "live",
+      },
+      {
+        title: "Ugaritic — 30-letter cuneiform abjad",
+        description:
+          "Alphabetic cuneiform from Ras Shamra (c. 1400 BCE). Preserves Proto-Semitic distinctions lost elsewhere: ṯ ḏ ḫ ḍ ẓ ġ + three alef variants (ʾa ʾi ʾu).",
+        text: "\u{10380}\u{10381}\u{10382}\u{10383}\u{10384}\u{10385}\u{10386}\u{10387}\u{10388}\u{10389}",
+        status: "live",
+      },
+      {
+        title: "Old South Arabian musnad",
+        description:
+          "Monumental script of Sabaean / Minaean inscriptions (c. 900 BCE). Distinct from later Arabic — has ~29 letters including preserved Proto-Semitic phonemes.",
+        text: "𐩠𐩡𐩢𐩣𐩤𐩥",
+        status: "live",
+      },
+      {
+        title: "Akkadian cuneiform CV syllables",
+        description:
+          "Sumerian-derived syllabary used for Akkadian (c. 2500 BCE onward). CV / VC / CVC signs — hundreds of glyphs, we ship the Noto Cuneiform font.",
+        text: "𒀭 𒂗 𒆠 𒌷 𒈗",
+        status: "live",
+      },
+    ],
+  },
+];
+
 // Default landing state: Hebrew + our custom stretch font, with the ל in
 // שלום already elongated (5 × U+E010 after ל) so first-time visitors
 // immediately see what the tool does.
@@ -1883,7 +2122,112 @@ export function FontLab() {
           </div>
         </section>
       )}
+
+      <Showcase
+        onLoad={(item, sectionScriptId) => {
+          setScriptId(sectionScriptId);
+          setText(item.text);
+          if (item.font) {
+            const fontOverride = SCRIPTS.find((s) => s.id === sectionScriptId)?.fonts.find((f) => f.id === item.font);
+            if (fontOverride) setFontId(fontOverride.id);
+          }
+          requestAnimationFrame(() => textareaRef.current?.focus());
+        }}
+      />
     </div>
+  );
+}
+
+function Showcase({ onLoad }: {
+  onLoad: (item: ShowcaseItem, scriptId: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set());
+  const toggleSection = (name: string) => {
+    setOpenSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name); else next.add(name);
+      return next;
+    });
+  };
+  return (
+    <section className="mt-4 bg-white border border-neutral-200 rounded-lg">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-4 py-3 text-left"
+        aria-expanded={open}
+      >
+        <div>
+          <h3 className="text-sm font-semibold text-neutral-800">Feature showcase</h3>
+          <p className="text-xs text-neutral-500 mt-0.5">
+            Cross-script experiments and script-specific features — click any card to load it into the editor above.
+          </p>
+        </div>
+        <span className="text-neutral-500 text-lg leading-none">{open ? "−" : "+"}</span>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 space-y-2">
+          {SHOWCASE.map((sec) => {
+            const sectionOpen = openSections.has(sec.section);
+            return (
+              <div key={sec.section} className="border border-neutral-200 rounded">
+                <button
+                  type="button"
+                  onClick={() => toggleSection(sec.section)}
+                  className="w-full flex items-center justify-between px-3 py-2 text-left bg-neutral-50 hover:bg-neutral-100 rounded-t"
+                  aria-expanded={sectionOpen}
+                >
+                  <span className="text-sm font-medium text-neutral-800">{sec.section}</span>
+                  <span className="text-xs text-neutral-500">
+                    {sec.items.length} {sec.items.length === 1 ? "item" : "items"}
+                    <span className="ml-2 text-neutral-400">{sectionOpen ? "▼" : "▶"}</span>
+                  </span>
+                </button>
+                {sectionOpen && (
+                  <ul className="p-2 space-y-2">
+                    {sec.items.map((item, i) => {
+                      const script = SCRIPTS.find((s) => s.id === sec.scriptId);
+                      return (
+                        <li key={i} className="border border-neutral-100 rounded p-3 hover:border-neutral-300 transition">
+                          <div className="flex items-baseline justify-between gap-2 mb-1">
+                            <div className="text-sm font-medium text-neutral-800">{item.title}</div>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${
+                              item.status === "live" ? "bg-emerald-50 text-emerald-800 border border-emerald-200" :
+                              item.status === "experimental" ? "bg-amber-50 text-amber-800 border border-amber-200" :
+                              "bg-neutral-100 text-neutral-600 border border-neutral-300"
+                            }`}>{item.status}</span>
+                          </div>
+                          <div
+                            className="text-2xl my-2 leading-normal text-neutral-900"
+                            dir={script?.dir ?? "rtl"}
+                            style={{
+                              fontFamily: item.font
+                                ? `"${script?.fonts.find((f) => f.id === item.font)?.family ?? ""}", system-ui`
+                                : `"${script?.fonts[0]?.family ?? ""}", system-ui`,
+                            }}
+                          >
+                            {item.text}
+                          </div>
+                          <p className="text-xs text-neutral-600 leading-snug mb-2">{item.description}</p>
+                          <button
+                            type="button"
+                            onClick={() => onLoad(item, sec.scriptId)}
+                            className="text-xs px-2 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-700"
+                          >
+                            Load into editor →
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
   );
 }
 

@@ -303,41 +303,75 @@ function canTakeKashidaAfter(ch: string): boolean {
   return false;
 }
 
-// Background guides for the SVG preview. Lines mode draws a single
-// baseline per text row (notebook-paper look); grid mode draws top,
-// midline, and baseline (scribal-practice look). The line-height 1.4
-// puts baseline at ~1.0em from the top of the line-box for most
-// fonts; midline at ~0.6em; top of ascenders at ~0.2em.
-function guideBackground(
-  mode: "none" | "lines" | "grid",
-  fontSize: number,
-): React.CSSProperties {
+// Background guides for the SVG preview.
+//   baselines — single strong baseline per text row (notebook paper)
+//   all       — top + dashed midline + baseline (scribal-practice sheet)
+//   grid      — same horizontals plus vertical rules at 1em spacing
+// Line-height 1.4 puts baseline at ~1.0em from the top of the line-box
+// for most fonts; midline at ~0.6em; top of ascenders at ~0.2em.
+//
+// Implemented as SVG data-URI background(s) because CSS gradients
+// can't do dashed patterns cleanly. One tall 1px-wide SVG paints all
+// horizontals; a second short SVG paints the verticals for `grid`.
+type GuideMode = "none" | "baselines" | "all" | "grid";
+function guideBackground(mode: GuideMode, fontSize: number): React.CSSProperties {
   if (mode === "none") return {};
   const period = fontSize * 1.4;
-  const baseline = fontSize * 1.0;
-  const midline = fontSize * 0.6;
-  const top = fontSize * 0.2;
-  const strong = "rgba(59, 130, 246, 0.35)";
-  const soft = "rgba(59, 130, 246, 0.18)";
+  const baselineY = fontSize * 1.0;
+  const midY = fontSize * 0.6;
+  const topY = fontSize * 0.2;
+  const cellW = fontSize * 1.0;
 
-  const stops = mode === "lines"
-    ? `transparent 0, transparent ${baseline - 0.5}px,
-       ${strong} ${baseline - 0.5}px, ${strong} ${baseline + 0.5}px,
-       transparent ${baseline + 0.5}px, transparent ${period}px`
-    : `transparent 0, transparent ${top - 0.5}px,
-       ${soft} ${top - 0.5}px, ${soft} ${top + 0.5}px,
-       transparent ${top + 0.5}px, transparent ${midline - 0.5}px,
-       ${soft} ${midline - 0.5}px, ${soft} ${midline + 0.5}px,
-       transparent ${midline + 0.5}px, transparent ${baseline - 0.5}px,
-       ${strong} ${baseline - 0.5}px, ${strong} ${baseline + 0.5}px,
-       transparent ${baseline + 0.5}px, transparent ${period}px`;
+  const strong = "rgba(59, 130, 246, 0.45)";  // baseline
+  const soft = "rgba(59, 130, 246, 0.30)";    // top of ascenders
+  const mid = "rgba(59, 130, 246, 0.35)";     // midline (dashed)
+  const vertical = "rgba(59, 130, 246, 0.16)"; // grid verticals — subtler
 
-  return {
-    backgroundImage: `repeating-linear-gradient(to bottom, ${stops})`,
-    // Align gradient origin with the content box (inside padding) so the
-    // first period starts exactly at the first text line-box.
+  // Tile width: 1px is fine for solid lines (they tile seamlessly), but
+  // dashed lines need horizontal resolution — stroke-dasharray uses the
+  // SVG's coordinate space, so a 1px-wide tile would collapse the dash
+  // pattern. Use a wider tile whenever we're drawing the dashed midline.
+  const withUpperLines = mode !== "baselines";
+  const tileW = withUpperLines ? 100 : 1;
+  const parts: string[] = [
+    `<line x1="0" y1="${baselineY}" x2="${tileW}" y2="${baselineY}" stroke="${strong}" stroke-width="1.5"/>`,
+  ];
+  if (withUpperLines) {
+    parts.push(
+      `<line x1="0" y1="${topY}" x2="${tileW}" y2="${topY}" stroke="${soft}" stroke-width="0.75"/>`,
+      // Midline: thinner + dashed. 4 3 pattern reads as notebook-style
+      // dashes at roughly letter-width scale.
+      `<line x1="0" y1="${midY}" x2="${tileW}" y2="${midY}" stroke="${mid}" stroke-width="0.5" stroke-dasharray="4 3"/>`,
+    );
+  }
+  const hSvg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${tileW}" height="${period}" ` +
+    `preserveAspectRatio="none">${parts.join("")}</svg>`;
+  const hUri = `url("data:image/svg+xml;utf8,${encodeURIComponent(hSvg)}")`;
+
+  const base: React.CSSProperties = {
     backgroundOrigin: "content-box",
     backgroundClip: "content-box",
+  };
+
+  if (mode === "grid") {
+    const vSvg =
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${cellW}" height="1" ` +
+      `preserveAspectRatio="none">` +
+      `<line x1="0" y1="0" x2="0" y2="1" stroke="${vertical}" stroke-width="1"/>` +
+      `</svg>`;
+    const vUri = `url("data:image/svg+xml;utf8,${encodeURIComponent(vSvg)}")`;
+    return {
+      ...base,
+      backgroundImage: `${hUri}, ${vUri}`,
+      backgroundSize: `${tileW}px ${period}px, ${cellW}px 1px`,
+      backgroundRepeat: "repeat, repeat",
+    };
+  }
+  return {
+    ...base,
+    backgroundImage: hUri,
+    backgroundSize: `${tileW}px ${period}px`,
     backgroundRepeat: "repeat",
   };
 }
@@ -652,7 +686,7 @@ export function FontLab() {
   // Auto-justify target column width in pixels. Default matches a typical
   // scribal column. User can tune before clicking the button.
   const [justifyWidthPx, setJustifyWidthPx] = useState<number>(680);
-  const [bgGuide, setBgGuide] = useState<"none" | "lines" | "grid">("none");
+  const [bgGuide, setBgGuide] = useState<GuideMode>("none");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -1478,25 +1512,33 @@ export function FontLab() {
 
         <div className="mt-2 flex items-center gap-3 flex-wrap text-xs">
           <span className="text-neutral-500 uppercase tracking-wider">Guides</span>
-          {(["none", "lines", "grid"] as const).map((g) => (
-            <button
-              key={g}
-              type="button"
-              onClick={() => setBgGuide(g)}
-              className={`px-2 py-0.5 rounded border ${
-                bgGuide === g
-                  ? "bg-neutral-900 text-white border-neutral-900"
-                  : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
-              }`}
-              title={
-                g === "none" ? "No background lines"
-                : g === "lines" ? "Notebook-style baseline per row"
-                : "Three ruled lines per row — top, midline, baseline"
-              }
-            >
-              {g}
-            </button>
-          ))}
+          {(["none", "baselines", "all lines", "grid"] as const).map((label) => {
+            const g: GuideMode =
+              label === "none" ? "none"
+              : label === "baselines" ? "baselines"
+              : label === "all lines" ? "all"
+              : "grid";
+            return (
+              <button
+                key={label}
+                type="button"
+                onClick={() => setBgGuide(g)}
+                className={`px-2 py-0.5 rounded border ${
+                  bgGuide === g
+                    ? "bg-neutral-900 text-white border-neutral-900"
+                    : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+                }`}
+                title={
+                  g === "none" ? "No background lines"
+                  : g === "baselines" ? "One baseline per row (notebook paper)"
+                  : g === "all" ? "Top + dashed midline + baseline per row (scribal-practice sheet)"
+                  : "All horizontal lines plus vertical rules — full grid paper"
+                }
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
 
         <div className="mt-2 flex items-center gap-3 flex-wrap text-xs text-neutral-600">

@@ -659,10 +659,10 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with the two conventions LAYERED on the same consonants — Arabic shadda + sukun are joined by Hebrew niqqud (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun) on the words that already carry an Arabic mark. A single Hebrew consonant can then wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously — showing how the two vocalization systems coexist on one base.",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind OF Allah.",
         text:
-          "אול מא כ̇לק אַלְלַّהֻ אַלְסַّמַאוַאתִ ואלארץ̇\n" +
-          "ואלארץ̇ כאנתْ גאמרה ומסתבחרה וט̇לאם עלי וג̇ה אלגמר וריח אַלְלַّהִ תַהִבֻّ עלי וג̇ה אלמא",
+          "אַוַّلַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇\n" +
+          "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמְרִ וַרִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הִ אלְמַאִ",
         font: "stretch",
         status: "experimental",
       },

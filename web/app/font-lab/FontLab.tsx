@@ -659,8 +659,8 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Scribes actually used Hebrew niqqud (dagesh for gemination, sheva/shva for vowel-less consonants) — a direct parallel to Arabic's shadda + sukun. Shown: Arabic كِتَابْ (kitāb, book), Allah اللَّهْ, and Hebrew rendering with equivalent Hebrew niqqud.",
-        text: "كِتَابْ · اللَّهْ  ⇢  כִּתָב · אַלָּה",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). The dot-above mark (U+0307) sits on Hebrew consonants that stand in for Arabic phonemes lacking a Hebrew equivalent: כ̇ = Arabic خ (khāʾ), ץ̇ = Arabic ض (ḍād). Shown: Saadia Gaon's Tafsir on Genesis 1:1 (from Sefaria), \"As soon as God created the heavens and the earth.\"",
+        text: "אול מא כ̇לק אללה אלסמאואת ואלארץ̇",
         font: "taameyfrank",
         status: "experimental",
       },

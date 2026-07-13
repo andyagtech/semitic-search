@@ -196,6 +196,8 @@ const SCRIPTS: ScriptEntry[] = [
     id: "ethiopic", label: "Amharic (Ge'ez, Tigrinya)", dir: "ltr",
     sample: "በስመ አብ ወወልድ",
     fonts: [
+      { id: "stretchethiopic", label: "Semitic Stretch Noto Serif Ethiopic", file: "SemiticStretchNotoSerifEthiopic.ttf", family: "FL_StretchNotoSerifEthiopic",
+        note: "custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Trigger is U+2060 (Word Joiner) clustered after the fidel." },
       { id: "sans",  label: "Noto Sans Ethiopic",  file: "NotoSansEthiopic.ttf", family: "FL_NotoSansEthiopic" },
       { id: "serif", label: "Noto Serif Ethiopic", file: "NotoSerifEthiopic.ttf", family: "FL_NotoSerifEthiopic" },
     ],
@@ -812,11 +814,12 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         status: "live",
       },
       {
-        title: "Ge'ez calligraphic letter widening (proposed)",
+        title: "Ge'ez calligraphic letter widening",
         description:
-          "Illuminated Ge'ez manuscripts (14th–19th c.) extend the horizontal decorative strokes of certain fidels in titles/headings. Prime candidates: መ (ma, 943 units wide), ጠ (ṭa, 981), ሠ (śa, 912), ሐ (ḥa, 827), ወ (wa, 734). Requires building a Semitic Stretch Ethiopic font with per-fidel GSUB widening — ~280 glyph variants (5 series × 7 orders × 8 stretch levels).",
-        text: "መ ጠ ሠ ሐ ወ  (candidates for stretch)",
-        status: "proposed",
+          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font that widens the horizontal decorative strokes of 5 consonant series (መ ጠ ሠ ሐ ወ) × all 7 vowel orders, matching the calligraphic tradition of illuminated Ge'ez manuscripts (14th–19th c.). 560 total glyph variants. Trigger is U+2060 (Word Joiner) clustered after the fidel — the auto-justify button uses this whenever the Semitic Stretch Ethiopic font is active.",
+        text: "መ⁠⁠⁠ ጠ⁠⁠⁠ ሠ⁠⁠⁠ ሐ⁠⁠⁠ ወ⁠⁠⁠",
+        font: "stretchethiopic",
+        status: "live",
       },
       {
         title: "Vowel-order picker (proposed)",
@@ -1706,11 +1709,24 @@ export function FontLab() {
                       ),
                     );
                   } else if (script.id === "ethiopic") {
-                    setText(
-                      autoJustifyEthiopic(
-                        text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
-                      ),
-                    );
+                    // Stretch font active: cluster U+2060 after stretchable
+                    // fidels so the per-fidel GSUB widening ligature fires
+                    // (Hebrew-style path). Plain font: repeat ፡ dividers
+                    // between words as the classical Ge'ez tradition.
+                    if (font.id === "stretchethiopic") {
+                      setText(
+                        autoJustifySemitic(
+                          text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
+                          ETHIOPIC_STRETCHABLE, SYRIAC_WIDENING,
+                        ),
+                      );
+                    } else {
+                      setText(
+                        autoJustifyEthiopic(
+                          text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
+                        ),
+                      );
+                    }
                   } else {
                     setText(
                       autoJustifySemitic(
@@ -2371,6 +2387,14 @@ const STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
 // so Peshitta lines have several stretchable positions per row.
 const HEBREW_STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
 const SYRIAC_STRETCHABLE = new Set(["ܐ", "ܒ", "ܕ", "ܗ", "ܘ", "ܡ", "ܣ", "ܪ", "ܫ", "ܬ"]);
+// Ethiopic: 5 Ge'ez consonant series × 7 vowel orders each = 35 fidels.
+// The stretch build widens the horizontal decorative strokes of each.
+const ETHIOPIC_STRETCHABLE = new Set<string>();
+for (const base of [0x1218, 0x1220, 0x1210, 0x1320, 0x12C8]) {
+  for (let order = 0; order < 7; order++) {
+    ETHIOPIC_STRETCHABLE.add(String.fromCodePoint(base + order));
+  }
+}
 
 // Auto-justify: given a paragraph, a target column width in px, and the
 // active font settings, place U+05C6 stretches on scribally-appropriate

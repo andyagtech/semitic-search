@@ -794,6 +794,61 @@ NOHADRA_AMEDIA = {
     "internal_id": "SemiticSearch-SemiticStretchNohadraAmedia-1.0",
 }
 
+# Ge'ez / Ethiopic — Noto Serif Ethiopic. Ethiopic is a SYLLABARY (each
+# fidel = consonant+vowel), so we widen 5 consonant SERIES × 7 vowel
+# orders = 35 codepoints. The stretchable candidates were selected by
+# glyph geometry: fidels with prominent horizontal decorative strokes
+# whose left half can shift LEFT while the right anchor + vowel
+# decoration stay in place. Modelled on the manuscript calligraphic
+# widening tradition (14th–19th c. illuminated Ge'ez).
+#
+# Widening trigger: U+2060 (Word Joiner) — same as Syriac. script=Common
+# so it stays in the Ethiopic run and the ligature substitution fires.
+# `override_trigger_glyph: True` keeps unmatched triggers invisible.
+_ETH_SERIES = {
+    # base_cp: (name, x_cutoff)
+    # x_cutoff is the vertical split — points to the LEFT shift with the
+    # stretch, points to the RIGHT stay anchored. Chosen just LEFT of the
+    # main "middle" or "right anchor" of the fidel so the anchor and any
+    # right-side vowel decoration stay put.
+    0x1218: ("ma",  400),   # መ series (7 fidels መ ሙ ሚ ማ ሜ ም ሞ)
+    0x1220: ("sza", 300),   # ሠ series
+    0x1210: ("hha", 280),   # ሐ series
+    0x1320: ("tha", 400),   # ጠ series
+    0x12C8: ("wa",  380),   # ወ series
+}
+_ETHIOPIC_LETTERS: dict[int, dict] = {}
+for _base, (_name, _xcut) in _ETH_SERIES.items():
+    for _order in range(7):
+        _cp = _base + _order
+        _ord_suffix = ["e", "u", "i", "aa", "ee", "y", "o"][_order]
+        _ETHIOPIC_LETTERS[_cp] = {
+            "name": f"{_name}_{_ord_suffix}",
+            "class": "bar",
+            # Bar zone spans essentially the full glyph height so every
+            # left-side contour point participates in the shift (Ethiopic
+            # fidels have decorative features throughout — no need to
+            # isolate a specific horizontal band).
+            "bar_bottom": -200,
+            "bar_top": 900,
+            "x_cutoff": _xcut,
+        }
+
+NOTO_SERIF_ETHIOPIC = {
+    "id": "noto-serif-ethiopic",
+    "source": "NotoSerifEthiopic.ttf",
+    "output": "SemiticStretchNotoSerifEthiopic.ttf",
+    "family": "Semitic Stretch Noto Serif Ethiopic",
+    "postscript": "SemiticStretchNotoSerifEthiopic",
+    "internal_id": "SemiticSearch-SemiticStretchNotoSerifEthiopic-1.0",
+    "step": 100,
+    "lsb_mode": "mono",
+    "language_system": "ethi",  # OpenType script tag for Ethiopic
+    "stretch_codepoint": 0x2060,
+    "override_trigger_glyph": True,
+    "letters": _ETHIOPIC_LETTERS,
+}
+
 CONFIGS = [
     FRANK_RUHL, KETER_ARAM_TSOVA, SHMULIK, HILLEL, GLADIA,
     NOTO_SANS_HEBREW, NOTO_SERIF_HEBREW, SHOFAR,
@@ -801,6 +856,7 @@ CONFIGS = [
     STAM_ASHKENAZ, SHLOMO_SEMISTAM,
     NOTO_RASHI,
     NOTO_SANS_SYRIAC, NOHADRA_SAPNA, NOHADRA_AMEDIA,
+    NOTO_SERIF_ETHIOPIC,
 ]
 
 # Stretching model (matches Torah scribal widening):

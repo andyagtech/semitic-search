@@ -665,15 +665,15 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind of Allah. Layout follows the Sefaria/Tanakh convention — verses appear as list items with Hebrew ordinal markers (א ב ג) in the gutter. Two stretchable letters (ר of אלגמר, ר of ריח) carry a Semitic-Stretch kashida cluster in Gen 1:2 for column-justification balance.",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind of Allah. Layout follows the Sefaria/Tanakh convention — verses appear as list items with Hebrew ordinal markers (א ב ג) in the gutter. Gen 1:2 (ב) wraps across two visual lines under a single marker; Gen 1:3 (ג) carries two Semitic-Stretch kashida clusters on the reshes of נור so the three verses come out visually balanced.",
         text:
           "אַוַّלַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇\n" +
           "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמ׆׆׆׆ְרִ וַר׆׆׆׆ִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הِ אלְמַאִ\n" +
           "וַשַא אַלְלַّהֻ אַןְ יַכֻוןַ נֻורֻ פַכַאןַ נֻורֻ",
         verses: [
           "אַוַّלַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇",
-          "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמ׆׆׆׆ְרִ וַר׆׆׆׆ִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הِ אלְמַאִ",
-          "וַשַא אַלְלַّהֻ אַןְ יַכֻוןַ נֻורֻ פַכַאןַ נֻורֻ",
+          "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמְרִ\nוַרִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הִ אלְמַאִ",
+          "וַשַא אַלְלַّהֻ אַןְ יַכֻוןַ נֻורֻ׆׆׆׆׆׆׆׆ פַכַאןַ נֻורֻ׆׆׆׆׆׆׆׆",
         ],
         font: "stretch",
         status: "experimental",
@@ -688,8 +688,8 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
           "וَשَא אَלْלَّהُ אَןْ יَכُוןَ נُורٌ פَכَאןَ נُורٌ",
         verses: [
           "אَוَّלَ מَא כَ̇לَקَ אَלْלَّהُ אלْסَّמَאוَאתِ וَאלْאَרْץَ̇",
-          "וَאלْאَרْץُ̇ כَאנَתْ גَ̇אמِרَהً וَמُסْתَבּْחِרَהً וَטَ̇לَאםٌ עَלَי וَגْ̇הِ אלْגَמْרِ וَרِיחُ אَלْלَّהِ תَהِבּُّ עَלَי וَגْ̇הِ אלْמَאِ",
-          "וَשَא אَלْלَّהُ אَןْ יَכُוןَ נُורٌ פَכَאןَ נُורٌ",
+          "וَאלْאَרْץُ̇ כَאנَתْ גَ̇אמِרَהً וَמُסْתَבּْחِרَהً וَטَ̇לَאםٌ עَלَי וَגْ̇הِ אלْגَמْרِ\nוَרِיחُ אَלْלَّהِ תَהِבּُّ עَלَי וَגْ̇הِ אלْמَאِ",
+          "וَשَא אَלْלَّהُ אَןْ יَכُוןَ נُורٌ׆׆׆׆׆׆׆׆ פَכَאןَ נُורٌ׆׆׆׆׆׆׆׆",
         ],
         font: "stretch",
         status: "experimental",
@@ -2373,7 +2373,11 @@ function Showcase({ onLoad }: {
                                   style={{ fontFamily, listStyleType: "hebrew", listStylePosition: "outside" }}
                                 >
                                   {item.verses.map((v, vi) => (
-                                    <li key={vi}>{v}</li>
+                                    // pre-line preserves \n within a verse as a visible
+                                    // line break — used for multi-line verses (Gen 1:2)
+                                    // where a single <li> spans two rendered rows but
+                                    // shows one Hebrew ordinal marker in the gutter.
+                                    <li key={vi} style={{ whiteSpace: "pre-line" }}>{v}</li>
                                   ))}
                                 </ol>
                               );

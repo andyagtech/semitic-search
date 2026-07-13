@@ -2216,6 +2216,12 @@ function Showcase({ onLoad }: {
         // in-card previews actually render with the right glyphs (e.g.
         // Taamey Frank CLM for te'amim). Without this, the browser
         // falls back to system fonts that don't have cantillation.
+        //
+        // Also preload Amiri (Arabic) as a cross-script fallback — the
+        // Judeo-Arabic item on Hebrew and the Hebrew-niqqud-on-Arabic
+        // item both mix scripts, and the primary font typically only
+        // supports one. Preloading Amiri means Arabic marks (shadda,
+        // sukun, harakat) always have a font to fall back to.
         const sec = SHOWCASE.find((s) => s.section === name);
         if (sec) {
           const script = SCRIPTS.find((s) => s.id === sec.scriptId);
@@ -2228,6 +2234,8 @@ function Showcase({ onLoad }: {
             const f = script?.fonts.find((x) => x.id === fid);
             if (f) ensureFontLoaded(f.family, f.file);
           }
+          const amiri = SCRIPTS.find((s) => s.id === "arabic")?.fonts.find((f) => f.id === "amiri");
+          if (amiri) ensureFontLoaded(amiri.family, amiri.file);
         }
       }
       return next;
@@ -2285,9 +2293,12 @@ function Showcase({ onLoad }: {
                             className="text-2xl my-2 leading-normal text-neutral-900"
                             dir={script?.dir ?? "rtl"}
                             style={{
+                              // Font stack: primary (item.font or section's default) → Amiri
+                              // fallback for Arabic harakat/shadda (needed for the cross-script
+                              // Judeo-Arabic + Hebrew-niqqud-on-Arabic items) → system-ui.
                               fontFamily: item.font
-                                ? `"${script?.fonts.find((f) => f.id === item.font)?.family ?? ""}", system-ui`
-                                : `"${script?.fonts[0]?.family ?? ""}", system-ui`,
+                                ? `"${script?.fonts.find((f) => f.id === item.font)?.family ?? ""}", "FL_Amiri", system-ui`
+                                : `"${script?.fonts[0]?.family ?? ""}", "FL_Amiri", system-ui`,
                             }}
                           >
                             {item.text}

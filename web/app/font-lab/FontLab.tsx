@@ -1714,7 +1714,14 @@ export function FontLab() {
                     // fidels so the per-fidel GSUB widening ligature fires
                     // (Hebrew-style path). Plain font: repeat ፡ dividers
                     // between words as the classical Ge'ez tradition.
-                    if (font.id === "stretchethiopic") {
+                    // Stretch font active: try letter-widening first (fires
+                    // the per-fidel GSUB ligature). If the text has NO
+                    // stretchable fidels (መ ጠ ሠ ሐ ወ in any vowel order),
+                    // fall back to word-divider ፡ repetition so we still
+                    // produce visible justification.
+                    const hasStretchable = font.id === "stretchethiopic" &&
+                      Array.from(text).some((ch) => ETHIOPIC_STRETCHABLE.has(ch));
+                    if (hasStretchable) {
                       setText(
                         autoJustifySemitic(
                           text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,

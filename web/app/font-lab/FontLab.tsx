@@ -640,6 +640,12 @@ type ShowcaseItem = {
   title: string;
   description: string;
   text: string;
+  // Optional verse-list rendering. When present, each string becomes
+  // an <li> in an <ol> styled with `list-style-type: hebrew`, producing
+  // native Hebrew ordinal markers (א ב ג ד …) in the gutter — matching
+  // how Sefaria and printed Tanakhs lay out verses. The `text` field
+  // stays as-is (used as fallback + as the "Load into editor" payload).
+  verses?: string[];
   font?: string;
   status: "live" | "experimental" | "proposed";
 };
@@ -659,21 +665,32 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind of Allah. Layout follows the traditional Hebrew Bible convention: א׃ marks Genesis 1:1, ב׃ marks Genesis 1:2 (split across two lines), and a few stretchable letters (ר of אלגמר, ר of ריח) carry a Semitic-Stretch kashida cluster for column-justification balance.",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind of Allah. Layout follows the Sefaria/Tanakh convention — verses appear as list items with Hebrew ordinal markers (א ב ג) in the gutter. Two stretchable letters (ר of אלגמר, ר of ריח) carry a Semitic-Stretch kashida cluster in Gen 1:2 for column-justification balance.",
         text:
-          "א׃  אַוַّلַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇\n" +
-          "ב׃  וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמְ׆׆׆׆רִ\n" +
-          "    וַרִ׆׆׆׆יחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הִ אלְמַאִ",
+          "אַוַّלַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇\n" +
+          "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמ׆׆׆׆ְרִ וַר׆׆׆׆ִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הِ אלְמַאִ\n" +
+          "וַשַא אַלְלַّהֻ אַןְ יַכֻוןַ נֻורֻ פַכַאןַ נֻורֻ",
+        verses: [
+          "אַוַّלַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇",
+          "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמ׆׆׆׆ְרִ וַר׆׆׆׆ִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הِ אלְמַאִ",
+          "וַשַא אַלְלַّהֻ אַןְ יַכֻוןַ נֻורֻ פַכַאןַ נֻורֻ",
+        ],
         font: "stretch",
         status: "experimental",
       },
       {
         title: "Vocalized Tafsir Rasag (reconstructed)",
         description:
-          "The same Saadia Gaon passage as above, now with full Arabic vowel marks — fatha (◌َ), kasra (◌ِ), damma (◌ُ), tanwīn (◌ً/◌ٌ/◌ٍ), shadda (◌ّ), sukūn (◌ْ) — reconstructed from classical Arabic grammar following the tradition preserved in Yosef Kafih's 1963 vocalized edition (הַתּוֹרָה עִם תַּרְגּוּם וּפֵרוּשׁ רַבֵּנוּ סַעֲדְיָה גָּאוֹן, worked from Yemenite manuscripts). Case endings, verbal patterns, and definite-article assimilation are grammatically determined, so this reconstruction should match Kafih ~95%. Vowel marks were imported into the stretch-Hebrew font specifically for this demo.",
+          "The same Saadia Gaon passage, expanded to Genesis 1:1-3, with full Arabic vowel marks — fatha (◌َ), kasra (◌ِ), damma (◌ُ), tanwīn (◌ً/◌ٌ/◌ٍ), shadda (◌ّ), sukūn (◌ْ) — reconstructed from classical Arabic grammar following the tradition preserved in Yosef Kafih's 1963 vocalized edition (הַתּוֹרָה עִם תַּרְגּוּם וּפֵרוּשׁ רַבֵּנוּ סַעֲדְיָה גָּאוֹן, worked from Yemenite manuscripts). Hebrew dagesh (בּ, U+05BC) is added to every ב so the letters are unambiguously read as hard 'b' (Arabic ب) rather than fricative 'v'. Case endings, verbal patterns, and definite-article assimilation are grammatically determined, so this reconstruction should match Kafih ~95%.",
         text:
           "אَוَّלَ מَא כَ̇לَקَ אَלْלَّהُ אלْסَّמَאוَאתِ וَאלْאَרْץَ̇\n" +
-          "וَאלْאَרْץُ̇ כَאנَתْ גَ̇אמِרَהً וَמُסْתَבْחِרَהً וَטَ̇לَאםٌ עَלَי וَגْ̇הِ אלْגَמْרِ וَרِיחُ אَלْלَّהِ תَהِבُّ עَלَי וَגْ̇הِ אלْמَאِ",
+          "וَאלْאَרْץُ̇ כَאנَתْ גَ̇אמِרَהً וَמُסْתَבּْחِרَהً וَטَ̇לَאםٌ עَלَי וَגْ̇הِ אלْגَמْרِ וَרِיחُ אَלْלَّהِ תَהِבּُّ עَלَי וَגْ̇הِ אלْמَאِ\n" +
+          "וَשَא אَלْלَّהُ אَןْ יَכُוןَ נُורٌ פَכَאןَ נُורٌ",
+        verses: [
+          "אَוَّלَ מَא כَ̇לَקَ אَלْלَّהُ אלْסَّמَאוَאתِ וَאלْאَרْץَ̇",
+          "וَאלْאَרْץُ̇ כَאנَתْ גَ̇אמِרَהً וَמُסْתَבּْחِרَהً וَטَ̇לَאםٌ עَלَי וَגْ̇הِ אלْגَמْרِ וَרِיחُ אَלْלَّהِ תَהِבּُّ עَלَי וَגْ̇הِ אלْמَאِ",
+          "וَשَא אَלْלَّהُ אَןْ יَכُוןَ נُורٌ פَכَאןَ נُורٌ",
+        ],
         font: "stretch",
         status: "experimental",
       },
@@ -2340,20 +2357,37 @@ function Showcase({ onLoad }: {
                               "bg-neutral-100 text-neutral-600 border border-neutral-300"
                             }`}>{item.status}</span>
                           </div>
-                          <div
-                            className="text-2xl my-2 leading-normal text-neutral-900"
-                            dir={script?.dir ?? "rtl"}
-                            style={{
-                              // Font stack: primary (item.font or section's default) → Amiri
-                              // fallback for Arabic harakat/shadda (needed for the cross-script
-                              // Judeo-Arabic + Hebrew-niqqud-on-Arabic items) → system-ui.
-                              fontFamily: item.font
-                                ? `"${script?.fonts.find((f) => f.id === item.font)?.family ?? ""}", "FL_Amiri", system-ui`
-                                : `"${script?.fonts[0]?.family ?? ""}", "FL_Amiri", system-ui`,
-                            }}
-                          >
-                            {item.text}
-                          </div>
+                          {(() => {
+                            // Font stack: primary (item.font or section's default) → Amiri
+                            // fallback for Arabic harakat/shadda (cross-script items) → system-ui.
+                            const fontFamily = item.font
+                              ? `"${script?.fonts.find((f) => f.id === item.font)?.family ?? ""}", "FL_Amiri", system-ui`
+                              : `"${script?.fonts[0]?.family ?? ""}", "FL_Amiri", system-ui`;
+                            // If the item provides `verses`, render as an <ol> with Hebrew
+                            // ordinal markers (א ב ג …) matching the Sefaria/Tanakh layout.
+                            if (item.verses && item.verses.length > 0) {
+                              return (
+                                <ol
+                                  className="my-2 pr-6 space-y-1.5 text-2xl leading-relaxed text-neutral-900"
+                                  dir={script?.dir ?? "rtl"}
+                                  style={{ fontFamily, listStyleType: "hebrew", listStylePosition: "outside" }}
+                                >
+                                  {item.verses.map((v, vi) => (
+                                    <li key={vi}>{v}</li>
+                                  ))}
+                                </ol>
+                              );
+                            }
+                            return (
+                              <div
+                                className="text-2xl my-2 leading-normal text-neutral-900"
+                                dir={script?.dir ?? "rtl"}
+                                style={{ fontFamily }}
+                              >
+                                {item.text}
+                              </div>
+                            );
+                          })()}
                           <p className="text-xs text-neutral-600 leading-snug mb-2">{item.description}</p>
                           <button
                             type="button"

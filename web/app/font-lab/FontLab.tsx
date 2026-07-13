@@ -667,6 +667,16 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         status: "experimental",
       },
       {
+        title: "Vocalized Tafsir Rasag (reconstructed)",
+        description:
+          "The same Saadia Gaon passage as above, now with full Arabic vowel marks — fatha (◌َ), kasra (◌ِ), damma (◌ُ), tanwīn (◌ً/◌ٌ/◌ٍ), shadda (◌ّ), sukūn (◌ْ) — reconstructed from classical Arabic grammar following the tradition preserved in Yosef Kafih's 1963 vocalized edition (הַתּוֹרָה עִם תַּרְגּוּם וּפֵרוּשׁ רַבֵּנוּ סַעֲדְיָה גָּאוֹן, worked from Yemenite manuscripts). Case endings, verbal patterns, and definite-article assimilation are grammatically determined, so this reconstruction should match Kafih ~95%. Vowel marks were imported into the stretch-Hebrew font specifically for this demo.",
+        text:
+          "אَוَّלَ מَא כَ̇לَקَ אَלْלَّהُ אלْסَّמَאוَאתِ וَאלْאَרْץَ̇\n" +
+          "וَאלْאَרْץُ̇ כَאנَתْ גَ̇אמِרَהً וَמُסْתَבْחِרَהً וَטَ̇לَאםٌ עَלَי וَגْ̇הِ אלْגَמْרِ וَרِיחُ אَלْלَّהِ תَהِבُّ עَלَי וَגْ̇הِ אלْמَאِ",
+        font: "stretch",
+        status: "experimental",
+      },
+      {
         title: "Mixed Hebrew + Arabic letters",
         description:
           "Modern Hebrew borrows an ASCII apostrophe (׳ geresh) to mark Arabic-origin phonemes it lacks: ג׳ = \"j\", ח׳ = \"kh\", ע׳ = \"gh\", צ׳ = \"ch\". A more precise mixed-script rendering uses the actual Arabic base letter — no geresh needed. To make the Arabic letter render in its INITIAL positional form (looks like the start of an Arabic word), append U+200D ZWJ so the shaper picks the initial variant instead of the isolated one. Shown: Ghajar village (Wikipedia: רג׳ר) becomes غ‍ג׳ר with initial-form ghayn; Khartoum (Wikipedia: ח׳רטום) becomes خ‍רטום with initial-form khāʾ.",

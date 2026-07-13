@@ -69,7 +69,14 @@ ALIAS_DAGESH = {
 # three tanwin marks, sukun. Pulled from Amiri-Regular.ttf and scaled to
 # the target font's UPM. Lets users place these marks over any Hebrew
 # letter (academic / comparative use case).
-ARABIC_MARKS = [0x0651, 0x064B, 0x064C, 0x064D, 0x0652]
+ARABIC_MARKS = [
+    0x0651,  # shadda (gemination)
+    0x064B, 0x064C, 0x064D,  # fathatan, dammatan, kasratan
+    0x0652,  # sukun
+    0x064E, 0x064F, 0x0650,  # fatha, damma, kasra (added for full Judeo-Arabic vocalization)
+    0x0653,  # maddah
+    0x0670,  # dagger alif
+]
 
 # Combining diaeresis (U+0308): two dots above. Used for Hebrew Heh + dots
 # to visually represent Arabic ة (taa marbuta), among other comparative uses.

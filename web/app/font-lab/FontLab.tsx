@@ -659,10 +659,10 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2 (Sefaria original + reconstructed shaddas).",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with the two conventions LAYERED on the same consonants — Arabic shadda + sukun are joined by Hebrew niqqud (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun) on the words that already carry an Arabic mark. A single Hebrew consonant can then wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously — showing how the two vocalization systems coexist on one base.",
         text:
-          "אול מא כ̇לק אללّה אלסّמאואת ואלארץ̇\n" +
-          "ואלארץ̇ כאנתْ גאמרה ומסתבחרה וט̇לאם עלי וג̇ה אלגמר וריח אללّה תהבّ עלי וג̇ה אלמא",
+          "אול מא כ̇לק אַלְלַّהֻ אַלְסַّמַאוַאתִ ואלארץ̇\n" +
+          "ואלארץ̇ כאנתْ גאמרה ומסתבחרה וט̇לאם עלי וג̇ה אלגמר וריח אַלְלַّהִ תַהִבֻّ עלי וג̇ה אלמא",
         font: "stretch",
         status: "experimental",
       },

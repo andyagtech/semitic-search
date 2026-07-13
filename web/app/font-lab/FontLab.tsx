@@ -653,8 +653,8 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Some scribes borrowed Arabic pointing directly onto Hebrew letters: shadda U+0651 for gemination, sukun U+0652 for vowel-less consonants, and harakat (fatha/kasra/damma) for vowels. Shown: كتاب (kitāb, book) → כִתָّابْ; الله (Allah) → אַללָّה.",
-        text: "כִתָّابْ · אַללָّה · מָהْ",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Scribes actually used Hebrew niqqud (dagesh for gemination, sheva/shva for vowel-less consonants) — a direct parallel to Arabic's shadda + sukun. Shown: Arabic كِتَابْ (kitāb, book), Allah اللَّهْ, and Hebrew rendering with equivalent Hebrew niqqud.",
+        text: "كِتَابْ · اللَّهْ  ⇢  כִּתָב · אַלָּה",
         font: "taameyfrank",
         status: "experimental",
       },
@@ -1078,7 +1078,8 @@ export function FontLab() {
   // Hebrew fonts use. Cursive Syriac fonts (Noto Sans Syriac etc.) use
   // the Arabic-style tatweel-between-letters approach instead.
   const nohadraStretchActive = script.id === "syriac" && font.id.startsWith("stretchnohadra");
-  const stretchFontActive = hebrewStretchActive || syriacStretchActive;
+  const ethiopicStretchActive = script.id === "ethiopic" && font.id === "stretchethiopic";
+  const stretchFontActive = hebrewStretchActive || syriacStretchActive || ethiopicStretchActive;
   const supportsKashida = script.id === "arabic" || (script.id === "syriac" && !syriacStretchActive) || stretchFontActive;
   const supportsWideHebrew = script.id === "hebrew";
   // Hebrew (non-stretch font): widening via jalt is per-letter via OT feature.
@@ -1717,7 +1718,7 @@ export function FontLab() {
                       setText(
                         autoJustifySemitic(
                           text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
-                          ETHIOPIC_STRETCHABLE, SYRIAC_WIDENING,
+                          ETHIOPIC_STRETCHABLE, SYRIAC_WIDENING, "ltr",
                         ),
                       );
                     } else {
@@ -2574,6 +2575,7 @@ function autoJustifySemitic(
   featureSettings: string,
   stretchable: Set<string>,
   stretchChar: string = "׆",
+  direction: "rtl" | "ltr" = "rtl",
 ): string {
   const STRETCH = stretchChar;
   const MAX_LEVELS_PER_LETTER = 16;
@@ -2583,7 +2585,7 @@ function autoJustifySemitic(
     `position:absolute;visibility:hidden;top:-9999px;left:-9999px;` +
     `font:${fontSizePx}px "${fontFamily}";` +
     `font-feature-settings:${featureSettings};` +
-    `direction:rtl;white-space:nowrap;`;
+    `direction:${direction};white-space:nowrap;`;
   document.body.appendChild(scratch);
   try {
     const measure = (s: string): number => {

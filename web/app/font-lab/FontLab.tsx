@@ -643,15 +643,17 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Full niqqud + te'amim (cantillation)",
         description:
-          "Standard Masoretic pointing: niqqud (vowel points) + te'amim (cantillation accents). Rendered by any font with Hebrew combining-mark tables.",
+          "Standard Masoretic pointing: niqqud (vowel points) + te'amim (cantillation accents). Requires a font with cantillation glyphs — Taamey Frank CLM (Culmus, GPL) is the reference implementation.",
+        font: "taameyfrank",
         text: "בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃",
         status: "live",
       },
       {
-        title: "Shadda on Hebrew consonants (Arabic mark)",
+        title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Arabic gemination mark U+0651 stacked on Hebrew letters. Historically dagesh chazak (בּ) plays this role in Hebrew; shadda is what the same gemination would look like in Arabic tradition applied to Hebrew glyphs.",
-        text: "בּّ תّוֹרָה שׁّוֹפֵט מّשֶׁה",
+          "Judeo-Arabic tradition — Arabic written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Some scribes borrowed Arabic pointing directly onto Hebrew letters: shadda U+0651 for gemination, sukun U+0652 for vowel-less consonants, and harakat (fatha/kasra/damma) for vowels. Shown: كتاب (kitāb, book) → כִתָّابْ; الله (Allah) → אַללָّה.",
+        text: "כִתָّابْ · אַללָّה · מָהْ",
+        font: "taameyfrank",
         status: "experimental",
       },
       {
@@ -718,6 +720,13 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         font: "nastaliq",
         status: "live",
       },
+      {
+        title: "ZWNJ (U+200C) — stop the join",
+        description:
+          "Zero-Width Non-Joiner breaks the cursive-joining behaviour between two letters that would otherwise connect. Same phrase without vs. with a ZWNJ between each letter of the second word — the second reads as isolated letterforms even though the underlying letters are the same.",
+        text: "الرحمن  الرحمن  ·  ال‌ر‌ح‌م‌ن",
+        status: "live",
+      },
     ],
   },
   {
@@ -759,6 +768,13 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         description:
           "Syriac has 8 letters (ܐ ܕ ܗ ܘ ܙ ܨ ܪ ܬ) that connect only on their right side. Kashida after these letters would be visually wrong — the stretch build skips tatweel-insertion after them.",
         text: "ܐܒ ܕܡ ܗܝ ܘܢ ܙܟ ܨܪ ܪܙ ܬܡ",
+        status: "live",
+      },
+      {
+        title: "ZWNJ (U+200C) — stop the join",
+        description:
+          "Same Unicode as Arabic: insert U+200C between two joining Syriac letters to force them to render as isolated forms. Useful for explaining letterform variants in pedagogical contexts. The stretch fonts also use U+2060 (Word Joiner) as their WIDENING trigger; the two zero-width codepoints do opposite things.",
+        text: "ܡܪܝܐ  ·  ܡ‌ܪ‌ܝ‌ܐ",
         status: "live",
       },
     ],
@@ -2146,7 +2162,28 @@ function Showcase({ onLoad }: {
   const toggleSection = (name: string) => {
     setOpenSections((prev) => {
       const next = new Set(prev);
-      if (next.has(name)) next.delete(name); else next.add(name);
+      if (next.has(name)) {
+        next.delete(name);
+      } else {
+        next.add(name);
+        // Preload every font referenced by this section's items so the
+        // in-card previews actually render with the right glyphs (e.g.
+        // Taamey Frank CLM for te'amim). Without this, the browser
+        // falls back to system fonts that don't have cantillation.
+        const sec = SHOWCASE.find((s) => s.section === name);
+        if (sec) {
+          const script = SCRIPTS.find((s) => s.id === sec.scriptId);
+          const targetFonts = new Set<string>();
+          for (const item of sec.items) {
+            const fontId = item.font ?? script?.fonts[0]?.id;
+            if (fontId) targetFonts.add(fontId);
+          }
+          for (const fid of targetFonts) {
+            const f = script?.fonts.find((x) => x.id === fid);
+            if (f) ensureFontLoaded(f.family, f.file);
+          }
+        }
+      }
       return next;
     });
   };

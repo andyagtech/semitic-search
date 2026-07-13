@@ -659,9 +659,11 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). The dot-above mark (U+0307) sits on Hebrew consonants that stand in for Arabic phonemes lacking a Hebrew equivalent: כ̇ = Arabic خ (khāʾ), ץ̇ = Arabic ض (ḍād). Shown: Saadia Gaon's Tafsir on Genesis 1:1 (from Sefaria), \"As soon as God created the heavens and the earth.\"",
-        text: "אול מא כ̇לק אללה אלסמאואת ואלארץ̇",
-        font: "taameyfrank",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2 (Sefaria original + reconstructed shaddas).",
+        text:
+          "אול מא כ̇לק אללّה אלסّמאואת ואלארץ̇\n" +
+          "ואלארץ̇ כאנת גאמרה ומסתבחרה וט̇לאם עלי וג̇ה אלגמר וריח אללّה תהבّ עלי וג̇ה אלמא",
+        font: "stretch",
         status: "experimental",
       },
       {

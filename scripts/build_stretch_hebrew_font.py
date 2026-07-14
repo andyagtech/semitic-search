@@ -1684,7 +1684,7 @@ def _add_widened_variant_anchors(font, config) -> int:
                         # upper-left tail and equivalent hook features on
                         # other stretchable letters. Matches the offset
                         # used for Arabic marks in _add_arabic_mark_gpos.
-                        na.XCoordinate = int(v_adv * 0.42)
+                        na.XCoordinate = int(v_adv * 0.58)
                         na.YCoordinate = a.YCoordinate
                         new_anchors.append(na)
                     new_rec = ot.BaseRecord()
@@ -1911,7 +1911,7 @@ def _add_arabic_mark_gpos(font, config) -> int:
     # the letter body on the right.
     for vname in variant_bases:
         adv = hmtx[vname][0]
-        cx = int(adv * 0.42)
+        cx = int(adv * 0.58)
         above = ot.BaseAnchor(); above.Format = 1
         above.XCoordinate = cx; above.YCoordinate = 801
         below = ot.BaseAnchor(); below.Format = 1

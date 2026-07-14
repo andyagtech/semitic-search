@@ -57,12 +57,12 @@ export default async function FontsPage() {
             Hebrew, Syriac, and Ethiopic. Free to use — each font retains its
             upstream license (OFL or GPL-2.0). Source repo:{" "}
             <a
-              href="https://github.com/purlpal/semitic-stretch-fonts"
+              href="https://github.com/andyagtech/semitic-stretch-fonts"
               className="underline hover:text-neutral-900"
               target="_blank"
               rel="noreferrer"
             >
-              github.com/purlpal/semitic-stretch-fonts
+              github.com/andyagtech/semitic-stretch-fonts
             </a>
           </p>
         </header>

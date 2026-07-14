@@ -1787,6 +1787,122 @@ _ARABIC_MARK_CLASSES: dict[int, str] = {
 _ARABIC_MARK_ANCHOR_Y = {"above": 801, "below": -327}
 
 
+def _add_arabic_mark_stacking(font) -> int:
+    """Add GPOS MarkToMark (Type 6) so above-vowels (fatha/damma/tanwīn/
+    sukun) stack ABOVE the shadda when they follow it. Without this,
+    both marks anchor to the base letter at the same X,Y and overlap.
+
+    Places the vowel mark's visual centre + bottom at a point slightly
+    above the shadda's visible top — a small upward stack matching
+    Amiri's stack ordering.
+    """
+    from fontTools.ttLib.tables import otTables as ot
+
+    if "GPOS" not in font:
+        return 0
+    gpos = font["GPOS"].table
+    cmap = font["cmap"].getBestCmap()
+    glyf = font["glyf"]
+    glyph_order = set(font.getGlyphOrder())
+
+    shadda = cmap.get(0x0651)
+    if not shadda or shadda not in glyph_order:
+        return 0
+    shadda_g = glyf[shadda]
+    shadda_g.recalcBounds(glyf)
+    if shadda_g.numberOfContours <= 0:
+        return 0
+
+    # Marks that should stack above shadda (any additional above-mark).
+    STACKING_MARKS = [
+        0x064E, 0x064F, 0x064B, 0x064C, 0x0652,  # fatha, damma, fathatan, dammatan, sukun
+    ]
+    present = []
+    for cp in STACKING_MARKS:
+        g = cmap.get(cp)
+        if g and g in glyph_order:
+            mg = glyf[g]
+            mg.recalcBounds(glyf)
+            if mg.numberOfContours > 0:
+                present.append((cp, g, mg))
+    if not present:
+        return 0
+
+    # Build the MarkMarkPos subtable.
+    sub = ot.MarkMarkPos()
+    sub.Format = 1
+    sub.ClassCount = 1
+
+    # Mark1Coverage: the stacking marks (fatha, damma, etc.)
+    sub.Mark1Coverage = ot.Mark1Coverage()
+    sub.Mark1Coverage.glyphs = [g for _, g, _ in present]
+    sub.Mark1Array = ot.Mark1Array()
+    sub.Mark1Array.MarkRecord = []
+    for cp, g, mg in present:
+        # Attach anchor on the ATTACHING mark = its own visual centre X
+        # + its bottom Y (so its bottom lines up with the base-mark's top).
+        anchor = ot.MarkAnchor()
+        anchor.Format = 1
+        anchor.XCoordinate = (mg.xMin + mg.xMax) // 2
+        anchor.YCoordinate = mg.yMin
+        mr = ot.MarkRecord()
+        mr.Class = 0
+        mr.MarkAnchor = anchor
+        sub.Mark1Array.MarkRecord.append(mr)
+    sub.Mark1Array.MarkCount = len(sub.Mark1Array.MarkRecord)
+
+    # Mark2Coverage: shadda (the base-mark to stack above).
+    sub.Mark2Coverage = ot.Mark2Coverage()
+    sub.Mark2Coverage.glyphs = [shadda]
+    sub.Mark2Array = ot.Mark2Array()
+    sub.Mark2Array.Mark2Record = []
+    m2a = ot.Mark2Anchor()
+    m2a.Format = 1
+    m2a.XCoordinate = (shadda_g.xMin + shadda_g.xMax) // 2
+    # Slightly above shadda's visible top so the vowel sits with a
+    # small gap above.
+    m2a.YCoordinate = shadda_g.yMax + 30
+    m2r = ot.Mark2Record()
+    m2r.Mark2Anchor = [m2a]
+    sub.Mark2Array.Mark2Record.append(m2r)
+    sub.Mark2Array.Mark2Count = 1
+
+    # Wrap in a lookup and register with `mkmk` feature.
+    lookup = ot.Lookup()
+    lookup.LookupType = 6
+    lookup.LookupFlag = 0
+    lookup.SubTable = [sub]
+    lookup.SubTableCount = 1
+    gpos.LookupList.Lookup.append(lookup)
+    gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
+    new_idx = len(gpos.LookupList.Lookup) - 1
+
+    found_mkmk = False
+    for fr in gpos.FeatureList.FeatureRecord:
+        if fr.FeatureTag == "mkmk":
+            fr.Feature.LookupListIndex.append(new_idx)
+            fr.Feature.LookupCount = len(fr.Feature.LookupListIndex)
+            found_mkmk = True
+    if not found_mkmk:
+        feat = ot.Feature()
+        feat.LookupListIndex = [new_idx]
+        feat.LookupCount = 1
+        feat.FeatureParams = None
+        fr = ot.FeatureRecord()
+        fr.FeatureTag = "mkmk"
+        fr.Feature = feat
+        gpos.FeatureList.FeatureRecord.append(fr)
+        gpos.FeatureList.FeatureCount = len(gpos.FeatureList.FeatureRecord)
+        idx = len(gpos.FeatureList.FeatureRecord) - 1
+        for sr in gpos.ScriptList.ScriptRecord:
+            for ls in [sr.Script.DefaultLangSys] + [lsr.LangSys for lsr in (sr.Script.LangSysRecord or [])]:
+                if ls is not None:
+                    ls.FeatureIndex.append(idx)
+                    ls.FeatureCount = len(ls.FeatureIndex)
+
+    return len(present)
+
+
 def _add_arabic_mark_gpos(font, config) -> int:
     """Give the imported Arabic marks (shadda, sukun, harakat) proper
     GDEF classification + a new GPOS MarkBase subtable so they anchor
@@ -2548,6 +2664,9 @@ def build_one(config: dict) -> int:
             arb_added = _add_arabic_mark_gpos(font, config)
             if arb_added:
                 print(f"  added Arabic mark GPOS anchors on {arb_added} widened variants")
+            stack_added = _add_arabic_mark_stacking(font)
+            if stack_added:
+                print(f"  added Arabic mark-to-mark stacking for {stack_added} above-vowels")
     overflow_note = f" + {overflow_rules} overflow chain rules" if overflow_rules else ""
     print(f"  wired {total_rules} multi-component ligature rules via feaLib{overflow_note}")
 

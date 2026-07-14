@@ -665,7 +665,7 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind of Allah. Layout follows the Sefaria/Tanakh convention — verses appear as list items with Hebrew ordinal markers (א ב ג) in the gutter, and Gen 1:2 (ב) wraps across five clauses under a single marker. Kashida-style letter widening was tried and pulled: Semitic Stretch Hebrew's leg-class widening on ה of Allah creates visible top-bar gaps and drifts the vowel-below markers off-center. Vocalization layering (three systems on the same consonants) is already visually rich; no need for decorative stretches.",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind of Allah. Layout follows the Sefaria/Tanakh convention — verses appear as list items with Hebrew ordinal markers (א ב ג) in the gutter, and Gen 1:2 (ב) wraps across five clauses under a single marker. Each internal line is auto-justified: `autoJustifySemitic` measures the natural width, computes the deficit against a fixed column, and clusters U+05C6 kashidas on the six stretchable letters (ד ה ל ם ר ת) so shorter lines fill to match longer ones. The stretches are distributed automatically — no per-letter picking — so line lengths come out uniform without any hand-tuning.",
         text:
           "אַוַّלַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇\n" +
           "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמ׆׆׆׆ְרִ וַר׆׆׆׆ִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הِ אלְמַאִ\n" +
@@ -2277,6 +2277,60 @@ function Showcase({ onLoad }: {
   // breaks under a single ordinal marker) and flat one-line-per-verse
   // display. Applies globally to all Judeo-Arabic verse-list items.
   const [multilineVerses, setMultilineVerses] = useState(true);
+  // Justified verses cache: `${section}:${title}:${verseIdx}` → line with
+  // U+05C6 clusters inserted. Populated by an effect that runs after the
+  // showcase font loads. Falls back to the raw verse text while pending.
+  const [justifiedVerses, setJustifiedVerses] = useState<Record<string, string>>({});
+
+  // Auto-justify verse lines to matching widths whenever an item with the
+  // Semitic Stretch Hebrew font (`font: "stretch"`) is visible. Uses the
+  // existing `autoJustifySemitic` which measures the natural width, subtracts
+  // from `targetWidthPx`, and clusters U+05C6 kashidas on stretchable letters
+  // (ד ה ל ם ר ת). Waits for the stretch font to actually load before
+  // measuring so the ligature substitutions register.
+  const SHOWCASE_JUSTIFY_WIDTH_PX = 460;
+  const SHOWCASE_FONT_SIZE_PX = 24;   // matches Tailwind's text-2xl
+  useEffect(() => {
+    if (!open || !multilineVerses) return;
+    for (const sec of SHOWCASE) {
+      if (!openSections.has(sec.section)) continue;
+      const script = SCRIPTS.find((s) => s.id === sec.scriptId);
+      for (const item of sec.items) {
+        if (!item.verses || item.font !== "stretch") continue;
+        const font = script?.fonts.find((f) => f.id === item.font);
+        if (!font) continue;
+        ensureFontLoaded(font.family, font.file).then(() => {
+          setJustifiedVerses((prev) => {
+            const next = { ...prev };
+            const dirty = item.verses!.some((_, vi) => {
+              const key = `${sec.section}:${item.title}:${vi}`;
+              return !(key in prev);
+            });
+            if (!dirty) return prev;
+            for (let vi = 0; vi < item.verses!.length; vi++) {
+              const key = `${sec.section}:${item.title}:${vi}`;
+              if (key in prev) continue;
+              try {
+                next[key] = autoJustifySemitic(
+                  item.verses![vi],
+                  SHOWCASE_JUSTIFY_WIDTH_PX,
+                  font.family,
+                  SHOWCASE_FONT_SIZE_PX,
+                  "'liga' 1, 'calt' 1",
+                  HEBREW_STRETCHABLE,
+                  HEBREW_STRETCH,
+                );
+              } catch (e) {
+                console.warn("showcase auto-justify failed", e);
+                next[key] = item.verses![vi];
+              }
+            }
+            return next;
+          });
+        });
+      }
+    }
+  }, [open, openSections, multilineVerses]);
   const toggleSection = (name: string) => {
     setOpenSections((prev) => {
       const next = new Set(prev);
@@ -2403,15 +2457,20 @@ function Showcase({ onLoad }: {
                                   dir={script?.dir ?? "rtl"}
                                   style={{ fontFamily, listStyleType: "hebrew", listStylePosition: "outside" }}
                                 >
-                                  {item.verses.map((v, vi) => (
-                                    // Multi-line mode: `whiteSpace: pre-line` preserves
-                                    // \n as visible line breaks under a single ordinal
-                                    // marker. Flat mode: strip the \n so each verse is
-                                    // one line and browser wrapping fills the container.
-                                    <li key={vi} style={{ whiteSpace: multilineVerses ? "pre-line" : "normal" }}>
-                                      {multilineVerses ? v : v.replace(/\n/g, " ")}
-                                    </li>
-                                  ))}
+                                  {item.verses.map((v, vi) => {
+                                    // Prefer the auto-justified version (with U+05C6
+                                    // kashida clusters filling each internal line to
+                                    // the target column width) when the stretch font
+                                    // has loaded and the useEffect has produced one.
+                                    const key = `${sec.section}:${item.title}:${vi}`;
+                                    const source = multilineVerses ? (justifiedVerses[key] ?? v) : v;
+                                    const rendered = multilineVerses ? source : source.replace(/\n/g, " ");
+                                    return (
+                                      <li key={vi} style={{ whiteSpace: multilineVerses ? "pre-line" : "normal" }}>
+                                        {rendered}
+                                      </li>
+                                    );
+                                  })}
                                 </ol>
                               );
                             }

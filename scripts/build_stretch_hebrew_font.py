@@ -1575,6 +1575,108 @@ def build_overflow_chain(
     return start_name, int_name, tail_name
 
 
+def _restore_table(font, tag: str, saved_bytes: bytes):
+    """Restore a table (GDEF / GPOS) from its compiled binary. feaLib
+    replaces both when it builds features from a .fea source, so we save
+    before and put back after. GDEF carries glyph classifications (base
+    vs mark vs ligature); GPOS carries the mark-to-base anchors that
+    position Hebrew niqqud."""
+    from fontTools.ttLib import newTable
+    tbl = newTable(tag)
+    tbl.decompile(saved_bytes, font)
+    font[tag] = tbl
+
+
+def _add_widened_variant_anchors(font, config) -> int:
+    """After restoring the original GPOS, add MarkBase anchor entries
+    for each widened variant so niqqud attaches at the CENTER of the
+    widened advance (not the natural letter body position, which after
+    `mono` LSB translation ends up flush right in the widened glyph).
+
+    For each base letter that already has anchors in the GPOS MarkBase
+    lookup, and for each of its widened variants (letter_sN), inject a
+    new BaseRecord whose per-class anchors have the same Y as the base
+    but X shifted to (advance_of_variant) / 2. This aligns marks with
+    the horizontal midpoint of the widened glyph.
+
+    Returns the count of widened variants that received new anchors.
+    """
+    from fontTools.ttLib.tables import otTables as ot
+
+    if "GPOS" not in font or "GSUB" not in font:
+        return 0
+
+    gpos = font["GPOS"].table
+    hmtx = font["hmtx"]
+    if gpos is None or not gpos.LookupList:
+        return 0
+
+    # Find every MarkBase (Type 4) lookup — Frank Ruhl et al. have one.
+    added = 0
+    letters = config.get("letters") or {}
+    # Map source glyph name → its widened variant names in this build.
+    # Variant names are e.g. `dalet_s1`, `dalet_s2`, ..., `lamed_s16`.
+    cmap = font["cmap"].getBestCmap()
+    variants_for_source: dict[str, list[str]] = {}
+    for cp, info in letters.items():
+        src_gname = cmap.get(cp)
+        if not src_gname:
+            continue
+        letter_name = info.get("name")
+        if not letter_name:
+            continue
+        vlist = [f"{letter_name}_s{n}" for n in range(1, MAX_LEVELS + 1)]
+        # Only keep those that actually exist as glyphs in this build.
+        gorder = set(font.getGlyphOrder())
+        vlist = [v for v in vlist if v in gorder]
+        if vlist:
+            variants_for_source[src_gname] = vlist
+
+    if not variants_for_source:
+        return 0
+
+    for lookup in gpos.LookupList.Lookup:
+        if lookup.LookupType != 4:  # 4 = MarkToBase
+            continue
+        for sub in lookup.SubTable or []:
+            base_glyphs = list(sub.BaseCoverage.glyphs)
+            base_records = list(sub.BaseArray.BaseRecord)
+            for src_gname, variants in variants_for_source.items():
+                if src_gname not in base_glyphs:
+                    continue
+                src_idx = base_glyphs.index(src_gname)
+                src_record = base_records[src_idx]
+                src_anchors = src_record.BaseAnchor
+                for vname in variants:
+                    if vname in base_glyphs:
+                        continue  # already has anchors — skip
+                    v_adv = hmtx[vname][0] if vname in hmtx.metrics else None
+                    if v_adv is None or v_adv <= 0:
+                        continue
+                    # Copy the src's anchors but shift X to center of variant advance.
+                    new_anchors = []
+                    for a in src_anchors:
+                        if a is None:
+                            new_anchors.append(None)
+                            continue
+                        na = ot.BaseAnchor()
+                        # Anchor Format 1 (simple x/y).
+                        na.Format = 1
+                        na.XCoordinate = v_adv // 2
+                        na.YCoordinate = a.YCoordinate
+                        new_anchors.append(na)
+                    new_rec = ot.BaseRecord()
+                    new_rec.BaseAnchor = new_anchors
+                    base_glyphs.append(vname)
+                    base_records.append(new_rec)
+                    added += 1
+            # Rewrite coverage + array with the extended lists.
+            sub.BaseCoverage.glyphs = base_glyphs
+            sub.BaseArray.BaseRecord = base_records
+            sub.BaseArray.BaseCount = len(base_records)
+    return added
+
+
 def _splice_original_gsub_back(font, original_gsub_bytes):
     """After feaLib REBUILT the GSUB with only our stretch features,
     splice the source font's original GSUB (init/medi/fina/ccmp/rlig/...)
@@ -2098,9 +2200,34 @@ def build_one(config: dict) -> int:
         except Exception:
             # Some source fonts have broken GSUB — skip preservation.
             original_gsub_bytes = None
+    # feaLib REPLACES both GDEF and GPOS in addition to GSUB. Save the raw
+    # binaries so we can restore them after — GPOS carries the mark-to-base
+    # anchors that position Hebrew niqqud under the correct letter body,
+    # and GDEF classifies mark glyphs (needed for `liga` to look past marks
+    # and for the shaper to know what's a base vs mark).
+    original_gpos_bytes = None
+    original_gdef_bytes = None
+    if "GPOS" in font:
+        try: original_gpos_bytes = font["GPOS"].compile(font)
+        except Exception: pass
+    if "GDEF" in font:
+        try: original_gdef_bytes = font["GDEF"].compile(font)
+        except Exception: pass
     addOpenTypeFeaturesFromString(font, fea_src)
     if original_gsub_bytes is not None:
         _splice_original_gsub_back(font, original_gsub_bytes)
+    if original_gpos_bytes is not None:
+        _restore_table(font, "GPOS", original_gpos_bytes)
+    if original_gdef_bytes is not None:
+        _restore_table(font, "GDEF", original_gdef_bytes)
+    # Extend the restored GPOS with anchor entries for our new widened
+    # variants so niqqud attaches at the CENTER of each widened advance,
+    # not at the original letter body's position (which after mono
+    # translation ends up flush right in the widened glyph).
+    if original_gpos_bytes is not None:
+        added = _add_widened_variant_anchors(font, config)
+        if added:
+            print(f"  added GPOS mark anchors on {added} widened variants (centered under advance)")
     overflow_note = f" + {overflow_rules} overflow chain rules" if overflow_rules else ""
     print(f"  wired {total_rules} multi-component ligature rules via feaLib{overflow_note}")
 

@@ -71,7 +71,7 @@ export default async function FontsPage() {
           <div><b>How to use:</b> insert the trigger character N times after a stretchable letter and the font substitutes a widened variant via GSUB.</div>
           <ul className="list-disc ml-5 space-y-1 text-neutral-600">
             <li><b>Hebrew:</b> trigger <code className="bg-neutral-100 px-1">U+05C6</code> (Hebrew Punctuation Nun Hafukha)</li>
-            <li><b>Syriac + Ethiopic:</b> trigger <code className="bg-neutral-100 px-1">U+2060</code> (Word Joiner — script=Common so it stays in the run)</li>
+            <li><b>Syriac + Ethiopic:</b> trigger <code className="bg-neutral-100 px-1">U+E000</code> (Private Use Area — Chrome/Blink strips U+2060 as a Unicode default-ignorable before shaping, so PUA is used instead)</li>
           </ul>
         </div>
 

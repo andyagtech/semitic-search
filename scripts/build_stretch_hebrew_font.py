@@ -1677,6 +1677,168 @@ def _add_widened_variant_anchors(font, config) -> int:
     return added
 
 
+# Arabic marks we might import + their above/below classification.
+# The anchor X is computed at build time from each mark's visual centre
+# (bbox midpoint), NOT from Amiri's own attach anchor — the attach
+# anchor puts the mark's rendered dots off-centre when the base is
+# centred, whereas the visual midpoint gives a proper centred stack.
+# The Y is fixed per class: 801 puts above-marks at their natural
+# Amiri-designed height; -327 does the same for below-marks.
+_ARABIC_MARK_CLASSES: dict[int, str] = {
+    0x0651: "above",   # shadda
+    0x0652: "above",   # sukun
+    0x064B: "above",   # fathatan
+    0x064C: "above",   # dammatan
+    0x064D: "below",   # kasratan
+    0x064E: "above",   # fatha
+    0x064F: "above",   # damma
+    0x0650: "below",   # kasra
+    0x0653: "above",   # maddah
+    0x0670: "above",   # dagger alif
+}
+_ARABIC_MARK_ANCHOR_Y = {"above": 801, "below": -327}
+
+
+def _add_arabic_mark_gpos(font, config) -> int:
+    """Give the imported Arabic marks (shadda, sukun, harakat) proper
+    GDEF classification + a new GPOS MarkBase subtable so they anchor
+    at the CENTRE of every widened Hebrew variant. Without this, the
+    Arabic marks fall through to the shaper's default positioning
+    (mark drawn at cursor with its own inherent offset), which puts
+    them over the far right of a widened glyph rather than centred.
+
+    Returns the count of widened variants that received a base anchor
+    for the new (Arabic) mark class.
+    """
+    from fontTools.ttLib.tables import otTables as ot
+
+    if "GPOS" not in font or "GDEF" not in font:
+        return 0
+
+    cmap = font["cmap"].getBestCmap()
+    hmtx = font["hmtx"]
+    glyph_order = set(font.getGlyphOrder())
+
+    # Which Arabic marks are actually in this build? Compute each
+    # mark's visual centre from its glyph bounds — that's the X anchor
+    # we want (so the visible dots sit centred on the base's centre).
+    glyf = font["glyf"]
+    present: list[tuple[int, str, tuple[int, int, str]]] = []
+    for cp, cls in _ARABIC_MARK_CLASSES.items():
+        gname = cmap.get(cp)
+        if not gname or gname not in glyph_order:
+            continue
+        g = glyf[gname]
+        if g.numberOfContours <= 0:
+            continue
+        # Imported glyphs may not have bounds computed yet — recalc.
+        g.recalcBounds(glyf)
+        vx = (g.xMin + g.xMax) // 2
+        vy = _ARABIC_MARK_ANCHOR_Y[cls]
+        present.append((cp, gname, (vx, vy, cls)))
+    if not present:
+        return 0
+
+    # 1. Ensure GDEF classifies each Arabic mark as class=3 (Mark).
+    gdef = font["GDEF"].table
+    if gdef.GlyphClassDef is None:
+        gdef.GlyphClassDef = ot.GlyphClassDef()
+        gdef.GlyphClassDef.classDefs = {}
+    for cp, gname, _ in present:
+        gdef.GlyphClassDef.classDefs[gname] = 3
+
+    # 2. Collect widened variants of stretchable letters.
+    letters = config.get("letters") or {}
+    variants: list[str] = []
+    for cp, info in letters.items():
+        letter_name = info.get("name")
+        if not letter_name:
+            continue
+        for n in range(1, MAX_LEVELS + 1):
+            v = f"{letter_name}_s{n}"
+            if v in glyph_order:
+                variants.append(v)
+    if not variants:
+        return 0
+
+    # 3. Build the new MarkBase subtable — class 0 = above, class 1 = below.
+    sub = ot.MarkBasePos()
+    sub.Format = 1
+    sub.ClassCount = 2
+    sub.MarkCoverage = ot.MarkCoverage()
+    sub.MarkCoverage.glyphs = [g for _, g, _ in present]
+    sub.MarkArray = ot.MarkArray()
+    sub.MarkArray.MarkRecord = []
+    for cp, gname, (mx, my, cls) in present:
+        anchor = ot.MarkAnchor()
+        anchor.Format = 1
+        anchor.XCoordinate = mx
+        anchor.YCoordinate = my
+        mr = ot.MarkRecord()
+        mr.Class = 0 if cls == "above" else 1
+        mr.MarkAnchor = anchor
+        sub.MarkArray.MarkRecord.append(mr)
+    sub.MarkArray.MarkCount = len(sub.MarkArray.MarkRecord)
+
+    # Base anchors — centre X of each widened variant's advance; Y
+    # matches Amiri's mark anchor Y so the mark's own glyph metrics
+    # place the visible dots at their natural above/below positions.
+    sub.BaseCoverage = ot.BaseCoverage()
+    sub.BaseCoverage.glyphs = list(variants)
+    sub.BaseArray = ot.BaseArray()
+    sub.BaseArray.BaseRecord = []
+    for vname in variants:
+        adv = hmtx[vname][0]
+        cx = adv // 2
+        above = ot.BaseAnchor(); above.Format = 1
+        above.XCoordinate = cx; above.YCoordinate = 801
+        below = ot.BaseAnchor(); below.Format = 1
+        below.XCoordinate = cx; below.YCoordinate = -327
+        br = ot.BaseRecord()
+        br.BaseAnchor = [above, below]
+        sub.BaseArray.BaseRecord.append(br)
+    sub.BaseArray.BaseCount = len(sub.BaseArray.BaseRecord)
+
+    # 4. Wrap in a lookup, append to LookupList.
+    gpos = font["GPOS"].table
+    lookup = ot.Lookup()
+    lookup.LookupType = 4
+    lookup.LookupFlag = 0
+    lookup.SubTable = [sub]
+    lookup.SubTableCount = 1
+    gpos.LookupList.Lookup.append(lookup)
+    gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
+    new_lookup_idx = len(gpos.LookupList.Lookup) - 1
+
+    # 5. Wire the new lookup into the `mark` feature (create if missing).
+    mark_feature_indices: list[int] = []
+    for i, fr in enumerate(gpos.FeatureList.FeatureRecord):
+        if fr.FeatureTag == "mark":
+            fr.Feature.LookupListIndex.append(new_lookup_idx)
+            fr.Feature.LookupCount = len(fr.Feature.LookupListIndex)
+            mark_feature_indices.append(i)
+    if not mark_feature_indices:
+        feat = ot.Feature()
+        feat.LookupListIndex = [new_lookup_idx]
+        feat.LookupCount = 1
+        feat.FeatureParams = None
+        fr = ot.FeatureRecord()
+        fr.FeatureTag = "mark"
+        fr.Feature = feat
+        gpos.FeatureList.FeatureRecord.append(fr)
+        gpos.FeatureList.FeatureCount = len(gpos.FeatureList.FeatureRecord)
+        idx = len(gpos.FeatureList.FeatureRecord) - 1
+        for sr in gpos.ScriptList.ScriptRecord:
+            for ls_holder in [sr.Script.DefaultLangSys] + [
+                lsr.LangSys for lsr in (sr.Script.LangSysRecord or [])
+            ]:
+                if ls_holder is not None:
+                    ls_holder.FeatureIndex.append(idx)
+                    ls_holder.FeatureCount = len(ls_holder.FeatureIndex)
+
+    return len(variants)
+
+
 def _splice_original_gsub_back(font, original_gsub_bytes):
     """After feaLib REBUILT the GSUB with only our stretch features,
     splice the source font's original GSUB (init/medi/fina/ccmp/rlig/...)
@@ -2228,6 +2390,12 @@ def build_one(config: dict) -> int:
         added = _add_widened_variant_anchors(font, config)
         if added:
             print(f"  added GPOS mark anchors on {added} widened variants (centered under advance)")
+        # Also add Arabic mark anchors (shadda, sukun, harakat) if we
+        # imported them. Same centering as Hebrew niqqud — advance/2.
+        if config.get("import_marks"):
+            arb_added = _add_arabic_mark_gpos(font, config)
+            if arb_added:
+                print(f"  added Arabic mark GPOS anchors on {arb_added} widened variants")
     overflow_note = f" + {overflow_rules} overflow chain rules" if overflow_rules else ""
     print(f"  wired {total_rules} multi-component ligature rules via feaLib{overflow_note}")
 

@@ -1635,6 +1635,24 @@ def _add_widened_variant_anchors(font, config) -> int:
     if not variants_for_source:
         return 0
 
+    # Frank Ruhl's original MarkBase coverage MISSES three Hebrew finals
+    # (ם ן ץ) — Hebrew niqqud on those letters falls through to shaper
+    # defaults, which collide with the descender on ן/ץ. Backfill each
+    # missing final by copying a similar-covered base's anchor structure
+    # and adjusting X (to the final's bbox centre) and — for the
+    # below-mark class — Y (below the descender's lowest point).
+    HEBREW_FINALS_MISSING = {
+        # missing_cp: (donor_cp — a letter with anchors we can borrow)
+        0x05DD: 0x05DE,   # ם ← מ
+        0x05DF: 0x05E0,   # ן ← נ
+        0x05E5: 0x05E6,   # ץ ← צ
+    }
+    # Which mark classes in Frank Ruhl are BELOW-base (need descender
+    # clearance on finals). From earlier inspection: class 1 (patach,
+    # sheva, kubutz, kasra, chirik) is the only below class.
+    BELOW_MARK_CLASSES = {1}
+    glyf = font["glyf"]
+
     for lookup in gpos.LookupList.Lookup:
         if lookup.LookupType != 4:  # 4 = MarkToBase
             continue
@@ -1660,7 +1678,6 @@ def _add_widened_variant_anchors(font, config) -> int:
                             new_anchors.append(None)
                             continue
                         na = ot.BaseAnchor()
-                        # Anchor Format 1 (simple x/y).
                         na.Format = 1
                         na.XCoordinate = v_adv // 2
                         na.YCoordinate = a.YCoordinate
@@ -1670,6 +1687,44 @@ def _add_widened_variant_anchors(font, config) -> int:
                     base_glyphs.append(vname)
                     base_records.append(new_rec)
                     added += 1
+            # Backfill missing Hebrew finals (Frank Ruhl skipped ם ן ץ).
+            for missing_cp, donor_cp in HEBREW_FINALS_MISSING.items():
+                missing_g = cmap.get(missing_cp)
+                donor_g = cmap.get(donor_cp)
+                if not missing_g or not donor_g or missing_g in base_glyphs:
+                    continue
+                if donor_g not in base_glyphs:
+                    continue
+                donor_idx = base_glyphs.index(donor_g)
+                donor_anchors = base_records[donor_idx].BaseAnchor
+                # Determine the missing final's bbox for X centring +
+                # descender clearance on below-marks.
+                g = glyf[missing_g]
+                g.recalcBounds(glyf)
+                if g.numberOfContours <= 0:
+                    continue
+                cx = (g.xMin + g.xMax) // 2
+                # If this final has a descender (yMin < -100), place
+                # below-marks below the descender's lowest point.
+                below_y = g.yMin - 250 if g.yMin < -100 else None
+                new_anchors = []
+                for cls_idx, a in enumerate(donor_anchors):
+                    if a is None:
+                        new_anchors.append(None)
+                        continue
+                    na = ot.BaseAnchor()
+                    na.Format = 1
+                    na.XCoordinate = cx
+                    if cls_idx in BELOW_MARK_CLASSES and below_y is not None:
+                        na.YCoordinate = below_y
+                    else:
+                        na.YCoordinate = a.YCoordinate
+                    new_anchors.append(na)
+                new_rec = ot.BaseRecord()
+                new_rec.BaseAnchor = new_anchors
+                base_glyphs.append(missing_g)
+                base_records.append(new_rec)
+                added += 1
             # Rewrite coverage + array with the extended lists.
             sub.BaseCoverage.glyphs = base_glyphs
             sub.BaseArray.BaseRecord = base_records
@@ -1807,7 +1862,7 @@ def _add_arabic_mark_gpos(font, config) -> int:
             g = glyf[gname]
             g.recalcBounds(glyf)
             if g.numberOfContours > 0 and g.yMin < -100:
-                return g.yMin - 100   # 100-unit padding below the descender
+                return g.yMin - 250   # 100-unit padding below the descender
         return -327
     sub.BaseCoverage = ot.BaseCoverage()
     all_bases = list(variant_bases) + list(natural_bases)

@@ -1706,7 +1706,7 @@ def _add_widened_variant_anchors(font, config) -> int:
                 cx = (g.xMin + g.xMax) // 2
                 # If this final has a descender (yMin < -100), place
                 # below-marks below the descender's lowest point.
-                below_y = g.yMin - 250 if g.yMin < -100 else None
+                below_y = g.yMin - 40 if g.yMin < -100 else None
                 new_anchors = []
                 for cls_idx, a in enumerate(donor_anchors):
                     if a is None:
@@ -1725,6 +1725,34 @@ def _add_widened_variant_anchors(font, config) -> int:
                 base_glyphs.append(missing_g)
                 base_records.append(new_rec)
                 added += 1
+            # After the widened + missing-final backfill, also ensure
+            # every Hebrew consonant has a class-4 anchor above the
+            # letter top so U+0307 dot-above (used for Judeo-Arabic
+            # phoneme marking on כ̇ ג̇ ט̇ ץ̇) sits cleanly above the
+            # ink. Only touch subtables whose ClassCount already
+            # covers class 4 — otherwise editing the mark array would
+            # need a matching ClassCount bump and mark-record fixup
+            # which is beyond this override's scope.
+            if sub.ClassCount >= 5:
+                for cp in range(0x05D0, 0x05EB):
+                    gname = cmap.get(cp)
+                    if not gname or gname not in base_glyphs:
+                        continue
+                    gg = glyf[gname]
+                    gg.recalcBounds(glyf)
+                    if gg.numberOfContours <= 0:
+                        continue
+                    cx = (gg.xMin + gg.xMax) // 2
+                    dot_above_y = gg.yMax + 20
+                    idx = base_glyphs.index(gname)
+                    record = base_records[idx]
+                    while len(record.BaseAnchor) < 5:
+                        record.BaseAnchor.append(None)
+                    cls4 = ot.BaseAnchor()
+                    cls4.Format = 1
+                    cls4.XCoordinate = cx
+                    cls4.YCoordinate = dot_above_y
+                    record.BaseAnchor[4] = cls4
             # Rewrite coverage + array with the extended lists.
             sub.BaseCoverage.glyphs = base_glyphs
             sub.BaseArray.BaseRecord = base_records
@@ -1862,7 +1890,7 @@ def _add_arabic_mark_gpos(font, config) -> int:
             g = glyf[gname]
             g.recalcBounds(glyf)
             if g.numberOfContours > 0 and g.yMin < -100:
-                return g.yMin - 250   # 100-unit padding below the descender
+                return g.yMin - 40   # 100-unit padding below the descender
         return -327
     sub.BaseCoverage = ot.BaseCoverage()
     all_bases = list(variant_bases) + list(natural_bases)

@@ -2277,6 +2277,12 @@ function Showcase({ onLoad }: {
   // breaks under a single ordinal marker) and flat one-line-per-verse
   // display. Applies globally to all Judeo-Arabic verse-list items.
   const [multilineVerses, setMultilineVerses] = useState(true);
+  // Independent toggle for the auto-justify widening. Default ON to
+  // keep the shipped look but user can flip OFF to see marks in their
+  // natural (uncentered) positions — the widened glyphs don't yet
+  // carry per-variant GPOS mark anchors so niqqud sits under the
+  // original letter body position, not the widened glyph center.
+  const [justifyVerses, setJustifyVerses] = useState(true);
   // Justified verses cache: `${section}:${title}:${verseIdx}` → line with
   // U+05C6 clusters inserted. Populated by an effect that runs after the
   // showcase font loads. Falls back to the raw verse text while pending.
@@ -2294,7 +2300,7 @@ function Showcase({ onLoad }: {
   const SHOWCASE_FONT_SIZE_PX = 24;   // matches Tailwind's text-2xl
   const SHOWCASE_MAX_LEVELS_PER_LETTER = 2;
   useEffect(() => {
-    if (!open || !multilineVerses) return;
+    if (!open || !multilineVerses || !justifyVerses) return;
     for (const sec of SHOWCASE) {
       if (!openSections.has(sec.section)) continue;
       const script = SCRIPTS.find((s) => s.id === sec.scriptId);
@@ -2354,7 +2360,7 @@ function Showcase({ onLoad }: {
         });
       }
     }
-  }, [open, openSections, multilineVerses]);
+  }, [open, openSections, multilineVerses, justifyVerses]);
   const toggleSection = (name: string) => {
     setOpenSections((prev) => {
       const next = new Set(prev);
@@ -2435,6 +2441,33 @@ function Showcase({ onLoad }: {
             >
               one line per verse
             </button>
+            <span className="uppercase tracking-wider ml-4">Justify</span>
+            <button
+              type="button"
+              onClick={() => setJustifyVerses(true)}
+              disabled={!multilineVerses}
+              className={`px-2 py-0.5 rounded border ${
+                justifyVerses && multilineVerses
+                  ? "bg-neutral-900 text-white border-neutral-900"
+                  : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400 disabled:opacity-40"
+              }`}
+              title="Auto-justify: cluster U+05C6 kashidas on stretchable letters (ד ה ל ם ר ת) to make all lines the same length. Widened letter body shifts the mark anchor visually to the right side — GPOS mark-center anchors are a queued font-tooling follow-up."
+            >
+              on
+            </button>
+            <button
+              type="button"
+              onClick={() => setJustifyVerses(false)}
+              disabled={!multilineVerses}
+              className={`px-2 py-0.5 rounded border ${
+                !justifyVerses && multilineVerses
+                  ? "bg-neutral-900 text-white border-neutral-900"
+                  : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400 disabled:opacity-40"
+              }`}
+              title="No widening — every letter renders at its natural width, niqqud sits under the actual letter body."
+            >
+              off
+            </button>
           </div>
           {SHOWCASE.map((sec) => {
             const sectionOpen = openSections.has(sec.section);
@@ -2487,12 +2520,13 @@ function Showcase({ onLoad }: {
                                   style={{ fontFamily, listStyleType: "hebrew", listStylePosition: "outside" }}
                                 >
                                   {item.verses.map((v, vi) => {
-                                    // Prefer the auto-justified version (with U+05C6
-                                    // kashida clusters filling each internal line to
-                                    // the target column width) when the stretch font
-                                    // has loaded and the useEffect has produced one.
+                                    // When justify is on AND we're in multiline mode,
+                                    // use the auto-justified version if available.
+                                    // Otherwise the raw verse text (marks stay in
+                                    // natural positions under the un-widened letters).
                                     const key = `${sec.section}:${item.title}:${vi}`;
-                                    const source = multilineVerses ? (justifiedVerses[key] ?? v) : v;
+                                    const useJustified = multilineVerses && justifyVerses && (key in justifiedVerses);
+                                    const source = useJustified ? justifiedVerses[key] : v;
                                     const rendered = multilineVerses ? source : source.replace(/\n/g, " ");
                                     return (
                                       <li key={vi} style={{ whiteSpace: multilineVerses ? "pre-line" : "normal" }}>

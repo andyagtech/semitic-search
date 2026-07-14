@@ -1747,9 +1747,14 @@ def _add_arabic_mark_gpos(font, config) -> int:
     for cp, gname, _ in present:
         gdef.GlyphClassDef.classDefs[gname] = 3
 
-    # 2. Collect widened variants of stretchable letters.
+    # 2. Collect base glyphs to give Arabic-mark anchors:
+    #    (a) widened variants of stretchable letters (letter_s1..s16)
+    #    (b) ALL natural Hebrew consonants (22 base + 5 finals) — because
+    #        Amiri's marks were designed for wider Arabic bases, so on
+    #        narrower Hebrew letters they land off-centre unless we
+    #        override with a per-letter bbox-centre anchor.
     letters = config.get("letters") or {}
-    variants: list[str] = []
+    variant_bases: list[str] = []
     for cp, info in letters.items():
         letter_name = info.get("name")
         if not letter_name:
@@ -1757,8 +1762,14 @@ def _add_arabic_mark_gpos(font, config) -> int:
         for n in range(1, MAX_LEVELS + 1):
             v = f"{letter_name}_s{n}"
             if v in glyph_order:
-                variants.append(v)
-    if not variants:
+                variant_bases.append(v)
+    # Natural Hebrew consonants — U+05D0..U+05EA.
+    natural_bases: list[str] = []
+    for cp in range(0x05D0, 0x05EB):
+        gname = cmap.get(cp)
+        if gname and gname in glyph_order:
+            natural_bases.append(gname)
+    if not variant_bases and not natural_bases:
         return 0
 
     # 3. Build the new MarkBase subtable — class 0 = above, class 1 = below.
@@ -1780,20 +1791,53 @@ def _add_arabic_mark_gpos(font, config) -> int:
         sub.MarkArray.MarkRecord.append(mr)
     sub.MarkArray.MarkCount = len(sub.MarkArray.MarkRecord)
 
-    # Base anchors — centre X of each widened variant's advance; Y
-    # matches Amiri's mark anchor Y so the mark's own glyph metrics
-    # place the visible dots at their natural above/below positions.
+    # Base anchors —
+    #   • Widened variants: X = centre of the widened advance.
+    #   • Natural Hebrew letters: X = the glyph's own bbox centre
+    #     (so the Arabic mark sits above/below the visible ink,
+    #     not over Amiri's presumed-wider default position).
+    #   • Below-mark Y: -327 for normal letters, but final letters
+    #     with descenders (ך ן ץ ף — bounded to yMin < -100) get a
+    #     lower Y so the mark clears the descender's lowest point.
+    FINAL_LETTERS = {0x05DA, 0x05DF, 0x05E3, 0x05E5}  # ך ן ף ץ (ם has no descender)
+    def _below_y_for(gname: str, cp: int | None) -> int:
+        # Extra clearance for finals — put the mark below the
+        # descender's lowest point instead of just below baseline.
+        if cp in FINAL_LETTERS:
+            g = glyf[gname]
+            g.recalcBounds(glyf)
+            if g.numberOfContours > 0 and g.yMin < -100:
+                return g.yMin - 100   # 100-unit padding below the descender
+        return -327
     sub.BaseCoverage = ot.BaseCoverage()
-    sub.BaseCoverage.glyphs = list(variants)
+    all_bases = list(variant_bases) + list(natural_bases)
+    sub.BaseCoverage.glyphs = all_bases
     sub.BaseArray = ot.BaseArray()
     sub.BaseArray.BaseRecord = []
-    for vname in variants:
+    # Widened variants first — centred on their inflated advance.
+    for vname in variant_bases:
         adv = hmtx[vname][0]
         cx = adv // 2
         above = ot.BaseAnchor(); above.Format = 1
         above.XCoordinate = cx; above.YCoordinate = 801
         below = ot.BaseAnchor(); below.Format = 1
         below.XCoordinate = cx; below.YCoordinate = -327
+        br = ot.BaseRecord()
+        br.BaseAnchor = [above, below]
+        sub.BaseArray.BaseRecord.append(br)
+    # Then natural Hebrew letters — anchor at each letter's own bbox
+    # centre so Amiri marks visually centre on the Hebrew ink.
+    for gname in natural_bases:
+        g = glyf[gname]
+        g.recalcBounds(glyf)
+        # Fallback to advance-centre if the glyph has no visible outline.
+        cx = ((g.xMin + g.xMax) // 2) if g.numberOfContours > 0 else (hmtx[gname][0] // 2)
+        # Reverse-look-up the codepoint for final-letter descender check.
+        cp = next((c for c, n in cmap.items() if n == gname), None)
+        above = ot.BaseAnchor(); above.Format = 1
+        above.XCoordinate = cx; above.YCoordinate = 801
+        below = ot.BaseAnchor(); below.Format = 1
+        below.XCoordinate = cx; below.YCoordinate = _below_y_for(gname, cp)
         br = ot.BaseRecord()
         br.BaseAnchor = [above, below]
         sub.BaseArray.BaseRecord.append(br)
@@ -1836,7 +1880,7 @@ def _add_arabic_mark_gpos(font, config) -> int:
                     ls_holder.FeatureIndex.append(idx)
                     ls_holder.FeatureCount = len(ls_holder.FeatureIndex)
 
-    return len(variants)
+    return len(all_bases)
 
 
 def _splice_original_gsub_back(font, original_gsub_bytes):

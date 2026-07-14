@@ -665,7 +665,7 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Arabic pronunciation guides on Hebrew letters",
         description:
-          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind of Allah. Layout follows the Sefaria/Tanakh convention — verses appear as list items with Hebrew ordinal markers (א ב ג) in the gutter, and Gen 1:2 (ב) wraps across five clauses under a single marker. Each internal line is auto-justified: `autoJustifySemitic` measures the natural width, computes the deficit against a fixed column, and clusters U+05C6 kashidas on the six stretchable letters (ד ה ל ם ר ת) so shorter lines fill to match longer ones. The stretches are distributed automatically — no per-letter picking — so line lengths come out uniform without any hand-tuning.",
+          "Judeo-Arabic tradition — Arabic language written in Hebrew script by Jewish scholars (Saadia Gaon c. 900, Maimonides c. 1200). Two conventions layer on Hebrew consonants: the dot-above (U+0307, from the Sefaria/Tiberian tradition) marks Arabic phonemes with no Hebrew equivalent — כ̇ = خ (khāʾ), ג̇ = غ/ج, ט̇ = ظ, ץ̇ = ض — and Arabic shadda (U+0651) marks gemination: אללّה (Allah), אלסّמאואת (as-samāwāt), תהبّ (tahibb). Text: Saadia Gaon's Tafsir on Genesis 1:1-2, with all three vocalization systems LAYERED on the same consonants — Sefaria dots (Arabic phonemes), Arabic shadda + sukun (gemination + vowel-less), and Hebrew niqqud filling in every short vowel (patach ַ = fatha, chirik ִ = kasra, kubutz ֻ = damma, sheva ְ = sukun). A single Hebrew consonant can wear a Sefaria dot, an Arabic shadda, AND a Hebrew patach simultaneously (see the double-lam of אַלְלַّהֻ / אַלְלַّהִ, where the first ל carries sheva-for-sukun and the second carries shadda-for-gemination + patach-for-fatha). Case endings follow classical Arabic — nominative on the subject אַלְלַّהֻ (Allāhu) versus genitive on the possessed אַלְלַّהִ (Allāhi) in the phrase for the wind of Allah. Layout follows the Sefaria/Tanakh convention — verses appear as list items with Hebrew ordinal markers (א ב ג) in the gutter, and Gen 1:2 (ב) wraps across five clauses under a single marker. Each internal line is tastefully auto-justified: the target width is set to the longest natural line across the whole passage, and each stretchable letter (ד ה ל ם ר ת) is capped at 2 kashida levels max — so shorter lines fill up modestly rather than turning into railroad tracks. Longest lines get no stretches at all.",
         text:
           "אַוַّלַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇\n" +
           "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמ׆׆׆׆ְרִ וַר׆׆׆׆ִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הِ אלְמַאִ\n" +
@@ -2282,14 +2282,17 @@ function Showcase({ onLoad }: {
   // showcase font loads. Falls back to the raw verse text while pending.
   const [justifiedVerses, setJustifiedVerses] = useState<Record<string, string>>({});
 
-  // Auto-justify verse lines to matching widths whenever an item with the
-  // Semitic Stretch Hebrew font (`font: "stretch"`) is visible. Uses the
-  // existing `autoJustifySemitic` which measures the natural width, subtracts
-  // from `targetWidthPx`, and clusters U+05C6 kashidas on stretchable letters
-  // (ד ה ל ם ר ת). Waits for the stretch font to actually load before
-  // measuring so the ligature substitutions register.
-  const SHOWCASE_JUSTIFY_WIDTH_PX = 460;
+  // Tastefully auto-justify verse lines. Real Torah scribes widen 1-2
+  // letters per line modestly — not a railroad-track filling of every
+  // stretchable letter. Two guards against over-stretching:
+  //   1. Target width = the LONGEST natural line in the verse (not a
+  //      fixed 460 px). This means the longest line gets no stretches
+  //      and shorter lines just fill up to match it.
+  //   2. maxLevelsPerLetter = 2 (down from the default 16). Each letter
+  //      can only carry 2 stretch levels, so wide deficits get spread
+  //      across many letters rather than pushed onto a few.
   const SHOWCASE_FONT_SIZE_PX = 24;   // matches Tailwind's text-2xl
+  const SHOWCASE_MAX_LEVELS_PER_LETTER = 2;
   useEffect(() => {
     if (!open || !multilineVerses) return;
     for (const sec of SHOWCASE) {
@@ -2301,24 +2304,45 @@ function Showcase({ onLoad }: {
         if (!font) continue;
         ensureFontLoaded(font.family, font.file).then(() => {
           setJustifiedVerses((prev) => {
-            const next = { ...prev };
             const dirty = item.verses!.some((_, vi) => {
               const key = `${sec.section}:${item.title}:${vi}`;
               return !(key in prev);
             });
             if (!dirty) return prev;
+            // First pass: measure the longest natural line across ALL
+            // verses in this item so all three verses share the same
+            // target column width.
+            const scratch = document.createElement("div");
+            scratch.style.cssText =
+              `position:absolute;visibility:hidden;top:-9999px;left:-9999px;` +
+              `font:${SHOWCASE_FONT_SIZE_PX}px "${font.family}";` +
+              `font-feature-settings:'liga' 1,'calt' 1;` +
+              `direction:rtl;white-space:nowrap;`;
+            document.body.appendChild(scratch);
+            let longest = 0;
+            for (const v of item.verses!) {
+              for (const line of v.split("\n")) {
+                scratch.textContent = line;
+                longest = Math.max(longest, scratch.getBoundingClientRect().width);
+              }
+            }
+            document.body.removeChild(scratch);
+            if (longest <= 0) return prev;
+            const next = { ...prev };
             for (let vi = 0; vi < item.verses!.length; vi++) {
               const key = `${sec.section}:${item.title}:${vi}`;
               if (key in prev) continue;
               try {
                 next[key] = autoJustifySemitic(
                   item.verses![vi],
-                  SHOWCASE_JUSTIFY_WIDTH_PX,
+                  longest,
                   font.family,
                   SHOWCASE_FONT_SIZE_PX,
                   "'liga' 1, 'calt' 1",
                   HEBREW_STRETCHABLE,
                   HEBREW_STRETCH,
+                  "rtl",
+                  SHOWCASE_MAX_LEVELS_PER_LETTER,
                 );
               } catch (e) {
                 console.warn("showcase auto-justify failed", e);
@@ -2740,9 +2764,10 @@ function autoJustifySemitic(
   stretchable: Set<string>,
   stretchChar: string = "׆",
   direction: "rtl" | "ltr" = "rtl",
+  maxLevelsPerLetter: number = 16,
 ): string {
   const STRETCH = stretchChar;
-  const MAX_LEVELS_PER_LETTER = 16;
+  const MAX_LEVELS_PER_LETTER = maxLevelsPerLetter;
 
   const scratch = document.createElement("div");
   scratch.style.cssText =

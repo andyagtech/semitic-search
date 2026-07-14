@@ -1912,8 +1912,17 @@ def _add_arabic_mark_gpos(font, config) -> int:
     for vname in variant_bases:
         adv = hmtx[vname][0]
         cx = int(adv * 0.58)
+        # Above-mark Y: match the widened glyph's own top-of-ink so
+        # marks clear tall features (widened lamed's arm reaches
+        # y=793 same as natural ל).
+        vg = glyf[vname] if vname in glyf else None
+        if vg is not None:
+            vg.recalcBounds(glyf)
+            above_y = max(801, vg.yMax + 60) if vg.numberOfContours > 0 else 801
+        else:
+            above_y = 801
         above = ot.BaseAnchor(); above.Format = 1
-        above.XCoordinate = cx; above.YCoordinate = 801
+        above.XCoordinate = cx; above.YCoordinate = above_y
         below = ot.BaseAnchor(); below.Format = 1
         below.XCoordinate = cx; below.YCoordinate = -327
         br = ot.BaseRecord()
@@ -1928,8 +1937,13 @@ def _add_arabic_mark_gpos(font, config) -> int:
         cx = ((g.xMin + g.xMax) // 2) if g.numberOfContours > 0 else (hmtx[gname][0] // 2)
         # Reverse-look-up the codepoint for final-letter descender check.
         cp = next((c for c, n in cmap.items() if n == gname), None)
+        # Above-mark Y: normally 801 works, but tall letters (ל reaches
+        # y=793) sit within ~30 units of the mark's visible ink, which
+        # reads as a collision. Push above_y up to the letter's yMax + 60
+        # for anything tall enough to matter.
+        above_y = max(801, g.yMax + 60) if g.numberOfContours > 0 else 801
         above = ot.BaseAnchor(); above.Format = 1
-        above.XCoordinate = cx; above.YCoordinate = 801
+        above.XCoordinate = cx; above.YCoordinate = above_y
         below = ot.BaseAnchor(); below.Format = 1
         below.XCoordinate = cx; below.YCoordinate = _below_y_for(gname, cp)
         br = ot.BaseRecord()

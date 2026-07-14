@@ -1679,7 +1679,12 @@ def _add_widened_variant_anchors(font, config) -> int:
                             continue
                         na = ot.BaseAnchor()
                         na.Format = 1
-                        na.XCoordinate = v_adv // 2
+                        # 0.42 × advance (not dead-centre): a small
+                        # leftward bias gives visual balance against ל's
+                        # upper-left tail and equivalent hook features on
+                        # other stretchable letters. Matches the offset
+                        # used for Arabic marks in _add_arabic_mark_gpos.
+                        na.XCoordinate = int(v_adv * 0.42)
                         na.YCoordinate = a.YCoordinate
                         new_anchors.append(na)
                     new_rec = ot.BaseRecord()
@@ -1897,10 +1902,16 @@ def _add_arabic_mark_gpos(font, config) -> int:
     sub.BaseCoverage.glyphs = all_bases
     sub.BaseArray = ot.BaseArray()
     sub.BaseArray.BaseRecord = []
-    # Widened variants first — centred on their inflated advance.
+    # Widened variants — shift the anchor slightly left of the
+    # advance midpoint (0.42 × advance instead of 0.5 × advance).
+    # Purely-centred marks look off-balance against ל's upper-left
+    # tail hook and equivalent hook features on other stretchable
+    # letters; a small leftward bias makes marks visually anchor
+    # over the widened bar's centre rather than pushing them near
+    # the letter body on the right.
     for vname in variant_bases:
         adv = hmtx[vname][0]
-        cx = adv // 2
+        cx = int(adv * 0.42)
         above = ot.BaseAnchor(); above.Format = 1
         above.XCoordinate = cx; above.YCoordinate = 801
         below = ot.BaseAnchor(); below.Format = 1

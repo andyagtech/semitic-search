@@ -2477,7 +2477,12 @@ function Showcase({ onLoad }: {
                             if (item.verses && item.verses.length > 0) {
                               return (
                                 <ol
-                                  className="my-2 pr-6 space-y-1.5 text-2xl leading-relaxed text-neutral-900"
+                                  // space-y-5: verse-to-verse gap (larger than the
+                                  // 1-line line-height between wrapped clauses inside
+                                  // one verse). marker:font-bold / marker:text-[1.15em]
+                                  // beefs up the Hebrew ordinal markers (א ב ג) so
+                                  // they read as list bullets, not inline text.
+                                  className="my-2 pr-6 space-y-5 text-2xl leading-relaxed text-neutral-900 marker:font-bold marker:text-[1.15em] marker:text-neutral-800"
                                   dir={script?.dir ?? "rtl"}
                                   style={{ fontFamily, listStyleType: "hebrew", listStylePosition: "outside" }}
                                 >

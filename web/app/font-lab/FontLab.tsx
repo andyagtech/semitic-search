@@ -671,9 +671,9 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
           "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً וַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי וַגְ̇הִ אלְגַמ׆׆׆׆ְרִ וַר׆׆׆׆ִיחֻ אַלְלַّהִ תַהִבֻّ עַלַי וַגְ̇הِ אלְמַאִ\n" +
           "וַשַא אַלְלַّהֻ אַןְ יַכֻוןַ נֻורֻ פַכַאןַ נֻורֻ",
         verses: [
-          "אַוַّלַ מַא כַ̇לַקַ אַלְלַّהֻ אַלְסַّמַאוַאתִ וַאלְאַרְץַ̇",
+          "אַוַّלַ מַא כַ̇לַקַ אַלְלַّ׆׆׆׆׆׆הֻ\nאַלְסַّמַאוַאתִ וַאלְאַרְץַ̇",
           "וַאלְאַרְץֻ̇ כַאנַתְْ גַ̇אמִרַהً\nוַמֻסְתַבְחִרַהً וַטַ̇לַאםֻ עַלַי\nוַגְ̇הִ אלְגַמְרִ\nוַרִיחֻ אַלְלַّ׆׆׆׆׆׆הִ תַהִבֻّ\nעַלַי וַגְ̇הִ אלְמַאִ",
-          "וַשַא אַלְלַّהֻ אַןְ יַכֻוןַ נֻורֻ׆׆׆׆׆׆׆׆ פַכַאןַ נֻורֻ׆׆׆׆׆׆׆׆",
+          "וַשַא אַלְלַّהֻ אַןְ יַכֻוןַ\nנֻורֻ׆׆׆׆׆׆׆׆ פַכַאןַ נֻורֻ׆׆׆׆׆׆׆׆",
         ],
         font: "stretch",
         status: "experimental",
@@ -687,9 +687,9 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
           "וَאלْאَרْץُ̇ כَאנَתْ גَ̇אמِרَהً וَמُסْתَבּْחِרَהً וَטَ̇לَאםٌ עَלَי וَגْ̇הِ אלْגَמْרِ וَרِיחُ אَלْלَّהِ תَהِבּُّ עَלَי וَגْ̇הِ אלْמَאِ\n" +
           "וَשَא אَלْלَّהُ אَןْ יَכُוןَ נُורٌ פَכَאןَ נُורٌ",
         verses: [
-          "אَוَّלَ מَא כَ̇לَקَ אَלْלَّהُ אלْסَّמَאוَאתِ וَאלْאَרْץَ̇",
+          "אَוَّלَ מَא כَ̇לَקَ אَלْלَّ׆׆׆׆׆׆הُ\nאלْסَّמَאוَאתِ וَאלْאَרْץَ̇",
           "וَאלْאَרْץُ̇ כَאנَתْ גَ̇אמِרَהً\nוَמُסْתَבּْחِרَהً וَטَ̇לَאםٌ עَלَי\nוَגْ̇הِ אלْגَמْרِ\nוَרِיחُ אَלْלَّ׆׆׆׆׆׆הِ תَהِבּُّ\nעَלَי וَגْ̇הِ אלْמَאِ",
-          "וَשَא אَלْלَّהُ אَןْ יَכُוןَ נُורٌ׆׆׆׆׆׆׆׆ פَכَאןَ נُורٌ׆׆׆׆׆׆׆׆",
+          "וَשَא אَלْלَّהُ אَןْ יَכُוןَ\nנُורٌ׆׆׆׆׆׆׆׆ פَכَאןَ נُורٌ׆׆׆׆׆׆׆׆",
         ],
         font: "stretch",
         status: "experimental",
@@ -2273,6 +2273,10 @@ function Showcase({ onLoad }: {
 }) {
   const [open, setOpen] = useState(false);
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
+  // Toggle between multi-line verses (preserves \n as visible line
+  // breaks under a single ordinal marker) and flat one-line-per-verse
+  // display. Applies globally to all Judeo-Arabic verse-list items.
+  const [multilineVerses, setMultilineVerses] = useState(true);
   const toggleSection = (name: string) => {
     setOpenSections((prev) => {
       const next = new Set(prev);
@@ -2327,6 +2331,33 @@ function Showcase({ onLoad }: {
       </button>
       {open && (
         <div className="px-4 pb-4 space-y-2">
+          <div className="flex items-center gap-2 text-xs text-neutral-500 pb-1">
+            <span className="uppercase tracking-wider">Verse layout</span>
+            <button
+              type="button"
+              onClick={() => setMultilineVerses(true)}
+              className={`px-2 py-0.5 rounded border ${
+                multilineVerses
+                  ? "bg-neutral-900 text-white border-neutral-900"
+                  : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+              }`}
+              title="Preserve line breaks within a verse — Gen 1:1 splits after Allah, Gen 1:2 spans five clauses, Gen 1:3 splits before nūr."
+            >
+              multi-line
+            </button>
+            <button
+              type="button"
+              onClick={() => setMultilineVerses(false)}
+              className={`px-2 py-0.5 rounded border ${
+                !multilineVerses
+                  ? "bg-neutral-900 text-white border-neutral-900"
+                  : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+              }`}
+              title="Collapse each verse to a single line; the browser wraps naturally at the container width."
+            >
+              one line per verse
+            </button>
+          </div>
           {SHOWCASE.map((sec) => {
             const sectionOpen = openSections.has(sec.section);
             return (
@@ -2373,11 +2404,13 @@ function Showcase({ onLoad }: {
                                   style={{ fontFamily, listStyleType: "hebrew", listStylePosition: "outside" }}
                                 >
                                   {item.verses.map((v, vi) => (
-                                    // pre-line preserves \n within a verse as a visible
-                                    // line break — used for multi-line verses (Gen 1:2)
-                                    // where a single <li> spans two rendered rows but
-                                    // shows one Hebrew ordinal marker in the gutter.
-                                    <li key={vi} style={{ whiteSpace: "pre-line" }}>{v}</li>
+                                    // Multi-line mode: `whiteSpace: pre-line` preserves
+                                    // \n as visible line breaks under a single ordinal
+                                    // marker. Flat mode: strip the \n so each verse is
+                                    // one line and browser wrapping fills the container.
+                                    <li key={vi} style={{ whiteSpace: multilineVerses ? "pre-line" : "normal" }}>
+                                      {multilineVerses ? v : v.replace(/\n/g, " ")}
+                                    </li>
                                   ))}
                                 </ol>
                               );

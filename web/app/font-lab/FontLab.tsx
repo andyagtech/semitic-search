@@ -2268,6 +2268,19 @@ export function FontLab() {
   );
 }
 
+// URL-safe slug for showcase items — used as the anchor id and in
+// the # portion of shareable links (e.g. #hebrew-vocalized-tafsir-rasag).
+function showcaseSlug(sectionName: string, itemTitle: string): string {
+  const clean = (s: string) =>
+    s.toLowerCase()
+     .replace(/\(.*?\)/g, " ")   // drop parentheticals
+     .replace(/[^a-z0-9]+/g, "-")
+     .replace(/^-+|-+$/g, "");
+  const section = clean(sectionName);
+  const title = clean(itemTitle);
+  return `${section}-${title}`;
+}
+
 function Showcase({ onLoad }: {
   onLoad: (item: ShowcaseItem, scriptId: string) => void;
 }) {
@@ -2277,6 +2290,34 @@ function Showcase({ onLoad }: {
   // breaks under a single ordinal marker) and flat one-line-per-verse
   // display. Applies globally to all Judeo-Arabic verse-list items.
   const [multilineVerses, setMultilineVerses] = useState(true);
+  // If the URL loads with a hash matching one of our showcase items
+  // (e.g. #hebrew-vocalized-tafsir-rasag), auto-expand the showcase +
+  // the item's section and scroll to it. Runs once on mount; also
+  // listens to hashchange so back/forward re-triggers the scroll.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const applyHash = () => {
+      const hash = window.location.hash.replace(/^#/, "");
+      if (!hash) return;
+      for (const sec of SHOWCASE) {
+        for (const item of sec.items) {
+          if (showcaseSlug(sec.section, item.title) === hash) {
+            setOpen(true);
+            setOpenSections((prev) => new Set(prev).add(sec.section));
+            // Defer scroll so the section actually renders before we look for the id.
+            setTimeout(() => {
+              const el = document.getElementById(hash);
+              if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 60);
+            return;
+          }
+        }
+      }
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, []);
   // Independent toggle for the auto-justify widening. Default ON to
   // keep the shipped look but user can flip OFF to see marks in their
   // natural (uncentered) positions — the widened glyphs don't yet
@@ -2489,10 +2530,29 @@ function Showcase({ onLoad }: {
                   <ul className="p-2 space-y-2">
                     {sec.items.map((item, i) => {
                       const script = SCRIPTS.find((s) => s.id === sec.scriptId);
+                      const slug = showcaseSlug(sec.section, item.title);
                       return (
-                        <li key={i} className="border border-neutral-100 rounded p-3 hover:border-neutral-300 transition">
+                        <li
+                          key={i}
+                          id={slug}
+                          className="border border-neutral-100 rounded p-3 hover:border-neutral-300 transition scroll-mt-24"
+                        >
                           <div className="flex items-baseline justify-between gap-2 mb-1">
-                            <div className="text-sm font-medium text-neutral-800">{item.title}</div>
+                            <div className="text-sm font-medium text-neutral-800 flex items-baseline gap-1.5">
+                              <span>{item.title}</span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const url = `${window.location.origin}${window.location.pathname}#${slug}`;
+                                  // Update the URL bar without reloading + write to clipboard.
+                                  window.history.replaceState(null, "", `#${slug}`);
+                                  navigator.clipboard?.writeText(url).catch(() => {});
+                                }}
+                                title={`Copy link to this demo: #${slug}`}
+                                className="text-neutral-400 hover:text-neutral-700 text-xs leading-none"
+                                aria-label={`Copy link to ${item.title}`}
+                              >#</button>
+                            </div>
                             <span className={`text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${
                               item.status === "live" ? "bg-emerald-50 text-emerald-800 border border-emerald-200" :
                               item.status === "experimental" ? "bg-amber-50 text-amber-800 border border-amber-200" :

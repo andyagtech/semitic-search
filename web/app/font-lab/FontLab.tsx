@@ -605,25 +605,44 @@ function FontPicker({
       </button>
       {open && (
         <div className="absolute z-30 left-0 right-0 top-full mt-1 max-h-[28rem] overflow-y-auto bg-white border border-neutral-300 rounded shadow-lg">
-          {fonts.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              onClick={() => { onChange(f.id); setOpen(false); }}
-              className={`w-full text-left px-3 py-2 border-b border-neutral-100 last:border-b-0 hover:bg-amber-50 ${f.id === value ? "bg-amber-50/70" : ""}`}
-            >
-              <div className="text-xs text-neutral-700">{f.label}</div>
+          {fonts.map((f) => {
+            // Show a download icon on the Semitic Stretch fonts we've packaged
+            // for GitHub release (build derivatives, not upstream fonts).
+            const isStretchDerivative = f.file.startsWith("SemiticStretch");
+            return (
               <div
-                className="mt-0.5 text-xl text-neutral-900 truncate"
-                style={{ fontFamily: `"${f.family}", system-ui`, direction: dir }}
+                key={f.id}
+                className={`relative border-b border-neutral-100 last:border-b-0 hover:bg-amber-50 ${f.id === value ? "bg-amber-50/70" : ""}`}
               >
-                {sampleText}
+                <button
+                  type="button"
+                  onClick={() => { onChange(f.id); setOpen(false); }}
+                  className="w-full text-left px-3 py-2"
+                >
+                  <div className="text-xs text-neutral-700 pr-6">{f.label}</div>
+                  <div
+                    className="mt-0.5 text-xl text-neutral-900 truncate"
+                    style={{ fontFamily: `"${f.family}", system-ui`, direction: dir }}
+                  >
+                    {sampleText}
+                  </div>
+                  {f.note && (
+                    <div className="mt-0.5 text-[11px] text-neutral-500 leading-snug">{f.note}</div>
+                  )}
+                </button>
+                {isStretchDerivative && (
+                  <a
+                    href={`/fonts/${f.file}`}
+                    download
+                    onClick={(e) => e.stopPropagation()}
+                    title={`Download ${f.label} (.ttf)`}
+                    className="absolute top-2 right-2 text-xs px-1.5 py-0.5 rounded text-neutral-500 hover:text-neutral-900 hover:bg-white/60"
+                    aria-label={`Download ${f.label}`}
+                  >↓</a>
+                )}
               </div>
-              {f.note && (
-                <div className="mt-0.5 text-[11px] text-neutral-500 leading-snug">{f.note}</div>
-              )}
-            </button>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
@@ -1497,7 +1516,14 @@ export function FontLab() {
       {tourOpen && script.id === "hebrew" && (
         <CoachMarks onClose={closeTour} />
       )}
-      <div className="mb-3 flex justify-end">
+      <div className="mb-3 flex justify-end gap-2">
+        <a
+          href="/fonts"
+          className="text-xs px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-700"
+          title="Download the 19 Semitic Stretch fonts (Hebrew, Syriac, Ethiopic) — free, OFL / GPL-2.0."
+        >
+          ↓ Download Semitic Stretch fonts
+        </a>
         <button
           type="button"
           onClick={() => setTourOpen(true)}

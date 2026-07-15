@@ -738,19 +738,30 @@ function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
               direction each glyph reads and where the cursor should sit.
             </p>
             <p>
+              A quick vocabulary note before we go further: programmers
+              call any run of text characters a <b>string</b> — the
+              letters, digits, spaces, and punctuation that make up a
+              word, a sentence, or a whole paragraph, stored side by
+              side in memory. Everything you type into the box above is
+              a string. Everything on this page is strings. When we say
+              &quot;the algorithm runs over a string&quot; below, that
+              just means it reads the characters left-to-right (in
+              memory) and decides what to do with each one.
+            </p>
+            <p>
               The rules live in <b>Unicode Annex #9: The Bidirectional
               Algorithm</b> (UAX #9). It runs over every string that mixes
               directions and produces a <b>resolved level</b> for each
               character (an even integer = LTR, odd = RTL). Then the
-              renderer walks the string in <em>visual</em> order using
+              renderer walks the string in <em>visual</em>{" "}order using
               those levels. The algorithm is deterministic, spec&apos;d
               since Unicode 3.0 (1999), and implemented consistently in
               every browser, terminal, OS, and Word processor.
             </p>
             <p>
               <b>The reason it&apos;s hard</b>: Unicode strings are stored
-              in <em>logical</em> order (the order you&apos;d dictate the
-              letters), but they render in <em>visual</em> order (what you
+              in <em>logical</em>{" "}order (the order you&apos;d dictate the
+              letters), but they render in <em>visual</em>{" "}order (what you
               see on screen). For pure LTR or pure RTL text these are
               trivially related — one is the reverse of the other. For
               mixed text they diverge in ways that are locally correct

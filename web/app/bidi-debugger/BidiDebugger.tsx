@@ -1211,6 +1211,156 @@ function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
           </div>
         </details>
 
+        {/* Punctuation-jumps-to-wrong-side — Hebrew/Arabic native complaint */}
+        <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
+          <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+            <span className="text-neutral-400">▸</span> &quot;I typed a period and the cursor jumped&quot; — the most common bidi complaint
+          </summary>
+          <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-3">
+            <p>
+              You type a whole Hebrew or Arabic sentence, everything looks
+              right, and then you press <code>.</code> or <code>,</code> at
+              the end — the period appears on the WRONG side of the
+              sentence and the cursor teleports across the screen. This
+              is the single most common bidi complaint from native RTL
+              typists. Here&apos;s exactly what&apos;s happening and how
+              to stop it.
+            </p>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">The scenario</p>
+              <p>
+                Text box has default paragraph direction{" "}
+                <code>dir=&quot;ltr&quot;</code> (or unspecified, which is
+                the same on most Latin-locale systems). User types the
+                Hebrew sentence <code>שלום עולם</code> (&quot;Hello
+                world&quot;). Renders visually as{" "}
+                <code>שלום עולם</code> — Hebrew reversed, RTL run flowing
+                right-to-left. Cursor sits at the left edge of the visual
+                text (which is where memory-position-end lands in an LTR
+                paragraph).
+              </p>
+              <p>
+                User presses <code>.</code>. Memory becomes{" "}
+                <code>[ש, ל, ו, ם, &nbsp;, ע, ו, ל, ם, .]</code>. Renders
+                as <code>שלום עולם.</code> — the period appears on the
+                RIGHT of the sentence, and the cursor jumps from the left
+                edge (where it was) to the far right (after the period).
+                Feels catastrophic.
+              </p>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">
+                Why the period lands on the wrong side
+              </p>
+              <p>
+                The period is a neutral (<code>ON</code>). Its neighbors:
+                <code> ם</code> (R) on one side, end-of-paragraph on the
+                other. UAX #9 rule N2 says: neutrals adjacent to the
+                paragraph boundary resolve toward the <em>paragraph
+                direction</em>. Paragraph is LTR here, so the period
+                resolves as L (level 0). The Hebrew run is at level 1
+                (odd = RTL). Level-0 chars come AFTER level-1 chars
+                visually in an LTR paragraph → period sits to the right
+                of the Hebrew.
+              </p>
+              <p>
+                From a Hebrew reader&apos;s perspective, the sentence
+                &quot;ends&quot; on the LEFT (where reading order stops).
+                Putting the period on the RIGHT is like putting an
+                English period at the beginning of a sentence:
+                <code> .Hello world</code>. Nonsensical.
+              </p>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Fixes, in order of preference</p>
+
+              <p className="font-medium text-neutral-800 pt-1">
+                1. Set the container direction to RTL (best)
+              </p>
+              <pre className="font-mono text-[11px] bg-neutral-100 p-2 rounded overflow-x-auto whitespace-pre-wrap">{`<input dir="rtl" ...>
+<textarea dir="rtl" ...>
+<div dir="rtl">...</div>`}</pre>
+              <p>
+                Now the paragraph is RTL. When the user types a period at
+                the end, UAX #9 rule N2 resolves it toward RTL (the
+                paragraph direction), giving it level 1 — SAME as the
+                Hebrew — so the period sits at the visual LEFT of the
+                sentence, correctly placed as sentence-end for RTL
+                reading. Cursor stays where the user expects.
+              </p>
+
+              <p className="font-medium text-neutral-800 pt-1">
+                2. Use <code>dir=&quot;auto&quot;</code> if the field
+                accepts both directions
+              </p>
+              <pre className="font-mono text-[11px] bg-neutral-100 p-2 rounded overflow-x-auto whitespace-pre-wrap">{`<input dir="auto" ...>
+<textarea dir="auto" ...>`}</pre>
+              <p>
+                Browser infers paragraph direction from the FIRST
+                strong-typed character in the field. Empty field →
+                defaults to the app&apos;s locale. Type an English word
+                first → LTR. Type Hebrew or Arabic first → flips to RTL.
+                This is the RIGHT DEFAULT for any user-facing text input
+                in a multilingual app. It costs nothing and prevents the
+                period-jump for every RTL typist.
+              </p>
+
+              <p className="font-medium text-neutral-800 pt-1">
+                3. Insert RLM after the punctuation (targeted fix)
+              </p>
+              <pre className="font-mono text-[11px] bg-neutral-100 p-2 rounded overflow-x-auto whitespace-pre-wrap">{'שלום עולם.‏   (period followed by U+200F RLM)'}</pre>
+              <p>
+                If you can&apos;t change the container direction (legacy
+                CMS, third-party embed), give the period a strong RTL
+                neighbor. RLM (Right-to-Left Mark, U+200F) is an invisible
+                strong-R character; placing it after the period gives the
+                neutral a strong-R neighbor to its right, so bidi
+                resolution treats the period as RTL and it lands on the
+                visual left. This is the fix documented in W3C&apos;s
+                &quot;Inline markup and bidirectional text in HTML&quot;.
+              </p>
+
+              <p className="font-medium text-neutral-800 pt-1">
+                4. Wrap the whole sentence in RLI…PDI
+              </p>
+              <pre className="font-mono text-[11px] bg-neutral-100 p-2 rounded overflow-x-auto whitespace-pre-wrap">{'⁧שלום עולם.⁩   (RLI + text + PDI)'}</pre>
+              <p>
+                Force an RTL isolate around the sentence with{" "}
+                <code>U+2067</code> RLI (Right-to-Left Isolate) and{" "}
+                <code>U+2069</code> PDI. Inside the isolate the
+                &quot;paragraph direction&quot; is RTL regardless of the
+                surrounding container. Use this when you&apos;re
+                emitting the string into some other person&apos;s
+                paragraph (email body, chat message, log line) and can&apos;t
+                predict their container direction. FSI would work too,
+                but RLI is more explicit for content you KNOW is RTL.
+              </p>
+            </div>
+
+            <div className="p-2 rounded bg-emerald-50 border border-emerald-200">
+              <p className="font-semibold text-emerald-900 mb-1">
+                Recommendation for app developers
+              </p>
+              <p className="text-emerald-900">
+                <b>Every user-facing text input should be{" "}
+                <code>dir=&quot;auto&quot;</code></b> — one attribute,
+                covers the entire class of &quot;period jumped to the
+                wrong side&quot; complaints for every RTL user. Same for
+                chat message bubbles, comment rendering, email preview,
+                anywhere user content might be RTL. It costs nothing.
+                LTR users see no change (their first char is Latin →
+                paragraph stays LTR).
+              </p>
+              <pre className="mt-2 font-mono text-[11px] bg-white p-2 rounded border border-emerald-200 overflow-x-auto">{`<input type="text" dir="auto" />
+<textarea dir="auto" />
+<div dir="auto">{userMessage}</div>`}</pre>
+            </div>
+          </div>
+        </details>
+
         {/* Cursor behavior explainer */}
         <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
           <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">

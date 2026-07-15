@@ -227,10 +227,8 @@ const SCRIPTS: ScriptEntry[] = [
       "በቀዳሚ ገብረ እግዚአብሔር\n" +
       "ሰማየ ወምድረ",
     fonts: [
-      { id: "stretchethiopic", label: "Semitic Stretch Noto Serif Ethiopic", file: "SemiticStretchNotoSerifEthiopic.ttf", family: "FL_StretchNotoSerifEthiopic",
-        note: "Custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Trigger is U+139A (unassigned Ethiopic Supplement) clustered after the fidel." },
-      { id: "stretchethiopicdiag", label: "DIAG — Ethiopic (trigger = vertical bar)", file: "SemiticStretchNotoSerifEthiopicDIAG.ttf", family: "FL_StretchNotoSerifEthiopicDIAG",
-        note: "Diagnostic build: identical to Semitic Stretch Ethiopic above but the U+139A trigger glyph is a distinctive tall vertical bar. If you see bars between fidels, Chrome IS using our font (ligature bug lives elsewhere). If you see the same small dots as the production build, Chrome is falling back to a system Ethiopic font for U+139A." },
+      { id: "stretchethiopic", label: "Semitic Stretch Noto Serif Ethiopic (experimental)", file: "SemiticStretchNotoSerifEthiopic.ttf", family: "FL_StretchNotoSerifEthiopic",
+        note: "Custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Ligature fires correctly under hb-shape (so it works in Word / InDesign / LibreOffice), but Chrome doesn't reliably route the trigger codepoint through @font-face AND the current widening algorithm tears the 3-column fidel structure — see the showcase card for details." },
       { id: "sans",  label: "Noto Sans Ethiopic",  file: "NotoSansEthiopic.ttf", family: "FL_NotoSansEthiopic" },
       { id: "serif", label: "Noto Serif Ethiopic", file: "NotoSerifEthiopic.ttf", family: "FL_NotoSerifEthiopic" },
     ],
@@ -559,18 +557,6 @@ async function loadFontMetrics(file: string): Promise<FontMetrics | null> {
 
 // Register @font-face for the selected font so the browser can render it.
 const loadedFamilies = new Set<string>();
-// Per-codepoint override @font-face: pair each stretch-trigger codepoint
-// with the font that owns its widening ligature, using a NARROW
-// unicode-range so Chrome must pick that font for the codepoint. Broad
-// `unicode-range: U+0-10FFFF` didn't reliably win over Chrome's system-
-// font preference for unusual codepoints (verified with a diagnostic
-// build). A narrow unicode-range is the documented, spec-mandated
-// signal to force selection.
-const TRIGGER_OVERRIDES: Record<string, string> = {
-  // Ethiopic stretch trigger — U+139A (unassigned Ethi Suppl slot)
-  SemiticStretchNotoSerifEthiopic: "U+139A",
-  "SemiticStretchNotoSerifEthiopic.ttf": "U+139A",
-};
 function ensureFontLoaded(family: string, file: string): Promise<void> {
   if (loadedFamilies.has(family)) return Promise.resolve();
   return new Promise((resolve) => {
@@ -591,17 +577,7 @@ function ensureFontLoaded(family: string, file: string): Promise<void> {
     // that don't need it — a non-issue since we're always rendering the
     // script that matches the selected face.
     const unicodeRange = "unicode-range: U+0000-10FFFF;";
-    // Base @font-face for the whole font. Broad range.
-    let css = `@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: swap; ${unicodeRange} }`;
-    // Override @font-face with a NARROW unicode-range for the trigger
-    // codepoint. Chrome tie-breaks font selection toward the narrower
-    // matching range — this forces Chrome to use our file for the trigger
-    // even though the broad rule above nominally covers it.
-    const triggerRange = TRIGGER_OVERRIDES[family] ?? TRIGGER_OVERRIDES[file];
-    if (triggerRange) {
-      css += `\n@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: block; unicode-range: ${triggerRange}; }`;
-    }
-    style.textContent = css;
+    style.textContent = `@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: swap; ${unicodeRange} }`;
     document.head.appendChild(style);
     loadedFamilies.add(family);
     const docWithFonts = document as unknown as { fonts?: FontFaceSet };
@@ -980,19 +956,11 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         status: "live",
       },
       {
-        title: "Ge'ez calligraphic letter widening",
+        title: "Ge'ez calligraphic letter widening (download-only for now)",
         description:
-          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font that widens the horizontal decorative strokes of 5 consonant series (መ ጠ ሠ ሐ ወ) × all 7 vowel orders, matching the calligraphic tradition of illuminated Ge'ez manuscripts (14th–19th c.). 560 total glyph variants. Trigger is U+139A (unassigned Ethiopic Supplement) clustered after the fidel — a real Ethiopic-script codepoint so Chrome routes it through our font. The auto-justify button clusters triggers automatically whenever the Semitic Stretch Ethiopic font is active.",
-        text: "መ᎚᎚᎚ ጠ᎚᎚᎚ ሠ᎚᎚᎚ ሐ᎚᎚᎚ ወ᎚᎚᎚",
+          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font intended to widen the horizontal strokes of 5 consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. TWO PROBLEMS were uncovered during browser testing: (1) Chrome does not reliably route the trigger codepoint through our @font-face even with unicode-range explicitly declared — a Blink font-selection heuristic that CSS Fonts Level 3 doesn't document; (2) the underlying widening algorithm splits Ethiopic fidels down the middle (they have 3-column structure, not 2), producing torn glyphs. hb-shape confirms the OpenType ligature fires correctly — so the font is usable in offline apps (Word, InDesign, LibreOffice) at low stretch levels. Fixing the browser display requires a new per-fidel widening algorithm that respects the 3-column geometry (in progress).",
+        text: "መ ጠ ሠ ሐ ወ",
         font: "stretchethiopic",
-        status: "live",
-      },
-      {
-        title: "DIAG — is Chrome using our font for U+139A?",
-        description:
-          "Diagnostic. Loads the DIAG-Ethiopic font (identical to Semitic Stretch Ethiopic except U+139A is drawn as a distinctive tall vertical bar). Click Load into editor: if you see vertical bars between fidels → Chrome IS using our font, the ligature is failing for another reason. If you see the same small dots as the production card above → Chrome is falling back to a system Ethiopic font for U+139A even though our @font-face declares unicode-range: U+0000-10FFFF.",
-        text: "መ᎚᎚᎚ ጠ᎚᎚᎚ ሠ᎚᎚᎚ ሐ᎚᎚᎚ ወ᎚᎚᎚",
-        font: "stretchethiopicdiag",
         status: "experimental",
       },
       {

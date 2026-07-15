@@ -756,8 +756,8 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Judeo-Arabic vocalization: three layers on one word",
         description:
-          "Demonstrates the newly-wired two-tier vocalization for Judeo-Arabic. Every consonant here carries UP TO THREE marks stacked cleanly by the font's mkmk rules: (1) the Hebrew consonant itself, (2) a Hebrew niqqud below it (patah / hiriq / qubutz / sheva), (3) an Arabic haraka (fatha ◌َ, kasra ◌ِ, damma ◌ُ) BELOW the niqqud. Type letters, then hit the Arabic marks row above the keyboard to add a/e/o under whichever niqqud you've placed. The mkmk chain — base letter → niqqud → haraka — is baked into every one of the 17 Hebrew stretch fonts. Sample: כוס אמך, a Judeo-Arabic phrase (\"your mother's cup\", loanword-heavy Israeli colloquial), shown with both vocalization systems layered — Hebrew niqqud giving the Tiberian reading, Arabic haraka giving the classical pronunciation.",
-        text: "כֻُוֹס אִِמֶّךָ",
+          "Demonstrates the newly-wired two-tier vocalization for Judeo-Arabic. Every consonant that carries a below-mark niqqud can stack an Arabic haraka underneath it, giving three visual layers: (1) the Hebrew consonant itself, (2) a Hebrew niqqud below it (patah / hiriq / qubutz / sheva / segol / …), (3) an Arabic haraka (fatha ◌َ, kasra ◌ِ, damma ◌ُ) BELOW the niqqud. Type letters, then hit the Arabic marks row above the keyboard to add a/e/o under whichever niqqud you've placed. The mkmk chain — base letter → niqqud → haraka — is baked into every one of the 17 Hebrew stretch fonts. Sample: כוס אמך (kus emak) with the pointing כּוּס אֶמַכּ — kaf+dagesh + vav+dagesh (shuruk) + samekh + alef+segol + mem+patah + kaf+dagesh. Kasra ◌ِ stacks below the segol and fatha ◌َ below the patah so the same short vowel is marked in both systems simultaneously.",
+        text: "כּוּס אֶِמַَכּ",
         font: "stretch",
         status: "experimental",
       },

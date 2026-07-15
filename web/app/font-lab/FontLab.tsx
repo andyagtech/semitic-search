@@ -228,7 +228,9 @@ const SCRIPTS: ScriptEntry[] = [
       "ሰማየ ወምድረ",
     fonts: [
       { id: "stretchethiopic", label: "Semitic Stretch Noto Serif Ethiopic", file: "SemiticStretchNotoSerifEthiopic.ttf", family: "FL_StretchNotoSerifEthiopic",
-        note: "custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Trigger is U+E000 (Private Use Area) clustered after the fidel — U+2060 was originally used but Chrome strips it as a default-ignorable before shaping." },
+        note: "Custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Trigger is U+1390 (Ethiopic Tonal Mark Yizet) clustered after the fidel." },
+      { id: "stretchethiopicdiag", label: "DIAG — Ethiopic (trigger = vertical bar)", file: "SemiticStretchNotoSerifEthiopicDIAG.ttf", family: "FL_StretchNotoSerifEthiopicDIAG",
+        note: "Diagnostic build: identical to Semitic Stretch Ethiopic above but the U+1390 trigger glyph is a distinctive tall vertical bar. If you see bars between fidels, Chrome IS using our font (ligature bug lives elsewhere). If you see the same small dots as the production build, Chrome is falling back to a system Ethiopic font for U+1390." },
       { id: "sans",  label: "Noto Sans Ethiopic",  file: "NotoSansEthiopic.ttf", family: "FL_NotoSansEthiopic" },
       { id: "serif", label: "Noto Serif Ethiopic", file: "NotoSerifEthiopic.ttf", family: "FL_NotoSerifEthiopic" },
     ],
@@ -817,7 +819,7 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         title: "Latin kashida — widened caps on Semitic Stretch Kufam",
         description:
           "Applying the Semitic-stretch mechanism to Latin: H E F L T I Z each have widened GSUB variants triggered by U+02D7 clustered after the letter (`H˗˗˗˗` → wide H). Same box-class split we use for Nohadra Syriac. Uppercase only for now; the flat-topped Latin caps are the natural fit — round letters (O, C, S) and diagonals (A, V, W) don't have a spine to stretch.",
-        text: "HE˗˗˗˗˗˗˗˗˗˗LLO · TE˗˗˗˗˗˗ST · FI˗˗˗˗˗˗˗L˗˗˗˗˗L",
+        text: "HE˗˗˗˗˗˗˗˗˗˗LLO · TE˗˗˗˗˗˗ST · FEL˗˗˗˗˗˗˗L˗˗˗˗˗",
         font: "stretchkufam",
         status: "experimental",
       },

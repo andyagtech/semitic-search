@@ -906,7 +906,10 @@ NOTO_KUFAM_LATIN = {
         0x0046: {"name": "F_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 318},  # F
         0x004C: {"name": "L_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 298},  # L
         0x0054: {"name": "T_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 292},  # T
-        0x0049: {"name": "I_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 144},  # I
+        # I intentionally omitted: it's a single vertical stroke (x=96..192)
+        # with no horizontal spine, so the box-class split lands INSIDE the
+        # ink and produces a wide black rectangle instead of a widened I.
+        # Latin has no clean widening for single-stem verticals.
         0x005A: {"name": "Z_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 305},  # Z
     },
 }

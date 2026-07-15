@@ -1612,13 +1612,20 @@ export function FontLab() {
       {tourOpen && script.id === "hebrew" && (
         <CoachMarks onClose={closeTour} />
       )}
-      <div className="mb-3 flex justify-end gap-2">
+      <div className="mb-3 flex justify-end gap-2 flex-wrap">
         <a
           href="/fonts"
           className="text-xs px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-700"
           title="Download the 19 Semitic Stretch fonts (Hebrew, Syriac, Ethiopic) — free, OFL / GPL-2.0."
         >
           ↓ Download Semitic Stretch fonts
+        </a>
+        <a
+          href="/bidi-debugger"
+          className="text-xs px-2.5 py-1 rounded border border-sky-400 bg-sky-50 hover:bg-sky-100 text-sky-800"
+          title="Debug mixed-direction text: visual vs logical order, invisible bidi controls, per-char inspector, and a 'wrap for safe paste' fixer."
+        >
+          ⇋ BiDi debugger
         </a>
         <button
           type="button"

@@ -557,7 +557,19 @@ function ensureFontLoaded(family: string, file: string): Promise<void> {
     // Hebrew, whose GSUB table we regenerate) are picked up instead of the
     // stale copy held by the browser's font cache across sessions.
     const bust = `?v=${Date.now()}`;
-    style.textContent = `@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: swap; }`;
+    // Broad `unicode-range` overrides Chrome's default "which font handles
+    // this codepoint?" heuristic (based on OS/2.ulUnicodeRange bits and a
+    // primary-script guess). Our stretch fonts' widening triggers live at
+    // U+070D, U+1390, and U+05C6 — Chrome was silently falling back to a
+    // system font for U+1390 / U+E000 even though our cmap has them, which
+    // broke the ligature (a fidel in our font + triggers in some other
+    // font can't ligate). U+0000-10FFFF says "use this font for anything
+    // it can render", which is what per-glyph cmap lookup is supposed to
+    // do anyway. Downside: browsers won't skip loading the font on pages
+    // that don't need it — a non-issue since we're always rendering the
+    // script that matches the selected face.
+    const unicodeRange = "unicode-range: U+0000-10FFFF;";
+    style.textContent = `@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: swap; ${unicodeRange} }`;
     document.head.appendChild(style);
     loadedFamilies.add(family);
     const docWithFonts = document as unknown as { fonts?: FontFaceSet };

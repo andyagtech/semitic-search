@@ -228,9 +228,9 @@ const SCRIPTS: ScriptEntry[] = [
       "ሰማየ ወምድረ",
     fonts: [
       { id: "stretchethiopic", label: "Semitic Stretch Noto Serif Ethiopic", file: "SemiticStretchNotoSerifEthiopic.ttf", family: "FL_StretchNotoSerifEthiopic",
-        note: "Custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Trigger is U+1390 (Ethiopic Tonal Mark Yizet) clustered after the fidel." },
+        note: "Custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Trigger is U+139A (unassigned Ethiopic Supplement) clustered after the fidel." },
       { id: "stretchethiopicdiag", label: "DIAG — Ethiopic (trigger = vertical bar)", file: "SemiticStretchNotoSerifEthiopicDIAG.ttf", family: "FL_StretchNotoSerifEthiopicDIAG",
-        note: "Diagnostic build: identical to Semitic Stretch Ethiopic above but the U+1390 trigger glyph is a distinctive tall vertical bar. If you see bars between fidels, Chrome IS using our font (ligature bug lives elsewhere). If you see the same small dots as the production build, Chrome is falling back to a system Ethiopic font for U+1390." },
+        note: "Diagnostic build: identical to Semitic Stretch Ethiopic above but the U+139A trigger glyph is a distinctive tall vertical bar. If you see bars between fidels, Chrome IS using our font (ligature bug lives elsewhere). If you see the same small dots as the production build, Chrome is falling back to a system Ethiopic font for U+139A." },
       { id: "sans",  label: "Noto Sans Ethiopic",  file: "NotoSansEthiopic.ttf", family: "FL_NotoSansEthiopic" },
       { id: "serif", label: "Noto Serif Ethiopic", file: "NotoSerifEthiopic.ttf", family: "FL_NotoSerifEthiopic" },
     ],
@@ -295,11 +295,17 @@ const HEBREW_STRETCH = "׆";
 // Non-joining, GDEF Base), routes through our font cleanly, and only
 // appears in Harklean Syriac NT mss — vanishingly rare in modern text.
 const SYRIAC_WIDENING = "܍";
-// Ethiopic widening trigger — U+1390 ETHIOPIC TONAL MARK YIZET. Same
-// rationale as SYRIAC_WIDENING (real script codepoint that Chrome routes
-// through our font). Ethiopic tonal marks are cantillation notation and
-// essentially never appear in prose text.
-const ETHIOPIC_WIDENING = "᎐";
+// Ethiopic widening trigger — U+139A, an UNASSIGNED slot in the Ethiopic
+// Supplement block. We iterated through several options before landing here:
+//   U+E000 (PUA)  → Chrome deprioritizes @font-face for PUA; tofu.
+//   U+1390 (real Ethi codepoint in our cmap) → Chrome preferred system
+//                   Noto Ethiopic for U+1390 anyway, and the ligature can't
+//                   span two fonts, so fidels stayed un-widened. Even
+//                   `unicode-range: U+0-10FFFF` didn't override it.
+//   U+139A (unassigned) → no system font has a glyph for it, so Chrome
+//                   has nowhere to fall back to except our font (or tofu).
+// Script=Ethi via block inheritance keeps it in the fidel shaping run.
+const ETHIOPIC_WIDENING = "᎚";
 
 /** True for characters that act as "stretch extenders" — they should
  *  inherit the color of the preceding letter so the combined stroke
@@ -564,8 +570,8 @@ function ensureFontLoaded(family: string, file: string): Promise<void> {
     // Broad `unicode-range` overrides Chrome's default "which font handles
     // this codepoint?" heuristic (based on OS/2.ulUnicodeRange bits and a
     // primary-script guess). Our stretch fonts' widening triggers live at
-    // U+070D, U+1390, and U+05C6 — Chrome was silently falling back to a
-    // system font for U+1390 / U+E000 even though our cmap has them, which
+    // U+070D, U+139A, and U+05C6 — Chrome was silently falling back to a
+    // system font for U+139A / U+E000 even though our cmap has them, which
     // broke the ligature (a fidel in our font + triggers in some other
     // font can't ligate). U+0000-10FFFF says "use this font for anything
     // it can render", which is what per-glyph cmap lookup is supposed to
@@ -808,9 +814,9 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         status: "live",
       },
       {
-        title: "Bilingual Kufic — Arabic + Latin in one face",
+        title: "Bilingual faces — Arabic + Latin in one design",
         description:
-          "Reem Kufi and Kufam both ship matched Latin glyphs. Switch fonts in the picker to see the metrics/x-height decisions each family made for the two scripts. Useful for signage, book covers, and any bilingual layout where you want a single visual voice.",
+          "Not every Arabic font is Latin-only; several ship matched Latin glyphs so a bilingual layout keeps a single visual voice. Kufam and Reem Kufi are Kufic examples; other families (Amiri Book, Noto Naskh Arabic UI) also cover Latin. Switch fonts in the picker to compare how each family paired the two scripts' metrics and x-height.",
         text: "قهوة · Qahwa · كتاب Kitab · بيروت Beirut · القاهرة Cairo",
         font: "kufam",
         status: "experimental",
@@ -954,16 +960,16 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Ge'ez calligraphic letter widening",
         description:
-          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font that widens the horizontal decorative strokes of 5 consonant series (መ ጠ ሠ ሐ ወ) × all 7 vowel orders, matching the calligraphic tradition of illuminated Ge'ez manuscripts (14th–19th c.). 560 total glyph variants. Trigger is U+1390 (Ethiopic Tonal Mark Yizet) clustered after the fidel — a real Ethiopic-script codepoint so Chrome routes it through our font. The auto-justify button clusters triggers automatically whenever the Semitic Stretch Ethiopic font is active.",
-        text: "መ᎐᎐᎐ ጠ᎐᎐᎐ ሠ᎐᎐᎐ ሐ᎐᎐᎐ ወ᎐᎐᎐",
+          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font that widens the horizontal decorative strokes of 5 consonant series (መ ጠ ሠ ሐ ወ) × all 7 vowel orders, matching the calligraphic tradition of illuminated Ge'ez manuscripts (14th–19th c.). 560 total glyph variants. Trigger is U+139A (unassigned Ethiopic Supplement) clustered after the fidel — a real Ethiopic-script codepoint so Chrome routes it through our font. The auto-justify button clusters triggers automatically whenever the Semitic Stretch Ethiopic font is active.",
+        text: "መ᎚᎚᎚ ጠ᎚᎚᎚ ሠ᎚᎚᎚ ሐ᎚᎚᎚ ወ᎚᎚᎚",
         font: "stretchethiopic",
         status: "live",
       },
       {
-        title: "DIAG — is Chrome using our font for U+1390?",
+        title: "DIAG — is Chrome using our font for U+139A?",
         description:
-          "Diagnostic. Loads the DIAG-Ethiopic font (identical to Semitic Stretch Ethiopic except U+1390 is drawn as a distinctive tall vertical bar). Click Load into editor: if you see vertical bars between fidels → Chrome IS using our font, the ligature is failing for another reason. If you see the same small dots as the production card above → Chrome is falling back to a system Ethiopic font for U+1390 even though our @font-face declares unicode-range: U+0000-10FFFF.",
-        text: "መ᎐᎐᎐ ጠ᎐᎐᎐ ሠ᎐᎐᎐ ሐ᎐᎐᎐ ወ᎐᎐᎐",
+          "Diagnostic. Loads the DIAG-Ethiopic font (identical to Semitic Stretch Ethiopic except U+139A is drawn as a distinctive tall vertical bar). Click Load into editor: if you see vertical bars between fidels → Chrome IS using our font, the ligature is failing for another reason. If you see the same small dots as the production card above → Chrome is falling back to a system Ethiopic font for U+139A even though our @font-face declares unicode-range: U+0000-10FFFF.",
+        text: "መ᎚᎚᎚ ጠ᎚᎚᎚ ሠ᎚᎚᎚ ሐ᎚᎚᎚ ወ᎚᎚᎚",
         font: "stretchethiopicdiag",
         status: "experimental",
       },
@@ -1270,7 +1276,7 @@ export function FontLab() {
   useEffect(() => {
     if (!fontReady) return;
     // Hebrew stretch uses U+05C6, Syriac stretch uses U+070D, Ethiopic
-    // stretch uses U+1390 (see SYRIAC_WIDENING / ETHIOPIC_WIDENING comments
+    // stretch uses U+139A (see SYRIAC_WIDENING / ETHIOPIC_WIDENING comments
     // for the Chrome fallback-avoidance reason).
     const trigger = ethiopicStretchActive ? ETHIOPIC_WIDENING
                   : syriacStretchActive   ? SYRIAC_WIDENING
@@ -1279,7 +1285,7 @@ export function FontLab() {
     if (!stretchFontActive) {
       // Non-stretch font active but text still has extenders — strip them.
       // Also strip legacy U+2060 in case any old text was persisted.
-      setText((prev) => prev.replace(/[׆܍᎐⁠]/g, ""));
+      setText((prev) => prev.replace(/[׆܍᎚⁠]/g, ""));
       lastJustifiedFontRef.current = "";
       return;
     }
@@ -1355,7 +1361,7 @@ export function FontLab() {
 
     if (stretchFontActive) {
       // Hebrew stretch fonts use U+05C6 as the widening trigger.
-      // Syriac stretch fonts use U+070D; Ethiopic uses U+1390. (See
+      // Syriac stretch fonts use U+070D; Ethiopic uses U+139A. (See
       // SYRIAC_WIDENING / ETHIOPIC_WIDENING comments.) U+0640 tatweel stays
       // available separately for baseline bridging.
       const trigger = ethiopicStretchActive ? ETHIOPIC_WIDENING
@@ -1731,7 +1737,7 @@ export function FontLab() {
                 type="button"
                 onClick={() => {
                   const wantJustify = s.text.includes(HEBREW_STRETCH) || s.text.includes(TATWEEL);
-                  const clean = s.text.replace(/[׆ـ⁠܍᎐]/g, "");
+                  const clean = s.text.replace(/[׆ـ⁠܍᎚]/g, "");
                   const stretchable = script.id === "syriac" ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE;
                   const trigger = script.id === "syriac" ? TATWEEL : HEBREW_STRETCH;
                   // Sample expects stretch but user isn't on a stretch font
@@ -1931,7 +1937,7 @@ export function FontLab() {
                 onClick={() => {
                   // Strip whichever trigger the current script uses. Hebrew =
                   // U+05C6, Syriac and Arabic = U+0640 tatweel.
-                  setText(text.replace(/[׆ـ⁠܍᎐]/g, ""));
+                  setText(text.replace(/[׆ـ⁠܍᎚]/g, ""));
                 }}
                 className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-600"
                 title="Remove every stretch trigger from the text (U+05C6 for Hebrew, U+0640 tatweel for Syriac / Arabic)"

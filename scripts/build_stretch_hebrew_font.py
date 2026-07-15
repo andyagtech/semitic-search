@@ -860,14 +860,24 @@ NOTO_SERIF_ETHIOPIC = {
     "step": 100,
     "lsb_mode": "mono",
     "language_system": "ethi",  # OpenType script tag for Ethiopic
-    # Widening trigger: U+1390 ETHIOPIC TONAL MARK YIZET. A real Ethiopic-
-    # script codepoint (musical notation for cantillation, essentially never
-    # typed in normal Ge'ez/Amharic/Tigrinya prose). We tried U+E000 (PUA)
-    # and got tofu boxes — Chrome/Blink deprioritizes custom @font-face
-    # fonts for PUA codepoints (icon-font contamination guard) and falls
-    # back to a system font that also lacks U+E000, drawing .notdef. A
-    # script=Ethi codepoint routes through our font cleanly.
-    "stretch_codepoint": 0x1390,
+    # Widening trigger: U+139A — UNASSIGNED slot in the Ethiopic Supplement
+    # block. Chosen because Chrome kept falling back to a system Ethiopic
+    # font for every alternative we tried:
+    #   U+E000 (PUA)  — Chrome deprioritizes @font-face for PUA (icon-font
+    #                   contamination guard); user saw tofu (system font
+    #                   also lacked it → .notdef).
+    #   U+1390 (Ethiopic Tonal Mark Yizet) — a real assigned Ethi codepoint
+    #                   in our cmap, but Noto Sans/Serif Ethiopic also has
+    #                   it, and Chrome preferred the system font — the
+    #                   ligature can't cross fonts, so the fidels stayed
+    #                   un-widened. Even `unicode-range: U+0-10FFFF` on the
+    #                   @font-face didn't override this. Diagnostic build
+    #                   with a distinctive trigger glyph proved Chrome
+    #                   wasn't using our font for U+1390 at all.
+    #   U+139A — UNASSIGNED. No system font has a glyph for it. Chrome has
+    #            nowhere to fall back to except our font (or .notdef tofu).
+    #            Script=Ethi via block inheritance so it stays in the run.
+    "stretch_codepoint": 0x139A,
     "override_trigger_glyph": True,
     "letters": _ETHIOPIC_LETTERS,
 }

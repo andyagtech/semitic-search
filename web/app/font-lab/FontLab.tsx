@@ -64,7 +64,12 @@ const SCRIPTS: ScriptEntry[] = [
     fonts: [
       { id: "amiri",    label: "Amiri (classical Naskh)", file: "Amiri-Regular.ttf", family: "FL_Amiri" },
       { id: "naskh",    label: "Noto Naskh Arabic",       file: "NotoNaskhArabic.ttf", family: "FL_NaskhArabic" },
-      { id: "kufi",     label: "Reem Kufi",               file: "ReemKufi-Regular.ttf", family: "FL_ReemKufi" },
+      { id: "kufi",     label: "Reem Kufi (Latin + Arabic)", file: "ReemKufi-Regular.ttf", family: "FL_ReemKufi",
+        note: "Alif Type (OFL). Modern angular Kufic — covers Latin + Arabic, so bilingual samples render in a single face." },
+      { id: "kufam",    label: "Kufam (Latin + Arabic)",     file: "Kufam-Regular.ttf",  family: "FL_Kufam",
+        note: "Impallari / Aleem (OFL). Multi-weight Kufic with matching Latin — try mixing scripts in one line to see the tight bilingual metrics." },
+      { id: "kufam-italic", label: "Kufam Italic (Latin + Arabic)", file: "Kufam-Italic.ttf", family: "FL_KufamItalic",
+        note: "Kufam italic companion (OFL). Italic form of the Latin, upright of the Arabic." },
       { id: "notokufi", label: "Noto Kufi Arabic",        file: "NotoKufiArabic.ttf", family: "FL_NotoKufiArabic" },
       { id: "nastaliq", label: "Noto Nastaliq Urdu",      file: "NotoNastaliqUrdu.ttf", family: "FL_NotoNastaliq" },
       { id: "sans",     label: "Noto Sans Arabic",        file: "NotoSansArabic.ttf", family: "FL_NotoSansArabic" },
@@ -785,6 +790,14 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
           "Fatha/kasra/damma + shadda + sukun + tanwin, plus small-alif (U+0670) and dagger vowels used in Qur'anic orthography.",
         text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ٱلْحَمْدُ لِلَّهِ",
         status: "live",
+      },
+      {
+        title: "Bilingual Kufic — Arabic + Latin in one face",
+        description:
+          "Reem Kufi and Kufam both ship matched Latin glyphs. Switch fonts in the picker to see the metrics/x-height decisions each family made for the two scripts. Useful for signage, book covers, and any bilingual layout where you want a single visual voice.",
+        text: "قهوة · Qahwa · كتاب Kitab · بيروت Beirut · القاهرة Cairo",
+        font: "kufam",
+        status: "experimental",
       },
       {
         title: "Niqqud on Arabic (Hebrew marks)",

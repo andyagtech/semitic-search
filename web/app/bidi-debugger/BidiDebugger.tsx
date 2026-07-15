@@ -140,19 +140,24 @@ function generalCategoryOf(ch: string): string {
 }
 
 const DEFAULT_INPUT =
-  "Reading הַכֹּתֶל the Wall in Jerusalem was ";
+  "Reading הַכֹּתֶל the Wall in أورشليم was ";
 const DEFAULT_INPUT_2 = "unforgettable.";
-// Example RTL-inside-LTR paste hazard
+// Example RTL-inside-LTR paste hazards
 const HAZARD_SAMPLES: { label: string; text: string; note: string }[] = [
   {
-    label: "Arabic in English sentence",
+    label: "Trilingual — English + Hebrew + Arabic in one sentence",
+    text: "We visited אורשלים · أورشليم, called Jerusalem in English.",
+    note: "Same city named three ways. The two RTL scripts sit inside an LTR sentence; watch the punctuation and the middle-dot separator flip based on their neighbors.",
+  },
+  {
+    label: "Arabic word inside English sentence",
     text: "The word \"مرحبا\" means hello.",
     note: "Bidi-safe when isolated. Try adding \"!\" at the end and watch it swap sides.",
   },
   {
-    label: "English in Arabic sentence",
-    text: "قال محمد \"Hello, world!\" ثم غادر.",
-    note: "The English quote is L in an AL context — its punctuation flips visually.",
+    label: "English quote inside Arabic sentence",
+    text: "قالت المعلمة \"Hello, world!\" ثم غادرت.",
+    note: "The English quote is L inside an AL context — its punctuation flips visually.",
   },
   {
     label: "Filename attack (RLO)",
@@ -163,6 +168,11 @@ const HAZARD_SAMPLES: { label: string; text: string; note: string }[] = [
     label: "Hebrew comment in code",
     text: "const greeting = \"שלום\"; // ברכה",
     note: "Semicolons and slashes flip; cursor traversal jumps.",
+  },
+  {
+    label: "Arabic comment in code",
+    text: "const city = \"أورشليم\"; // مدينة",
+    note: "Even inside a string literal, the AL run sucks the trailing quote+semicolon into the RTL span.",
   },
   {
     label: "Mixed digits (EN vs AN)",

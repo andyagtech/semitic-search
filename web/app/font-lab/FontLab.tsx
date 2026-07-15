@@ -559,6 +559,18 @@ async function loadFontMetrics(file: string): Promise<FontMetrics | null> {
 
 // Register @font-face for the selected font so the browser can render it.
 const loadedFamilies = new Set<string>();
+// Per-codepoint override @font-face: pair each stretch-trigger codepoint
+// with the font that owns its widening ligature, using a NARROW
+// unicode-range so Chrome must pick that font for the codepoint. Broad
+// `unicode-range: U+0-10FFFF` didn't reliably win over Chrome's system-
+// font preference for unusual codepoints (verified with a diagnostic
+// build). A narrow unicode-range is the documented, spec-mandated
+// signal to force selection.
+const TRIGGER_OVERRIDES: Record<string, string> = {
+  // Ethiopic stretch trigger — U+139A (unassigned Ethi Suppl slot)
+  SemiticStretchNotoSerifEthiopic: "U+139A",
+  "SemiticStretchNotoSerifEthiopic.ttf": "U+139A",
+};
 function ensureFontLoaded(family: string, file: string): Promise<void> {
   if (loadedFamilies.has(family)) return Promise.resolve();
   return new Promise((resolve) => {
@@ -579,7 +591,17 @@ function ensureFontLoaded(family: string, file: string): Promise<void> {
     // that don't need it — a non-issue since we're always rendering the
     // script that matches the selected face.
     const unicodeRange = "unicode-range: U+0000-10FFFF;";
-    style.textContent = `@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: swap; ${unicodeRange} }`;
+    // Base @font-face for the whole font. Broad range.
+    let css = `@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: swap; ${unicodeRange} }`;
+    // Override @font-face with a NARROW unicode-range for the trigger
+    // codepoint. Chrome tie-breaks font selection toward the narrower
+    // matching range — this forces Chrome to use our file for the trigger
+    // even though the broad rule above nominally covers it.
+    const triggerRange = TRIGGER_OVERRIDES[family] ?? TRIGGER_OVERRIDES[file];
+    if (triggerRange) {
+      css += `\n@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: block; unicode-range: ${triggerRange}; }`;
+    }
+    style.textContent = css;
     document.head.appendChild(style);
     loadedFamilies.add(family);
     const docWithFonts = document as unknown as { fonts?: FontFaceSet };

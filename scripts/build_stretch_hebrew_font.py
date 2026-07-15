@@ -652,13 +652,21 @@ NOTO_SANS_SYRIAC = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "language_system": "syrc",  # Syriac script tag (as opposed to hebr)
-    # Widening trigger: U+E000 (Private Use Area). Chrome/Blink strips
-    # U+2060 (Word Joiner) and other Unicode "default-ignorable" format
-    # characters BEFORE HarfBuzz shaping runs — so ligatures keyed on U+2060
-    # never fire in the browser (hb-shape works fine because it doesn't
-    # pre-filter). U+E000 is PUA (script=Unknown, inherits neighbors' script)
-    # and is not default-ignorable, so Chrome passes it through untouched.
-    "stretch_codepoint": 0xE000,
+    # Widening trigger: U+070D SYRIAC HARKLEAN ASTERISCUS. A real Syriac-
+    # script codepoint that Chrome routes through our font (unlike PUA U+E000,
+    # which Chrome/Blink deprioritizes to system fallback — producing tofu
+    # boxes in the browser even though the font has U+E000 mapped). U+2060
+    # (Word Joiner) is stripped as default-ignorable before shaping. U+074A
+    # was tried but is GDEF Mark, so `feature liga { lookupflag IgnoreMarks; }`
+    # skipped the triggers. U+074F is Base but joining_type=Dual — HarfBuzz
+    # cursive-shapes U+074F × N into init/medi/fina positional variants
+    # BEFORE our ligature runs, so the components no longer match. U+070D
+    # is a punctuation mark (joining_type=Non-joining, never gets init/medi/
+    # fina), Base class, and functionally only appears in Harklean version
+    # of the Syriac NT — vanishingly rare in modern text. `override_trigger_
+    # glyph` below replaces the source font's asteriscus glyph with a 1×1
+    # invisible placeholder.
+    "stretch_codepoint": 0x070D,
     "letters": {
         # Dalath: bar-class. Bar zone is the flat top portion; x_cutoff picks
         # a point between the stretchable left curve and the anchored right
@@ -743,11 +751,9 @@ NOHADRA_SAPNA = {
     "step": 150,
     "lsb_mode": "mono",
     "language_system": "syrc",
-    # Widening trigger: U+E000 (Private Use Area). See NOTO_SANS_SYRIAC
-    # comment — U+2060 is stripped by Chrome as a default-ignorable format
-    # character before HarfBuzz shaping, so ligatures keyed on it never fire
-    # in browsers. U+E000 sidesteps that path.
-    "stretch_codepoint": 0xE000,
+    # Widening trigger: U+074A SYRIAC LETTER SOGDIAN ZHAIN. See
+    # NOTO_SANS_SYRIAC for the full rationale.
+    "stretch_codepoint": 0x070D,
     # Nohadra is non-cursive block-style. Auto-justify clusters tatweels on
     # stretchable letters, and our widening ligature consumes every one into
     # a widened variant. Override the font's natural baseline-height (y≈101)
@@ -854,7 +860,14 @@ NOTO_SERIF_ETHIOPIC = {
     "step": 100,
     "lsb_mode": "mono",
     "language_system": "ethi",  # OpenType script tag for Ethiopic
-    "stretch_codepoint": 0xE000,
+    # Widening trigger: U+1390 ETHIOPIC TONAL MARK YIZET. A real Ethiopic-
+    # script codepoint (musical notation for cantillation, essentially never
+    # typed in normal Ge'ez/Amharic/Tigrinya prose). We tried U+E000 (PUA)
+    # and got tofu boxes — Chrome/Blink deprioritizes custom @font-face
+    # fonts for PUA codepoints (icon-font contamination guard) and falls
+    # back to a system font that also lacks U+E000, drawing .notdef. A
+    # script=Ethi codepoint routes through our font cleanly.
+    "stretch_codepoint": 0x1390,
     "override_trigger_glyph": True,
     "letters": _ETHIOPIC_LETTERS,
 }

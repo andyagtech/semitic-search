@@ -254,18 +254,25 @@ const TATWEEL = "ـ";
 // actually fires. We previously used U+E010 (PUA) but browsers segment PUA
 // into a separate script-Unknown run, which silently broke the substitution.
 const HEBREW_STRETCH = "׆";
-// Syriac/Ethiopic widening trigger — U+E000 (Private Use Area). Fires our
+// Syriac widening trigger — U+070D SYRIAC HARKLEAN ASTERISCUS. Fires our
 // stretch-font widening ligature to produce a widened letter variant
 // (letter → letter_sN). Distinct from TATWEEL (U+0640), which stays
 // available as the Syriac font's own baseline bridging glyph.
 //
-// Why PUA and not U+2060 (Word Joiner)? Chrome/Blink strips Unicode
-// "default-ignorable" format characters (WJ, ZWSP, ZWJ, ZWNJ) BEFORE
-// HarfBuzz shaping runs, so ligatures keyed on U+2060 never fire in the
-// browser even though `hb-shape` on the same font applies them fine.
-// U+E000 is script=Unknown (inherits neighbors' script so the Syriac /
-// Ethiopic shaping run stays intact) and is not default-ignorable.
-const SYRIAC_WIDENING = "";
+// Why not U+E000 (PUA) or U+2060 (Word Joiner)? U+2060 gets stripped by
+// Chrome/Blink as a default-ignorable format character before HarfBuzz
+// shaping. U+E000 is in our stretch fonts' cmap, but Chrome deprioritizes
+// custom @font-face for PUA codepoints (icon-font contamination guard) and
+// falls back to a system font that lacks U+E000 — you get tofu boxes.
+// U+070D is a real Syriac-script codepoint (script=Syriac, joining_type=
+// Non-joining, GDEF Base), routes through our font cleanly, and only
+// appears in Harklean Syriac NT mss — vanishingly rare in modern text.
+const SYRIAC_WIDENING = "܍";
+// Ethiopic widening trigger — U+1390 ETHIOPIC TONAL MARK YIZET. Same
+// rationale as SYRIAC_WIDENING (real script codepoint that Chrome routes
+// through our font). Ethiopic tonal marks are cantillation notation and
+// essentially never appear in prose text.
+const ETHIOPIC_WIDENING = "᎐";
 
 /** True for characters that act as "stretch extenders" — they should
  *  inherit the color of the preceding letter so the combined stroke
@@ -821,8 +828,8 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Widening on Nohadra (block-style)",
         description:
-          "Nohadra Sapna/Amedia don't join like a cursive script. Instead we widen individual letters via U+E000 (Private Use Area) trigger, keeping their block character. 10 stretchable letters.",
-        text: "ܐܒܘ ܗܘܝ ܡܘܝ",
+          "Nohadra Sapna/Amedia don't join like a cursive script. Instead we widen individual letters via a U+070D (Syriac Harklean Asteriscus) trigger, keeping their block character. 10 stretchable letters.",
+        text: "ܐ܍܍܍ܒ܍܍܍ܘ ܗ܍܍܍ܘܝ ܡ܍܍܍ܘܝ",
         font: "stretchnohadrasapna",
         status: "live",
       },
@@ -884,8 +891,8 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Ge'ez calligraphic letter widening",
         description:
-          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font that widens the horizontal decorative strokes of 5 consonant series (መ ጠ ሠ ሐ ወ) × all 7 vowel orders, matching the calligraphic tradition of illuminated Ge'ez manuscripts (14th–19th c.). 560 total glyph variants. Trigger is U+E000 (Private Use Area) clustered after the fidel — the auto-justify button uses this whenever the Semitic Stretch Ethiopic font is active. (Original design used U+2060 Word Joiner, but Chrome strips default-ignorable format chars before shaping so the ligature never fired in the browser.)",
-        text: "መ ጠ ሠ ሐ ወ",
+          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font that widens the horizontal decorative strokes of 5 consonant series (መ ጠ ሠ ሐ ወ) × all 7 vowel orders, matching the calligraphic tradition of illuminated Ge'ez manuscripts (14th–19th c.). 560 total glyph variants. Trigger is U+1390 (Ethiopic Tonal Mark Yizet) clustered after the fidel — a real Ethiopic-script codepoint so Chrome routes it through our font. The auto-justify button clusters triggers automatically whenever the Semitic Stretch Ethiopic font is active.",
+        text: "መ᎐᎐᎐ ጠ᎐᎐᎐ ሠ᎐᎐᎐ ሐ᎐᎐᎐ ወ᎐᎐᎐",
         font: "stretchethiopic",
         status: "live",
       },
@@ -1191,15 +1198,17 @@ export function FontLab() {
   const lastJustifiedFontRef = useRef<string>("");
   useEffect(() => {
     if (!fontReady) return;
-    // Hebrew stretch uses U+05C6, Syriac/Ethiopic stretch uses U+E000 PUA
-    // as the widening trigger (see SYRIAC_WIDENING comment for the Chrome
-    // default-ignorable-stripping reason).
-    const trigger = (syriacStretchActive || ethiopicStretchActive) ? SYRIAC_WIDENING : HEBREW_STRETCH;
+    // Hebrew stretch uses U+05C6, Syriac stretch uses U+070D, Ethiopic
+    // stretch uses U+1390 (see SYRIAC_WIDENING / ETHIOPIC_WIDENING comments
+    // for the Chrome fallback-avoidance reason).
+    const trigger = ethiopicStretchActive ? ETHIOPIC_WIDENING
+                  : syriacStretchActive   ? SYRIAC_WIDENING
+                  : HEBREW_STRETCH;
     if (!text.includes(trigger)) return;
     if (!stretchFontActive) {
       // Non-stretch font active but text still has extenders — strip them.
       // Also strip legacy U+2060 in case any old text was persisted.
-      setText((prev) => prev.replace(/[׆⁠]/g, ""));
+      setText((prev) => prev.replace(/[׆܍᎐⁠]/g, ""));
       lastJustifiedFontRef.current = "";
       return;
     }
@@ -1275,13 +1284,15 @@ export function FontLab() {
 
     if (stretchFontActive) {
       // Hebrew stretch fonts use U+05C6 as the widening trigger.
-      // Syriac / Ethiopic stretch fonts use U+E000 (PUA) — U+2060 was the
-      // original design but Chrome strips it (see SYRIAC_WIDENING comment).
-      // U+0640 tatweel stays available separately for baseline bridging.
-      const trigger = (syriacStretchActive || ethiopicStretchActive) ? SYRIAC_WIDENING : HEBREW_STRETCH;
+      // Syriac stretch fonts use U+070D; Ethiopic uses U+1390. (See
+      // SYRIAC_WIDENING / ETHIOPIC_WIDENING comments.) U+0640 tatweel stays
+      // available separately for baseline bridging.
+      const trigger = ethiopicStretchActive ? ETHIOPIC_WIDENING
+                    : syriacStretchActive   ? SYRIAC_WIDENING
+                    : HEBREW_STRETCH;
       // Hebrew (U+0590-U+05FF), Syriac (U+0700-U+074F), Ethiopic (U+1200-U+137F).
       const prevIsSemiticStretchable = /[֐-׿܀-ݏሀ-፿]/.test(prev);
-      if (!prevIsSemiticStretchable && prev !== HEBREW_STRETCH && prev !== SYRIAC_WIDENING) return;
+      if (!prevIsSemiticStretchable && prev !== HEBREW_STRETCH && prev !== SYRIAC_WIDENING && prev !== ETHIOPIC_WIDENING) return;
       const updated = text.slice(0, pos) + trigger + text.slice(pos);
       setText(updated);
       requestAnimationFrame(() => {
@@ -1649,7 +1660,7 @@ export function FontLab() {
                 type="button"
                 onClick={() => {
                   const wantJustify = s.text.includes(HEBREW_STRETCH) || s.text.includes(TATWEEL);
-                  const clean = s.text.replace(/[׆ـ⁠]/g, "");
+                  const clean = s.text.replace(/[׆ـ⁠܍᎐]/g, "");
                   const stretchable = script.id === "syriac" ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE;
                   const trigger = script.id === "syriac" ? TATWEEL : HEBREW_STRETCH;
                   // Sample expects stretch but user isn't on a stretch font
@@ -1803,7 +1814,7 @@ export function FontLab() {
                       setText(
                         autoJustifySemitic(
                           text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
-                          ETHIOPIC_STRETCHABLE, SYRIAC_WIDENING, "ltr",
+                          ETHIOPIC_STRETCHABLE, ETHIOPIC_WIDENING, "ltr",
                         ),
                       );
                     } else {
@@ -1849,7 +1860,7 @@ export function FontLab() {
                 onClick={() => {
                   // Strip whichever trigger the current script uses. Hebrew =
                   // U+05C6, Syriac and Arabic = U+0640 tatweel.
-                  setText(text.replace(/[׆ـ⁠]/g, ""));
+                  setText(text.replace(/[׆ـ⁠܍᎐]/g, ""));
                 }}
                 className="px-2.5 py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-600"
                 title="Remove every stretch trigger from the text (U+05C6 for Hebrew, U+0640 tatweel for Syriac / Arabic)"

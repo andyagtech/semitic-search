@@ -742,7 +742,7 @@ function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
         <span className="text-neutral-400 group-open:rotate-90 transition-transform">▶</span>
         BiDi tutorial — from pure LTR to why quotes fail
         <span className="text-xs text-neutral-500 font-normal ml-2">
-          overview · orders of text · 10 progressively gnarlier cases · click any to load into the tool
+          overview · orders of text · fixes for devs, everyday users, and designers · cursor · 10+ cases
         </span>
       </summary>
       <div className="mt-4 space-y-3">
@@ -909,7 +909,7 @@ function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
         {/* When + where to add controls */}
         <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
           <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
-            <span className="text-neutral-400">▸</span> When and where to add BiDi controls
+            <span className="text-neutral-400">▸</span> For developers — where to add BiDi controls in HTML / CSS / plain text
           </summary>
           <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-3">
             <p>
@@ -1086,6 +1086,323 @@ function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
                 code comments above, where you need to hand-wrap around
                 whole segments you authored yourself.
               </p>
+            </div>
+          </div>
+        </details>
+
+        {/* Fixes for everyday apps */}
+        <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
+          <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+            <span className="text-neutral-400">▸</span> For everyone — how to fix bidi in Word, Google Docs, Gmail, iMessage, WhatsApp
+          </summary>
+          <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-3">
+            <p>
+              Most everyday apps have a &quot;paragraph direction&quot;
+              button or shortcut that flips a block of text between LTR
+              and RTL. If your period lands on the wrong side, or your
+              Hebrew/Arabic sentence renders with punctuation reversed,
+              the fix is usually one click.
+            </p>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Microsoft Word (all platforms)</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Toolbar: <b>Home</b> tab → look for two paragraph icons
+                  with LTR / RTL arrows. Click the RTL one for the current
+                  paragraph.
+                </li>
+                <li>
+                  Keyboard: <b>Ctrl + Right-Shift</b> (Windows) or{" "}
+                  <b>Cmd + Ctrl + Right-Shift</b> (macOS) → RTL paragraph.{" "}
+                  <b>Ctrl + Left-Shift</b> / <b>Cmd + Ctrl + Left-Shift</b>{" "}
+                  → LTR paragraph.
+                </li>
+                <li>
+                  If the RTL buttons don&apos;t appear, go to{" "}
+                  <b>File → Options → Language</b> and enable a
+                  right-to-left editing language (Hebrew, Arabic, Persian,
+                  Urdu). Word hides the RTL controls until it knows you
+                  need them.
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Google Docs</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Menu: <b>File → Language</b> → pick Hebrew / Arabic /
+                  Persian / etc. That enables RTL paragraph controls in
+                  the toolbar.
+                </li>
+                <li>
+                  Toolbar: paragraph-direction buttons appear next to the
+                  alignment buttons (the ones with numbered lines). Click
+                  the RTL one.
+                </li>
+                <li>
+                  Keyboard: <b>Ctrl/Cmd + Shift + E, then P</b> to open
+                  the paragraph settings, or just click the toolbar
+                  buttons directly.
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Apple Pages / Numbers / Keynote</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Menu: <b>Format → More → Writing Direction → Right to
+                  Left</b>. Applies to the selected paragraph or text box.
+                </li>
+                <li>
+                  System-wide RTL cursor keys: <b>System Settings →
+                  Keyboard → Text Input → Advanced</b> → check
+                  &quot;Move cursor visually in RTL text.&quot;
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Gmail / Outlook</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <b>Gmail</b>: Settings (gear) → See all settings →{" "}
+                  <b>General</b> tab → &quot;Right-to-Left editing
+                  support&quot; → &quot;Enable.&quot; A tiny
+                  direction-toggle button appears in the compose toolbar
+                  after that.
+                </li>
+                <li>
+                  <b>Outlook desktop</b>: Same paragraph shortcuts as
+                  Word — <b>Ctrl + Right-Shift</b> and{" "}
+                  <b>Ctrl + Left-Shift</b>. Outlook Web uses the same
+                  RTL button as Gmail (once enabled in settings).
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">iMessage / WhatsApp / Slack / Telegram / Discord</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Message text is normally <code>dir=&quot;auto&quot;</code>
+                  — the app infers direction from the first strong-typed
+                  character. Start a message with Hebrew or Arabic → the
+                  whole bubble renders RTL, punctuation lands correctly.
+                  Start with English → LTR. So the fix is often
+                  &quot;type the RTL word first.&quot;
+                </li>
+                <li>
+                  If a message mixes languages and renders wrong, iOS and
+                  Android both support <b>long-press → Select All → change
+                  paragraph direction</b> in most text fields. Look for a
+                  &quot;paragraph direction&quot; or arrow icon in the
+                  context menu.
+                </li>
+                <li>
+                  Slack has no per-message direction toggle. Content is
+                  always dir=&quot;auto&quot;; if your message renders
+                  wrong, reorder so the first word is in the intended
+                  direction, or wrap with FSI…PDI from the plain-text
+                  section below.
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Browsers (Chrome, Safari, Firefox)</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Most form fields on the web are <code>dir=&quot;ltr&quot;</code>{" "}
+                  by default (the classic period-jump cause). You can&apos;t
+                  change this without editing the site&apos;s HTML.
+                </li>
+                <li>
+                  Workaround in any text field: type an RLM (U+200F) at
+                  the very start of your text. On Mac,{" "}
+                  <b>System Settings → Keyboard → Text Input → Show
+                  Input menu</b>, then Input menu → Show Character Viewer
+                  → search &quot;RLM&quot; → double-click to insert. On
+                  Windows, <b>Alt+X</b> after typing <code>200F</code> in
+                  supported fields.
+                </li>
+                <li>
+                  Or install a browser extension like &quot;Force RTL&quot;
+                  that adds a direction toggle to every text field.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        {/* Fixes for design and print tools */}
+        <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
+          <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+            <span className="text-neutral-400">▸</span> For designers &amp; artists — Photoshop, Illustrator, InDesign, Figma, Canva
+          </summary>
+          <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-3">
+            <p>
+              Design and print tools have a specific gotcha that Word and
+              browsers don&apos;t: many editions of Adobe apps ship WITHOUT
+              the Middle Eastern text engine. Arabic looks broken (letters
+              disconnected, no joining), Hebrew punctuation lands wrong,
+              kashida stretching doesn&apos;t work. The fix is either
+              switching engines or installing a different edition.
+            </p>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">
+                Adobe Photoshop, Illustrator, InDesign (all recent versions)
+              </p>
+              <p>
+                Adobe ships these in two flavors: the <b>North American /
+                International English</b> edition (default when you install
+                from Creative Cloud) and the <b>Middle East &amp; North
+                Africa</b> edition. Only the MENA edition ships the
+                Middle Eastern text composer that handles Arabic joining,
+                Hebrew punctuation, RTL paragraphs, and kashida.
+              </p>
+              <p className="font-medium text-neutral-800">
+                Switch editions (recommended):
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Creative Cloud desktop app → click your profile picture
+                  → <b>Preferences</b> → <b>Apps</b> → <b>Default install
+                  language</b> → change to <b>English (Arabic)</b> or{" "}
+                  <b>English (Hebrew)</b>. Then reinstall Photoshop /
+                  Illustrator / InDesign — the new install includes the
+                  Middle Eastern composer.
+                </li>
+                <li>
+                  Your files stay compatible with the standard edition;
+                  you get all the same tools PLUS the MENA features.
+                </li>
+              </ul>
+              <p className="font-medium text-neutral-800 pt-1">
+                Enable RTL in the MENA edition (per document):
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <b>Character panel</b>: language dropdown must be set to
+                  Arabic / Hebrew / Persian for the text to shape
+                  correctly. Even in the MENA edition, if language is
+                  &quot;English&quot; the Arabic letters render as
+                  isolated forms.
+                </li>
+                <li>
+                  <b>Paragraph panel</b>: use the &quot;Middle Eastern
+                  &amp; South Asian Every-Line Composer&quot; (or Single
+                  Line variant). Set paragraph direction to Right-to-Left
+                  via the RTL alignment icon.
+                </li>
+                <li>
+                  <b>Kashida justification</b>: only appears in the
+                  Paragraph panel dropdown when Middle Eastern composer
+                  is active. Choose &quot;Kashida&quot; for
+                  justification style to enable the classical Arabic
+                  wide-letter-stretching.
+                </li>
+              </ul>
+              <p className="font-medium text-neutral-800 pt-1">
+                Standard-edition workaround:
+              </p>
+              <p>
+                If you can&apos;t reinstall, enable the &quot;World-Ready
+                Composer&quot; via a hidden setting. In Photoshop / Illustrator:{" "}
+                <b>Preferences → Type</b> → check &quot;Middle Eastern
+                Text Engine&quot; (or &quot;Show Indic Options&quot;
+                depending on version). Restart the app. This adds
+                partial MENA support to the standard edition, though
+                some features (like Kashida) still require the full MENA
+                install.
+              </p>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Figma</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Figma respects the browser&apos;s bidi algorithm, so
+                  Arabic and Hebrew shaping and joining WORK out of the
+                  box in a Figma text layer. Kashida does NOT — Figma
+                  doesn&apos;t expose the OpenType kashida GSUB feature.
+                </li>
+                <li>
+                  Paragraph direction: <b>Text panel</b> → three dots (…)
+                  → <b>Text direction</b> → Right-to-Left. This is
+                  per-text-layer.
+                </li>
+                <li>
+                  Common gotcha: pasted Arabic from a browser sometimes
+                  arrives with LTR paragraph direction embedded. If your
+                  Arabic renders punctuation-flipped, apply Text direction
+                  → RTL manually.
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Canva</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  RTL support is limited. Basic Arabic and Hebrew text
+                  render with correct joining/shaping, but there&apos;s
+                  no per-text-box RTL paragraph toggle. Punctuation often
+                  ends up on the wrong side.
+                </li>
+                <li>
+                  Workaround: paste a Unicode RLM character (U+200F) at
+                  the start of your text. The easiest way is to copy it
+                  from{" "}
+                  <a
+                    href="https://www.compart.com/en/unicode/U+200F"
+                    className="text-sky-700 underline"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Compart&apos;s Unicode reference
+                  </a>{" "}
+                  and paste at the start of your text box.
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">Print / prepress specifics</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <b>PDF export</b>: as long as your source app rendered
+                  the Arabic / Hebrew correctly (all joining, punctuation
+                  in the right place), the PDF preserves the visual
+                  layout — bidi resolution has already happened before
+                  export. Print reproduces exactly what you see.
+                </li>
+                <li>
+                  <b>Font selection matters.</b> Not every font supports
+                  Arabic joining or Hebrew punctuation positioning. Adobe
+                  Arabic, Adobe Hebrew, SST Arabic, and any Noto Sans/
+                  Serif Arabic or Hebrew variant are safe defaults. A
+                  font labeled &quot;Arabic&quot; but without the
+                  positional shaping rules will render letters
+                  disconnected regardless of your app&apos;s bidi
+                  settings.
+                </li>
+                <li>
+                  <b>Kashida in print</b>: only Adobe MENA edition +
+                  Middle Eastern composer will apply kashida
+                  justification. If you need scribal-style wide letters
+                  in a design, either use those tools, or use the
+                  Semitic Stretch fonts from{" "}
+                  <a href="/fonts" className="text-sky-700 underline">
+                    /fonts
+                  </a>{" "}
+                  which bake widened letter variants into the font itself
+                  (works in any app that renders the font).
+                </li>
+              </ul>
             </div>
           </div>
         </details>

@@ -2022,6 +2022,147 @@ def _add_arabic_mark_stacking(font) -> int:
     return len(present)
 
 
+# Hebrew niqqud that sit BELOW the base letter. When a Judeo-Arabic user
+# stacks an Arabic haraka (fatha/kasra/damma) on the same letter that
+# already has one of these, we want the haraka to sit UNDER the niqqud,
+# not overlap it. Excludes above-marks (holam U+05B9, shin/sin dots
+# U+05C1/05C2, rafe U+05BF) and the "internal" dagesh (U+05BC, which sits
+# inside the letter body). U+05C7 qamatz qatan included as a below-mark.
+_HEBREW_BELOW_NIQQUD = [
+    0x05B0, 0x05B1, 0x05B2, 0x05B3,  # sheva, hataf segol, hataf patah, hataf qamatz
+    0x05B4, 0x05B5, 0x05B6, 0x05B7,  # hiriq, tsere, segol, patah
+    0x05B8, 0x05BB, 0x05C7,          # qamatz, qubutz, qamatz qatan
+]
+
+# Arabic harakat that Judeo-Arabic use as second-layer vowels (a/e/o).
+# fatha and damma are traditionally above-marks in Arabic; we force them
+# below-position when stacked on Hebrew niqqud so all three read as a
+# consistent stack of pronunciation aids.
+_HARAKA_VOWELS = [0x064E, 0x064F, 0x0650]  # fatha, damma, kasra
+
+
+def _add_haraka_under_niqqud_stacking(font) -> int:
+    """Add GPOS MarkToMark (Type 6) so Arabic vowel harakat (fatha, damma,
+    kasra) stack BELOW Hebrew below-mark niqqud when they follow one on
+    the same base letter. This is the second half of the Judeo-Arabic
+    two-tier vocalization:
+
+        Hebrew consonant (base)
+          ֶ  Hebrew niqqud                — below the letter  (mark 1)
+          ِ  Arabic haraka (a / e / o)    — below the niqqud  (mark 2)
+
+    Without this, the second-layer haraka anchors to the base letter at
+    its Amiri-default Y (below), landing at the same position as the
+    niqqud and overlapping it. The mkmk rule shifts it further down so
+    the two marks read as distinct.
+    """
+    from fontTools.ttLib.tables import otTables as ot
+
+    if "GPOS" not in font:
+        return 0
+    gpos = font["GPOS"].table
+    cmap = font["cmap"].getBestCmap()
+    glyf = font["glyf"]
+    glyph_order = set(font.getGlyphOrder())
+
+    # Mark2 = the base-mark (Hebrew below-niqqud) that anchors the stack.
+    niqqud_present: list[tuple[int, str, object]] = []
+    for cp in _HEBREW_BELOW_NIQQUD:
+        g = cmap.get(cp)
+        if g and g in glyph_order:
+            ng = glyf[g]
+            ng.recalcBounds(glyf)
+            if ng.numberOfContours > 0:
+                niqqud_present.append((cp, g, ng))
+    if not niqqud_present:
+        return 0
+
+    # Mark1 = the stacking mark (fatha/damma/kasra).
+    haraka_present: list[tuple[int, str, object]] = []
+    for cp in _HARAKA_VOWELS:
+        g = cmap.get(cp)
+        if g and g in glyph_order:
+            hg = glyf[g]
+            hg.recalcBounds(glyf)
+            if hg.numberOfContours > 0:
+                haraka_present.append((cp, g, hg))
+    if not haraka_present:
+        return 0
+
+    sub = ot.MarkMarkPos()
+    sub.Format = 1
+    sub.ClassCount = 1
+
+    # Mark1Coverage = harakat, anchored at their TOP-CENTRE so their top
+    # aligns with the niqqud-anchor point (which sits below the niqqud).
+    sub.Mark1Coverage = ot.Mark1Coverage()
+    sub.Mark1Coverage.glyphs = [g for _, g, _ in haraka_present]
+    sub.Mark1Array = ot.Mark1Array()
+    sub.Mark1Array.MarkRecord = []
+    for cp, g, hg in haraka_present:
+        anchor = ot.MarkAnchor()
+        anchor.Format = 1
+        anchor.XCoordinate = (hg.xMin + hg.xMax) // 2
+        anchor.YCoordinate = hg.yMax          # top of the haraka
+        mr = ot.MarkRecord()
+        mr.Class = 0
+        mr.MarkAnchor = anchor
+        sub.Mark1Array.MarkRecord.append(mr)
+    sub.Mark1Array.MarkCount = len(sub.Mark1Array.MarkRecord)
+
+    # Mark2Coverage = niqqud, each with an anchor slightly BELOW its
+    # bottom so the following haraka sits just under it with a small gap.
+    sub.Mark2Coverage = ot.Mark2Coverage()
+    sub.Mark2Coverage.glyphs = [g for _, g, _ in niqqud_present]
+    sub.Mark2Array = ot.Mark2Array()
+    sub.Mark2Array.Mark2Record = []
+    for cp, g, ng in niqqud_present:
+        m2a = ot.Mark2Anchor()
+        m2a.Format = 1
+        m2a.XCoordinate = (ng.xMin + ng.xMax) // 2
+        # 30 units below the niqqud's visible bottom gives a small gap.
+        m2a.YCoordinate = ng.yMin - 30
+        m2r = ot.Mark2Record()
+        m2r.Mark2Anchor = [m2a]
+        sub.Mark2Array.Mark2Record.append(m2r)
+    sub.Mark2Array.Mark2Count = len(sub.Mark2Array.Mark2Record)
+
+    lookup = ot.Lookup()
+    lookup.LookupType = 6
+    lookup.LookupFlag = 0
+    lookup.SubTable = [sub]
+    lookup.SubTableCount = 1
+    gpos.LookupList.Lookup.append(lookup)
+    gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
+    new_idx = len(gpos.LookupList.Lookup) - 1
+
+    # Register with mkmk feature (create if missing — same as shadda-stack).
+    found_mkmk = False
+    for fr in gpos.FeatureList.FeatureRecord:
+        if fr.FeatureTag == "mkmk":
+            fr.Feature.LookupListIndex.append(new_idx)
+            fr.Feature.LookupCount = len(fr.Feature.LookupListIndex)
+            found_mkmk = True
+    if not found_mkmk:
+        feat = ot.Feature()
+        feat.LookupListIndex = [new_idx]
+        feat.LookupCount = 1
+        feat.FeatureParams = None
+        fr = ot.FeatureRecord()
+        fr.FeatureTag = "mkmk"
+        fr.Feature = feat
+        gpos.FeatureList.FeatureRecord.append(fr)
+        gpos.FeatureList.FeatureCount = len(gpos.FeatureList.FeatureRecord)
+        idx = len(gpos.FeatureList.FeatureRecord) - 1
+        for sr in gpos.ScriptList.ScriptRecord:
+            for ls in [sr.Script.DefaultLangSys] + [lsr.LangSys for lsr in (sr.Script.LangSysRecord or [])]:
+                if ls is not None:
+                    ls.FeatureIndex.append(idx)
+                    ls.FeatureCount = len(ls.FeatureIndex)
+
+    return len(haraka_present) * len(niqqud_present)
+
+
 def _add_arabic_mark_gpos(font, config) -> int:
     """Give the imported Arabic marks (shadda, sukun, harakat) proper
     GDEF classification + a new GPOS MarkBase subtable so they anchor
@@ -2794,6 +2935,9 @@ def build_one(config: dict) -> int:
             stack_added = _add_arabic_mark_stacking(font)
             if stack_added:
                 print(f"  added Arabic mark-to-mark stacking for {stack_added} above-vowels")
+            below_stack = _add_haraka_under_niqqud_stacking(font)
+            if below_stack:
+                print(f"  added haraka-under-niqqud stacking ({below_stack} mark pairs)")
     overflow_note = f" + {overflow_rules} overflow chain rules" if overflow_rules else ""
     print(f"  wired {total_rules} multi-component ligature rules via feaLib{overflow_note}")
 

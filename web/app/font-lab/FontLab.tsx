@@ -754,6 +754,14 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         status: "experimental",
       },
       {
+        title: "Judeo-Arabic vocalization: three layers on one word",
+        description:
+          "Demonstrates the newly-wired two-tier vocalization for Judeo-Arabic. Every consonant here carries UP TO THREE marks stacked cleanly by the font's mkmk rules: (1) the Hebrew consonant itself, (2) a Hebrew niqqud below it (patah / hiriq / qubutz / sheva), (3) an Arabic haraka (fatha ◌َ, kasra ◌ِ, damma ◌ُ) BELOW the niqqud. Type letters, then hit the Arabic marks row above the keyboard to add a/e/o under whichever niqqud you've placed. The mkmk chain — base letter → niqqud → haraka — is baked into every one of the 17 Hebrew stretch fonts. Sample: כוס אמך, a Judeo-Arabic phrase (\"your mother's cup\", loanword-heavy Israeli colloquial), shown with both vocalization systems layered — Hebrew niqqud giving the Tiberian reading, Arabic haraka giving the classical pronunciation.",
+        text: "כֻُוֹס אִِمֶّךָ",
+        font: "stretch",
+        status: "experimental",
+      },
+      {
         title: "Vocalized Tafsir Rasag (reconstructed)",
         description:
           "The same Saadia Gaon passage, expanded to Genesis 1:1-3, with full Arabic vowel marks — fatha (◌َ), kasra (◌ِ), damma (◌ُ), tanwīn (◌ً/◌ٌ/◌ٍ), shadda (◌ّ), sukūn (◌ْ) — reconstructed from classical Arabic grammar following the tradition preserved in Yosef Kafih's 1963 vocalized edition (הַתּוֹרָה עִם תַּרְגּוּם וּפֵרוּשׁ רַבֵּנוּ סַעֲדְיָה גָּאוֹן, worked from Yemenite manuscripts). Hebrew dagesh (בּ, U+05BC) is added to every ב so the letters are unambiguously read as hard 'b' (Arabic ب) rather than fricative 'v'. Case endings, verbal patterns, and definite-article assimilation are grammatically determined, so this reconstruction should match Kafih ~95%.",
@@ -1968,6 +1976,15 @@ export function FontLab() {
             <div className="mt-2 flex items-center gap-2 text-xs text-neutral-600 flex-wrap">
               <span className="text-neutral-500 uppercase tracking-wider">Arabic marks</span>
               {[
+                // Base vowels (a/e/o). Judeo-Arabic vocalization collapses
+                // Arabic a/i/u onto three symbols — fatha=a, kasra=i or e,
+                // damma=u or o. Font-level mkmk positions these BELOW any
+                // Hebrew niqqud on the same letter, so all three layers can
+                // stack: consonant → Hebrew niqqud → Arabic haraka.
+                { ch: "َ", label: "a (fatha)" },
+                { ch: "ِ", label: "e (kasra)" },
+                { ch: "ُ", label: "o (damma)" },
+                // Gemination + tanwin case endings + phonetic marks.
                 { ch: "ّ", label: "shaddah" },
                 { ch: "ً", label: "fathatan" },
                 { ch: "ٌ", label: "dammatan" },
@@ -3213,6 +3230,7 @@ const HEBREW_NIQQUD: { ch: string; label: string }[] = [
   { ch: "ׁ", label: "shin-dot" },
   { ch: "ׂ", label: "sin-dot" },
 ];
+
 
 function HebrewOnScreenKeyboard({
   onPress, onToggleMark, onBackspace, onClear, onStretch, onShorten, font, fontReady,

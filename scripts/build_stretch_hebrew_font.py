@@ -822,25 +822,32 @@ NOHADRA_AMEDIA = {
 # default-ignorable, so Chrome passes it through untouched.
 # `override_trigger_glyph: True` keeps unmatched triggers invisible.
 _ETH_SERIES = {
-    # base_cp: (name, x_cutoff)
-    # x_cutoff is the vertical split — points to the LEFT shift with the
-    # stretch, points to the RIGHT stay anchored. Chosen just LEFT of the
-    # main "middle" or "right anchor" of the fidel so the anchor and any
-    # right-side vowel decoration stay put.
-    0x1218: ("ma",  400),   # መ series (7 fidels መ ሙ ሚ ማ ሜ ም ሞ)
-    0x1220: ("sza", 300),   # ሠ series
-    0x1210: ("hha", 280),   # ሐ series
-    0x1320: ("tha", 400),   # ጠ series
-    0x12C8: ("wa",  380),   # ወ series
+    # base_cp: (name, letter_class, left_cutoff, right_cutoff)
+    # Ethiopic fidels have 3-column geometry (unlike Hebrew ד / Syriac ܕ
+    # which are 2-part). The "sym" class handles this: points x<left_cutoff
+    # shift LEFT by shift/2, points x>=right_cutoff shift RIGHT by shift/2,
+    # middle column stays. Total advance grows by `shift` (same as "bar").
+    # Cutoffs picked from actual contour geometry (Noto Serif Ethiopic):
+    #   me: left-lobe counter [147,338], middle column ~380-600, right-lobe counter [638,807]
+    #   hha: left half ends at inner-stem x=309, middle stem [309,502], right starts at 502
+    #   wa: like me but narrower middle — left counter [151,338], right counter [429,593]
+    # sza and tha are single-contour with complex shapes; symmetric widening
+    # would need per-letter contour surgery. Left on "bar" class for now
+    # (still tears at high levels — see NOTO_SERIF_ETHIOPIC docstring).
+    0x1218: ("ma",  "sym", 380, 600),  # መ series (7 fidels መ ሙ ሚ ማ ሜ ም ሞ)
+    0x1210: ("hha", "sym", 309, 502),  # ሐ series (verified 2-contour)
+    0x12C8: ("wa",  "sym", 350, 410),  # ወ series (narrow middle column)
+    0x1220: ("sza", "bar", 300, None), # ሠ series — single contour, still tears at high levels
+    0x1320: ("tha", "bar", 400, None), # ጠ series — single contour, still tears at high levels
 }
 _ETHIOPIC_LETTERS: dict[int, dict] = {}
-for _base, (_name, _xcut) in _ETH_SERIES.items():
+for _base, (_name, _cls, _xcut, _rcut) in _ETH_SERIES.items():
     for _order in range(7):
         _cp = _base + _order
         _ord_suffix = ["e", "u", "i", "aa", "ee", "y", "o"][_order]
-        _ETHIOPIC_LETTERS[_cp] = {
+        _entry: dict = {
             "name": f"{_name}_{_ord_suffix}",
-            "class": "bar",
+            "class": _cls,
             # Bar zone spans essentially the full glyph height so every
             # left-side contour point participates in the shift (Ethiopic
             # fidels have decorative features throughout — no need to
@@ -849,6 +856,9 @@ for _base, (_name, _xcut) in _ETH_SERIES.items():
             "bar_top": 900,
             "x_cutoff": _xcut,
         }
+        if _rcut is not None:
+            _entry["right_cutoff"] = _rcut
+        _ETHIOPIC_LETTERS[_cp] = _entry
 
 NOTO_SERIF_ETHIOPIC = {
     "id": "noto-serif-ethiopic",
@@ -857,7 +867,14 @@ NOTO_SERIF_ETHIOPIC = {
     "family": "Semitic Stretch Noto Serif Ethiopic",
     "postscript": "SemiticStretchNotoSerifEthiopic",
     "internal_id": "SemiticSearch-SemiticStretchNotoSerifEthiopic-1.0",
-    "step": 100,
+    # Ethiopic step is intentionally small (60) so even level 16 stays
+    # visually clean: max total widening = 60 * 16 = 960 units, giving
+    # max half-shift = 480 per side for sym-class fidels. Beyond ~500
+    # units of half-shift the top/bottom baselines start to look like
+    # slab-widened bars (a mechanical stretching artifact, not manuscript
+    # calligraphy). Cf. Hebrew (step=150) where letters have a single
+    # spine that can absorb larger shifts without visual damage.
+    "step": 60,
     "lsb_mode": "mono",
     "language_system": "ethi",  # OpenType script tag for Ethiopic
     # Widening trigger: U+139A — UNASSIGNED slot in the Ethiopic Supplement
@@ -976,6 +993,7 @@ def stretch_glyph(
     arm_min_y: int | None = None,
     leg_max_y: int | None = None,
     x_cutoff: int | None = None,
+    right_cutoff: int | None = None,
     shift_contours: list[int] | None = None,
     underside_y_max: int | None = None,
     underside_x_min: int | None = None,
@@ -1008,6 +1026,9 @@ def stretch_glyph(
           — shifted by the FULL amount (they move rigidly leftward with the
             stretching region's left edge), or
           — not shifted at all (they stay anchored to the right side).
+        Returns a SIGNED shift: positive = shift LEFT (subtracted from x
+        in the caller), negative = shift RIGHT (added to x). The `sym`
+        class is the only one that returns negative shifts.
         A linear falloff would curve the extended bar; the user wants it
         FLAT (like image #36), so we use a hard x-boundary inside the bar
         zone. The arm (above) or leg (below) the bar also translates
@@ -1015,6 +1036,21 @@ def stretch_glyph(
         edge and preserving its own decorative shape (serifs, flags).
         """
         if x_cutoff is None:
+            return 0.0
+        if letter_class == "sym":
+            # Symmetric 3-column widening for letters like Ethiopic fidels
+            # (መ = left lobe + middle column + right lobe joined by a top
+            # bar). Points x<x_cutoff shift LEFT by shift/2; points x>=
+            # right_cutoff shift RIGHT by shift/2; middle column stays put.
+            # The top and bottom baselines stretch across both gaps. Total
+            # advance grows by `shift` (matches other classes).
+            if right_cutoff is None:
+                return 0.0
+            half = shift / 2.0
+            if x < x_cutoff:
+                return half           # positive = shift left
+            if x >= right_cutoff:
+                return -half          # negative = shift right
             return 0.0
         if letter_class == "box":
             return shift if x < x_cutoff else 0.0
@@ -1078,7 +1114,10 @@ def stretch_glyph(
     orig_coords = list(src.coordinates)
     for i, (x, y) in enumerate(new_glyph.coordinates):
         s = shift_for(x, y)
-        if s > 0:
+        if s != 0:
+            # Sign convention: positive s = shift LEFT (x - s), negative s
+            # = shift RIGHT (x - (-s) = x + |s|). "sym" is the only class
+            # that emits negative values.
             new_glyph.coordinates[i] = (int(round(x - s)), y)
 
     # Optionally straighten the underside of the bar. Some fonts (e.g.
@@ -2360,6 +2399,8 @@ def build_one(config: dict) -> int:
         leg_max_y = int(leg) if isinstance(leg, int) else None
         x_cut = info.get("x_cutoff")
         x_cut_int = int(x_cut) if isinstance(x_cut, int) else None
+        right_cut = info.get("right_cutoff")
+        right_cut_int = int(right_cut) if isinstance(right_cut, int) else None
         und_y = info.get("underside_y_max")
         underside_y_max = int(und_y) if isinstance(und_y, int) else None
         und_x = info.get("underside_x_min")
@@ -2398,15 +2439,20 @@ def build_one(config: dict) -> int:
                     bar_bottom=bar_bottom, bar_top=bar_top,
                     arm_min_y=arm_min_y, leg_max_y=leg_max_y,
                     x_cutoff=x_cut_int,
+                    right_cutoff=right_cut_int,
                     shift_contours=shift_contours,
                     underside_y_max=underside_y_max,
                     underside_x_min=underside_x_min,
                 )
                 lsb_mode_ = config.get("lsb_mode", "shift")
+                # "sym" class shifts left AND right by shift_/2 each — the
+                # letter's origin has already moved by shift_/2, not shift_.
+                # For mono realignment we translate by half, not full.
+                post_shift = (shift_ // 2) if letter_class == "sym" else shift_
                 if lsb_mode_ == "mono":
                     for i in range(len(new_g.coordinates)):
                         x, y = new_g.coordinates[i]
-                        new_g.coordinates[i] = (x + shift_, y)
+                        new_g.coordinates[i] = (x + post_shift, y)
                     new_g.recalcBounds(font["glyf"])
                     new_l = new_g.xMin
                 elif lsb_mode_ == "natural":
@@ -2470,6 +2516,7 @@ def build_one(config: dict) -> int:
                 bar_bottom=bar_bottom, bar_top=bar_top,
                 arm_min_y=arm_min_y, leg_max_y=leg_max_y,
                 x_cutoff=x_cut_int,
+                right_cutoff=right_cut_int,
                 shift_contours=shift_contours,
                 underside_y_max=underside_y_max,
                 underside_x_min=underside_x_min,

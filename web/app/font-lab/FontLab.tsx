@@ -227,8 +227,8 @@ const SCRIPTS: ScriptEntry[] = [
       "በቀዳሚ ገብረ እግዚአብሔር\n" +
       "ሰማየ ወምድረ",
     fonts: [
-      { id: "stretchethiopic", label: "Semitic Stretch Noto Serif Ethiopic (experimental)", file: "SemiticStretchNotoSerifEthiopic.ttf", family: "FL_StretchNotoSerifEthiopic",
-        note: "Custom derivative of Noto Serif Ethiopic (OFL). Per-fidel widening on 5 Ge'ez consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. Ligature fires correctly under hb-shape (so it works in Word / InDesign / LibreOffice), but Chrome doesn't reliably route the trigger codepoint through @font-face AND the current widening algorithm tears the 3-column fidel structure — see the showcase card for details." },
+      { id: "stretchethiopic", label: "Semitic Stretch Noto Serif Ethiopic (download-only)", file: "SemiticStretchNotoSerifEthiopic.ttf", family: "FL_StretchNotoSerifEthiopic",
+        note: "Custom derivative of Noto Serif Ethiopic (OFL). Widens 5 consonant series × 7 vowel orders via a U+139A trigger. Works in offline apps (Word / InDesign / LibreOffice), doesn't display in-browser due to a Chrome font-selection heuristic. Algorithm v2 uses symmetric 3-column widening for me/hha/wa (calligraphic result); sza/tha still on legacy bar-class." },
       { id: "sans",  label: "Noto Sans Ethiopic",  file: "NotoSansEthiopic.ttf", family: "FL_NotoSansEthiopic" },
       { id: "serif", label: "Noto Serif Ethiopic", file: "NotoSerifEthiopic.ttf", family: "FL_NotoSerifEthiopic" },
     ],
@@ -958,7 +958,7 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Ge'ez calligraphic letter widening (download-only for now)",
         description:
-          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font intended to widen the horizontal strokes of 5 consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. TWO PROBLEMS were uncovered during browser testing: (1) Chrome does not reliably route the trigger codepoint through our @font-face even with unicode-range explicitly declared — a Blink font-selection heuristic that CSS Fonts Level 3 doesn't document; (2) the underlying widening algorithm splits Ethiopic fidels down the middle (they have 3-column structure, not 2), producing torn glyphs. hb-shape confirms the OpenType ligature fires correctly — so the font is usable in offline apps (Word, InDesign, LibreOffice) at low stretch levels. Fixing the browser display requires a new per-fidel widening algorithm that respects the 3-column geometry (in progress).",
+          "Semitic Stretch Noto Serif Ethiopic — a custom Ge'ez font that widens 5 consonant series (መ ጠ ሠ ሐ ወ) × 7 vowel orders. STATUS: works in offline apps (Word, InDesign, LibreOffice — hb-shape confirms the OpenType ligature fires correctly), does NOT display in the browser because Chrome/Blink applies an undocumented heuristic that overrides our @font-face for the trigger codepoint regardless of unicode-range. Latest algorithm update (v2): symmetric 3-column widening for me/hha/wa — left lobe shifts left, right lobe shifts right, middle column stays put, so the letter widens calligraphically without tearing. sza and tha are single-contour and still use the older bar-class widening (visible artifacts at high stretch levels); custom per-letter contour surgery is queued for a future update.",
         text: "መ ጠ ሠ ሐ ወ",
         font: "stretchethiopic",
         status: "experimental",

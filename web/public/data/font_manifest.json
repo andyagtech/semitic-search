@@ -4,8 +4,8 @@
   "version": "1.0.1",
   "trigger_codepoints": {
     "hebrew": "U+05C6",
-    "syriac": "U+E000",
-    "ethiopic": "U+E000"
+    "syriac": "U+070D",
+    "ethiopic": "U+139A"
   },
   "fonts": [
     {
@@ -190,9 +190,9 @@
       "source_font": "Noto Serif Ethiopic (Google)",
       "source_url": "https://fonts.google.com/noto/specimen/Noto+Serif+Ethiopic",
       "license": "OFL",
-      "trigger": "U+E000 (Private Use Area)",
+      "trigger": "U+139A (Ethiopic Supplement, unassigned)",
       "widened_letters": ["መ series", "ጠ series", "ሠ series", "ሐ series", "ወ series"],
-      "notes": "5 consonant series × 7 vowel orders = 35 stretchable fidels; matches the manuscript calligraphic tradition of widening horizontal decorative strokes."
+      "notes": "5 consonant series × 7 vowel orders = 35 stretchable fidels. me/hha/wa use symmetric 3-column widening (calligraphic result); sza/tha still on legacy one-sided algorithm (visible artifacts at high levels). Confirmed working in offline apps via hb-shape; browser rendering blocked by a Chrome font-selection heuristic that overrides @font-face for the trigger codepoint."
     }
   ]
 }

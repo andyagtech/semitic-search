@@ -145,9 +145,12 @@ const DEFAULT_INPUT_2 = "unforgettable.";
 // Example RTL-inside-LTR paste hazards
 const HAZARD_SAMPLES: { label: string; text: string; note: string }[] = [
   {
-    label: "Trilingual — English + Hebrew + Arabic in one sentence",
-    text: "We visited אורשלים · أورشليم, called Jerusalem in English.",
-    note: "Same city named three ways. The two RTL scripts sit inside an LTR sentence; watch the punctuation and the middle-dot separator flip based on their neighbors.",
+    label: "Trilingual paragraph — Beaufort Castle",
+    text:
+      "On July 12, the IDF (צה״ל · جيش الدفاع الإسرائيلي) took Beaufort Castle in southern Lebanon (לבנון · لبنان).\n" +
+      "The medieval crusader fortress — בופור in Hebrew, قلعة الشقيف in Arabic — sits on a ridge overlooking the Litani (نهر الليطاني) valley.\n" +
+      "It last changed hands during the year-2000 withdrawal, and the recapture was reported by both Haaretz (הארץ) and Al-Jazeera (الجزيرة) within the same hour.",
+    note: "Multi-line real-world scenario with 6+ RTL runs embedded in an English narrative. Notice how each parenthetical, dash, and quote hugs its neighbor's direction — hover any run in the visual-runs panel to see the direction it resolved to.",
   },
   {
     label: "Arabic word inside English sentence",
@@ -165,14 +168,22 @@ const HAZARD_SAMPLES: { label: string; text: string; note: string }[] = [
     note: "RLO makes 'invoice.png' out of an .exe. Classic phishing trick.",
   },
   {
-    label: "Hebrew comment in code",
-    text: "const greeting = \"שלום\"; // ברכה",
-    note: "Semicolons and slashes flip; cursor traversal jumps.",
+    label: "Hebrew comment in code (long)",
+    text:
+      "function checkWalkieTalkies(city) {\n" +
+      "  // הפונקציה הזו בודקת את מצב מכשירי הקשר בביירות\n" +
+      "  return devices.filter(d => d.status === \"online\");\n" +
+      "}",
+    note: "The comment SHOULD sit visually after the // on its own line. But because ‏// and space are neutrals and Hebrew is R, the // + trailing spaces get pulled into the RTL run, so the comment reads out of order and cursor arrows jump. Wrap the Hebrew in FSI…PDI (or <bdi>) to lock it. Tutorial case #6.",
   },
   {
-    label: "Arabic comment in code",
-    text: "const city = \"أورشليم\"; // مدينة",
-    note: "Even inside a string literal, the AL run sucks the trailing quote+semicolon into the RTL span.",
+    label: "Arabic comment in code (long)",
+    text:
+      "function captureLog(event) {\n" +
+      "  // هذه الدالة تسجل الأحداث الأخيرة في جنوب لبنان\n" +
+      "  return db.insert(\"events\", event);\n" +
+      "}",
+    note: "Same failure mode as the Hebrew version. The // marker gets absorbed into the AL run; the closing brace of the block appears in the wrong place if you don't isolate the comment.",
   },
   {
     label: "Mixed digits (EN vs AN)",

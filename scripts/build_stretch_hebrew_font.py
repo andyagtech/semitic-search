@@ -911,6 +911,17 @@ NOTO_KUFAM_LATIN = {
         # ink and produces a wide black rectangle instead of a widened I.
         # Latin has no clean widening for single-stem verticals.
         0x005A: {"name": "Z_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 305},  # Z
+        # Lowercase — pick letters with a horizontal spine that the split
+        # can hide inside. Cap-height variants are 720 units; x-height is
+        # ~556 for round letters, ~760 for ascenders.
+        0x0068: {"name": "h_low",  "class": "box", "bar_bottom": 0, "bar_top": 760, "x_cutoff": 318},  # h (like H)
+        0x006E: {"name": "n_low",  "class": "box", "bar_bottom": 0, "bar_top": 556, "x_cutoff": 318},  # n (h without asc)
+        0x0075: {"name": "u_low",  "class": "box", "bar_bottom": -12, "bar_top": 544, "x_cutoff": 310},  # u (n inverted)
+        0x006D: {"name": "m_low",  "class": "box", "bar_bottom": 0, "bar_top": 556, "x_cutoff": 476},  # m (3 stems, split at middle stem)
+        # e has a horizontal crossbar mid-height at ~y280; split inside the
+        # crossbar so the round bowl on the right stays intact and the left
+        # curve slides out with the extending crossbar.
+        0x0065: {"name": "e_low",  "class": "box", "bar_bottom": -8, "bar_top": 556, "x_cutoff": 298},  # e
     },
 }
 

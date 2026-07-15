@@ -816,10 +816,18 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         status: "experimental",
       },
       {
-        title: "Latin kashida — widened caps on Semitic Stretch Kufam",
+        title: "Latin kashida — widened caps + lowercase on Semitic Stretch Kufam",
         description:
-          "Applying the Semitic-stretch mechanism to Latin: H E F L T I Z each have widened GSUB variants triggered by U+02D7 clustered after the letter (`H˗˗˗˗` → wide H). Same box-class split we use for Nohadra Syriac. Uppercase only for now; the flat-topped Latin caps are the natural fit — round letters (O, C, S) and diagonals (A, V, W) don't have a spine to stretch.",
-        text: "HE˗˗˗˗˗˗˗˗˗˗LLO · TE˗˗˗˗˗˗ST · FEL˗˗˗˗˗˗˗L˗˗˗˗˗",
+          "Applying the Semitic-stretch mechanism to Latin. Uppercase: H E F L T Z. Lowercase: h n m u e. Each triggered by U+02D7 clustered after the letter (`H˗˗˗˗` → wide H). Same box-class split we use for Nohadra Syriac. Not covered: single-stem verticals (I, l, i — no spine to split cleanly), round letters (O, C, S — need curved-arc extension), diagonals (A, V, W — no spine).",
+        text: "HE˗˗˗˗˗˗˗˗˗˗LLO · h˗˗˗e˗˗˗LLo · TE˗˗˗˗˗˗ST",
+        font: "stretchkufam",
+        status: "experimental",
+      },
+      {
+        title: "Bilingual kashida — Hello + مرحبا with matching stretch",
+        description:
+          "Latin uses U+02D7 (our custom Latin-kashida trigger) and Arabic uses native U+0640 tatweel between joining letters — same visual language of \"dragged out\" letters in both scripts, from a single font family. Try adding or removing kashida chars in either half to see them extend independently.",
+        text: "HE˗˗˗˗˗˗˗˗˗˗˗˗˗˗˗˗˗˗˗LLO! · مرحــــــــــــــــبا!",
         font: "stretchkufam",
         status: "experimental",
       },
@@ -950,6 +958,14 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
         text: "መ᎐᎐᎐ ጠ᎐᎐᎐ ሠ᎐᎐᎐ ሐ᎐᎐᎐ ወ᎐᎐᎐",
         font: "stretchethiopic",
         status: "live",
+      },
+      {
+        title: "DIAG — is Chrome using our font for U+1390?",
+        description:
+          "Diagnostic. Loads the DIAG-Ethiopic font (identical to Semitic Stretch Ethiopic except U+1390 is drawn as a distinctive tall vertical bar). Click Load into editor: if you see vertical bars between fidels → Chrome IS using our font, the ligature is failing for another reason. If you see the same small dots as the production card above → Chrome is falling back to a system Ethiopic font for U+1390 even though our @font-face declares unicode-range: U+0000-10FFFF.",
+        text: "መ᎐᎐᎐ ጠ᎐᎐᎐ ሠ᎐᎐᎐ ሐ᎐᎐᎐ ወ᎐᎐᎐",
+        font: "stretchethiopicdiag",
+        status: "experimental",
       },
       {
         title: "Vowel-order picker (proposed)",

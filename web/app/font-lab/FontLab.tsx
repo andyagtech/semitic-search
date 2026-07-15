@@ -165,17 +165,35 @@ const SCRIPTS: ScriptEntry[] = [
       { id: "nohadraamedia", label: "Nohadra Amedia", file: "NohadraSyriacAmedia.ttf", family: "FL_NohadraAmedia",
         note: "Sargis Yonan (SIL OFL). Companion to Sapna; unstretched original." },
       { id: "idiqlat", label: "Idiqlat", file: "Idiqlat-Regular.ttf", family: "FL_Idiqlat",
-        note: "SIL Idiqlat (OFL). Calligraphic Syriac. Not stretchable — its top-strokes are curved rather than flat, so the bar/leg framework produces discontinuities." },
+        note: "SIL Idiqlat (OFL). Calligraphic East Syriac. Not stretchable — its top-strokes are curved rather than flat, so the bar/leg framework produces discontinuities." },
+      { id: "idiqlat-light", label: "Idiqlat Light", file: "Idiqlat-Light.ttf", family: "FL_IdiqlatLight",
+        note: "SIL Idiqlat Light (OFL). Lighter weight of the calligraphic East Syriac face." },
+      { id: "idiqlat-extralight", label: "Idiqlat ExtraLight", file: "Idiqlat-ExtraLight.ttf", family: "FL_IdiqlatExtraLight",
+        note: "SIL Idiqlat ExtraLight (OFL). Thinnest weight — good for large-display samples." },
       { id: "sans",  label: "Noto Sans Syriac",  file: "NotoSansSyriac.ttf", family: "FL_NotoSansSyriac" },
       { id: "serif", label: "Noto Serif Syriac (Estrangela-leaning)", file: "NotoSerifSyriac.ttf", family: "FL_NotoSerifSyriac" },
+      // Sparksoft Systems Marcus family (OFL). Same author as Nohadra
+      // Sapna/Amedia — a related lineage of East Syriac and Estrangela faces.
+      { id: "estrangelo-marcus", label: "Estrangelo Marcus", file: "EstrangeloMarcus-Regular.ttf", family: "FL_EstrangeloMarcus",
+        note: "Sparksoft Systems (OFL). Classical Estrangela — the oldest Syriac tradition." },
+      { id: "east-syriac-marcus", label: "East Syriac Marcus", file: "EastSyriacMarcus-Regular.ttf", family: "FL_EastSyriacMarcus",
+        note: "Sparksoft Systems (OFL). East Syriac / Madnhaya face — heavier than Idiqlat, cleaner geometry than the manuscript style." },
+      { id: "east-syriac-nohadra", label: "East Syriac Nohadra (Marcus family)", file: "EastSyriacNohadra-Regular.ttf", family: "FL_EastSyriacNohadraMarcus",
+        note: "Sparksoft Systems (OFL). Thinner East Syriac face — companion to Marcus, distinct from the block-style Nohadra Sapna/Amedia above." },
+      { id: "aaa-manuscript-marcus", label: "AAA-Manuscript Marcus", file: "AAA-ManuscriptMarcus-Regular.ttf", family: "FL_AAAManuscriptMarcus",
+        note: "Sparksoft Systems (OFL). Handwritten East Syriac — leans manuscript rather than typographic." },
       // Meltho fonts (Beth Mardutho: The Syriac Institute) — one per
-      // classical Syriac script tradition.
+      // classical Syriac script tradition. NOTE: NOT under a permissive OSS
+      // license. The Meltho license is derived from Bigelow & Holmes and
+      // explicitly disallows modification; redistribution as part of a web
+      // app is a gray area. Kept for coverage (only Serto face we have) but
+      // should be replaced once OFL alternatives exist.
       { id: "meltho-edessa", label: "Estrangelo Edessa (Estrangela)", file: "MelthoEdessa.ttf", family: "FL_MelthoEdessa",
-        note: "Classical Estrangela — the oldest Syriac script tradition. Beth Mardutho SIL Meltho family." },
+        note: "Classical Estrangela — the oldest Syriac script tradition. Beth Mardutho Meltho family. NOTE: proprietary Meltho license (not OFL) — see Sparksoft Estrangelo Marcus above for a permissive alternative." },
       { id: "meltho-adiabene", label: "East Syriac Adiabene (Madnhaya)", file: "MelthoAdiabene.ttf", family: "FL_MelthoAdiabene",
-        note: "Madnhaya (East Syriac) — used by the Assyrian Church of the East and Chaldean Catholic Church. Beth Mardutho SIL Meltho family." },
+        note: "Madnhaya (East Syriac) — used by the Assyrian Church of the East and Chaldean Catholic Church. Beth Mardutho Meltho family. NOTE: proprietary Meltho license (not OFL) — see Idiqlat or East Syriac Marcus above for permissive alternatives." },
       { id: "meltho-jerusalem", label: "Serto Jerusalem (Serta)", file: "MelthoJerusalem.ttf", family: "FL_MelthoJerusalem",
-        note: "Serta / West Syriac cursive — used by the Syriac Orthodox Church and Maronites. Beth Mardutho SIL Meltho family." },
+        note: "Serta / West Syriac cursive — used by the Syriac Orthodox Church and Maronites. Beth Mardutho Meltho family. NOTE: proprietary Meltho license (not OFL); no OFL Serto font currently exists that we're aware of." },
     ],
   },
   {

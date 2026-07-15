@@ -64,6 +64,8 @@ const SCRIPTS: ScriptEntry[] = [
     fonts: [
       { id: "amiri",    label: "Amiri (classical Naskh)", file: "Amiri-Regular.ttf", family: "FL_Amiri" },
       { id: "naskh",    label: "Noto Naskh Arabic",       file: "NotoNaskhArabic.ttf", family: "FL_NaskhArabic" },
+      { id: "stretchkufam", label: "Semitic Stretch Kufam (Latin kashida)", file: "SemiticStretchKufamLatin.ttf", family: "FL_StretchKufam",
+        note: "Custom Kufam derivative — widens flat-topped Latin caps (H E F L T I Z) via a U+02D7 trigger. Type H˗˗˗˗ (H + 4 modifier-minus) to get a wide H. Experimental: only 7 letters covered; lowercase and other caps stay unchanged." },
       { id: "kufi",     label: "Reem Kufi (Latin + Arabic)", file: "ReemKufi-Regular.ttf", family: "FL_ReemKufi",
         note: "Alif Type (OFL). Modern angular Kufic — covers Latin + Arabic, so bilingual samples render in a single face." },
       { id: "kufam",    label: "Kufam (Latin + Arabic)",     file: "Kufam-Regular.ttf",  family: "FL_Kufam",
@@ -809,6 +811,14 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
           "Reem Kufi and Kufam both ship matched Latin glyphs. Switch fonts in the picker to see the metrics/x-height decisions each family made for the two scripts. Useful for signage, book covers, and any bilingual layout where you want a single visual voice.",
         text: "قهوة · Qahwa · كتاب Kitab · بيروت Beirut · القاهرة Cairo",
         font: "kufam",
+        status: "experimental",
+      },
+      {
+        title: "Latin kashida — widened caps on Semitic Stretch Kufam",
+        description:
+          "Applying the Semitic-stretch mechanism to Latin: H E F L T I Z each have widened GSUB variants triggered by U+02D7 clustered after the letter (`H˗˗˗˗` → wide H). Same box-class split we use for Nohadra Syriac. Uppercase only for now; the flat-topped Latin caps are the natural fit — round letters (O, C, S) and diagonals (A, V, W) don't have a spine to stretch.",
+        text: "HE˗˗˗˗˗˗˗˗˗˗LLO · TE˗˗˗˗˗˗ST · FI˗˗˗˗˗˗˗L˗˗˗˗˗L",
+        font: "stretchkufam",
         status: "experimental",
       },
       {

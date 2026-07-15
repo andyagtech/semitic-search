@@ -872,6 +872,45 @@ NOTO_SERIF_ETHIOPIC = {
     "letters": _ETHIOPIC_LETTERS,
 }
 
+# Semitic Stretch Kufam — an experiment in Latin kashida-widening. Kufam
+# (Impallari Type / Aleem, OFL) ships both an Arabic and Latin design in
+# one face, and its Latin caps have flat geometric tops that widen cleanly
+# via a box-class horizontal split. Trigger is U+02D7 MODIFIER LETTER
+# MINUS SIGN — script=Common (inherits from neighbor), General_Category=Sk
+# (spacing modifier, NOT default-ignorable so Chrome doesn't strip it),
+# and essentially never typed in normal Latin text.
+#
+# U+00AD SOFT HYPHEN was tempting (invisible by design) but it's Cf/
+# Default_Ignorable — Chrome removes it before HarfBuzz shapes, so the
+# ligature would never fire (same failure mode as our original U+2060).
+NOTO_KUFAM_LATIN = {
+    "id": "kufam-latin",
+    "source": "Kufam-Regular.ttf",
+    "output": "SemiticStretchKufamLatin.ttf",
+    "family": "Semitic Stretch Kufam",
+    "postscript": "SemiticStretchKufam",
+    "internal_id": "SemiticSearch-SemiticStretchKufam-1.0",
+    "step": 100,
+    "lsb_mode": "mono",
+    "language_system": "latn",
+    "stretch_codepoint": 0x02D7,
+    "override_trigger_glyph": True,
+    # Kufam Latin caps (bounds: y=0..720, verticals at bar edges). Box
+    # class: everything with x<x_cutoff shifts left by N — left vertical
+    # slides out, right vertical anchors, crossbar/serifs stretch.
+    # x_cutoff picked at the midpoint of each letter's crossbar so the
+    # split lands inside the horizontal element (invisible seam).
+    "letters": {
+        0x0048: {"name": "H_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 368},  # H
+        0x0045: {"name": "E_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 330},  # E
+        0x0046: {"name": "F_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 318},  # F
+        0x004C: {"name": "L_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 298},  # L
+        0x0054: {"name": "T_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 292},  # T
+        0x0049: {"name": "I_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 144},  # I
+        0x005A: {"name": "Z_lat", "class": "box", "bar_bottom": 0, "bar_top": 720, "x_cutoff": 305},  # Z
+    },
+}
+
 CONFIGS = [
     FRANK_RUHL, KETER_ARAM_TSOVA, SHMULIK, HILLEL, GLADIA,
     NOTO_SANS_HEBREW, NOTO_SERIF_HEBREW, SHOFAR,
@@ -880,6 +919,7 @@ CONFIGS = [
     NOTO_RASHI,
     NOTO_SANS_SYRIAC, NOHADRA_SAPNA, NOHADRA_AMEDIA,
     NOTO_SERIF_ETHIOPIC,
+    NOTO_KUFAM_LATIN,
 ]
 
 # Stretching model (matches Torah scribal widening):

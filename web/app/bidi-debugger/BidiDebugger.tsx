@@ -636,6 +636,34 @@ const TUTORIAL_CASES: TutorialCase[] = [
         pull its punctuation in. The isolates are invisible, so you don&apos;t
         see them, but they do all the work. This is what the &quot;Wrap for
         safe paste&quot; button up top produces.
+        {" "}<b>Bonus:</b> the position of the <code>!</code> inside the
+        quotes is now controlled by MEMORY ORDER, not by resolution
+        heuristics. Type <code>&quot;!مرحبا&quot;</code> (bang FIRST) →
+        the bang appears visually to the LEFT of the Arabic word; type{" "}
+        <code>&quot;مرحبا!&quot;</code> (bang LAST) → the bang appears
+        visually to the RIGHT. Both are valid, both are stable, choose by
+        semantics. The isolate just guarantees your choice sticks.
+      </>
+    ),
+  },
+  {
+    title: "6b. Choosing bang position — same content, two intents",
+    text:
+      "Bang before the word:  ⁨\"!مرحبا\"⁩ surprised me.\n" +
+      "Bang after the word:   ⁨\"مرحبا!\"⁩ surprised me.",
+    explain: (
+      <>
+        Two isolated variants. Both have exactly the same characters
+        (opening quote, bang, Arabic, closing quote) — but the bang
+        appears in a different <em>memory</em> position. Because the
+        content is isolated, memory order fully determines visual
+        position and the surrounding English can&apos;t interfere.
+        Rule of thumb: <b>type the punctuation where you want it
+        RELATIVE TO THE ARABIC WORD, in reading order.</b> In the top
+        line, bang comes before the word in memory → visually to the
+        LEFT of the Arabic. In the bottom, bang comes after → visually
+        to the RIGHT. This is the whole reason isolates matter: they
+        make position deterministic.
       </>
     ),
   },
@@ -1059,6 +1087,224 @@ function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
                 whole segments you authored yourself.
               </p>
             </div>
+          </div>
+        </details>
+
+        {/* Fixing the three canonical failures */}
+        <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
+          <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+            <span className="text-neutral-400">▸</span> Fixing the three canonical failures
+          </summary>
+          <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-3">
+            <p>
+              The overview mentioned three specific breakage patterns.
+              Each has a concrete fix. Copy any pair into the analyzer
+              above and switch paragraph direction to see the difference.
+            </p>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">
+                Failure #1: A comma typed at the end of an Arabic word
+                appears at the visual beginning of it.
+              </p>
+              <p>
+                Memory: <code>The word مرحبا, was surprising.</code> —
+                you typed the comma after the Arabic. In an LTR paragraph
+                the comma is a neutral flanked by AL on the left and
+                <code>&nbsp;was</code> (L) on the right. UAX #9 rule N1
+                resolves it toward the strongest adjacent (AL wins because
+                &quot;was&quot; is separated by a space). The comma joins
+                the RTL run and appears visually LEFT of the Arabic
+                letters — same paragraph reads as
+                <code> The word ,مرحبا was surprising</code>.
+              </p>
+              <p className="text-neutral-800 font-medium">Fix:</p>
+              <pre className="font-mono text-[11px] bg-neutral-100 p-2 rounded overflow-x-auto whitespace-pre-wrap">{'The word ⁨مرحبا⁩, was surprising.'}</pre>
+              <p>
+                FSI…PDI seals the Arabic. Now the comma sits outside the
+                isolate, in the LTR paragraph run, and resolves as LTR —
+                staying visually AFTER the Arabic word. In HTML:{" "}
+                <code>{`The word <bdi>مرحبا</bdi>, was surprising.`}</code>
+              </p>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">
+                Failure #2: A closing quote migrates two words to the left.
+              </p>
+              <p>
+                Memory:{" "}
+                <code>He said &quot;مرحبا يا صديقي&quot; and waved.</code>
+                {" "}— quoted Arabic phrase inside an English sentence. The
+                closing <code>&quot;</code> is a neutral. Its neighbors
+                are Arabic on the left, space then <code>and</code> (L) on
+                the right. AL wins; quote absorbs into the RTL run and
+                slides across it visually until it exits the RTL region —
+                landing on the far LEFT of the phrase, next to the opening
+                quote. Reads as{" "}
+                <code>He said &quot;&quot;مرحبا يا صديقي and waved</code>
+                {" "}— both quotes on the same side.
+              </p>
+              <p className="text-neutral-800 font-medium">Fix:</p>
+              <pre className="font-mono text-[11px] bg-neutral-100 p-2 rounded overflow-x-auto whitespace-pre-wrap">{'He said ⁨"مرحبا يا صديقي"⁩ and waved.'}</pre>
+              <p>
+                Wrap the ENTIRE quoted phrase — including both quotes —
+                inside FSI…PDI. Inside the isolate, all neutrals resolve
+                within the sealed context; outside, the surrounding English
+                runs untouched. Both quotes end up on the correct sides of
+                the Arabic phrase. Same fix in HTML:{" "}
+                <code>{`He said <bdi>"مرحبا يا صديقي"</bdi> and waved.`}</code>
+              </p>
+            </div>
+
+            <div className="p-2 rounded bg-white border border-neutral-200 space-y-2">
+              <p className="font-semibold text-neutral-800">
+                Failure #3: A cursor arrow-key that feels &quot;right&quot;
+                moves you further from where you meant to edit.
+              </p>
+              <p>
+                Memory: <code>The word مرحبا means hello.</code> — cursor
+                sits between the last Arabic letter and the following
+                space. You press → (right-arrow) expecting to move
+                &quot;forward&quot; in the sentence. But right-arrow moves
+                by <em>logical</em> order, one code point forward in
+                memory. In this position, the next code point is the space
+                — which visually sits between the Arabic word and{" "}
+                <code>means</code>. So you moved from the RIGHT edge of
+                the Arabic (visually) into the space that comes AFTER the
+                Arabic visually — which is to the RIGHT. Feels correct.
+              </p>
+              <p>
+                But if the cursor sits BEFORE the first Arabic letter (at
+                the boundary between the opening space and{" "}
+                <code>مـ</code>), right-arrow moves logically forward —
+                onto the first Arabic letter — which visually sits at the
+                RIGHT edge of the Arabic word. So cursor jumps a whole
+                word to the RIGHT visually.
+              </p>
+              <p className="text-neutral-800 font-medium">Fix:</p>
+              <p>
+                There isn&apos;t a per-string fix; this is a UX-level
+                choice by the OS/editor. Three options:
+              </p>
+              <ul className="list-disc pl-4">
+                <li>
+                  <b>Enable &quot;RTL cursor&quot; mode</b> — macOS: System
+                  Settings → Keyboard → Text Input → &quot;Move cursor
+                  visually in RTL text.&quot; Windows: same option in the
+                  Language settings. In this mode arrow keys move by
+                  VISUAL order regardless of paragraph direction. Right-
+                  arrow always moves right on screen.
+                </li>
+                <li>
+                  <b>Use Home / End</b> for edge-of-line navigation instead
+                  of many arrow presses — these are direction-invariant.
+                </li>
+                <li>
+                  <b>For programmatic cursor placement</b> (test tools,
+                  IDE plugins) — always calculate positions from character
+                  indices in the STRING, not from screen coordinates.
+                  The mental model must be logical order.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </details>
+
+        {/* Cursor behavior explainer */}
+        <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
+          <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+            <span className="text-neutral-400">▸</span> How the cursor moves in bidi text
+          </summary>
+          <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-2">
+            <p>
+              Cursor movement in bidi text is one of the least-intuitive
+              parts of the algorithm, and the source of a huge share of
+              user complaints. Here is the rule and the reasoning.
+            </p>
+
+            <p>
+              <b>The rule:</b> arrow keys move by <em>logical</em> order
+              by default. → advances the cursor to the next code point in
+              memory. ← moves to the previous. This is true regardless of
+              which direction that character is visually rendered.
+            </p>
+
+            <p>
+              <b>Why logical, not visual?</b> Because &quot;next character&quot;
+              in a mixed-direction string is ambiguous visually. Consider
+              <code> The word مرحبا means hello.</code> If the cursor sits
+              between the <code>d</code> of &quot;word&quot; and the space
+              before Arabic, what should → do?
+            </p>
+            <ul className="list-disc pl-4">
+              <li>
+                Logical answer: move onto the space (memory index +1).
+                Visually the cursor jumps to sit before the LAST Arabic
+                letter (rightmost), because that&apos;s where the Arabic
+                word&apos;s first-memory-position renders.
+              </li>
+              <li>
+                Visual answer: move one pixel to the right. But the next
+                thing to the right IS the space, which is between
+                &quot;word&quot; and the Arabic word visually and
+                logically. So visual and logical happen to agree here.
+              </li>
+            </ul>
+            <p>
+              But now cursor is inside the Arabic word&apos;s space
+              boundary. Press → again. Logically it moves to <code>م</code>{" "}
+              (first memory position of Arabic). Visually{" "}
+              <code>م</code> sits on the RIGHT edge of the word — so the
+              cursor visually jumps across the whole Arabic word to the
+              right. Visual answer would have moved it LEFT (into the last
+              visually-rendered Arabic letter, which is the LAST-memory
+              letter). Logical and visual now disagree.
+            </p>
+
+            <p>
+              <b>Design tradeoff:</b> Unicode&apos;s original choice was
+              logical because it&apos;s <em>predictable</em> — cursor
+              position = memory index, no ambiguity. But it&apos;s
+              <em> unintuitive</em> at bidi boundaries. Windows shipped a
+              &quot;visual arrow keys&quot; toggle in NT 4.0 (1996) and
+              macOS added one in 10.3. Both are OFF by default; power
+              users of Arabic/Hebrew often turn them on.
+            </p>
+
+            <p>
+              <b>Two more cursor gotchas worth knowing:</b>
+            </p>
+            <ul className="list-disc pl-4">
+              <li>
+                <b>Home / End are direction-invariant.</b> Home goes to
+                logical START (visual left in LTR paragraph, visual right
+                in RTL paragraph). End goes to logical end. These usually
+                do what you want because &quot;beginning of the line&quot;
+                and &quot;end of the line&quot; are direction-relative
+                concepts.
+              </li>
+              <li>
+                <b>Backspace deletes the LOGICALLY previous char.</b>{" "}
+                That may be visually to the left OR right of the cursor
+                depending on what you just typed. In Hebrew or Arabic
+                context, backspace visually deletes to the LEFT (which
+                is &quot;forward&quot; in RTL reading), not to the right
+                as LTR users expect.
+              </li>
+            </ul>
+
+            <p>
+              <b>For programmers:</b> DOM APIs (<code>selectionStart</code>,{" "}
+              <code>textRange</code>, <code>substring</code>) all work in
+              logical order. A cursor at index 5 is always the same
+              memory position, regardless of what pixel it&apos;s
+              rendered at. If you compute cursor positions from mouse
+              clicks (e.g., a canvas-based text editor), you have to
+              call <code>document.caretPositionFromPoint()</code> or the
+              equivalent — never assume &quot;X pixels from left&quot; =
+              &quot;X characters into the string.&quot;
+            </p>
           </div>
         </details>
 

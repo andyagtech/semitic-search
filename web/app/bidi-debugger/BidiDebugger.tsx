@@ -714,12 +714,161 @@ function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
         <span className="text-neutral-400 group-open:rotate-90 transition-transform">▶</span>
         BiDi tutorial — from pure LTR to why quotes fail
         <span className="text-xs text-neutral-500 font-normal ml-2">
-          10 progressively gnarlier cases · click any to load into the tool
+          overview · orders of text · 10 progressively gnarlier cases · click any to load into the tool
         </span>
       </summary>
       <div className="mt-4 space-y-3">
-        <p className="text-xs text-neutral-600">
-          Each case shows one specific bidi phenomenon. Click the{" "}
+
+        {/* Overview */}
+        <details className="border border-neutral-200 rounded p-3 bg-neutral-50" open>
+          <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+            <span className="text-neutral-400">▸</span> What BiDi is, and why it&apos;s needed
+          </summary>
+          <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-2">
+            <p>
+              &quot;BiDi&quot; is short for <b>bidirectional text</b> — text
+              that mixes scripts written in different directions. Latin,
+              Cyrillic, Greek, Han, Devanagari all read <b>left-to-right</b>{" "}
+              (LTR). Hebrew, Arabic, Syriac, Aramaic, Thaana, Nʼko all read
+              <b> right-to-left</b> (RTL). Ancient scripts like paleo-Hebrew
+              and Old South Arabian are RTL too. When these mix — an Arabic
+              quotation in an English paper, a Hebrew comment in a
+              JavaScript file, an English brand name in a Persian tweet —
+              the browser has to decide, character by character, which
+              direction each glyph reads and where the cursor should sit.
+            </p>
+            <p>
+              The rules live in <b>Unicode Annex #9: The Bidirectional
+              Algorithm</b> (UAX #9). It runs over every string that mixes
+              directions and produces a <b>resolved level</b> for each
+              character (an even integer = LTR, odd = RTL). Then the
+              renderer walks the string in <em>visual</em> order using
+              those levels. The algorithm is deterministic, spec&apos;d
+              since Unicode 3.0 (1999), and implemented consistently in
+              every browser, terminal, OS, and Word processor.
+            </p>
+            <p>
+              <b>The reason it&apos;s hard</b>: Unicode strings are stored
+              in <em>logical</em> order (the order you&apos;d dictate the
+              letters), but they render in <em>visual</em> order (what you
+              see on screen). For pure LTR or pure RTL text these are
+              trivially related — one is the reverse of the other. For
+              mixed text they diverge in ways that are locally correct
+              but globally surprising: a comma you typed at the end of an
+              Arabic word can appear at the visual beginning of it; a
+              closing quote can migrate two words to the left; a cursor
+              arrow-key that feels &quot;right&quot; can move you further
+              from where you meant to edit.
+            </p>
+            <p>
+              The tool above shows you the algorithm&apos;s decisions
+              step-by-step for any string. The tutorial below shows the
+              common failure modes, in escalating order.
+            </p>
+          </div>
+        </details>
+
+        {/* Orders of text */}
+        <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
+          <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+            <span className="text-neutral-400">▸</span> Three orders of text: typing, logical, visual
+          </summary>
+          <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-2">
+            <p>
+              People often ask &quot;is typing order the same as logical
+              order?&quot; The short answer:{" "}
+              <b>typing order = logical order</b> in modern text-input
+              systems. Visual order is the one that differs from both.
+              Three definitions, then the edge cases where the equality
+              breaks.
+            </p>
+            <dl className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-3">
+              <div className="p-2 rounded bg-white border border-neutral-200">
+                <dt className="font-semibold text-neutral-800">Typing order</dt>
+                <dd className="text-neutral-700 mt-1">
+                  The sequence of keys you press. Each keystroke appends
+                  its character to the buffer at the current cursor
+                  position.
+                </dd>
+              </div>
+              <div className="p-2 rounded bg-white border border-neutral-200">
+                <dt className="font-semibold text-neutral-800">Logical order (memory order)</dt>
+                <dd className="text-neutral-700 mt-1">
+                  How the string is stored in memory / on disk / in the
+                  DOM — a linear sequence of Unicode code points,
+                  ordered as they were appended.
+                </dd>
+              </div>
+              <div className="p-2 rounded bg-white border border-neutral-200">
+                <dt className="font-semibold text-neutral-800">Visual order (reading order)</dt>
+                <dd className="text-neutral-700 mt-1">
+                  How pixels land on screen after UAX #9 runs. LTR runs
+                  stay in memory order; RTL runs are reversed; mixed
+                  text is chunked and each chunk reversed
+                  independently.
+                </dd>
+              </div>
+            </dl>
+            <p>
+              Take &quot;<span className="font-serif">שלום</span>&quot;. You
+              press the four keys <code>ש · ל · ו · ם</code> in that order.
+              Memory holds <code>[ש, ל, ו, ם]</code> — same order. The
+              renderer walks it in visual order and paints
+              <code> ם ו ל ש</code>, i.e. right-to-left on the page. Typing
+              order and logical order are identical; visual order is the
+              reverse.
+            </p>
+            <p>
+              For LTR text (English, code) all three collapse to the same
+              order — which is why LTR-native developers spend years not
+              noticing the distinction exists.
+            </p>
+            <p className="pt-1"><b>Where the equality between typing and logical DOES break down</b> — a handful of edge cases:</p>
+            <ul className="list-disc pl-4 space-y-1">
+              <li>
+                <b>Vietnamese-style IME composition.</b> You may press
+                <code> e</code> then a tone key then a hat key; some IMEs
+                store <code>U+1EBF</code> (precomposed), others store{" "}
+                <code>e + ̂ + ́</code> (decomposed). Typing sequence ≠
+                stored sequence.
+              </li>
+              <li>
+                <b>Unicode normalization on save.</b> Editors that apply
+                NFC or NFD reorder combining marks into canonical order.
+                Typed <code>e + ́ + ̂</code> may end up stored as{" "}
+                <code>e + ̂ + ́</code> (or as <code>ế</code> entirely).
+              </li>
+              <li>
+                <b>Old &quot;visual-order&quot; Hebrew.</b> Pre-Unicode
+                Hebrew systems (VT100 terminals, some DOS files) stored
+                text in <em>visual</em> order — you typed
+                right-to-left BUT saved letters in the order they appeared
+                on screen. Modern Unicode uses logical order universally,
+                but you occasionally encounter legacy visual-order files
+                that render as gibberish until re-reversed.
+              </li>
+              <li>
+                <b>Autocomplete and paste.</b> These insert whole strings
+                at once — no per-keystroke typing sequence exists.
+                &quot;Typing order&quot; is undefined here; only logical
+                order is meaningful.
+              </li>
+            </ul>
+            <p className="pt-1">
+              <b>Practical consequence: cursor keys move by LOGICAL order,
+              not visual.</b> Press right-arrow in a Hebrew word and the
+              cursor moves to the next logical character — which sits
+              visually to the LEFT. This is spec-defined and consistent,
+              but it feels backwards to LTR-native users. macOS and
+              Windows both offer an &quot;RTL cursor keys&quot; option
+              that swaps left/right in RTL contexts; enable it if the
+              logical behavior bothers you.
+            </p>
+          </div>
+        </details>
+
+        <p className="text-xs text-neutral-600 pt-1">
+          Each case below shows one specific bidi phenomenon. Click the{" "}
           <span className="font-medium">Load</span> button on any case to
           push its text into the analyzer above and see the runs, logical
           order, and per-character inspector all update.

@@ -520,6 +520,252 @@ export function BidiDebugger() {
           ))}
         </div>
       </section>
+
+      <BidiTutorial onLoad={setText} />
     </div>
+  );
+}
+
+// --- Tutorial. A progression of increasingly gnarly bidi cases, each
+// with its own explanation. Collapsible top-level and per-case.
+type TutorialCase = {
+  title: string;
+  text: string;
+  paragraphDir?: "ltr" | "rtl" | "auto";
+  explain: React.ReactNode;
+};
+
+const TUTORIAL_CASES: TutorialCase[] = [
+  {
+    title: "1. Pure LTR — the boring baseline",
+    text: "The quick brown fox jumps over the lazy dog.",
+    explain: (
+      <>
+        Every character is <code>Bidi_Class=L</code>. Nothing to resolve;
+        memory order and visual order match. Cursor moves left-to-right.
+        Useful only as a sanity anchor before adding complexity.
+      </>
+    ),
+  },
+  {
+    title: "2. Pure RTL — Hebrew or Arabic on its own",
+    text: "שלום עולם",
+    paragraphDir: "rtl",
+    explain: (
+      <>
+        Every character is <code>R</code> (Hebrew) or <code>AL</code> (Arabic).
+        The browser reverses visual order so the first-typed character sits at
+        the right edge. Cursor moves right-to-left. Still simple — one script,
+        one direction, no ambiguity.
+      </>
+    ),
+  },
+  {
+    title: "3. First mix — one RTL word inside an LTR paragraph",
+    text: "The word مرحبا means hello.",
+    explain: (
+      <>
+        Bidi has to decide where the boundary between the English and Arabic
+        runs falls. The <em>strong-typed</em> chars carry their own direction
+        (L for English letters, AL for Arabic). The spaces around{" "}
+        <code>مرحبا</code> are neutrals (<code>WS</code>) that inherit from
+        their strong neighbors. Result: Arabic renders as a discrete RTL
+        island, everything else stays LTR. Reads correctly by luck — the
+        neighbors happen to give the neutrals unambiguous direction.
+      </>
+    ),
+  },
+  {
+    title: "4. Why quotes seem to work — neutrals absorbed both sides",
+    text: 'The word "مرحبا" means hello.',
+    explain: (
+      <>
+        You&apos;ll notice quoting an inserted word almost always <em>looks</em>{" "}
+        right. The reason is subtle and NOT what people think. Quotes are{" "}
+        <code>ON</code> (Other Neutral) — they don&apos;t have direction of
+        their own. Because both quotes sit between the surrounding English
+        (L) and the Arabic (AL), each quote gets a strong neighbor on one
+        side and a neutral (space) on the other. UAX #9 resolves them toward
+        the paragraph direction (LTR here), so they render{" "}
+        <code>&quot;مرحبا&quot;</code> in visual order — the quotes stay on
+        the &quot;outside&quot; of the Arabic word. This is <em>resolution
+        by neighborhood</em>, not real isolation. It happens to look right
+        for one word in a simple sentence, and that&apos;s why the trick is
+        so common. It fails as soon as complexity grows (see below).
+      </>
+    ),
+  },
+  {
+    title: "5. Where quotes fail — RTL run absorbs trailing punctuation",
+    text: 'The word "مرحبا"! surprised me.',
+    explain: (
+      <>
+        Add a <code>!</code> right after the closing quote. That{" "}
+        <code>!</code> is a neutral. The strong-typed char to its <em>left
+        </em> is Arabic (AL). Bidi resolves the <code>!</code> against its
+        strongest neighbor, which is the Arabic — so <code>!</code> and the
+        closing <code>&quot;</code> get pulled visually INTO the RTL run,
+        ending up <em>before</em> the word in reading order. The line reads
+        as though someone wrote{" "}
+        <code>&quot;!&quot; مرحبا surprised me</code>. Not what the author
+        typed. Neutrals-follow-neighbors is fragile.
+      </>
+    ),
+  },
+  {
+    title: "6. The real fix — Unicode isolates (FSI…PDI)",
+    text: "The word ⁨\"مرحبا\"!⁩ surprised me.",
+    explain: (
+      <>
+        Wrap the inserted phrase in <code>FSI</code> (U+2068, First Strong
+        Isolate) and <code>PDI</code> (U+2069, Pop Directional Isolate).
+        Same text, same characters, but now the run{" "}
+        <code>&quot;مرحبا&quot;!</code> is a <em>sealed</em> bidi context —
+        UAX #9 resolves it in isolation, and the surrounding English can&apos;t
+        pull its punctuation in. The isolates are invisible, so you don&apos;t
+        see them, but they do all the work. This is what the &quot;Wrap for
+        safe paste&quot; button up top produces.
+      </>
+    ),
+  },
+  {
+    title: "7. Same fix in HTML — the <bdi> element",
+    text: 'The word <bdi>"مرحبا"!</bdi> surprised me.',
+    explain: (
+      <>
+        In web content you can wrap the phrase in{" "}
+        <code>&lt;bdi&gt;…&lt;/bdi&gt;</code> instead of adding invisible
+        Unicode chars. The <code>&lt;bdi&gt;</code> element (Bi-Directional
+        Isolate) is spec-defined to apply <code>unicode-bidi: isolate</code>{" "}
+        and <code>direction: auto</code>. Same result as FSI…PDI, cleaner
+        in source, and grep-friendly. If you don&apos;t control the markup,
+        the Unicode isolates are the fallback. The sample text here shows
+        the HTML — the visual render will render it as literal tags, not
+        interpret them.
+      </>
+    ),
+  },
+  {
+    title: "8. CSS-only variant — unicode-bidi: isolate on any span",
+    text: "For arbitrary elements: <span dir=\"auto\" style=\"unicode-bidi:isolate\">مرحبا</span> works too.",
+    explain: (
+      <>
+        If you can&apos;t use <code>&lt;bdi&gt;</code> (some old CMS, custom
+        component), any element with{" "}
+        <code>unicode-bidi: isolate; direction: auto</code> gives you the
+        same behavior. <code>bidi-override</code> is the stronger sibling —
+        it forces every character to a single direction regardless of its
+        own class, useful for filename-safe display, but breaks natural
+        Arabic/Hebrew reading order.
+      </>
+    ),
+  },
+  {
+    title: "9. The RLO attack — same primitives, weaponized",
+    text: "invoice‮gnp.exe",
+    explain: (
+      <>
+        <code>U+202E</code> is <code>RLO</code> (Right-to-Left Override) —
+        it forces every following character to be RTL until a{" "}
+        <code>PDF</code>. Attackers put it inside filenames so{" "}
+        <code>invoice&lt;RLO&gt;gnp.exe</code> displays as{" "}
+        <code>invoice.exe.png</code>-looking text, tricking users into
+        double-clicking an executable. Modern OSes and mail clients now
+        strip or warn on stray overrides for this reason. Load this example
+        and look at the Bidi runs panel — the <code>RLO</code> shows up
+        highlighted in fuchsia in the logical-order grid.
+      </>
+    ),
+  },
+  {
+    title: "10. Numbers, the sneakiest neutrals",
+    text: "العام ٢٠٢٥ / 2025",
+    paragraphDir: "rtl",
+    explain: (
+      <>
+        Digits have their own bidi classes: European (<code>0-9</code>) →{" "}
+        <code>EN</code>, Arabic-Indic (<code>٠-٩</code>) → <code>AN</code>.
+        These are <em>weak</em> — they render left-to-right internally, but
+        their surroundings pull them around. In an Arabic paragraph, the
+        Latin digits <code>2025</code> stay LTR internally but appear on the
+        &quot;wrong&quot; side of the slash. Mixing digit systems in a
+        currency amount is the classic real-world case where copy-paste
+        breaks silently.
+      </>
+    ),
+  },
+];
+
+function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
+  return (
+    <details className="rounded-lg border border-neutral-200 bg-white p-4 group">
+      <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+        <span className="text-neutral-400 group-open:rotate-90 transition-transform">▶</span>
+        BiDi tutorial — from pure LTR to why quotes fail
+        <span className="text-xs text-neutral-500 font-normal ml-2">
+          10 progressively gnarlier cases · click any to load into the tool
+        </span>
+      </summary>
+      <div className="mt-4 space-y-3">
+        <p className="text-xs text-neutral-600">
+          Each case shows one specific bidi phenomenon. Click the{" "}
+          <span className="font-medium">Load</span> button on any case to
+          push its text into the analyzer above and see the runs, logical
+          order, and per-character inspector all update.
+        </p>
+        {TUTORIAL_CASES.map((c, i) => (
+          <details
+            key={i}
+            className="border border-neutral-200 rounded p-3 hover:border-neutral-300 [&_summary::-webkit-details-marker]:hidden"
+            open={i === 0}
+          >
+            <summary className="cursor-pointer text-sm font-medium text-neutral-800 flex items-baseline justify-between gap-3">
+              <span>{c.title}</span>
+              <button
+                type="button"
+                onClick={(e) => { e.preventDefault(); onLoad(c.text); }}
+                className="text-xs px-2 py-0.5 rounded border border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-700 shrink-0"
+              >
+                Load →
+              </button>
+            </summary>
+            <div className="mt-3 space-y-2">
+              <div
+                className="p-2 rounded bg-neutral-50 border border-neutral-200 text-lg leading-relaxed break-words"
+                dir={c.paragraphDir ?? "auto"}
+              >
+                {c.text}
+              </div>
+              <p className="text-xs text-neutral-700 leading-relaxed">
+                {c.explain}
+              </p>
+            </div>
+          </details>
+        ))}
+        <div className="mt-4 p-3 rounded bg-sky-50 border border-sky-200 text-xs text-sky-900">
+          <p className="font-medium mb-1">Summary — how to make bidi predictable</p>
+          <ul className="list-disc pl-4 space-y-1">
+            <li>
+              <b>Quotes are not isolation.</b> They&apos;re neutrals that
+              happen to resolve nicely in the simplest cases. Don&apos;t rely
+              on them once a sentence has multiple bidi transitions,
+              trailing punctuation, or user-supplied text.
+            </li>
+            <li>
+              <b>Isolate with intent.</b> Wrap every user-supplied name,
+              quoted phrase, or bidi-unknown chunk in{" "}
+              <code>&lt;bdi&gt;</code> (HTML), FSI…PDI (Unicode), or an
+              element with <code>unicode-bidi: isolate</code> (CSS). This is
+              the same thing three ways.
+            </li>
+            <li>
+              <b>Never store legacy overrides.</b> Avoid LRE/RLE/LRO/RLO/PDF
+              in persisted content — they cascade badly across paste
+              boundaries and enable the RLO attack. Use isolates.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </details>
   );
 }

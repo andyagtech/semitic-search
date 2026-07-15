@@ -878,6 +878,190 @@ function BidiTutorial({ onLoad }: { onLoad: (text: string) => void }) {
           </div>
         </details>
 
+        {/* When + where to add controls */}
+        <details className="border border-neutral-200 rounded p-3 bg-neutral-50">
+          <summary className="cursor-pointer text-sm font-semibold text-neutral-800 list-none flex items-center gap-2">
+            <span className="text-neutral-400">▸</span> When and where to add BiDi controls
+          </summary>
+          <div className="mt-3 text-xs text-neutral-700 leading-relaxed space-y-3">
+            <p>
+              Most bidi bugs come from either <b>doing nothing when you
+              should isolate</b> (the failure modes in cases 4-5, 9) or{" "}
+              <b>reaching for legacy overrides when isolates would do</b>{" "}
+              (the RLO attack in case 9 is possible because LRO/RLO/PDF
+              even exist). Here is the concrete decision tree.
+            </p>
+
+            <div className="space-y-2">
+              <p className="font-semibold text-neutral-800">Add an isolate WHEN:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <b>You&apos;re displaying user-supplied text</b> whose
+                  direction you don&apos;t control — usernames, comments,
+                  product titles, chat messages, email subjects. Every one
+                  of these gets wrapped, always, no exceptions. This is
+                  the single biggest ROI move.
+                </li>
+                <li>
+                  <b>You&apos;re embedding a proper noun or quoted phrase
+                  in the opposite direction</b> — an Arabic name in an
+                  English paragraph, an English brand in a Persian tweet.
+                  Wrap the embedded chunk even if quotes seem to work
+                  today (case #5 shows how one added punctuation mark
+                  breaks it).
+                </li>
+                <li>
+                  <b>Two adjacent runs of different directions could bleed
+                  neutral punctuation into each other</b> — parentheticals,
+                  colons, dashes, ellipses. Any neutral character between
+                  strong-typed chars of different directions is a bidi
+                  bug waiting to happen.
+                </li>
+                <li>
+                  <b>Content moves across systems</b> (paste-to-email,
+                  export-to-PDF, database-to-page). The receiver&apos;s
+                  paragraph direction may differ from yours; isolates make
+                  the run render identically regardless.
+                </li>
+                <li>
+                  <b>You render RTL content inside a fixed-LTR UI</b>{" "}
+                  (Slack in English locale, most corporate wikis, code
+                  editors). The UI direction anchors resolution;
+                  everything RTL you display should be isolated.
+                </li>
+                <li>
+                  <b>Filenames, URLs, identifiers, code strings</b> — any
+                  place where a wrong-side punctuation change means the
+                  wrong thing gets clicked, run, or referenced.
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-2">
+              <p className="font-semibold text-neutral-800">SKIP the isolate when:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <b>The text is entirely one direction.</b> Pure English,
+                  pure Arabic, pure Hebrew — no isolation needed, wrapping
+                  adds no-op invisible characters and clutter to your
+                  markup.
+                </li>
+                <li>
+                  <b>You are the author and you&apos;ve verified the render
+                  in the actual target contexts.</b> If it looks correct
+                  in email, chat, printout, and screen reader, don&apos;t
+                  add controls prophylactically. But re-check after any
+                  edit — case #5 is a one-character-away failure.
+                </li>
+                <li>
+                  <b>Inside a code compiler / interpreter.</b> Parsers
+                  read logical order, so <code>&quot;שלום&quot;</code> is
+                  the same string whether isolated or not — the compiler
+                  doesn&apos;t care. But your COMMENTS and STRING
+                  LITERALS displayed to humans still do.
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-2">
+              <p className="font-semibold text-neutral-800">
+                WHERE to add the isolate — three surfaces, same effect:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div className="p-2 rounded bg-white border border-neutral-200">
+                  <div className="font-semibold text-neutral-800 mb-1">
+                    HTML (preferred)
+                  </div>
+                  <div className="font-mono text-[11px] bg-neutral-100 p-1.5 rounded whitespace-pre-wrap break-all">
+                    &lt;bdi&gt;{`{userName}`}&lt;/bdi&gt;
+                  </div>
+                  <div className="mt-1 text-neutral-600">
+                    Semantic, grep-friendly, screen-reader-aware. Use for
+                    everything you can.
+                  </div>
+                </div>
+                <div className="p-2 rounded bg-white border border-neutral-200">
+                  <div className="font-semibold text-neutral-800 mb-1">
+                    CSS (custom components)
+                  </div>
+                  <div className="font-mono text-[11px] bg-neutral-100 p-1.5 rounded whitespace-pre-wrap break-all">
+                    &lt;span dir=&quot;auto&quot;
+                    {"\n"}style=&quot;unicode-bidi:isolate&quot;&gt;
+                    {"\n"}{`{userName}`}
+                    {"\n"}&lt;/span&gt;
+                  </div>
+                  <div className="mt-1 text-neutral-600">
+                    When you can&apos;t use <code>&lt;bdi&gt;</code> (old
+                    CMS, design-system spans).
+                  </div>
+                </div>
+                <div className="p-2 rounded bg-white border border-neutral-200">
+                  <div className="font-semibold text-neutral-800 mb-1">
+                    Plain text / Unicode
+                  </div>
+                  <div className="font-mono text-[11px] bg-neutral-100 p-1.5 rounded whitespace-pre-wrap break-all">
+                    &quot;⁨&quot; + userName{"\n"}+ &quot;⁩&quot;
+                  </div>
+                  <div className="mt-1 text-neutral-600">
+                    FSI + text + PDI. Use in emails, chat, log files,
+                    push notifications, anywhere without markup.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="font-semibold text-neutral-800">
+                Which isolate character? A quick chooser:
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <b>FSI (U+2068) → default choice.</b> The isolate infers
+                  direction from the first strong-typed character inside.
+                  Right for 95% of cases including all &quot;wrap this
+                  user-supplied thing&quot; scenarios.
+                </li>
+                <li>
+                  <b>LRI (U+2066)</b> when you know for certain the
+                  content is LTR (an English brand name).{" "}
+                  <b>RLI (U+2067)</b> when you know it&apos;s RTL. Use
+                  these only if the FSI first-strong heuristic guesses
+                  wrong for your content.
+                </li>
+                <li>
+                  <b>PDI (U+2069) always closes.</b> One PDI per opening
+                  isolate, in matching nesting. Unclosed isolates cascade
+                  until the paragraph ends.
+                </li>
+                <li>
+                  <b>LRE / RLE / LRO / RLO / PDF are legacy.</b> Don&apos;t
+                  add them to new content. They stay in Unicode for
+                  backward compat, but isolates supersede them and{" "}
+                  <em>never</em> have the RLO-attack failure mode.
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-2 rounded bg-emerald-50 border border-emerald-200">
+              <p className="font-semibold text-emerald-900 mb-1">
+                Copy-paste rule for React / Vue / Svelte:
+              </p>
+              <p className="text-emerald-900">
+                Anywhere you render user text — <code>{`{userName}`}</code>,{" "}
+                <code>{`{comment.body}`}</code>,{" "}
+                <code>{`{article.title}`}</code> — wrap it:
+              </p>
+              <pre className="mt-2 font-mono text-[11px] bg-white p-2 rounded border border-emerald-200 overflow-x-auto">{`<bdi>{userName}</bdi>`}</pre>
+              <p className="mt-2 text-emerald-900">
+                That single change eliminates ~90% of user-facing bidi
+                bugs in the average app. The other 10% are cases like the
+                code comments above, where you need to hand-wrap around
+                whole segments you authored yourself.
+              </p>
+            </div>
+          </div>
+        </details>
+
         <p className="text-xs text-neutral-600 pt-1">
           Each case below shows one specific bidi phenomenon. Click the{" "}
           <span className="font-medium">Load</span> button on any case to

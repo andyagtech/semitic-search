@@ -75,6 +75,7 @@ ARABIC_MARKS = [
     0x0652,  # sukun
     0x064E, 0x064F, 0x0650,  # fatha, damma, kasra (added for full Judeo-Arabic vocalization)
     0x0653,  # maddah
+    0x0654,  # hamza above (combining) — for Judeo-Arabic marking of glottal-stop on Hebrew alef etc.
     0x0670,  # dagger alif
 ]
 
@@ -1901,6 +1902,7 @@ _ARABIC_MARK_CLASSES: dict[int, str] = {
     0x064F: "above",   # damma
     0x0650: "below",   # kasra
     0x0653: "above",   # maddah
+    0x0654: "above",   # hamza above (combining)
     0x0670: "above",   # dagger alif
 }
 _ARABIC_MARK_ANCHOR_Y = {"above": 801, "below": -327}

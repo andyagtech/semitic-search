@@ -756,8 +756,8 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
       {
         title: "Judeo-Arabic vocalization: three layers on one word",
         description:
-          "Demonstrates the newly-wired two-tier vocalization for Judeo-Arabic. Every consonant that carries a below-mark niqqud can stack an Arabic haraka underneath it, giving three visual layers: (1) the Hebrew consonant itself, (2) a Hebrew niqqud below it (patah / hiriq / qubutz / sheva / segol / …), (3) an Arabic haraka (fatha ◌َ, kasra ◌ِ, damma ◌ُ) BELOW the niqqud. Shadda ◌ّ stacks above the letter to mark gemination, independent of the below-stack. Type letters, then hit the Arabic marks row above the keyboard to add a/e/o under whichever niqqud you've placed. The mkmk chain — base letter → niqqud → haraka — is baked into every one of the 17 Hebrew stretch fonts. Sample: כוס אמך (\"kussə emmak\") with the pointing כּוּסّ אֶמַّכּ — kaf+dagesh + vav+dagesh (shuruk) + samekh+shadda + alef+segol + mem+shadda+patah + kaf+dagesh. Kasra ◌ِ stacks below the segol; fatha ◌َ below the patah; shadda ◌ّ above both samekh and mem to mark doubled consonants.",
-        text: "כּוּסّ אֶِמַَّכּ",
+          "Demonstrates the newly-wired two-tier vocalization for Judeo-Arabic. Every consonant that carries a below-mark niqqud can stack an Arabic haraka underneath it, giving three visual layers: (1) the Hebrew consonant itself, (2) a Hebrew niqqud below it (patah / hiriq / qubutz / sheva / segol / …), (3) an Arabic haraka (fatha ◌َ, kasra ◌ِ, damma ◌ُ) BELOW the niqqud. Shadda ◌ّ stacks above the letter to mark gemination, independent of the below-stack. Type letters, then hit the Arabic marks row above the keyboard to add a/e/o under whichever niqqud you've placed. The mkmk chain — base letter → niqqud → haraka — is baked into every one of the 17 Hebrew stretch fonts. Sample: כוס אמך (\"kussə emmak\") with the pointing כּُوּסّ אֶِٔמַَّכּ — kaf+dagesh+damma (reinforcing shuruk \"u\") + vav+dagesh + samekh+shadda + alef+hamza+segol+kasra + mem+shadda+patah+fatha + kaf+dagesh. Every above/below mark position on alef and mem is used simultaneously — hamza + segol + kasra on the alef, shadda + patah + fatha on the mem.",
+        text: "כּُוּסّ אֶِٔמַَّכּ",
         font: "stretch",
         status: "experimental",
       },
@@ -1984,6 +1984,10 @@ export function FontLab() {
                 { ch: "َ", label: "a (fatha)" },
                 { ch: "ِ", label: "e (kasra)" },
                 { ch: "ُ", label: "o (damma)" },
+                // Hamza above (U+0654 combining) — glottal-stop marker.
+                // Judeo-Arabic often puts this on alef to distinguish
+                // the consonantal glottal stop from vowel-carrier alef.
+                { ch: "ٔ", label: "hamza" },
                 // Gemination + tanwin case endings + phonetic marks.
                 { ch: "ّ", label: "shaddah" },
                 { ch: "ً", label: "fathatan" },

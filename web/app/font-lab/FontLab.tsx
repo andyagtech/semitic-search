@@ -2815,12 +2815,21 @@ function BulkColorControls({
 // of these followed by U+05C6 trigger(s) gets substituted to a wider
 // glyph by the GSUB liga rule. Highlighted in the on-screen keyboard so
 // users know which keys can be stretched.
-const STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
+const STRETCHABLE = new Set([
+  "ד", "ה", "ל", "ם", "ר", "ת",             // Original 6 (widely supported)
+  "ב", "ח", "כ", "ך", "פ", "ף", "ק",         // v2 expansion (Frank Ruhl only for now)
+]);
 
-// Which letters our stretch fonts widen. Hebrew: ד ה ל ם ר ת.
+// Which letters our stretch fonts widen. Hebrew (Frank Ruhl v2):
+// original 6 + expanded 7 = ב ד ה ח כ ך ל ם פ ף ק ר ת. Other Hebrew
+// stretch fonts still cover only the original 6; the expanded set is
+// per-font and gets added as we tune each font's geometry.
 // Syriac (Nohadra): ܐ ܒ ܕ ܗ ܘ ܡ ܣ ܪ ܫ ܬ — expanded from the original 4
 // so Peshitta lines have several stretchable positions per row.
-const HEBREW_STRETCHABLE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
+const HEBREW_STRETCHABLE = new Set([
+  "ד", "ה", "ל", "ם", "ר", "ת",
+  "ב", "ח", "כ", "ך", "פ", "ף", "ק",
+]);
 const SYRIAC_STRETCHABLE = new Set(["ܐ", "ܒ", "ܕ", "ܗ", "ܘ", "ܡ", "ܣ", "ܪ", "ܫ", "ܬ"]);
 // Ethiopic: 5 Ge'ez consonant series × 7 vowel orders each = 35 fidels.
 // The stretch build widens the horizontal decorative strokes of each.

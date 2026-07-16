@@ -129,6 +129,23 @@ FRANK_RUHL = {
                  "alias_codepoints": ALIAS_DAGESH["resh"], "overflow": True},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # ─── Expanded stretchable set (v2, experimental) ────────────────────
+        # These letters all have a flat top bar segment; the bar-class
+        # algorithm shifts the left half left, leaving the right side
+        # anchored, and the top bar stretches to bridge the gap. Tuning
+        # values are best-guess from bbox geometry — iterate visually.
+        # Final letters (ך ף) have descenders (y<0) that fall OUTSIDE the
+        # bar zone [440-620] so they stay anchored while the top extends.
+        # DEFERRED: ט tet (closed shape — top curl detaches from body when
+        # left-shifted); י yod (only ~130 units wide, widening distorts it
+        # beyond recognition). Both need custom class logic.
+        0x05D1: {"name": "bet",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 330},
+        0x05D7: {"name": "het",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 360},
+        0x05DB: {"name": "kaf",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 280},
+        0x05DA: {"name": "finalkaf",  "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 280},
+        0x05E4: {"name": "pe",        "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 350},
+        0x05E3: {"name": "finalpe",   "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 310},
+        0x05E7: {"name": "qof",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
     },
 }
 

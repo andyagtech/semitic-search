@@ -267,10 +267,16 @@ FRANK_RUHL = {
         # bar class so only the top zone (y=440..620) participates.
         # Descender at y<0 stays anchored.
         0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
-        # tet: closed shape with curls on both top corners. Bar-class with
-        # narrower bar zone (only the top-bar strip y=500..620) so the
-        # left curl stays anchored — otherwise it stretches into the bar.
-        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 500, "bar_top": 620, "x_cutoff": 260},
+        # tet: closed shape with top curls on both sides. Bar-class
+        # DISTORTS the closed body — none of dalet/heh/tav's parameter
+        # tunings work. Instead use baseline_extend, which inserts a
+        # rectangular bump BELOW baseline as part of the letter's own
+        # contour (single-contour, no winding-rule ambiguity). Letter
+        # body stays untouched; the bump extends leftward at each level.
+        # bar_bottom=-40 (below baseline), bar_top=20 (overlaps 20 units
+        # into the letter body so the single-contour walk doesn't pinch
+        # at exactly y=0).
+        0x05D8: {"name": "tet",      "class": "baseline_extend", "bar_bottom": -40, "bar_top": 20, "x_cutoff": 63},
         # yod: small letter. Bar zone at its "shoulder" (y=440..586).
         # x_cutoff=140 keeps yod's right-side hook shoulder anchored
         # (point 21 at x=173 stays) so the extended bar has a cleaner

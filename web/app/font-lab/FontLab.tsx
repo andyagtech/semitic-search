@@ -1632,6 +1632,13 @@ export function FontLab() {
         >
           ⚙ Mark tuning
         </a>
+        <a
+          href="/stretch-debug"
+          className="text-xs px-2.5 py-1 rounded border border-amber-400 bg-amber-50 hover:bg-amber-100 text-amber-800"
+          title="Grid of every stretchable Frank Ruhl letter × togglable widths. Click cells / drag sliders to inspect each letter's widening class in isolation."
+        >
+          ▦ Stretch debug
+        </a>
         <button
           type="button"
           onClick={() => setTourOpen(true)}

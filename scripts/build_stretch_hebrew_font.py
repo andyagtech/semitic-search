@@ -254,7 +254,11 @@ FRANK_RUHL = {
         # x_cutoff is tuned per-letter so decorative left features (curls,
         # verticals) move with the bar rather than getting torn from it.
         0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290},
-        0x05D7: {"name": "het",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 280},
+        # Het has a separate left-leg contour (y up to 465, x=[86,168])
+        # just like heh — bar-class was leaving that leg behind at the
+        # right of the widened bar. leg-class translates the leg with
+        # the widening so it stays at the letter's left edge.
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 470, "x_cutoff": 280},
         0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290},
         0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300},
         # Final letters use LEG class to preserve the descender (like tav):

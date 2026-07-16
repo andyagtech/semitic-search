@@ -1916,6 +1916,18 @@ _MARK_ANCHOR_AT_BOTTOM: set[int] = {
     0x0654,  # hamza above (combining) — tall glyph, needs explicit bottom-anchor
 }
 
+# Per-mark X shift applied to the mark's anchor. Positive value INCREASES
+# the mark's anchor X, which (via `shift = base_x - mark_x`) shifts the
+# mark visually LEFT relative to the base. Used to align marks that Amiri
+# designed with unusual X offsets so they look consistent with the other
+# harakat when placed above Hebrew letters. Hamza's bbox-mid is at -4
+# (vs ~250 for damma/fatha), so it lands further right than the other
+# above-marks in the same visual position; a +80 shift brings it into
+# alignment with the damma / fatha / shadda placement.
+_MARK_ANCHOR_X_SHIFT: dict[int, int] = {
+    0x0654: 80,  # hamza above — shift visually left to match damma
+}
+
 
 def _add_arabic_mark_stacking(font) -> int:
     """Add GPOS MarkToMark (Type 6) so above-vowels (fatha/damma/tanwīn/
@@ -2208,7 +2220,7 @@ def _add_arabic_mark_gpos(font, config) -> int:
             continue
         # Imported glyphs may not have bounds computed yet — recalc.
         g.recalcBounds(glyf)
-        vx = (g.xMin + g.xMax) // 2
+        vx = (g.xMin + g.xMax) // 2 + _MARK_ANCHOR_X_SHIFT.get(cp, 0)
         # Default mark anchor: same Y as base (Amiri's natural bbox
         # position). This works for shadda/fatha/damma/sukun because
         # Amiri designed them to sit at the right height above a base

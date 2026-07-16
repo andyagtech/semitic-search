@@ -85,6 +85,79 @@ ARABIC_MARKS = [
 # we design our own glyph instead.
 DIAERESIS_CP = 0x0308
 
+# v2 expansion — bar-class widening for 9 additional Hebrew consonants,
+# generated from the SOURCE font's own bbox geometry so the same recipe
+# works across 17 fonts with different UPMs and letter widths. Call at
+# build time (before build_one starts) to inject per-font letter configs
+# into the config dict's "letters" table. Frank Ruhl remains hand-tuned
+# for now (its values shipped first); everything else uses this helper.
+#
+# Recipe per letter:
+#   • bar_bottom / bar_top: y-range that participates in the leftward
+#     shift. For "normal" letters (bet, het, kaf, pe, qof, final variants)
+#     this is the top-quarter of the letter (y = 0.75 * yMax .. yMax + 5%).
+#     For tet: full glyph height (curl + verticals + bottom foot shift
+#     together as one rigid unit). For yod: shoulder region only.
+#   • x_cutoff: fraction of the letter's own width from xMin. Chosen so
+#     the LEFT half of the letter's boundary features (curls, verticals)
+#     falls into the shift zone while the RIGHT half stays anchored.
+_V2_LETTER_RECIPES = [
+    # (cp, name, bar_bottom_frac, bar_top_frac, x_cutoff_frac)
+    # Fractions are relative to the letter's own bbox (yMax for y, width
+    # for x — width = xMax - xMin).
+    (0x05D1, "bet",       0.75, 1.06, 0.70),
+    (0x05D7, "het",       0.75, 1.06, 0.75),
+    (0x05DB, "kaf",       0.75, 1.06, 0.58),
+    (0x05DA, "finalkaf",  0.75, 1.06, 0.60),
+    (0x05E4, "pe",        0.75, 1.06, 0.75),
+    (0x05E3, "finalpe",   0.75, 1.06, 0.68),
+    (0x05E7, "qof",       0.75, 1.06, 0.65),
+]
+# tet + yod use custom bar zones (full-height for tet, shoulder-only for yod).
+_V2_TET = (0x05D8, "tet",  -0.03, 1.06, 0.72)
+_V2_YOD = (0x05D9, "yod",   0.73, 1.06, 0.80)
+
+
+def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
+    """Read `web/public/fonts/<src_font_filename>` and derive v2 letter
+    configs from the source's own bbox for each of the 9 expanded
+    stretchable letters. Returns {cp: {name, class, bar_bottom, bar_top,
+    x_cutoff}}. Skips letters not in the font's cmap.
+    """
+    from fontTools.ttLib import TTFont
+    src_path = FONTS_DIR / src_font_filename
+    if not src_path.exists():
+        return {}
+    f = TTFont(str(src_path))
+    cmap = f.getBestCmap()
+    glyf = f['glyf']
+    out: dict = {}
+    def entry(cp, name, bar_bot_frac, bar_top_frac, xcut_frac):
+        gname = cmap.get(cp)
+        if not gname:
+            return None
+        g = glyf[gname]
+        try: g.recalcBounds(glyf)
+        except Exception: return None
+        if g.numberOfContours <= 0:
+            return None
+        width = max(1, g.xMax - g.xMin)
+        return {
+            "name": name,
+            "class": "bar",
+            "bar_bottom": int(g.yMax * bar_bot_frac),
+            "bar_top": int(g.yMax * bar_top_frac),
+            "x_cutoff": int(g.xMin + width * xcut_frac),
+        }
+    for cp, name, bb, bt, xc in _V2_LETTER_RECIPES:
+        e = entry(cp, name, bb, bt, xc)
+        if e: out[cp] = e
+    for cp, name, bb, bt, xc in [_V2_TET, _V2_YOD]:
+        e = entry(cp, name, bb, bt, xc)
+        if e: out[cp] = e
+    return out
+
+
 FRANK_RUHL = {
     "id": "frank-ruhl",
     "source": "FrankRuhlLibre.ttf",
@@ -173,6 +246,7 @@ KETER_ARAM_TSOVA = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         # dalet: single-contour topology (one closed outline that traces
         # outside + inside). bar_bottom=650 lets the underside (y=699)
@@ -250,6 +324,7 @@ SHMULIK = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         # Shmulik's body bars sit at y=1050 with serifs reaching y=1186.
         # Letters are wide (1280-1600 advance), so x_cutoffs are bigger
@@ -340,6 +415,7 @@ HILLEL = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 280},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 350, "bar_top": 520, "leg_max_y": 320, "x_cutoff": 280},
@@ -364,6 +440,7 @@ GLADIA = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 380},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 380},
@@ -386,6 +463,7 @@ NOTO_SANS_HEBREW = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -411,6 +489,7 @@ NOTO_SERIF_HEBREW = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 300,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -436,6 +515,7 @@ SHOFAR = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -470,6 +550,7 @@ FREE_MONO = {
     # leftmost cell, leaving a huge gap to the next letter on the right.
     "lsb_mode": "mono",
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 380,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -496,6 +577,7 @@ NACHLIELI = {
     "step": 165,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 420, "bar_top": 620, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -523,6 +605,7 @@ MIRIAM_MONO = {
     "step": 600,
     "lsb_mode": "mono",  # see FreeMono note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -550,6 +633,7 @@ EZRA_SIL = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 1000, "bar_top": 1500, "x_cutoff": 700,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -601,6 +685,7 @@ STAM_ASHKENAZ = {
     # preserving the body's 50-unit right offset within the new advance.
     "lsb_mode": "mono",
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 850, "bar_top": 1450, "x_cutoff": 600,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -638,6 +723,7 @@ SHLOMO_SEMISTAM = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 700,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -742,6 +828,7 @@ NOTO_RASHI = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     # Rashi has no U+FB33/34/... presentation-form dagesh glyphs — Rashi text
     # is unpointed in practice, so no ALIAS_DAGESH entries needed.
     #
@@ -2538,7 +2625,15 @@ def build_one(config: dict) -> int:
     postscript = config["postscript"]
     internal_id = config["internal_id"]
     step = int(config["step"])
-    letters = config["letters"]
+    letters = dict(config["letters"])  # copy so we can add v2 without mutating config
+    # Auto-inject v2 stretchable letters (ב ח כ ך פ ף ק ט י) using the
+    # source font's own bbox geometry, unless the config already defines
+    # them explicitly. Config-provided entries win — Frank Ruhl's hand-
+    # tuned values stay, other Hebrew configs get bbox-derived defaults.
+    if config.get("auto_v2_letters", False):
+        v2_generated = _hebrew_v2_letters_from_source(config["source"])
+        for cp, entry in v2_generated.items():
+            letters.setdefault(cp, entry)
 
     print(f"\n=== Building {family} (from {config['source']}) ===")
     if not src_path.exists():

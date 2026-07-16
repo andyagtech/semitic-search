@@ -101,60 +101,67 @@ DIAERESIS_CP = 0x0308
 #   • x_cutoff: fraction of the letter's own width from xMin. Chosen so
 #     the LEFT half of the letter's boundary features (curls, verticals)
 #     falls into the shift zone while the RIGHT half stays anchored.
-_V2_LETTER_RECIPES = [
-    # (cp, name, bar_bottom_frac, bar_top_frac, x_cutoff_frac)
-    # Fractions are relative to the letter's own bbox (yMax for y, width
-    # for x — width = xMax - xMin).
-    (0x05D1, "bet",       0.75, 1.06, 0.70),
-    (0x05D7, "het",       0.75, 1.06, 0.75),
-    (0x05DB, "kaf",       0.75, 1.06, 0.58),
-    (0x05DA, "finalkaf",  0.75, 1.06, 0.60),
-    (0x05E4, "pe",        0.75, 1.06, 0.75),
-    (0x05E3, "finalpe",   0.75, 1.06, 0.68),
-    (0x05E7, "qof",       0.75, 1.06, 0.65),
+# All 9 v2 letters use the same recipe: baseline_extend class with a
+# thin bar at the baseline extending leftward from the letter's own
+# leftmost point. `use_right_edge=True` marks yod which has its ink
+# high up (no natural baseline touching) so the bar is anchored at
+# the letter's RIGHT edge instead.
+_V2_LETTERS = [
+    # (cp, name, use_right_edge)
+    (0x05D1, "bet",       False),
+    (0x05D7, "het",       False),
+    (0x05D8, "tet",       False),
+    (0x05DB, "kaf",       False),
+    (0x05DA, "finalkaf",  False),
+    (0x05E4, "pe",        False),
+    (0x05E3, "finalpe",   False),
+    (0x05E7, "qof",       False),
+    (0x05D9, "yod",       True),   # yod sits high; bar hangs at baseline below
 ]
-# tet + yod use custom bar zones (full-height for tet, shoulder-only for yod).
-_V2_TET = (0x05D8, "tet",  -0.03, 1.06, 0.72)
-_V2_YOD = (0x05D9, "yod",   0.73, 1.06, 0.80)
 
 
 def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
     """Read `web/public/fonts/<src_font_filename>` and derive v2 letter
-    configs from the source's own bbox for each of the 9 expanded
-    stretchable letters. Returns {cp: {name, class, bar_bottom, bar_top,
-    x_cutoff}}. Skips letters not in the font's cmap.
+    configs. All letters get a baseline-bar-extension: the letter's
+    contour stays untouched, and a rectangular bar at the baseline
+    grows leftward with each stretch level. Bar thickness scales with
+    the font's UPM. Skips letters not in the font's cmap.
     """
     from fontTools.ttLib import TTFont
     src_path = FONTS_DIR / src_font_filename
     if not src_path.exists():
         return {}
     f = TTFont(str(src_path))
+    upm = f['head'].unitsPerEm
     cmap = f.getBestCmap()
     glyf = f['glyf']
+    # Bar thickness scales with UPM: 40 units at UPM=1000 matches Frank
+    # Ruhl's typical horizontal stroke weight. Culmus (UPM=2048) gets ~80.
+    bar_thickness = int(40 * upm / 1000)
     out: dict = {}
-    def entry(cp, name, bar_bot_frac, bar_top_frac, xcut_frac):
+    for cp, name, use_right_edge in _V2_LETTERS:
         gname = cmap.get(cp)
         if not gname:
-            return None
+            continue
         g = glyf[gname]
         try: g.recalcBounds(glyf)
-        except Exception: return None
+        except Exception: continue
         if g.numberOfContours <= 0:
-            return None
-        width = max(1, g.xMax - g.xMin)
-        return {
+            continue
+        # x_cutoff = the edge the bar attaches to.
+        # For letters with ink at the baseline (bet, tet, kaf, etc.):
+        # use the letter's leftmost point so the bar butts up seamlessly.
+        # For yod (ink is high up, doesn't touch baseline): use the
+        # letter's rightmost point so the bar spans the full implied
+        # widened width below the yod.
+        x_cutoff = g.xMax if use_right_edge else g.xMin
+        out[cp] = {
             "name": name,
-            "class": "bar",
-            "bar_bottom": int(g.yMax * bar_bot_frac),
-            "bar_top": int(g.yMax * bar_top_frac),
-            "x_cutoff": int(g.xMin + width * xcut_frac),
+            "class": "baseline_extend",
+            "bar_bottom": 0,
+            "bar_top": bar_thickness,
+            "x_cutoff": x_cutoff,
         }
-    for cp, name, bb, bt, xc in _V2_LETTER_RECIPES:
-        e = entry(cp, name, bb, bt, xc)
-        if e: out[cp] = e
-    for cp, name, bb, bt, xc in [_V2_TET, _V2_YOD]:
-        e = entry(cp, name, bb, bt, xc)
-        if e: out[cp] = e
     return out
 
 
@@ -209,28 +216,27 @@ FRANK_RUHL = {
         # values are best-guess from bbox geometry — iterate visually.
         # Final letters (ך ף) have descenders (y<0) that fall OUTSIDE the
         # bar zone [440-620] so they stay anchored while the top extends.
-        0x05D1: {"name": "bet",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 330},
-        0x05D7: {"name": "het",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 360},
-        0x05DB: {"name": "kaf",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 280},
-        0x05DA: {"name": "finalkaf",  "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 280},
-        0x05E4: {"name": "pe",        "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 350},
-        0x05E3: {"name": "finalpe",   "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 310},
-        0x05E7: {"name": "qof",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
-        # ט tet: shift the WHOLE left column (curl + left vertical + left
-        # half of bottom foot) leftward as one rigid unit, so both the
-        # top-curl boundary and the right-vertical boundary are preserved,
-        # and the bottom foot stretches between them. Bar zone spans the
-        # full glyph height so every point x<350 participates in the
-        # shift together — same "preserve boundaries" pattern as dalet /
-        # kaf / bet, adapted to tet's closed-shape geometry.
-        0x05D8: {"name": "tet",       "class": "bar", "bar_bottom": -20, "bar_top": 620, "x_cutoff": 350},
-        # י yod: shift the shoulder + top-hook region leftward so the
-        # top extends into a heh-like horizontal bar while the bottom
-        # curl stays anchored. Bar zone y=430..620 catches yod's dense
-        # shoulder band. Creative widening — no traditional precedent
-        # since yod is normally too small to stretch, but the effect
-        # reads like a miniature heh with an elongated top.
-        0x05D9: {"name": "yod",       "class": "bar", "bar_bottom": 430, "bar_top": 620, "x_cutoff": 200},
+        # All 9 v2 letters use `baseline_extend`: the letter's own contour
+        # is preserved exactly (no distortion of the letter's proportions)
+        # and a new rectangular bar contour is appended at the baseline,
+        # extending leftward by `shift` units. Matches the scribal
+        # aesthetic where the letter appears to sit on a widening foot.
+        # x_cutoff = letter's own leftmost baseline point → bar's right
+        # edge butts up against the letter's left column, connecting the
+        # bar to the letter with no visible seam.
+        0x05D1: {"name": "bet",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 38},
+        0x05D7: {"name": "het",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 68},
+        0x05D8: {"name": "tet",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 43},
+        0x05DB: {"name": "kaf",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 38},
+        0x05DA: {"name": "finalkaf",  "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 33},
+        0x05E4: {"name": "pe",        "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 46},
+        0x05E3: {"name": "finalpe",   "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 28},
+        0x05E7: {"name": "qof",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 53},
+        # yod sits high up (y=257..586); the bar sits at y=0..40 as a
+        # separate low element extending leftward, visually below the
+        # yod. x_cutoff at yod's right edge so the bar spans the full
+        # implied width of the widened letter.
+        0x05D9: {"name": "yod",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 240},
     },
 }
 
@@ -1206,6 +1212,54 @@ def stretch_glyph(
             dx = shift * factor
             if dx != 0:
                 new_glyph.coordinates[i] = (int(round(x - dx)), y)
+        new_glyph.recalcBounds(font["glyf"])
+        return new_glyph
+
+    # "baseline_extend" class: leaves the letter's own contour UNCHANGED
+    # and adds a NEW rectangular contour extending leftward from the
+    # letter's baseline (or a configurable y band). The letter shape is
+    # preserved exactly at every stretch level; only the added bar grows.
+    # Matches the scribal aesthetic where the letter sits on a widening
+    # foot rather than distorting its own top or middle. Config keys:
+    #   bar_bottom  — bottom y of the added bar (usually 0 = baseline)
+    #   bar_top     — top y of the added bar (thickness of ~30-50 units
+    #                 works for UPM 1000; scale for other UPMs)
+    #   x_cutoff    — x at which the bar's RIGHT edge sits (usually the
+    #                 letter's leftmost baseline point so the bar butts
+    #                 up against the letter's own left column)
+    if letter_class == "baseline_extend":
+        if x_cutoff is None:
+            return copy.deepcopy(src)
+        new_glyph = copy.deepcopy(src)
+        # Build the extension rectangle as a fresh contour appended to
+        # the glyph's existing contours. Winding direction: outer
+        # contours in TrueType are CCW when viewed with y increasing
+        # upward. Rectangle traced CCW: bottom-left → bottom-right →
+        # top-right → top-left → back to bottom-left.
+        bar_left  = x_cutoff - shift
+        bar_right = x_cutoff
+        bar_bot   = bar_bottom
+        bar_top_  = bar_top
+        new_coords = list(new_glyph.coordinates)
+        new_flags  = list(new_glyph.flags)
+        new_endpts = list(new_glyph.endPtsOfContours)
+        # Append 4 corner points, all on-curve, CCW winding.
+        rect_pts = [(bar_left, bar_bot), (bar_right, bar_bot),
+                    (bar_right, bar_top_), (bar_left, bar_top_)]
+        for x, y in rect_pts:
+            new_coords.append((int(x), int(y)))
+            new_flags.append(1)  # on-curve
+        new_endpts.append(len(new_coords) - 1)
+        # Write back
+        from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
+        new_glyph.coordinates = GlyphCoordinates(new_coords)
+        try:
+            new_glyph.flags = bytes(new_flags)
+        except Exception:
+            import array
+            new_glyph.flags = array.array("B", new_flags)
+        new_glyph.endPtsOfContours = new_endpts
+        new_glyph.numberOfContours = len(new_endpts)
         new_glyph.recalcBounds(font["glyf"])
         return new_glyph
 

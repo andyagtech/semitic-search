@@ -1368,8 +1368,18 @@ def stretch_glyph(
         # is at yMax and the bump sits above the letter, but the same
         # symbolic order (opposite-y first, then left, then near-y,
         # then right) also winds CW.
+        # THREE points, not four. Omitting the (bar_right, bar_top)
+        # corner lets the walk go from (bar_left, bar_top) straight to
+        # the letter's next point (e.g. tet's (100, 23)). That segment
+        # replaces both (a) the horizontal top edge back to bar_right
+        # and (b) the short diagonal from bar_right back into the
+        # letter body — a diagonal that rendered as a visible "stub"
+        # hanging off the right end of the bar at the letter's foot.
+        # With three points, the bar's top edge is a single line from
+        # the bump's far-left corner directly up to the letter's next
+        # contour point, and no stub is created.
         new_pts = [(bar_right, bar_bot), (bar_left, bar_bot),
-                   (bar_left, bar_top_), (bar_right, bar_top_)]
+                   (bar_left, bar_top_)]
         if not cw:
             new_pts = list(reversed(new_pts))
         # Insert new_pts AFTER best_idx

@@ -1906,11 +1906,14 @@ _ARABIC_MARK_CLASSES: dict[int, str] = {
     0x0670: "above",   # dagger alif
 }
 _ARABIC_MARK_ANCHOR_Y = {"above": 801, "below": -327}
-# Per-codepoint Y override for above-marks that need more clearance from
-# the base letter. Hamza-above (U+0654) is a tall mark; at the default
-# y=801 its bottom overlaps the letter's top. Bump to 950 so it clears.
-_ARABIC_MARK_ANCHOR_Y_OVERRIDE: dict[int, int] = {
-    0x0654: 950,  # hamza above — sits higher so it clears the letter top
+# Marks whose OWN attach anchor should be at the mark's yMin (above) or
+# yMax (below) — so the mark's edge aligns with the base's anchor and
+# the ink projects outward from there. Default behavior (mark_y = base_y)
+# leaves the mark at Amiri's natural bbox position, which works for
+# short/compact marks. Tall marks like hamza-above need this override or
+# they overlap the letter.
+_MARK_ANCHOR_AT_BOTTOM: set[int] = {
+    0x0654,  # hamza above (combining) — tall glyph, needs explicit bottom-anchor
 }
 
 
@@ -2206,8 +2209,19 @@ def _add_arabic_mark_gpos(font, config) -> int:
         # Imported glyphs may not have bounds computed yet — recalc.
         g.recalcBounds(glyf)
         vx = (g.xMin + g.xMax) // 2
-        vy = _ARABIC_MARK_ANCHOR_Y_OVERRIDE.get(cp, _ARABIC_MARK_ANCHOR_Y[cls])
-        present.append((cp, gname, (vx, vy, cls)))
+        # Default mark anchor: same Y as base (Amiri's natural bbox
+        # position). This works for shadda/fatha/damma/sukun because
+        # Amiri designed them to sit at the right height above a base
+        # letter when the anchors coincide at y=801. But for TALL above-
+        # marks like hamza-above (U+0654) the natural position overlaps
+        # the letter. Per-mark override: set mark_y to the mark's own
+        # yMin so its BOTTOM aligns with the base's above-anchor,
+        # putting the mark's ink cleanly above the letter.
+        if cp in _MARK_ANCHOR_AT_BOTTOM:
+            mark_y = g.yMin
+        else:
+            mark_y = _ARABIC_MARK_ANCHOR_Y[cls]
+        present.append((cp, gname, (vx, mark_y, cls)))
     if not present:
         return 0
 
@@ -2252,11 +2266,16 @@ def _add_arabic_mark_gpos(font, config) -> int:
     sub.MarkCoverage.glyphs = [g for _, g, _ in present]
     sub.MarkArray = ot.MarkArray()
     sub.MarkArray.MarkRecord = []
-    for cp, gname, (mx, my, cls) in present:
+    for cp, gname, (mx, mark_y, cls) in present:
         anchor = ot.MarkAnchor()
         anchor.Format = 1
         anchor.XCoordinate = mx
-        anchor.YCoordinate = my
+        # mark_y is either the base's Y (mark stays at Amiri's natural
+        # position — good for shadda/fatha/damma/sukun) or the mark's
+        # own yMin (mark's bottom lands at base's anchor — needed for
+        # tall marks like hamza-above). Controlled by
+        # _MARK_ANCHOR_AT_BOTTOM at the collection site above.
+        anchor.YCoordinate = mark_y
         mr = ot.MarkRecord()
         mr.Class = 0 if cls == "above" else 1
         mr.MarkAnchor = anchor

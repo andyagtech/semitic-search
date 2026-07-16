@@ -143,6 +143,17 @@ def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
     # Bar thickness scales with UPM: 40 units at UPM=1000 matches Frank
     # Ruhl's typical horizontal stroke weight. Culmus (UPM=2048) gets ~80.
     bar_thickness = int(40 * upm / 1000)
+    # Overlap padding: how far the bar's right edge extends INTO the
+    # letter's body past the leftmost outline point. Necessary because
+    # most letters' left contour tapers inward as it rises from the
+    # baseline (bet's outline goes from (38, 0) diagonally up to
+    # (59, 100), creating a triangular white wedge between an outside-
+    # touching bar and the letter body). Extending the bar's right edge
+    # DEEPER into the letter body means the two contours union under
+    # TrueType's non-zero winding rule with no visible seam. Scales
+    # with UPM so it stays proportional across fonts.
+    overlap_padding = int(60 * upm / 1000)
+
     out: dict = {}
     coords_of = lambda gname: list(glyf[gname].coordinates)
     for cp, name, attach in _V2_LETTERS:
@@ -155,18 +166,16 @@ def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
         if g.numberOfContours <= 0:
             continue
         if attach == "top":
-            # Bar sits just below the letter's yMax. x_cutoff = leftmost
-            # x among points at or near yMax (the letter's top-left corner
-            # where the bar visually merges with the letter's own top).
+            # Bar sits just below yMax. x_cutoff = leftmost contour x in
+            # the top slice + overlap padding, so the bar extends INTO
+            # the letter body.
             top_slice = [x for x, y in coords_of(gname) if y >= g.yMax - bar_thickness - 20]
-            x_cutoff = min(top_slice) if top_slice else g.xMin
+            leftmost_x = min(top_slice) if top_slice else g.xMin
             bar_bottom = g.yMax - bar_thickness
             bar_top = g.yMax
         else:  # "bottom"
-            # Bar sits at baseline. x_cutoff = leftmost x among points
-            # at or near the baseline (the letter's bottom-left corner).
-            baseline_slice = [x for x, y in coords_of(gname) if y <= bar_thickness]
-            x_cutoff = min(baseline_slice) if baseline_slice else g.xMin
+            baseline_slice = [x for x, y in coords_of(gname) if y <= bar_thickness + 20]
+            leftmost_x = min(baseline_slice) if baseline_slice else g.xMin
             bar_bottom = 0
             bar_top = bar_thickness
         out[cp] = {
@@ -174,7 +183,7 @@ def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
             "class": "baseline_extend",
             "bar_bottom": bar_bottom,
             "bar_top": bar_top,
-            "x_cutoff": x_cutoff,
+            "x_cutoff": leftmost_x + overlap_padding,
         }
     return out
 
@@ -188,6 +197,7 @@ FRANK_RUHL = {
     "internal_id": "SemiticSearch-SemiticStretchHebrew-2.0",
     "step": 150,
     "import_marks": ARABIC_MARKS,
+    "auto_v2_letters": True,
     # Mono mode: after the leftward stretch shift, translate the whole glyph
     # rightward by the same total_shift. Result — the letter's LEFT edge
     # sits at its natural cursor-relative position (no overlap into the
@@ -230,31 +240,6 @@ FRANK_RUHL = {
         # values are best-guess from bbox geometry — iterate visually.
         # Final letters (ך ף) have descenders (y<0) that fall OUTSIDE the
         # bar zone [440-620] so they stay anchored while the top extends.
-        # All 9 v2 letters use `baseline_extend`: the letter's own contour
-        # is preserved exactly (no distortion of the letter's proportions)
-        # and a new rectangular bar contour is appended at the baseline,
-        # extending leftward by `shift` units. Matches the scribal
-        # aesthetic where the letter appears to sit on a widening foot.
-        # x_cutoff = letter's own leftmost baseline point → bar's right
-        # edge butts up against the letter's left column, connecting the
-        # bar to the letter with no visible seam.
-        0x05D1: {"name": "bet",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 38},
-        0x05D7: {"name": "het",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 68},
-        0x05D8: {"name": "tet",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 43},
-        0x05DB: {"name": "kaf",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 38},
-        0x05DA: {"name": "finalkaf",  "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 33},
-        # Peh extends its TOP bar leftward (matches dalet/resh/tav
-        # pattern; peh's own top bar sits at y=546-586). Not a baseline
-        # extension — peh's design has its natural bar at the top, so
-        # the extension continues from there.
-        0x05E4: {"name": "pe",        "class": "baseline_extend", "bar_bottom": 546, "bar_top": 586, "x_cutoff": 72},
-        0x05E3: {"name": "finalpe",   "class": "baseline_extend", "bar_bottom": 546, "bar_top": 586, "x_cutoff": 28},
-        0x05E7: {"name": "qof",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 53},
-        # Yod extends its TOP leftward (like a miniature heh): bar sits
-        # at y=546..586, attached to yod's top-left corner (x=37).
-        # Yod's own hook stays on the right, an elongated top bar hangs
-        # off its left side.
-        0x05D9: {"name": "yod",       "class": "baseline_extend", "bar_bottom": 546, "bar_top": 586, "x_cutoff": 37},
     },
 }
 

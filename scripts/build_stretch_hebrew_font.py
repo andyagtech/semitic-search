@@ -317,16 +317,17 @@ FRANK_RUHL = {
         # bar_bottom=-40 (below baseline), bar_top=20 (overlaps 20 units
         # into the letter body so the single-contour walk doesn't pinch
         # at exactly y=0).
-        # Tet baseline_extend: bar_top=0 (bar sits at baseline, not
-        # protruding into the letter body), x_cutoff=90 (bump's right
-        # edge 14 units LEFT of the anchor at 104). The 14-unit offset
-        # turns the bump's right edge into a shallow diagonal from
-        # anchor down-left to bar-bottom-right, instead of a 40-unit
-        # vertical drop at the anchor's x that reads as a visible
-        # "leg" hanging off the letter's bottom-right corner. bar_bot
-        # kept at -40 so the bar is thick enough to read as a real
-        # extension of the letter's foot.
-        0x05D8: {"name": "tet",      "class": "baseline_extend", "bar_bottom": -40, "bar_top": 0, "x_cutoff": 90},
+        # Tet baseline_extend. x_cutoff=100 matches tet's leftmost
+        # letter-body point at y=23 (point 1 = (100, 23)). With that
+        # alignment the bump's top-right corner sits at (100, 0) and
+        # the closing segment to the next letter point (100, 23) is
+        # a short VERTICAL that merges seamlessly with the letter
+        # body's left column instead of a diagonal slope. The chamfer
+        # from the anchor (104, 0) diagonally down-left to (100, -40)
+        # replaces the earlier 40-unit vertical leg at anchor's x.
+        # bar_top=0 keeps the bar's top at baseline so the letter
+        # visually sits on the bar rather than being raised above it.
+        0x05D8: {"name": "tet",      "class": "baseline_extend", "bar_bottom": -40, "bar_top": 0, "x_cutoff": 100},
         # yod: small letter. Bar zone at its "shoulder" (y=440..586).
         # x_cutoff=140 keeps yod's right-side hook shoulder anchored
         # (point 21 at x=173 stays) so the extended bar has a cleaner
@@ -1389,18 +1390,16 @@ def stretch_glyph(
         # is at yMax and the bump sits above the letter, but the same
         # symbolic order (opposite-y first, then left, then near-y,
         # then right) also winds CW.
-        # THREE points, not four. Omitting the (bar_right, bar_top)
-        # corner lets the walk go from (bar_left, bar_top) straight to
-        # the letter's next point (e.g. tet's (100, 23)). That segment
-        # replaces both (a) the horizontal top edge back to bar_right
-        # and (b) the short diagonal from bar_right back into the
-        # letter body — a diagonal that rendered as a visible "stub"
-        # hanging off the right end of the bar at the letter's foot.
-        # With three points, the bar's top edge is a single line from
-        # the bump's far-left corner directly up to the letter's next
-        # contour point, and no stub is created.
+        # Four-point bump. Pair with x_cutoff chosen so the bump's
+        # right edge (bar_right, bar_top) aligns with the letter body's
+        # LEFTMOST point at bar_top_y — that way the closing segment
+        # from (bar_right, bar_top) to the letter's next point is a
+        # SHORT VERTICAL merging seamlessly into the letter body's
+        # left side, instead of a diagonal or a stub. Three-point
+        # variants (dropping the top-right corner) gave a sloped bar
+        # top that read as "not flat".
         new_pts = [(bar_right, bar_bot), (bar_left, bar_bot),
-                   (bar_left, bar_top_)]
+                   (bar_left, bar_top_), (bar_right, bar_top_)]
         if not cw:
             new_pts = list(reversed(new_pts))
         # Insert new_pts AFTER best_idx

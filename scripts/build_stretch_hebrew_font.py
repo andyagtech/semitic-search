@@ -263,10 +263,19 @@ FRANK_RUHL = {
         # so kaf has a "step down" from leg to bar at the top-left. At
         # widened widths that step reads as a dip in an otherwise flat
         # bar. flatten_top raises every point with y in [540, 586) to
-        # y=586, turning the step into a single flat top edge across
-        # the whole widened letter.
+        # y=586, turning the step into a single flat top edge.
+        #
+        # underside_y_max=440 straightens the bar's UNDERSIDE. Point 8
+        # of natural kaf is at (329, 440) as an off-curve Bezier control
+        # — it makes the right end of the underside curve DOWN from
+        # ~y=393 to y=440. In widened variants that dip becomes visible
+        # as a curved underside instead of a flat line at y=440.
+        # Snapping the moving underside point onto the line from the
+        # right anchor to the leftmost shifted underside point flattens
+        # this dip.
         0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
-                 "flatten_top_from_y": 540, "flatten_top_to_y": 586},
+                 "flatten_top_from_y": 540, "flatten_top_to_y": 586,
+                 "underside_y_max": 440, "underside_x_min": 100},
         0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300},
         # Final letters use LEG class to preserve the descender (like tav):
         # the descender (y<0 or y<leg_max_y) stays anchored while the top
@@ -287,10 +296,16 @@ FRANK_RUHL = {
         # bar_bottom=-40 (below baseline), bar_top=20 (overlaps 20 units
         # into the letter body so the single-contour walk doesn't pinch
         # at exactly y=0).
-        # x_cutoff=104 matches tet's actual bottom-left anchor point x
-        # (verified via contour dump). Bump aligns with the letter's own
-        # baseline corner instead of jogging diagonally.
-        0x05D8: {"name": "tet",      "class": "baseline_extend", "bar_bottom": -40, "bar_top": 20, "x_cutoff": 104},
+        # Tet baseline_extend: bar_top=0 (bar sits at baseline, not
+        # protruding into the letter body), x_cutoff=90 (bump's right
+        # edge 14 units LEFT of the anchor at 104). The 14-unit offset
+        # turns the bump's right edge into a shallow diagonal from
+        # anchor down-left to bar-bottom-right, instead of a 40-unit
+        # vertical drop at the anchor's x that reads as a visible
+        # "leg" hanging off the letter's bottom-right corner. bar_bot
+        # kept at -40 so the bar is thick enough to read as a real
+        # extension of the letter's foot.
+        0x05D8: {"name": "tet",      "class": "baseline_extend", "bar_bottom": -40, "bar_top": 0, "x_cutoff": 90},
         # yod: small letter. Bar zone at its "shoulder" (y=440..586).
         # x_cutoff=140 keeps yod's right-side hook shoulder anchored
         # (point 21 at x=173 stays) so the extended bar has a cleaner
@@ -1443,12 +1458,30 @@ def stretch_glyph(
             li, _, _ = leftmost
             lx_new, ly_new = new_glyph.coordinates[li]
             slope = (ly_new - ay) / (lx_new - ax) if lx_new != ax else 0
+            # Two adjustments per underside point:
+            #   1) snap the shift-moved point's y onto the line from
+            #      anchor to leftmost (the original behaviour).
+            #   2) promote EVERY off-curve control in the underside
+            #      range to on-curve. Otherwise a Bezier control at
+            #      y=440 still bows the segment away from a flat line
+            #      via quadratic math. The "moved" check gates only (1)
+            #      because unmoved points already have their original
+            #      coords — but their FLAG still needs promotion, since
+            #      mono-shift will move them post-return, and the flat
+            #      underside can't survive an off-curve control.
+            new_flags = list(new_glyph.flags)
             for i in underside_idx:
                 ox, _ = orig_coords[i]
                 nx, _ = new_glyph.coordinates[i]
                 if ox != nx:
                     target_y = ay + slope * (nx - ax)
                     new_glyph.coordinates[i] = (nx, int(round(target_y)))
+                new_flags[i] |= 1  # promote to on-curve regardless of shift
+            try:
+                new_glyph.flags = bytes(new_flags)
+            except Exception:
+                import array
+                new_glyph.flags = array.array("B", new_flags)
 
     # Optionally flatten the top-of-bar step. Kaf, kaf-sofit, and similar
     # letters have a natural "step down" from the leg's top y (e.g. 586)

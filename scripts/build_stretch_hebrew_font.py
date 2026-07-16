@@ -107,16 +107,21 @@ DIAERESIS_CP = 0x0308
 # high up (no natural baseline touching) so the bar is anchored at
 # the letter's RIGHT edge instead.
 _V2_LETTERS = [
-    # (cp, name, use_right_edge)
-    (0x05D1, "bet",       False),
-    (0x05D7, "het",       False),
-    (0x05D8, "tet",       False),
-    (0x05DB, "kaf",       False),
-    (0x05DA, "finalkaf",  False),
-    (0x05E4, "pe",        False),
-    (0x05E3, "finalpe",   False),
-    (0x05E7, "qof",       False),
-    (0x05D9, "yod",       True),   # yod sits high; bar hangs at baseline below
+    # (cp, name, attach)
+    #   attach="bottom": bar sits at the baseline, attached to the
+    #     letter's leftmost baseline x. Letters with ink at y=0.
+    #   attach="top":    bar sits just below the letter's yMax, attached
+    #     to the letter's top-left x. Letters whose natural bar is at
+    #     the TOP (peh, final peh, yod — yod stretches like heh).
+    (0x05D1, "bet",       "bottom"),
+    (0x05D7, "het",       "bottom"),
+    (0x05D8, "tet",       "bottom"),
+    (0x05DB, "kaf",       "bottom"),
+    (0x05DA, "finalkaf",  "bottom"),
+    (0x05E7, "qof",       "bottom"),
+    (0x05E4, "pe",        "top"),
+    (0x05E3, "finalpe",   "top"),
+    (0x05D9, "yod",       "top"),
 ]
 
 
@@ -139,7 +144,8 @@ def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
     # Ruhl's typical horizontal stroke weight. Culmus (UPM=2048) gets ~80.
     bar_thickness = int(40 * upm / 1000)
     out: dict = {}
-    for cp, name, use_right_edge in _V2_LETTERS:
+    coords_of = lambda gname: list(glyf[gname].coordinates)
+    for cp, name, attach in _V2_LETTERS:
         gname = cmap.get(cp)
         if not gname:
             continue
@@ -148,18 +154,26 @@ def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
         except Exception: continue
         if g.numberOfContours <= 0:
             continue
-        # x_cutoff = the edge the bar attaches to.
-        # For letters with ink at the baseline (bet, tet, kaf, etc.):
-        # use the letter's leftmost point so the bar butts up seamlessly.
-        # For yod (ink is high up, doesn't touch baseline): use the
-        # letter's rightmost point so the bar spans the full implied
-        # widened width below the yod.
-        x_cutoff = g.xMax if use_right_edge else g.xMin
+        if attach == "top":
+            # Bar sits just below the letter's yMax. x_cutoff = leftmost
+            # x among points at or near yMax (the letter's top-left corner
+            # where the bar visually merges with the letter's own top).
+            top_slice = [x for x, y in coords_of(gname) if y >= g.yMax - bar_thickness - 20]
+            x_cutoff = min(top_slice) if top_slice else g.xMin
+            bar_bottom = g.yMax - bar_thickness
+            bar_top = g.yMax
+        else:  # "bottom"
+            # Bar sits at baseline. x_cutoff = leftmost x among points
+            # at or near the baseline (the letter's bottom-left corner).
+            baseline_slice = [x for x, y in coords_of(gname) if y <= bar_thickness]
+            x_cutoff = min(baseline_slice) if baseline_slice else g.xMin
+            bar_bottom = 0
+            bar_top = bar_thickness
         out[cp] = {
             "name": name,
             "class": "baseline_extend",
-            "bar_bottom": 0,
-            "bar_top": bar_thickness,
+            "bar_bottom": bar_bottom,
+            "bar_top": bar_top,
             "x_cutoff": x_cutoff,
         }
     return out
@@ -229,14 +243,18 @@ FRANK_RUHL = {
         0x05D8: {"name": "tet",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 43},
         0x05DB: {"name": "kaf",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 38},
         0x05DA: {"name": "finalkaf",  "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 33},
-        0x05E4: {"name": "pe",        "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 46},
-        0x05E3: {"name": "finalpe",   "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 28},
+        # Peh extends its TOP bar leftward (matches dalet/resh/tav
+        # pattern; peh's own top bar sits at y=546-586). Not a baseline
+        # extension — peh's design has its natural bar at the top, so
+        # the extension continues from there.
+        0x05E4: {"name": "pe",        "class": "baseline_extend", "bar_bottom": 546, "bar_top": 586, "x_cutoff": 72},
+        0x05E3: {"name": "finalpe",   "class": "baseline_extend", "bar_bottom": 546, "bar_top": 586, "x_cutoff": 28},
         0x05E7: {"name": "qof",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 53},
-        # yod sits high up (y=257..586); the bar sits at y=0..40 as a
-        # separate low element extending leftward, visually below the
-        # yod. x_cutoff at yod's right edge so the bar spans the full
-        # implied width of the widened letter.
-        0x05D9: {"name": "yod",       "class": "baseline_extend", "bar_bottom": 0, "bar_top": 40, "x_cutoff": 240},
+        # Yod extends its TOP leftward (like a miniature heh): bar sits
+        # at y=546..586, attached to yod's top-left corner (x=37).
+        # Yod's own hook stays on the right, an elongated top bar hangs
+        # off its left side.
+        0x05D9: {"name": "yod",       "class": "baseline_extend", "bar_bottom": 546, "bar_top": 586, "x_cutoff": 37},
     },
 }
 

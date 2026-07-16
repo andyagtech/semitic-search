@@ -59,7 +59,7 @@ const HEBREW_BASES: { ch: string; name: string }[] = [
 // meta). File path is under /fonts/. The @font-face family names line
 // up with the Font Lab so we avoid double-registering.
 const FONTS = [
-  { id: "stretch",              label: "Semitic Stretch Hebrew",              file: "SemiticStretchHebrew.ttf",              family: "FT_StretchHebrew" },
+  { id: "stretch",              label: "Semitic Stretch Hebrew",              file: "SemiticStretchHebrew-v2.ttf",              family: "FT_StretchHebrew" },
   { id: "stretchketer",         label: "Keter Aram Tsova",                    file: "SemiticStretchKeterAramTsova.ttf",      family: "FT_StretchKeterAram" },
   { id: "stretchshmulik",       label: "Shmulik CLM",                          file: "SemiticStretchShmulikCLM.ttf",          family: "FT_StretchShmulik" },
   { id: "stretchhillel",        label: "Hillel CLM",                           file: "SemiticStretchHillelCLM.ttf",           family: "FT_StretchHillel" },

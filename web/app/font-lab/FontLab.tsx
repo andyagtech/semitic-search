@@ -82,7 +82,7 @@ const SCRIPTS: ScriptEntry[] = [
     sample: "בְּרֵאשִׁית בָּרָא אֱלֹהִים",
     fonts: [
       // ─── Semitic Stretch fonts — grouped at the top since they're the flagship ───
-      { id: "stretch",    label: "Semitic Stretch Hebrew", file: "SemiticStretchHebrew.ttf", family: "FL_StretchHebrew",
+      { id: "stretch",    label: "Semitic Stretch Hebrew", file: "SemiticStretchHebrew-v2.ttf", family: "FL_StretchHebrew",
         note: "custom derivative of Frank Ruhl Libre (OFL). Kashida-like widening via + / − keys." },
       { id: "stretchketer", label: "Semitic Stretch Keter Aram Tsova", file: "SemiticStretchKeterAramTsova.ttf", family: "FL_StretchKeterAram",
         note: "Keter Aram Tsova (Culmus, GPL). Aleppo-codex letterforms with kashida-like widening." },

@@ -64,7 +64,7 @@ function useLoadStretchFont(): { ready: boolean; family: string } {
     const family = `${FONT_FAMILY_BASE}_${stamp}`;
     const face = new FontFace(
       family,
-      `url(/fonts/SemiticStretchHebrew.ttf?v=${stamp}) format("truetype")`,
+      `url(/fonts/SemiticStretchHebrew-v2.ttf?v=${stamp}) format("truetype")`,
       { display: "block", unicodeRange: "U+0000-10FFFF" },
     );
     let cancelled = false;

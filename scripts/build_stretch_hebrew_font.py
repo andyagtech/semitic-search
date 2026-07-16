@@ -271,11 +271,13 @@ FRANK_RUHL = {
         # narrower bar zone (only the top-bar strip y=500..620) so the
         # left curl stays anchored — otherwise it stretches into the bar.
         0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 500, "bar_top": 620, "x_cutoff": 260},
-        # yod: small letter. Bar zone at its "shoulder" (y=440..586); the
-        # small hook + top edge shift left as one unit, matching the heh
-        # aesthetic (yod effectively becomes a miniature heh with an
-        # elongated top).
-        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 200},
+        # yod: small letter. Bar zone at its "shoulder" (y=440..586).
+        # x_cutoff=140 keeps yod's right-side hook shoulder anchored
+        # (point 21 at x=173 stays) so the extended bar has a cleaner
+        # right corner — the bar's right edge is a flat horizontal
+        # jump from shifted x=(96-shift) up to anchor x=173, and the
+        # right-side hook keeps its natural shape.
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 140},
     },
 }
 

@@ -211,7 +211,6 @@ FRANK_RUHL = {
     "internal_id": "SemiticSearch-SemiticStretchHebrew-2.0",
     "step": 150,
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     # Mono mode: after the leftward stretch shift, translate the whole glyph
     # rightward by the same total_shift. Result — the letter's LEFT edge
     # sits at its natural cursor-relative position (no overlap into the
@@ -247,13 +246,36 @@ FRANK_RUHL = {
                  "alias_codepoints": ALIAS_DAGESH["resh"], "overflow": True},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
-        # ─── Expanded stretchable set (v2, experimental) ────────────────────
-        # These letters all have a flat top bar segment; the bar-class
-        # algorithm shifts the left half left, leaving the right side
-        # anchored, and the top bar stretches to bridge the gap. Tuning
-        # values are best-guess from bbox geometry — iterate visually.
-        # Final letters (ך ף) have descenders (y<0) that fall OUTSIDE the
-        # bar zone [440-620] so they stay anchored while the top extends.
+        # ─── Expanded stretchable set (v2) ─────────────────────────────────
+        # Same bar-class pattern as dalet/resh/heh/tav: shift the letter's
+        # own top-bar zone (y=440..620) leftward from x_cutoff. The letter
+        # body's shape is preserved because the entire top-zone shifts as
+        # one rigid group; the horizontal top bar simply grows longer.
+        # x_cutoff is tuned per-letter so decorative left features (curls,
+        # verticals) move with the bar rather than getting torn from it.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290},
+        0x05D7: {"name": "het",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 280},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300},
+        # Final letters use LEG class to preserve the descender (like tav):
+        # the descender (y<0 or y<leg_max_y) stays anchored while the top
+        # bar zone extends leftward.
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 290},
+        0x05E3: {"name": "finalpe",  "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 300},
+        # qof's descender is on the LEFT (below baseline). leg-class would
+        # SHIFT the descender leftward with the top bar — instead use plain
+        # bar class so only the top zone (y=440..620) participates.
+        # Descender at y<0 stays anchored.
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
+        # tet: closed shape with curls on both top corners. Bar-class with
+        # narrower bar zone (only the top-bar strip y=500..620) so the
+        # left curl stays anchored — otherwise it stretches into the bar.
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 500, "bar_top": 620, "x_cutoff": 260},
+        # yod: small letter. Bar zone at its "shoulder" (y=440..586); the
+        # small hook + top edge shift left as one unit, matching the heh
+        # aesthetic (yod effectively becomes a miniature heh with an
+        # elongated top).
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 200},
     },
 }
 

@@ -276,7 +276,10 @@ FRANK_RUHL = {
         # bar_bottom=-40 (below baseline), bar_top=20 (overlaps 20 units
         # into the letter body so the single-contour walk doesn't pinch
         # at exactly y=0).
-        0x05D8: {"name": "tet",      "class": "baseline_extend", "bar_bottom": -40, "bar_top": 20, "x_cutoff": 63},
+        # x_cutoff=104 matches tet's actual bottom-left anchor point x
+        # (verified via contour dump). Bump aligns with the letter's own
+        # baseline corner instead of jogging diagonally.
+        0x05D8: {"name": "tet",      "class": "baseline_extend", "bar_bottom": -40, "bar_top": 20, "x_cutoff": 104},
         # yod: small letter. Bar zone at its "shoulder" (y=440..586).
         # x_cutoff=140 keeps yod's right-side hook shoulder anchored
         # (point 21 at x=173 stays) so the extended bar has a cleaner

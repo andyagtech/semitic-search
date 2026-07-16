@@ -1235,20 +1235,38 @@ def stretch_glyph(
             return copy.deepcopy(src)
         new_glyph = copy.deepcopy(src)
         # Build the extension rectangle as a fresh contour appended to
-        # the glyph's existing contours. Winding direction: outer
-        # contours in TrueType are CCW when viewed with y increasing
-        # upward. Rectangle traced CCW: bottom-left → bottom-right →
-        # top-right → top-left → back to bottom-left.
+        # the glyph's existing contours. CRITICAL: winding direction
+        # must MATCH the source letter's outer contour or the rectangle
+        # gets treated as a hole under non-zero winding, not filled ink.
+        # Hebrew source fonts vary — Frank Ruhl's outer bet contour has
+        # positive signed area (shoelace: sum of (x2-x1)*(y2+y1) > 0,
+        # i.e. CW in the tools' convention), so trace the rectangle CW
+        # too: bottom-left → top-left → top-right → bottom-right → back.
+        # (If a font's outer contour is CCW instead, we detect below
+        # and flip.)
         bar_left  = x_cutoff - shift
         bar_right = x_cutoff
         bar_bot   = bar_bottom
         bar_top_  = bar_top
+        # Detect winding of the source glyph's first contour.
+        first_end = src.endPtsOfContours[0]
+        first_pts = list(src.coordinates)[:first_end + 1]
+        signed = 0
+        for i in range(len(first_pts)):
+            x1, y1 = first_pts[i]
+            x2, y2 = first_pts[(i + 1) % len(first_pts)]
+            signed += (x2 - x1) * (y2 + y1)
+        # signed > 0 → CW in this convention → trace rect CW
+        # signed < 0 → CCW → trace rect CCW
+        if signed >= 0:
+            rect_pts = [(bar_left, bar_bot), (bar_left, bar_top_),
+                        (bar_right, bar_top_), (bar_right, bar_bot)]
+        else:
+            rect_pts = [(bar_left, bar_bot), (bar_right, bar_bot),
+                        (bar_right, bar_top_), (bar_left, bar_top_)]
         new_coords = list(new_glyph.coordinates)
         new_flags  = list(new_glyph.flags)
         new_endpts = list(new_glyph.endPtsOfContours)
-        # Append 4 corner points, all on-curve, CCW winding.
-        rect_pts = [(bar_left, bar_bot), (bar_right, bar_bot),
-                    (bar_right, bar_top_), (bar_left, bar_top_)]
         for x, y in rect_pts:
             new_coords.append((int(x), int(y)))
             new_flags.append(1)  # on-curve

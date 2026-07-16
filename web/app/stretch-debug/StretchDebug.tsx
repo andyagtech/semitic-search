@@ -34,7 +34,10 @@ const LETTERS: Letter[] = [
 ];
 
 const MAX_LEVEL = 16;
-const FONT_FAMILY = "FL_StretchHebrew_Debug";
+// Base family name — the actual @font-face family is suffixed with a
+// per-mount timestamp so the browser cannot serve a stale FontFace
+// (see useLoadStretchFont for details).
+const FONT_FAMILY_BASE = "FL_StretchHebrew_Debug";
 
 const CLASS_TINT: Record<string, string> = {
   bar:              "bg-amber-50 text-amber-900 border-amber-200",
@@ -44,16 +47,24 @@ const CLASS_TINT: Record<string, string> = {
   baseline_extend:  "bg-rose-50 text-rose-900 border-rose-200",
 };
 
-function useLoadStretchFont() {
-  const [ready, setReady] = useState(false);
+function useLoadStretchFont(): { ready: boolean; family: string } {
+  // A unique family name per mount, plus a unique URL query, so the
+  // browser is FORCED to fetch the current bytes and can't fall back
+  // to a still-registered FontFace from a previous mount (that trap
+  // hit us — `document.fonts` was serving stale bytes even after the
+  // .ttf on disk changed, because the family name matched an already-
+  // loaded FontFace). The mounted family flows out via `family` so
+  // the render can reference the exact instance we just loaded.
+  const [state, setState] = useState<{ ready: boolean; family: string }>({
+    ready: false,
+    family: FONT_FAMILY_BASE,
+  });
   useEffect(() => {
-    // Cache-bust on every mount so a rebuilt font on disk is picked up
-    // instead of the browser's stale cached copy. Load via FontFace API
-    // so we can await the actual byte fetch + parse before rendering.
-    const bust = `?v=${Date.now()}`;
+    const stamp = Date.now();
+    const family = `${FONT_FAMILY_BASE}_${stamp}`;
     const face = new FontFace(
-      FONT_FAMILY,
-      `url(/fonts/SemiticStretchHebrew.ttf${bust}) format("truetype")`,
+      family,
+      `url(/fonts/SemiticStretchHebrew.ttf?v=${stamp}) format("truetype")`,
       { display: "block", unicodeRange: "U+0000-10FFFF" },
     );
     let cancelled = false;
@@ -62,18 +73,18 @@ function useLoadStretchFont() {
       .then((loaded) => {
         if (cancelled) return;
         document.fonts.add(loaded);
-        setReady(true);
+        setState({ ready: true, family });
       })
       .catch((e) => {
         console.error("stretch-debug: font load failed", e);
-        if (!cancelled) setReady(true); // still render, will show tofu
+        if (!cancelled) setState({ ready: true, family });
       });
     return () => {
       cancelled = true;
       document.fonts.delete(face);
     };
   }, []);
-  return ready;
+  return state;
 }
 
 // Build one letter's grapheme string at level N. Kept as a helper so
@@ -83,7 +94,7 @@ function stretched(letter: string, level: number): string {
 }
 
 export function StretchDebug() {
-  const fontReady = useLoadStretchFont();
+  const { ready: fontReady, family: fontFamily } = useLoadStretchFont();
   const [fontSize, setFontSize] = useState(96);
   const [showV1, setShowV1] = useState(true);
   const [hoverCol, setHoverCol] = useState<number | null>(null);
@@ -272,7 +283,7 @@ export function StretchDebug() {
                         <div
                           dir="rtl"
                           style={{
-                            fontFamily: FONT_FAMILY,
+                            fontFamily: fontFamily,
                             fontSize: `${fontSize}px`,
                             lineHeight: 1.1,
                           }}
@@ -301,7 +312,7 @@ export function StretchDebug() {
         <div
           dir="rtl"
           style={{
-            fontFamily: FONT_FAMILY,
+            fontFamily: fontFamily,
             fontSize: `${fontSize}px`,
             lineHeight: 1.4,
           }}

@@ -2816,8 +2816,8 @@ function BulkColorControls({
 // glyph by the GSUB liga rule. Highlighted in the on-screen keyboard so
 // users know which keys can be stretched.
 const STRETCHABLE = new Set([
-  "ד", "ה", "ל", "ם", "ר", "ת",             // Original 6 (widely supported)
-  "ב", "ח", "כ", "ך", "פ", "ף", "ק",         // v2 expansion (Frank Ruhl only for now)
+  "ד", "ה", "ל", "ם", "ר", "ת",                   // Original 6 (widely supported)
+  "ב", "ח", "כ", "ך", "פ", "ף", "ק", "ט", "י",     // v2 expansion (Frank Ruhl only for now)
 ]);
 
 // Which letters our stretch fonts widen. Hebrew (Frank Ruhl v2):
@@ -2828,7 +2828,7 @@ const STRETCHABLE = new Set([
 // so Peshitta lines have several stretchable positions per row.
 const HEBREW_STRETCHABLE = new Set([
   "ד", "ה", "ל", "ם", "ר", "ת",
-  "ב", "ח", "כ", "ך", "פ", "ף", "ק",
+  "ב", "ח", "כ", "ך", "פ", "ף", "ק", "ט", "י",
 ]);
 const SYRIAC_STRETCHABLE = new Set(["ܐ", "ܒ", "ܕ", "ܗ", "ܘ", "ܡ", "ܣ", "ܪ", "ܫ", "ܬ"]);
 // Ethiopic: 5 Ge'ez consonant series × 7 vowel orders each = 35 fidels.

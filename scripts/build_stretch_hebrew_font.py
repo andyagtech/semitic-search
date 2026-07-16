@@ -1330,18 +1330,22 @@ def stretch_glyph(
         # bar then down the right side): the anchor is the top-LEFT
         # corner, insert BEFORE anchor going RIGHT-DOWN-LEFT. Actually
         # simpler: mirror the point order for CCW / top attach.
-        if attach_is_top:
-            # Bar sits ABOVE letter, extending leftward at yMax.
-            # After anchor (top-left corner), walk goes down-left-side.
-            # Insert bump BEFORE anchor: continue right (back toward
-            # bar right edge) → up → left → down to anchor.
-            # But simpler to insert AFTER anchor going LEFT-UP-RIGHT
-            # and let winding sort it. Use anchor-point-first order.
-            new_pts = [(bar_right, bar_bot), (bar_left, bar_bot),
-                       (bar_left, bar_top_), (bar_right, bar_top_)]
-        else:
-            new_pts = [(bar_right, bar_top_), (bar_left, bar_top_),
-                       (bar_left, bar_bot), (bar_right, bar_bot)]
+        # Bump insertion order MUST match the parent contour's winding
+        # or the merged contour's signed area flips sign at some width
+        # (once the bump area exceeds the letter body area). A CCW
+        # inversion under non-zero fill turns the letter body into a
+        # hole and the counter into a filled blob — invisible bug at
+        # small widths, catastrophic at large ones.
+        #
+        # Walk order for both attach directions: from anchor go to the
+        # bump's FAR corner first (opposite the anchor's y), then
+        # around the rectangle. For bottom attach this is DOWN → LEFT
+        # → UP → RIGHT (CW in y-up coords). For top attach the anchor
+        # is at yMax and the bump sits above the letter, but the same
+        # symbolic order (opposite-y first, then left, then near-y,
+        # then right) also winds CW.
+        new_pts = [(bar_right, bar_bot), (bar_left, bar_bot),
+                   (bar_left, bar_top_), (bar_right, bar_top_)]
         if not cw:
             new_pts = list(reversed(new_pts))
         # Insert new_pts AFTER best_idx

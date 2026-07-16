@@ -556,28 +556,14 @@ async function loadFontMetrics(file: string): Promise<FontMetrics | null> {
 }
 
 // Register @font-face for the selected font so the browser can render it.
-//
-// Per-tab session stamp — appended to every family name so a rebuilt
-// .ttf CAN'T be shadowed by a still-registered FontFace from a prior
-// session. Bug we hit: family name was constant (e.g. "FL_StretchHebrew"),
-// so once the browser registered a FontFace under that name, subsequent
-// mounts kept resolving the CSS `font-family` lookup to the old face
-// even when the URL was cache-busted and re-fetched.
-const SESSION_STAMP =
-  typeof window !== "undefined" && typeof performance !== "undefined"
-    ? `_${Math.floor(performance.now())}_${Math.floor(Math.random() * 1e6)}`
-    : "";
-export const stampedFamily = (family: string) => `${family}${SESSION_STAMP}`;
-
 const loadedFamilies = new Set<string>();
 function ensureFontLoaded(family: string, file: string): Promise<void> {
-  const stamped = stampedFamily(family);
-  if (loadedFamilies.has(stamped)) return Promise.resolve();
+  if (loadedFamilies.has(family)) return Promise.resolve();
   return new Promise((resolve) => {
     const style = document.createElement("style");
-    // Cache-bust the URL too so the HTTP layer refetches. Combined with
-    // the per-session stamped family, we guarantee neither the network
-    // cache nor document.fonts serves a stale copy after a rebuild.
+    // Cache-bust on each page load so rebuilt fonts (esp. Semitic Stretch
+    // Hebrew, whose GSUB table we regenerate) are picked up instead of the
+    // stale copy held by the browser's font cache across sessions.
     const bust = `?v=${Date.now()}`;
     // Broad `unicode-range` overrides Chrome's default "which font handles
     // this codepoint?" heuristic (based on OS/2.ulUnicodeRange bits and a
@@ -591,12 +577,12 @@ function ensureFontLoaded(family: string, file: string): Promise<void> {
     // that don't need it — a non-issue since we're always rendering the
     // script that matches the selected face.
     const unicodeRange = "unicode-range: U+0000-10FFFF;";
-    style.textContent = `@font-face { font-family: '${stamped}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: swap; ${unicodeRange} }`;
+    style.textContent = `@font-face { font-family: '${family}'; src: url('/fonts/${file}${bust}') format('truetype'); font-display: swap; ${unicodeRange} }`;
     document.head.appendChild(style);
-    loadedFamilies.add(stamped);
+    loadedFamilies.add(family);
     const docWithFonts = document as unknown as { fonts?: FontFaceSet };
     if (docWithFonts.fonts) {
-      docWithFonts.fonts.load(`16px '${stamped}'`).then(() => resolve()).catch(() => resolve());
+      docWithFonts.fonts.load(`16px '${family}'`).then(() => resolve()).catch(() => resolve());
     } else {
       setTimeout(resolve, 200);
     }
@@ -1311,15 +1297,15 @@ export function FontLab() {
         // Cursive Syriac: distribute between joining letters (Arabic-style).
         if (nohadraStretchActive) {
           return autoJustifySemitic(
-            prev, justifyWidthPx, stampedFamily(font.family), fontSize, fontFeatureSettings,
+            prev, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
             SYRIAC_STRETCHABLE, SYRIAC_WIDENING,
           );
         }
         if (syriacStretchActive) {
-          return autoJustifyArabic(prev, justifyWidthPx, stampedFamily(font.family), fontSize, fontFeatureSettings);
+          return autoJustifyArabic(prev, justifyWidthPx, font.family, fontSize, fontFeatureSettings);
         }
         return autoJustifySemitic(
-          prev, justifyWidthPx, stampedFamily(font.family), fontSize,
+          prev, justifyWidthPx, font.family, fontSize,
           fontFeatureSettings,
           HEBREW_STRETCHABLE,
           trigger,
@@ -1840,7 +1826,7 @@ export function FontLab() {
               onChange={(e) => setText(e.target.value)}
               onKeyDown={onTextareaKeyDown}
               style={{
-                fontFamily: stampedFamily(font.family),
+                fontFamily: font.family,
                 fontSize: "22px",
                 lineHeight: 1.5,
                 fontFeatureSettings,
@@ -1898,14 +1884,14 @@ export function FontLab() {
                   if (nohadraStretchActive) {
                     setText(
                       autoJustifySemitic(
-                        text, justifyWidthPx, stampedFamily(font.family), fontSize, fontFeatureSettings,
+                        text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
                         SYRIAC_STRETCHABLE, SYRIAC_WIDENING,
                       ),
                     );
                   } else if (script.id === "arabic" || script.id === "syriac") {
                     setText(
                       autoJustifyArabic(
-                        text, justifyWidthPx, stampedFamily(font.family), fontSize, fontFeatureSettings,
+                        text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
                       ),
                     );
                   } else if (script.id === "ethiopic") {
@@ -1923,21 +1909,21 @@ export function FontLab() {
                     if (hasStretchable) {
                       setText(
                         autoJustifySemitic(
-                          text, justifyWidthPx, stampedFamily(font.family), fontSize, fontFeatureSettings,
+                          text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
                           ETHIOPIC_STRETCHABLE, ETHIOPIC_WIDENING, "ltr",
                         ),
                       );
                     } else {
                       setText(
                         autoJustifyEthiopic(
-                          text, justifyWidthPx, stampedFamily(font.family), fontSize, fontFeatureSettings,
+                          text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
                         ),
                       );
                     }
                   } else {
                     setText(
                       autoJustifySemitic(
-                        text, justifyWidthPx, stampedFamily(font.family), fontSize, fontFeatureSettings,
+                        text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
                         HEBREW_STRETCHABLE, HEBREW_STRETCH,
                       ),
                     );
@@ -2216,7 +2202,7 @@ export function FontLab() {
           ref={previewRef}
           className="inline-block w-full"
           style={{
-            fontFamily: stampedFamily(font.family),
+            fontFamily: font.family,
             fontSize: `${fontSize}px`,
             lineHeight: 1.4,
             direction: script.dir,
@@ -2367,7 +2353,7 @@ export function FontLab() {
                     className="text-2xl leading-none"
                     dir={script.dir}
                     style={{
-                      fontFamily: stampedFamily(font.family),
+                      fontFamily: font.family,
                       fontFeatureSettings: jaltWide ? `${fontFeatureSettings}, 'jalt' 1` : fontFeatureSettings,
                     }}
                   >
@@ -2530,7 +2516,7 @@ function Showcase({ onLoad }: {
             const scratch = document.createElement("div");
             scratch.style.cssText =
               `position:absolute;visibility:hidden;top:-9999px;left:-9999px;` +
-              `font:${SHOWCASE_FONT_SIZE_PX}px "${stampedFamily(font.family)}";` +
+              `font:${SHOWCASE_FONT_SIZE_PX}px "${font.family}";` +
               `font-feature-settings:'liga' 1,'calt' 1;` +
               `direction:rtl;white-space:nowrap;`;
             document.body.appendChild(scratch);
@@ -2551,7 +2537,7 @@ function Showcase({ onLoad }: {
                 next[key] = autoJustifySemitic(
                   item.verses![vi],
                   longest,
-                  stampedFamily(font.family),
+                  font.family,
                   SHOWCASE_FONT_SIZE_PX,
                   "'liga' 1, 'calt' 1",
                   HEBREW_STRETCHABLE,
@@ -3286,7 +3272,7 @@ function HebrewOnScreenKeyboard({
   fontReady: boolean;
 }) {
   const [open, setOpen] = useState(true);
-  const fontStyle = fontReady ? { fontFamily: stampedFamily(font.family) } : undefined;
+  const fontStyle = fontReady ? { fontFamily: font.family } : undefined;
   return (
     <div id="fl-keyboard" className="mt-3 border border-neutral-300 rounded-lg overflow-hidden">
       <button

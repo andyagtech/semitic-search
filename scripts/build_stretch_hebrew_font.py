@@ -3287,10 +3287,21 @@ def build_one(config: dict) -> int:
 
 
 def main() -> int:
-    """Build every font in CONFIGS. Failures don't stop the loop — each
-    config is independent."""
+    """Build every font in CONFIGS, or a subset via --only <id>[,<id>...].
+    Failures don't stop the loop — each config is independent."""
+    only = None
+    if len(sys.argv) > 1 and sys.argv[1] == "--only" and len(sys.argv) > 2:
+        only = set(sys.argv[2].split(","))
+    configs = [c for c in CONFIGS if only is None or c.get("id") in only]
+    if only is not None:
+        missing = only - {c.get("id") for c in CONFIGS}
+        if missing:
+            print(f"  ! Unknown --only id(s): {sorted(missing)}")
+            print(f"    Known ids: {sorted(c.get('id') for c in CONFIGS)}")
+            return 1
+        print(f"Building only: {sorted(c.get('id') for c in configs)}")
     failures = 0
-    for cfg in CONFIGS:
+    for cfg in configs:
         try:
             rc = build_one(cfg)
             if rc != 0:
@@ -3298,7 +3309,7 @@ def main() -> int:
         except Exception as e:
             print(f"  ! Build failed for {cfg.get('id')}: {e}")
             failures += 1
-    print(f"\nDone. {len(CONFIGS) - failures}/{len(CONFIGS)} fonts built.")
+    print(f"\nDone. {len(configs) - failures}/{len(configs)} fonts built.")
     return 1 if failures else 0
 
 

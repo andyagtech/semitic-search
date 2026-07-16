@@ -259,7 +259,14 @@ FRANK_RUHL = {
         # right of the widened bar. leg-class translates the leg with
         # the widening so it stays at the letter's left edge.
         0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 470, "x_cutoff": 280},
-        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290},
+        # Kaf: natural bar surface is at y=546 but leg top is at y=586,
+        # so kaf has a "step down" from leg to bar at the top-left. At
+        # widened widths that step reads as a dip in an otherwise flat
+        # bar. flatten_top raises every point with y in [540, 586) to
+        # y=586, turning the step into a single flat top edge across
+        # the whole widened letter.
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
+                 "flatten_top_from_y": 540, "flatten_top_to_y": 586},
         0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300},
         # Final letters use LEG class to preserve the descender (like tav):
         # the descender (y<0 or y<leg_max_y) stays anchored while the top
@@ -1160,6 +1167,8 @@ def stretch_glyph(
     shift_contours: list[int] | None = None,
     underside_y_max: int | None = None,
     underside_x_min: int | None = None,
+    flatten_top_from_y: int | None = None,
+    flatten_top_to_y: int | None = None,
 ) -> object:
     """Return a new TTGlyph built from `src_name` with selected points
     shifted LEFT. Shift depends on letter_class and the point's (x, y):
@@ -1440,6 +1449,21 @@ def stretch_glyph(
                 if ox != nx:
                     target_y = ay + slope * (nx - ax)
                     new_glyph.coordinates[i] = (nx, int(round(target_y)))
+
+    # Optionally flatten the top-of-bar step. Kaf, kaf-sofit, and similar
+    # letters have a natural "step down" from the leg's top y (e.g. 586)
+    # to the horizontal bar surface (e.g. 546). At natural width that
+    # step is a design feature; at widened widths it reads as a dip in
+    # the middle of an otherwise long flat bar. Raising every point in
+    # the source y-range [flatten_top_from_y, flatten_top_to_y - 1] to
+    # exactly flatten_top_to_y turns the step into a single flat top
+    # edge. Applies to ALL points in that range (shifted or not), so
+    # the natural corner also flattens — that's what the user asked for.
+    if flatten_top_from_y is not None and flatten_top_to_y is not None:
+        for i, (ox, oy) in enumerate(orig_coords):
+            if flatten_top_from_y <= oy < flatten_top_to_y:
+                nx, _ = new_glyph.coordinates[i]
+                new_glyph.coordinates[i] = (nx, flatten_top_to_y)
 
     new_glyph.recalcBounds(font["glyf"])
     return new_glyph
@@ -2875,6 +2899,10 @@ def build_one(config: dict) -> int:
         underside_y_max = int(und_y) if isinstance(und_y, int) else None
         und_x = info.get("underside_x_min")
         underside_x_min = int(und_x) if isinstance(und_x, int) else None
+        ft_from = info.get("flatten_top_from_y")
+        flatten_top_from_y = int(ft_from) if isinstance(ft_from, int) else None
+        ft_to = info.get("flatten_top_to_y")
+        flatten_top_to_y = int(ft_to) if isinstance(ft_to, int) else None
         # Resolve alias codepoints (Hebrew Presentation Forms) to the
         # actual glyph names this font uses. Different fonts have different
         # naming conventions (uniFB33 vs daleddagesh).
@@ -2913,6 +2941,8 @@ def build_one(config: dict) -> int:
                     shift_contours=shift_contours,
                     underside_y_max=underside_y_max,
                     underside_x_min=underside_x_min,
+                    flatten_top_from_y=flatten_top_from_y,
+                    flatten_top_to_y=flatten_top_to_y,
                 )
                 lsb_mode_ = config.get("lsb_mode", "shift")
                 # "sym" class shifts left AND right by shift_/2 each — the
@@ -2990,6 +3020,8 @@ def build_one(config: dict) -> int:
                 shift_contours=shift_contours,
                 underside_y_max=underside_y_max,
                 underside_x_min=underside_x_min,
+                flatten_top_from_y=flatten_top_from_y,
+                flatten_top_to_y=flatten_top_to_y,
             )
             # Grow advance proportionally: stretched letter takes more
             # horizontal space so neighbors don't overlap its extended arm.

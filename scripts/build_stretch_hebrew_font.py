@@ -136,9 +136,6 @@ FRANK_RUHL = {
         # values are best-guess from bbox geometry — iterate visually.
         # Final letters (ך ף) have descenders (y<0) that fall OUTSIDE the
         # bar zone [440-620] so they stay anchored while the top extends.
-        # DEFERRED: ט tet (closed shape — top curl detaches from body when
-        # left-shifted); י yod (only ~130 units wide, widening distorts it
-        # beyond recognition). Both need custom class logic.
         0x05D1: {"name": "bet",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 330},
         0x05D7: {"name": "het",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 360},
         0x05DB: {"name": "kaf",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 280},
@@ -146,6 +143,21 @@ FRANK_RUHL = {
         0x05E4: {"name": "pe",        "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 350},
         0x05E3: {"name": "finalpe",   "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 310},
         0x05E7: {"name": "qof",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
+        # ט tet: shift the WHOLE left column (curl + left vertical + left
+        # half of bottom foot) leftward as one rigid unit, so both the
+        # top-curl boundary and the right-vertical boundary are preserved,
+        # and the bottom foot stretches between them. Bar zone spans the
+        # full glyph height so every point x<350 participates in the
+        # shift together — same "preserve boundaries" pattern as dalet /
+        # kaf / bet, adapted to tet's closed-shape geometry.
+        0x05D8: {"name": "tet",       "class": "bar", "bar_bottom": -20, "bar_top": 620, "x_cutoff": 350},
+        # י yod: shift the shoulder + top-hook region leftward so the
+        # top extends into a heh-like horizontal bar while the bottom
+        # curl stays anchored. Bar zone y=430..620 catches yod's dense
+        # shoulder band. Creative widening — no traditional precedent
+        # since yod is normally too small to stretch, but the effect
+        # reads like a miniature heh with an elongated top.
+        0x05D9: {"name": "yod",       "class": "bar", "bar_bottom": 430, "bar_top": 620, "x_cutoff": 200},
     },
 }
 

@@ -165,25 +165,32 @@ def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
         except Exception: continue
         if g.numberOfContours <= 0:
             continue
+        # Bar hangs OUTSIDE the letter's ink zone. For baseline attach
+        # (bet, tet, kaf, etc.): bar sits BELOW y=0, hanging from the
+        # letter's baseline foot. For top attach (peh, yod): bar sits
+        # ABOVE yMax, above the letter's top. This puts the bar and
+        # letter in disjoint y-zones so browser/opentype.js can't
+        # produce a "hole" from winding-rule mismatch — the two shapes
+        # simply share an edge at y=0 (or y=yMax) but don't overlap.
         if attach == "top":
-            # Bar sits just below yMax. x_cutoff = leftmost contour x in
-            # the top slice + overlap padding, so the bar extends INTO
-            # the letter body.
-            top_slice = [x for x, y in coords_of(gname) if y >= g.yMax - bar_thickness - 20]
+            top_slice = [x for x, y in coords_of(gname) if y >= g.yMax - 20]
             leftmost_x = min(top_slice) if top_slice else g.xMin
-            bar_bottom = g.yMax - bar_thickness
-            bar_top = g.yMax
+            bar_bottom = g.yMax
+            bar_top = g.yMax + bar_thickness
         else:  # "bottom"
-            baseline_slice = [x for x, y in coords_of(gname) if y <= bar_thickness + 20]
+            baseline_slice = [x for x, y in coords_of(gname) if y <= 20]
             leftmost_x = min(baseline_slice) if baseline_slice else g.xMin
-            bar_bottom = 0
-            bar_top = bar_thickness
+            bar_bottom = -bar_thickness
+            bar_top = 0
+        # x_cutoff = letter's leftmost point at the attach y — no
+        # overlap padding needed since the bar and letter don't share
+        # ink volume, just share an edge at the boundary y.
         out[cp] = {
             "name": name,
             "class": "baseline_extend",
             "bar_bottom": bar_bottom,
             "bar_top": bar_top,
-            "x_cutoff": leftmost_x + overlap_padding,
+            "x_cutoff": leftmost_x,
         }
     return out
 
@@ -255,7 +262,6 @@ KETER_ARAM_TSOVA = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         # dalet: single-contour topology (one closed outline that traces
         # outside + inside). bar_bottom=650 lets the underside (y=699)
@@ -333,7 +339,6 @@ SHMULIK = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         # Shmulik's body bars sit at y=1050 with serifs reaching y=1186.
         # Letters are wide (1280-1600 advance), so x_cutoffs are bigger
@@ -424,7 +429,6 @@ HILLEL = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 280},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 350, "bar_top": 520, "leg_max_y": 320, "x_cutoff": 280},
@@ -449,7 +453,6 @@ GLADIA = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 380},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 380},
@@ -472,7 +475,6 @@ NOTO_SANS_HEBREW = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -498,7 +500,6 @@ NOTO_SERIF_HEBREW = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 300,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -524,7 +525,6 @@ SHOFAR = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 900, "bar_top": 1250, "x_cutoff": 600,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -559,7 +559,6 @@ FREE_MONO = {
     # leftmost cell, leaving a huge gap to the next letter on the right.
     "lsb_mode": "mono",
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 380,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -586,7 +585,6 @@ NACHLIELI = {
     "step": 165,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 420, "bar_top": 620, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -614,7 +612,6 @@ MIRIAM_MONO = {
     "step": 600,
     "lsb_mode": "mono",  # see FreeMono note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 350, "bar_top": 500, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -642,7 +639,6 @@ EZRA_SIL = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 1000, "bar_top": 1500, "x_cutoff": 700,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -694,7 +690,6 @@ STAM_ASHKENAZ = {
     # preserving the body's 50-unit right offset within the new advance.
     "lsb_mode": "mono",
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 850, "bar_top": 1450, "x_cutoff": 600,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -732,7 +727,6 @@ SHLOMO_SEMISTAM = {
     "step": 300,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 700,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -837,7 +831,6 @@ NOTO_RASHI = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
-    "auto_v2_letters": True,
     # Rashi has no U+FB33/34/... presentation-form dagesh glyphs — Rashi text
     # is unpointed in practice, so no ALIAS_DAGESH entries needed.
     #

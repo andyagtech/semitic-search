@@ -276,17 +276,38 @@ FRANK_RUHL = {
         # any off-curve controls to on-curve flattens this dip.
         0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
                  "underside_y_max": 440, "underside_x_min": 100},
-        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300},
+        # Pe: same underside-corner pattern as kaf. Point 8 at (370, 440)
+        # is an off-curve Bezier control forming the internal rounded
+        # corner where the top-bar underside meets the right vertical.
+        # underside_y_max + insertion preserves the corner rounding and
+        # gives a flat straight underside for the extended bar.
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
+                 "underside_y_max": 440, "underside_x_min": 100},
         # Final letters use LEG class to preserve the descender (like tav):
         # the descender (y<0 or y<leg_max_y) stays anchored while the top
         # bar zone extends leftward.
-        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 290},
-        0x05E3: {"name": "finalpe",  "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 300},
+        # Finalkaf: same underside-corner pattern as kaf. Point 10 at
+        # (344, 440) off-curve control for the internal rounded corner.
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 290,
+                 "underside_y_max": 440, "underside_x_min": 100},
+        # Finalpe: same underside-corner pattern. Point 10 at (326, 440)
+        # off-curve control for the internal rounded corner.
+        0x05E3: {"name": "finalpe",  "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 300,
+                 "underside_y_max": 440, "underside_x_min": 100},
         # qof's descender is on the LEFT (below baseline). leg-class would
         # SHIFT the descender leftward with the top bar — instead use plain
         # bar class so only the top zone (y=440..620) participates.
         # Descender at y<0 stays anchored.
         0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
+        # Tzade (user's option #2 — bottom-only extension). Natural
+        # tzade has a distinctive top structure (yod-head + arm) that
+        # must stay intact, and a base bar at y=[0,99]. Bar-class with
+        # bar_bottom=0 / bar_top=100 / x_cutoff=100 shifts the base's
+        # left-corner points (0 at (55,0) and 1 at (74,99)) leftward,
+        # then mono translates the whole letter body right — net effect
+        # is the base bar extends leftward while the letter's top
+        # structure moves with the body.
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 100, "x_cutoff": 100},
         # tet: closed shape with top curls on both sides. Bar-class
         # DISTORTS the closed body — none of dalet/heh/tav's parameter
         # tunings work. Instead use baseline_extend, which inserts a

@@ -1458,30 +1458,70 @@ def stretch_glyph(
             li, _, _ = leftmost
             lx_new, ly_new = new_glyph.coordinates[li]
             slope = (ly_new - ay) / (lx_new - ax) if lx_new != ax else 0
-            # Two adjustments per underside point:
-            #   1) snap the shift-moved point's y onto the line from
-            #      anchor to leftmost (the original behaviour).
-            #   2) promote EVERY off-curve control in the underside
-            #      range to on-curve. Otherwise a Bezier control at
-            #      y=440 still bows the segment away from a flat line
-            #      via quadratic math. The "moved" check gates only (1)
-            #      because unmoved points already have their original
-            #      coords — but their FLAG still needs promotion, since
-            #      mono-shift will move them post-return, and the flat
-            #      underside can't survive an off-curve control.
-            new_flags = list(new_glyph.flags)
             for i in underside_idx:
                 ox, _ = orig_coords[i]
                 nx, _ = new_glyph.coordinates[i]
                 if ox != nx:
                     target_y = ay + slope * (nx - ax)
                     new_glyph.coordinates[i] = (nx, int(round(target_y)))
-                new_flags[i] |= 1  # promote to on-curve regardless of shift
+
+            # Preserve the natural rounded internal corner. For letters
+            # like kaf, the transition from the body's right vertical
+            # into the top-bar underside is a two-Bezier rounded corner
+            # (points N-1 = OFF, N = OFF at bar_bottom, N+1 = ON at
+            # bar_bottom on the leg side). At natural width the corner
+            # is compact — control N and endpoint N+1 sit close in x.
+            # At widened widths point N stays with the body (shift
+            # applied) while N+1 stays with the leg (no shift after
+            # mono), stretching the Bezier across the whole underside
+            # so the corner rounding is lost and the flat line bows.
+            #
+            # Fix: insert a NEW ON-curve point right after N at the
+            # natural offset from N (so post-mono it lands at
+            # body_x - natural_corner_width and the Bezier corner keeps
+            # its natural shape), then the line from NEW to N+1 is a
+            # flat straight run at bar_bottom.
+            flags_list = list(new_glyph.flags)
+            # Find rightmost OFF-curve point in underside_idx (the
+            # corner control on the body side that WILL move via mono).
+            corner_ctrl_idx = None
+            for i in underside_idx:
+                if flags_list[i] & 1 == 0:  # off-curve
+                    ox, _ = orig_coords[i]
+                    if corner_ctrl_idx is None or ox > orig_coords[corner_ctrl_idx][0]:
+                        corner_ctrl_idx = i
+            if corner_ctrl_idx is not None:
+                # Next point in the contour is the corner's endpoint.
+                # Its natural x tells us how wide the natural corner is.
+                next_idx = corner_ctrl_idx + 1
+                if next_idx < len(orig_coords):
+                    natural_end_x = orig_coords[next_idx][0]
+                    ctrl_new_x, _ = new_glyph.coordinates[corner_ctrl_idx]
+                    # Post-mono, the corner control moves to
+                    # ctrl_new_x + shift. Natural corner width =
+                    # ctrl_ox - natural_end_x. We want NEW to sit at
+                    # (ctrl_new_x + shift) - natural_corner_width
+                    # post-mono, i.e. ctrl_new_x - natural_corner_width
+                    # pre-mono (since NEW will get + shift applied by
+                    # mono uniformly, same as the corner control).
+                    ctrl_ox = orig_coords[corner_ctrl_idx][0]
+                    natural_corner_width = ctrl_ox - natural_end_x
+                    new_x = ctrl_new_x - natural_corner_width
+                    coords_list = list(new_glyph.coordinates)
+                    coords_list.insert(next_idx, (int(new_x), int(ay)))
+                    flags_list.insert(next_idx, 1)  # ON-curve
+                    from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
+                    new_glyph.coordinates = GlyphCoordinates(coords_list)
+                    # Shift endPts for contours whose index >= insertion
+                    new_endpts = []
+                    for ep in new_glyph.endPtsOfContours:
+                        new_endpts.append(ep + 1 if ep >= next_idx else ep)
+                    new_glyph.endPtsOfContours = new_endpts
             try:
-                new_glyph.flags = bytes(new_flags)
+                new_glyph.flags = bytes(flags_list)
             except Exception:
                 import array
-                new_glyph.flags = array.array("B", new_flags)
+                new_glyph.flags = array.array("B", flags_list)
 
     # Optionally flatten the top-of-bar step. Kaf, kaf-sofit, and similar
     # letters have a natural "step down" from the leg's top y (e.g. 586)

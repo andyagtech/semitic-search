@@ -1925,7 +1925,7 @@ _MARK_ANCHOR_AT_BOTTOM: set[int] = {
 # above-marks in the same visual position; a +80 shift brings it into
 # alignment with the damma / fatha / shadda placement.
 _MARK_ANCHOR_X_SHIFT: dict[int, int] = {
-    0x0654: 80,  # hamza above — shift visually left to match damma
+    0x0654: 140,  # hamza above — shift visually left to match damma placement
 }
 
 

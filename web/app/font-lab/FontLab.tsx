@@ -1625,6 +1625,13 @@ export function FontLab() {
         >
           ⇋ BiDi debugger
         </a>
+        <a
+          href="/font-tuning"
+          className="text-xs px-2.5 py-1 rounded border border-fuchsia-400 bg-fuchsia-50 hover:bg-fuchsia-100 text-fuchsia-800"
+          title="Interactive tuner for combining-mark anchor positions (Arabic harakat + Hebrew niqqud on Hebrew letters). Exports a Python snippet to bake changes into the font build."
+        >
+          ⚙ Mark tuning
+        </a>
         <button
           type="button"
           onClick={() => setTourOpen(true)}

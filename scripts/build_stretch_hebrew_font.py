@@ -317,17 +317,22 @@ FRANK_RUHL = {
         # bar_bottom=-40 (below baseline), bar_top=20 (overlaps 20 units
         # into the letter body so the single-contour walk doesn't pinch
         # at exactly y=0).
-        # Tet baseline_extend. x_cutoff=100 matches tet's leftmost
-        # letter-body point at y=23 (point 1 = (100, 23)). With that
-        # alignment the bump's top-right corner sits at (100, 0) and
-        # the closing segment to the next letter point (100, 23) is
-        # a short VERTICAL that merges seamlessly with the letter
-        # body's left column instead of a diagonal slope. The chamfer
-        # from the anchor (104, 0) diagonally down-left to (100, -40)
-        # replaces the earlier 40-unit vertical leg at anchor's x.
-        # bar_top=0 keeps the bar's top at baseline so the letter
-        # visually sits on the bar rather than being raised above it.
-        0x05D8: {"name": "tet",      "class": "baseline_extend", "bar_bottom": -40, "bar_top": 0, "x_cutoff": 100},
+        # Tet uses bar-class with the whole letter body's y-range and
+        # x_cutoff at the letter's midline (=200). This treats the
+        # letter body as if its bottom edge were a bar: the LEFT half
+        # of the outer contour (points 0-16, all with x < 200) shifts
+        # leftward and — via mono — nets to its natural position; the
+        # RIGHT half (points 17-43, all with x >= 200) doesn't shift
+        # in stretch_glyph and mono translates it rightward by `shift`.
+        # The implicit closing segment of contour 0 (walk from the
+        # last point back to point 0) stretches horizontally at y=0,
+        # infixing new bottom-bar material between the natural left
+        # side and the shifted-right right side — exactly like heh's
+        # top-bar extension. Inner counter (contour 1) shifts uniformly
+        # since all its points have x < 200, ending at natural position.
+        # bar_top=590 sits above the letter's yMax so every left-side
+        # point is captured; no distortion at the top curl transitions.
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 200},
         # yod: small letter. Bar zone at its "shoulder" (y=440..586).
         # x_cutoff=140 keeps yod's right-side hook shoulder anchored
         # (point 21 at x=173 stays) so the extended bar has a cleaner

@@ -1906,6 +1906,12 @@ _ARABIC_MARK_CLASSES: dict[int, str] = {
     0x0670: "above",   # dagger alif
 }
 _ARABIC_MARK_ANCHOR_Y = {"above": 801, "below": -327}
+# Per-codepoint Y override for above-marks that need more clearance from
+# the base letter. Hamza-above (U+0654) is a tall mark; at the default
+# y=801 its bottom overlaps the letter's top. Bump to 950 so it clears.
+_ARABIC_MARK_ANCHOR_Y_OVERRIDE: dict[int, int] = {
+    0x0654: 950,  # hamza above — sits higher so it clears the letter top
+}
 
 
 def _add_arabic_mark_stacking(font) -> int:
@@ -2200,7 +2206,7 @@ def _add_arabic_mark_gpos(font, config) -> int:
         # Imported glyphs may not have bounds computed yet — recalc.
         g.recalcBounds(glyf)
         vx = (g.xMin + g.xMax) // 2
-        vy = _ARABIC_MARK_ANCHOR_Y[cls]
+        vy = _ARABIC_MARK_ANCHOR_Y_OVERRIDE.get(cp, _ARABIC_MARK_ANCHOR_Y[cls])
         present.append((cp, gname, (vx, vy, cls)))
     if not present:
         return 0

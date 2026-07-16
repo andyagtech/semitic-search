@@ -172,16 +172,23 @@ def _hebrew_v2_letters_from_source(src_font_filename: str) -> dict:
         # letter in disjoint y-zones so browser/opentype.js can't
         # produce a "hole" from winding-rule mismatch — the two shapes
         # simply share an edge at y=0 (or y=yMax) but don't overlap.
+        # Overlap the bump slightly into the letter body so the single-
+        # contour walk doesn't hit a "pinch point" at the letter's
+        # baseline corner (TrueType contours can't self-touch). 20 units
+        # of overlap = the bump's inner-facing edge sits 20 units above
+        # the baseline (for bottom attach) or 20 units below yMax (for
+        # top attach), well away from the corner where letter meets bar.
+        overlap_into_letter = int(20 * upm / 1000)
         if attach == "top":
             top_slice = [x for x, y in coords_of(gname) if y >= g.yMax - 20]
             leftmost_x = min(top_slice) if top_slice else g.xMin
-            bar_bottom = g.yMax
+            bar_bottom = g.yMax - overlap_into_letter
             bar_top = g.yMax + bar_thickness
         else:  # "bottom"
             baseline_slice = [x for x, y in coords_of(gname) if y <= 20]
             leftmost_x = min(baseline_slice) if baseline_slice else g.xMin
             bar_bottom = -bar_thickness
-            bar_top = 0
+            bar_top = overlap_into_letter
         # x_cutoff = letter's leftmost point at the attach y — no
         # overlap padding needed since the bar and letter don't share
         # ink volume, just share an edge at the boundary y.
@@ -1226,54 +1233,104 @@ def stretch_glyph(
     if letter_class == "baseline_extend":
         if x_cutoff is None:
             return copy.deepcopy(src)
-        new_glyph = copy.deepcopy(src)
-        # Build the extension rectangle as a fresh contour appended to
-        # the glyph's existing contours. CRITICAL: winding direction
-        # must MATCH the source letter's outer contour or the rectangle
-        # gets treated as a hole under non-zero winding, not filled ink.
-        # Hebrew source fonts vary — Frank Ruhl's outer bet contour has
-        # positive signed area (shoelace: sum of (x2-x1)*(y2+y1) > 0,
-        # i.e. CW in the tools' convention), so trace the rectangle CW
-        # too: bottom-left → top-left → top-right → bottom-right → back.
-        # (If a font's outer contour is CCW instead, we detect below
-        # and flip.)
+        # SINGLE-CONTOUR bump insertion. Rather than appending a
+        # rectangle as a separate contour (which requires matching
+        # winding and produces sub-pixel anti-aliasing seams where the
+        # two contours meet at a single point), we MODIFY the letter's
+        # existing outer contour to include the bar as a rectangular
+        # bump. One contour, no winding rule to worry about, no seams.
+        #
+        # Algorithm: find the letter's leftmost baseline corner point
+        # (for bottom attach) or top-left corner point (for top attach).
+        # Insert 3 new points AFTER that point in the walk direction:
+        # extend the walk leftward → up (or down) by bar_thickness →
+        # right back to the letter's edge → continue original walk.
+        # For a CW outer contour walking right-to-left along baseline,
+        # the extension goes LEFT, UP, RIGHT with interior on the walk's
+        # right side throughout.
         bar_left  = x_cutoff - shift
         bar_right = x_cutoff
         bar_bot   = bar_bottom
         bar_top_  = bar_top
-        # Detect winding of the source glyph's first contour.
-        first_end = src.endPtsOfContours[0]
-        first_pts = list(src.coordinates)[:first_end + 1]
+        coords = list(src.coordinates)
+        flags = list(src.flags)
+        endpts = list(src.endPtsOfContours)
+        # Find contour containing the anchor point. Anchor = point with
+        # (x closest to x_cutoff) at (y closest to bar_bottom for bottom
+        # attach OR y closest to bar_top for top attach).
+        # For bottom attach we want the bottom-left corner (near y=0).
+        # For top attach we want the top-left corner (near yMax).
+        attach_is_top = bar_bottom > (src.yMax + src.yMin) // 2 if hasattr(src, 'yMax') else False
+        # Recompute if needed
+        src_ymin, src_ymax = min(y for _, y in coords), max(y for _, y in coords)
+        attach_is_top = bar_bottom > (src_ymin + src_ymax) // 2
+        anchor_y_target = src_ymax if attach_is_top else src_ymin
+        best_idx = None
+        best_dist = float('inf')
+        for i, (x, y) in enumerate(coords):
+            if flags[i] & 1 == 0:  # skip off-curve control points
+                continue
+            # Distance from (x_cutoff, anchor_y_target)
+            dist = abs(y - anchor_y_target) * 10 + abs(x - x_cutoff)
+            if dist < best_dist:
+                best_dist = dist
+                best_idx = i
+        if best_idx is None:
+            return copy.deepcopy(src)
+        # Determine the walk direction at the anchor point by looking at
+        # neighbors. The CW-vs-CCW winding decides which order to insert.
+        first_end = endpts[0]
+        first_pts = coords[:first_end + 1]
         signed = 0
         for i in range(len(first_pts)):
             x1, y1 = first_pts[i]
             x2, y2 = first_pts[(i + 1) % len(first_pts)]
             signed += (x2 - x1) * (y2 + y1)
-        # signed > 0 → CW in this convention → trace rect CW
-        # signed < 0 → CCW → trace rect CCW
-        if signed >= 0:
-            rect_pts = [(bar_left, bar_bot), (bar_left, bar_top_),
-                        (bar_right, bar_top_), (bar_right, bar_bot)]
+        cw = signed >= 0
+        # For CW + bottom attach (walking right-to-left along baseline
+        # then up the left side): insert bump AFTER anchor, going
+        # LEFT-UP-RIGHT. For CW + top attach (walking right along top
+        # bar then down the right side): the anchor is the top-LEFT
+        # corner, insert BEFORE anchor going RIGHT-DOWN-LEFT. Actually
+        # simpler: mirror the point order for CCW / top attach.
+        if attach_is_top:
+            # Bar sits ABOVE letter, extending leftward at yMax.
+            # After anchor (top-left corner), walk goes down-left-side.
+            # Insert bump BEFORE anchor: continue right (back toward
+            # bar right edge) → up → left → down to anchor.
+            # But simpler to insert AFTER anchor going LEFT-UP-RIGHT
+            # and let winding sort it. Use anchor-point-first order.
+            new_pts = [(bar_right, bar_bot), (bar_left, bar_bot),
+                       (bar_left, bar_top_), (bar_right, bar_top_)]
         else:
-            rect_pts = [(bar_left, bar_bot), (bar_right, bar_bot),
-                        (bar_right, bar_top_), (bar_left, bar_top_)]
-        new_coords = list(new_glyph.coordinates)
-        new_flags  = list(new_glyph.flags)
-        new_endpts = list(new_glyph.endPtsOfContours)
-        for x, y in rect_pts:
-            new_coords.append((int(x), int(y)))
-            new_flags.append(1)  # on-curve
-        new_endpts.append(len(new_coords) - 1)
+            new_pts = [(bar_right, bar_top_), (bar_left, bar_top_),
+                       (bar_left, bar_bot), (bar_right, bar_bot)]
+        if not cw:
+            new_pts = list(reversed(new_pts))
+        # Insert new_pts AFTER best_idx
+        insert_at = best_idx + 1
+        for i, (x, y) in enumerate(new_pts):
+            coords.insert(insert_at + i, (int(x), int(y)))
+            flags.insert(insert_at + i, 1)
+        # Update endPtsOfContours: contours after the insertion point
+        # need their end index bumped by len(new_pts).
+        n_new = len(new_pts)
+        new_endpts = []
+        for ep in endpts:
+            if ep >= best_idx:
+                new_endpts.append(ep + n_new)
+            else:
+                new_endpts.append(ep)
         # Write back
+        new_glyph = copy.deepcopy(src)
         from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
-        new_glyph.coordinates = GlyphCoordinates(new_coords)
+        new_glyph.coordinates = GlyphCoordinates(coords)
         try:
-            new_glyph.flags = bytes(new_flags)
+            new_glyph.flags = bytes(flags)
         except Exception:
             import array
-            new_glyph.flags = array.array("B", new_flags)
+            new_glyph.flags = array.array("B", flags)
         new_glyph.endPtsOfContours = new_endpts
-        new_glyph.numberOfContours = len(new_endpts)
         new_glyph.recalcBounds(font["glyf"])
         return new_glyph
 

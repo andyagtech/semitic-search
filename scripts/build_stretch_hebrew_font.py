@@ -259,11 +259,12 @@ FRANK_RUHL = {
         # right of the widened bar. leg-class translates the leg with
         # the widening so it stays at the letter's left edge.
         0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 470, "x_cutoff": 280},
-        # Kaf: natural bar surface is at y=546 but leg top is at y=586,
-        # so kaf has a "step down" from leg to bar at the top-left. At
-        # widened widths that step reads as a dip in an otherwise flat
-        # bar. flatten_top raises every point with y in [540, 586) to
-        # y=586, turning the step into a single flat top edge.
+        # Kaf: keep the natural top-edge design — leg top at y=586 with
+        # a small vertical "tail" transitioning down to bar surface at
+        # y=546. Earlier flatten_top raised the whole top to y=586,
+        # thickening the bar and killing the tail; user's kaf-desired
+        # target keeps that tail as a decorative feature at the widened
+        # bar's left end.
         #
         # underside_y_max=440 straightens the bar's UNDERSIDE. Point 8
         # of natural kaf is at (329, 440) as an off-curve Bezier control
@@ -271,10 +272,9 @@ FRANK_RUHL = {
         # ~y=393 to y=440. In widened variants that dip becomes visible
         # as a curved underside instead of a flat line at y=440.
         # Snapping the moving underside point onto the line from the
-        # right anchor to the leftmost shifted underside point flattens
-        # this dip.
+        # right anchor to the leftmost shifted underside point + promoting
+        # any off-curve controls to on-curve flattens this dip.
         0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
-                 "flatten_top_from_y": 540, "flatten_top_to_y": 586,
                  "underside_y_max": 440, "underside_x_min": 100},
         0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300},
         # Final letters use LEG class to preserve the descender (like tav):

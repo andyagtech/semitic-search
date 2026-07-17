@@ -305,20 +305,20 @@ FRANK_RUHL = {
         # bar class so only the top zone (y=440..620) participates.
         # Descender at y<0 stays anchored.
         0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
-        # Tzade var1 (user's preferred): two-bar INFIX. Both the ARM
-        # (~y=247-329) and the BASE bar (y=0-99) extend leftward as
-        # parallel horizontal lines. The yod-heads at top-right stay
-        # intact (contour 2 at x>=278, y>=417 — entirely right of the
-        # cutoff, moves rightward via mono). Arm's LEFT points (6-9
-        # at x<200) shift left and net to natural via mono; arm's
-        # RIGHT points (33-34 at x>=200) shift right via mono. The
-        # arm's implicit walk from natural-left to shifted-right
-        # stretches horizontally between the two halves. Same for the
-        # base bar. Contour 1 (inner counter at x=[249, 382]) all at
-        # x>=200 so it shifts uniformly rightward with the yod-heads.
-        # bar_top=350 stops just below the yod-head connection area so
-        # yod-heads don't distort.
-        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 350, "x_cutoff": 200},
+        # Tzade var1: two-bar INFIX using tet's full-body pattern.
+        # bar_top=590 covers the entire letter body height so every
+        # left-side point of contour 0 (points 0-32, all x<200) is
+        # captured by the shift zone and nets to natural x via mono.
+        # Right-side points (33-39 at x>=200) don't shift in
+        # stretch_glyph, so mono translates them rightward by shift.
+        # Contours 1 (inner counter, x=[249,382]) and 2 (yod-heads,
+        # x=[278,434]) are entirely right of the cutoff and shift
+        # uniformly rightward, keeping the top structure cohesive.
+        # The natural closing segments between LEFT (stays) and
+        # RIGHT (shifts) portions of contour 0 stretch horizontally
+        # to form the two visible bars: the base at y=0 and the arm
+        # spanning y=~150-329.
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 200},
         # tet: closed shape with top curls on both sides. Bar-class
         # DISTORTS the closed body — none of dalet/heh/tav's parameter
         # tunings work. Instead use baseline_extend, which inserts a

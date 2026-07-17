@@ -305,15 +305,20 @@ FRANK_RUHL = {
         # bar class so only the top zone (y=440..620) participates.
         # Descender at y<0 stays anchored.
         0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
-        # Tzade (user's option #2 — bottom-only extension). Natural
-        # tzade has a distinctive top structure (yod-head + arm) that
-        # must stay intact, and a base bar at y=[0,99]. Bar-class with
-        # bar_bottom=0 / bar_top=100 / x_cutoff=100 shifts the base's
-        # left-corner points (0 at (55,0) and 1 at (74,99)) leftward,
-        # then mono translates the whole letter body right — net effect
-        # is the base bar extends leftward while the letter's top
-        # structure moves with the body.
-        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 100, "x_cutoff": 100},
+        # Tzade var1 (user's preferred): two-bar INFIX. Both the ARM
+        # (~y=247-329) and the BASE bar (y=0-99) extend leftward as
+        # parallel horizontal lines. The yod-heads at top-right stay
+        # intact (contour 2 at x>=278, y>=417 — entirely right of the
+        # cutoff, moves rightward via mono). Arm's LEFT points (6-9
+        # at x<200) shift left and net to natural via mono; arm's
+        # RIGHT points (33-34 at x>=200) shift right via mono. The
+        # arm's implicit walk from natural-left to shifted-right
+        # stretches horizontally between the two halves. Same for the
+        # base bar. Contour 1 (inner counter at x=[249, 382]) all at
+        # x>=200 so it shifts uniformly rightward with the yod-heads.
+        # bar_top=350 stops just below the yod-head connection area so
+        # yod-heads don't distort.
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 350, "x_cutoff": 200},
         # tet: closed shape with top curls on both sides. Bar-class
         # DISTORTS the closed body — none of dalet/heh/tav's parameter
         # tunings work. Instead use baseline_extend, which inserts a

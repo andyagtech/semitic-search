@@ -305,18 +305,20 @@ FRANK_RUHL = {
         # bar class so only the top zone (y=440..620) participates.
         # Descender at y<0 stays anchored.
         0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
-        # Tzade var1: TWO-BAR INFIX. Uses bar_top=350 (not 590) so
-        # the LEFT LEG at y=421-586 shifts RIGHT with the yod-heads,
-        # keeping the widened letter's LEFT structure compact
-        # (matching var1 target). Only points at y<350 and x<200 stay:
-        # base corner (0-1) + arm-left endpoints (6-9). Everything
-        # else shifts rightward — the yod-heads, inner counter,
-        # left leg, top corners all move together as one right-side
-        # cluster. Natural walks between LEFT stays and RIGHT shifts
-        # stretch: base bar at y=99, arm's right transition at
-        # y=~150-247, and the vertical between 9 (stays) and 10
-        # (shifts) forms an implicit connector at the left.
-        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 350, "x_cutoff": 200},
+        # Tzade var1: TWO-BAR INFIX with arm's y flattened for
+        # parallel-bars look. bar_top=350 keeps the left leg with
+        # the right cluster. Arm's naturally-diagonal top edge
+        # (points 33-35 at y=175/320/329) and bottom edge (points
+        # 6-9 at y=247-339) span y=[170, 340]. flatten_top raises
+        # all points in this y range to y=340 — flattens both arm
+        # edges to a single horizontal line. flatten_top_contours=[0]
+        # restricts the flattening to contour 0 so yod-heads (contour
+        # 2) and inner counter (contour 1) are NOT touched.
+        # Result: arm becomes a HORIZONTAL bar at y=340 that INFIXes
+        # between LEFT stays and RIGHT shifts.
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 350, "x_cutoff": 200,
+                 "flatten_top_from_y": 170, "flatten_top_to_y": 340,
+                 "flatten_top_contours": [0]},
         # Aleph — DIAGONAL INFIX. Contour 0 (main diagonal) partitions
         # cleanly at x=200: left half stays, right half shifts right.
         # The diagonal stretches from natural-top-left to shifted-
@@ -1267,6 +1269,7 @@ def stretch_glyph(
     underside_x_min: int | None = None,
     flatten_top_from_y: int | None = None,
     flatten_top_to_y: int | None = None,
+    flatten_top_contours: list[int] | None = None,
 ) -> object:
     """Return a new TTGlyph built from `src_name` with selected points
     shifted LEFT. Shift depends on letter_class and the point's (x, y):
@@ -1654,6 +1657,13 @@ def stretch_glyph(
     if flatten_top_from_y is not None and flatten_top_to_y is not None:
         for i, (ox, oy) in enumerate(orig_coords):
             if flatten_top_from_y <= oy < flatten_top_to_y:
+                # Optional contour restriction: if flatten_top_contours
+                # is set, only flatten points in those contours (so a
+                # letter with multiple contours can flatten one without
+                # distorting the others — e.g. tzade arm without
+                # touching yod-head / inner counter contours).
+                if flatten_top_contours is not None and _contour_idx(i) not in flatten_top_contours:
+                    continue
                 nx, _ = new_glyph.coordinates[i]
                 new_glyph.coordinates[i] = (nx, flatten_top_to_y)
 
@@ -3095,6 +3105,8 @@ def build_one(config: dict) -> int:
         flatten_top_from_y = int(ft_from) if isinstance(ft_from, int) else None
         ft_to = info.get("flatten_top_to_y")
         flatten_top_to_y = int(ft_to) if isinstance(ft_to, int) else None
+        ft_contours_raw = info.get("flatten_top_contours")
+        flatten_top_contours = list(ft_contours_raw) if isinstance(ft_contours_raw, list) else None
         # Resolve alias codepoints (Hebrew Presentation Forms) to the
         # actual glyph names this font uses. Different fonts have different
         # naming conventions (uniFB33 vs daleddagesh).
@@ -3146,6 +3158,7 @@ def build_one(config: dict) -> int:
                     underside_x_min=underside_x_min,
                     flatten_top_from_y=flatten_top_from_y,
                     flatten_top_to_y=flatten_top_to_y,
+                    flatten_top_contours=flatten_top_contours,
                 )
                 lsb_mode_ = config.get("lsb_mode", "shift")
                 # "sym" class shifts left AND right by shift_/2 each — the
@@ -3228,6 +3241,7 @@ def build_one(config: dict) -> int:
                 underside_x_min=underside_x_min,
                 flatten_top_from_y=flatten_top_from_y,
                 flatten_top_to_y=flatten_top_to_y,
+                flatten_top_contours=flatten_top_contours,
             )
             # Grow advance proportionally: stretched letter takes more
             # horizontal space so neighbors don't overlap its extended arm.

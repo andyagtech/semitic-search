@@ -342,6 +342,18 @@ FRANK_RUHL = {
         # point on the widened diagonal.
         0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200,
                  "contour_shift_ratios": {1: 0.65, 2: 0.43, 3: 0.86}},
+        # Shin — BOTTOM-BAR INFIX between left prong cluster and right
+        # prong. Shin has 4 contours: (0) main outer body including
+        # bowl + rightmost prong, (1) small inner triangle,
+        # (2) left prong top, (3) middle prong top. Contours 1, 2, 3
+        # are all at x<400. x_cutoff=400 partitions contour 0 into
+        # left half (points 0-18 = bowl-left + inner descent + bottom-
+        # middle) and right half (points 19-53 = bowl-right + rightmost
+        # prong). Left cluster (2 prongs + inner triangle + bowl-left)
+        # stays at natural; right prong + bowl-right shift rightward
+        # via mono. The base bar at y=0 (implicit closing segment of
+        # contour 0) stretches horizontally between them.
+        0x05E9: {"name": "shin",     "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 400},
         # tet: closed shape with top curls on both sides. Bar-class
         # DISTORTS the closed body — none of dalet/heh/tav's parameter
         # tunings work. Instead use baseline_extend, which inserts a

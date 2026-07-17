@@ -342,7 +342,18 @@ FRANK_RUHL = {
         # These ratios keep each contour tracking its natural attachment
         # point on the widened diagonal.
         0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200,
-                 "contour_shift_ratios": {1: 0.65, 2: 0.43, 3: 0.86}},
+                 # Per-y SHEAR on all sub-contours. Aleph's main
+                 # diagonal (contour 0) goes from (~90, 590) at top-left
+                 # to (~450, -7) at bottom-right. At every y between,
+                 # the diagonal moves by ((590-y)/597) * shift. Applying
+                 # the SAME per-y shift to each sub-contour makes them
+                 # tilt/shear parallel to the diagonal — each point in
+                 # a leg contour tracks its own y-position on the
+                 # diagonal, so the leg's two side boundaries stay
+                 # parallel to each other AND to the diagonal at all
+                 # widening levels. Both edges "tilt with" the
+                 # widening angle change.
+                 "shear_by_y_contours": {1: (590, -7), 2: (590, -7), 3: (590, -7)}},
         # Shin — BOTTOM-BAR INFIX between left prong cluster and right
         # prong. Shin has 4 contours: (0) main outer body including
         # bowl + rightmost prong, (1) small inner triangle,
@@ -1266,6 +1277,7 @@ def stretch_glyph(
     always_shift_contours: list[int] | None = None,
     never_shift_contours: list[int] | None = None,
     contour_shift_ratios: dict[int, float] | None = None,
+    shear_by_y_contours: dict[int, tuple[int, int]] | None = None,
     underside_y_max: int | None = None,
     underside_x_min: int | None = None,
     flatten_top_from_y: int | None = None,
@@ -1523,6 +1535,7 @@ def stretch_glyph(
     always_shift_set = set(always_shift_contours or [])
     never_shift_set = set(never_shift_contours or [])
     shift_ratios = dict(contour_shift_ratios or {})
+    shear_map = dict(shear_by_y_contours or {})
     _end_pts = list(src.endPtsOfContours)
     def _contour_idx(i: int) -> int:
         for ci, end in enumerate(_end_pts):
@@ -1542,6 +1555,29 @@ def stretch_glyph(
             # to the diagonal at a specific y — shift ratio = fraction
             # the diagonal moves at that y.
             s = shift * shift_ratios[ci]
+        elif ci in shear_map:
+            # Per-y shear: each point shifts by an amount linearly
+            # dependent on its y-position along a reference diagonal.
+            # For aleph, the main diagonal goes from (top_x, y_top) at
+            # the fixed end to (bot_x + shift, y_bot) at the shifted
+            # end; the diagonal at any y=y_p moves by t*shift where
+            # t = (y_top - y_p) / (y_top - y_bot). Setting each of the
+            # leg-contour points' shift to shift*(1 - t) makes them
+            # end at natural_x + t*shift — the leg tracks the diagonal
+            # per-y, so its two side boundaries stay parallel AND tilt
+            # with the diagonal's changing angle.
+            y_top, y_bot = shear_map[ci]
+            span = y_top - y_bot
+            if span <= 0:
+                s = 0.0
+            else:
+                t = (y_top - y) / span
+                # Clamp to [0, 1] for points slightly outside the span
+                if t < 0.0:
+                    t = 0.0
+                elif t > 1.0:
+                    t = 1.0
+                s = shift * (1.0 - t)
         else:
             s = shift_for(x, y)
         if s != 0:
@@ -3124,6 +3160,10 @@ def build_one(config: dict) -> int:
         contour_shift_ratios: dict[int, float] | None = None
         if isinstance(ratios_raw, dict):
             contour_shift_ratios = {int(k): float(v) for k, v in ratios_raw.items()}
+        shear_raw = info.get("shear_by_y_contours")
+        shear_by_y_contours: dict[int, tuple[int, int]] | None = None
+        if isinstance(shear_raw, dict):
+            shear_by_y_contours = {int(k): (int(v[0]), int(v[1])) for k, v in shear_raw.items()}
         src_glyph = cmap.get(cp)
         if not src_glyph:
             print(f"  skip {letter_name}: not in cmap")
@@ -3155,6 +3195,7 @@ def build_one(config: dict) -> int:
                     always_shift_contours=always_shift_contours,
                     never_shift_contours=never_shift_contours,
                     contour_shift_ratios=contour_shift_ratios,
+                    shear_by_y_contours=shear_by_y_contours,
                     underside_y_max=underside_y_max,
                     underside_x_min=underside_x_min,
                     flatten_top_from_y=flatten_top_from_y,
@@ -3238,6 +3279,7 @@ def build_one(config: dict) -> int:
                 always_shift_contours=always_shift_contours,
                 never_shift_contours=never_shift_contours,
                 contour_shift_ratios=contour_shift_ratios,
+                shear_by_y_contours=shear_by_y_contours,
                 underside_y_max=underside_y_max,
                 underside_x_min=underside_x_min,
                 flatten_top_from_y=flatten_top_from_y,

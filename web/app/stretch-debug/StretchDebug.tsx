@@ -17,13 +17,14 @@ const LETTERS: Letter[] = [
   // v2 — the recently-added set we're debugging
   { code: "ב", name: "bet",      klass: "bar",             version: "v2" },
   { code: "ח", name: "het",      klass: "bar",             version: "v2" },
-  { code: "ט", name: "tet",      klass: "baseline_extend", version: "v2" },
+  { code: "ט", name: "tet",      klass: "bar",             version: "v2" },
   { code: "י", name: "yod",      klass: "bar",             version: "v2" },
   { code: "כ", name: "kaf",      klass: "bar",             version: "v2" },
   { code: "ך", name: "finalkaf", klass: "leg",             version: "v2" },
   { code: "פ", name: "pe",       klass: "bar",             version: "v2" },
-  { code: "ף", name: "finalpe",  klass: "leg",             version: "v2" },
+  { code: "ף", name: "finalpe",  klass: "bar",             version: "v2" },
   { code: "ק", name: "qof",      klass: "bar",             version: "v2" },
+  { code: "צ", name: "tzade",    klass: "bar",             version: "v2" },
   // v1 — original 6, known-good; regression baseline
   { code: "ד", name: "dalet",    klass: "bar",  version: "v1" },
   { code: "ה", name: "he",       klass: "leg",  version: "v1" },

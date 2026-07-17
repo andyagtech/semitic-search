@@ -347,18 +347,21 @@ FRANK_RUHL = {
         # bowl + rightmost prong, (1) small inner triangle,
         # (2) left prong top, (3) middle prong top.
         #
-        # x_cutoff=391 partitions contour 0: points up to 17 (x=379)
-        # stay, point 18 (x=391, first off-curve of the interior corner
-        # going up the right wall) and beyond shift right. This keeps
-        # the interior corner's Bezier controls (points 18, 19, 20)
-        # all shifting together as a rigid unit — natural corner shape
-        # preserved.
+        # x_cutoff=379 partitions contour 0: point 17 (x=379, the
+        # right end of the FLAT interior top at y=99) is INSIDE the
+        # shift zone (shifts to 379+shift). So the natural flat from
+        # point 16 (156, 99) [stays] to point 17 [shifted] extends
+        # horizontally at y=99 — the interior flat gets longer.
+        # Points 18-53 (interior corner + right wall + right prong)
+        # all shift together as a rigid unit, preserving the natural
+        # corner shape (Bezier from 17 via 18 via implicit(18,19) via
+        # 19 to 20 all translated by shift).
         #
         # always_shift_contours=[3] because contour 3 (middle prong)
-        # has 3 points at x=392 (>= 391) that would otherwise split
-        # from the rest of contour 3 (x<391). Forcing uniform shift
+        # has 3 points at x=392 (>= 379) that would otherwise split
+        # from the rest of contour 3 (x<379). Forcing uniform shift
         # keeps the middle prong cohesive with the left cluster.
-        0x05E9: {"name": "shin",     "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 391,
+        0x05E9: {"name": "shin",     "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 379,
                  "always_shift_contours": [3]},
         # tet: closed shape with top curls on both sides. Bar-class
         # DISTORTS the closed body — none of dalet/heh/tav's parameter

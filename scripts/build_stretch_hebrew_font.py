@@ -305,20 +305,18 @@ FRANK_RUHL = {
         # bar class so only the top zone (y=440..620) participates.
         # Descender at y<0 stays anchored.
         0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
-        # Tzade var1: two-bar INFIX using tet's full-body pattern.
-        # bar_top=590 covers the entire letter body height so every
-        # left-side point of contour 0 (points 0-32, all x<200) is
-        # captured by the shift zone and nets to natural x via mono.
-        # Right-side points (33-39 at x>=200) don't shift in
-        # stretch_glyph, so mono translates them rightward by shift.
-        # Contours 1 (inner counter, x=[249,382]) and 2 (yod-heads,
-        # x=[278,434]) are entirely right of the cutoff and shift
-        # uniformly rightward, keeping the top structure cohesive.
-        # The natural closing segments between LEFT (stays) and
-        # RIGHT (shifts) portions of contour 0 stretch horizontally
-        # to form the two visible bars: the base at y=0 and the arm
-        # spanning y=~150-329.
-        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 200},
+        # Tzade var1: TWO-BAR INFIX. Uses bar_top=350 (not 590) so
+        # the LEFT LEG at y=421-586 shifts RIGHT with the yod-heads,
+        # keeping the widened letter's LEFT structure compact
+        # (matching var1 target). Only points at y<350 and x<200 stay:
+        # base corner (0-1) + arm-left endpoints (6-9). Everything
+        # else shifts rightward — the yod-heads, inner counter,
+        # left leg, top corners all move together as one right-side
+        # cluster. Natural walks between LEFT stays and RIGHT shifts
+        # stretch: base bar at y=99, arm's right transition at
+        # y=~150-247, and the vertical between 9 (stays) and 10
+        # (shifts) forms an implicit connector at the left.
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 350, "x_cutoff": 200},
         # Aleph — DIAGONAL INFIX. Contour 0 (main diagonal) partitions
         # cleanly at x=200: left half stays, right half shifts right.
         # The diagonal stretches from natural-top-left to shifted-

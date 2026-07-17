@@ -342,18 +342,18 @@ FRANK_RUHL = {
         # These ratios keep each contour tracking its natural attachment
         # point on the widened diagonal.
         0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200,
-                 # Legs and cross-stroke stay at their NATURAL vertical
-                 # orientation (not sheared with the diagonal — that
-                 # made the letter look like a rotating fan). Uniform
-                 # partial shift per contour, chosen so each contour's
-                 # median-y position roughly matches the diagonal's
-                 # shift at that y. Matches the ﬡ (U+FB21) wide-alef
-                 # pattern: legs/hooks preserve their vertical stroke
-                 # identity while translating along the diagonal.
-                 #   Contour 1 (lower-left leg, y~200): ratio 0.65
-                 #   Contour 2 (cross stroke, y~336):    ratio 0.43
-                 #   Contour 3 (upper-right leg, y~505): ratio 0.86
-                 "contour_shift_ratios": {1: 0.65, 2: 0.43, 3: 0.86}},
+                 # Contour 1 (lower-left leg): ratio 1.0 → NO partial
+                 # shift, contour stays at natural x. Keeps the letter's
+                 # LEFT BOUNDARY at a consistent x=43 across every
+                 # widening level (user's red-line reference stays put).
+                 # Contour 3 (upper-right yod hook): ratio 0.715 → shifts
+                 # by 0.285 * shift, matching the diagonal's movement
+                 # at y=420 (the yod hook's ATTACHMENT y on the diagonal).
+                 # This keeps the yod hook visually CONNECTED to the
+                 # diagonal at every widening.
+                 # Contour 2 (small cross stroke, y~336): ratio 0.575 →
+                 # shifts by 0.425 * shift, matching diagonal at y=336.
+                 "contour_shift_ratios": {1: 1.0, 2: 0.575, 3: 0.715}},
         # Shin — BOTTOM-BAR INFIX between left prong cluster and right
         # prong. Shin has 4 contours: (0) main outer body including
         # bowl + rightmost prong, (1) small inner triangle,

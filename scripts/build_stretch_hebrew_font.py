@@ -342,18 +342,18 @@ FRANK_RUHL = {
         # These ratios keep each contour tracking its natural attachment
         # point on the widened diagonal.
         0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200,
-                 # Per-y SHEAR on all sub-contours. Aleph's main
-                 # diagonal (contour 0) goes from (~90, 590) at top-left
-                 # to (~450, -7) at bottom-right. At every y between,
-                 # the diagonal moves by ((590-y)/597) * shift. Applying
-                 # the SAME per-y shift to each sub-contour makes them
-                 # tilt/shear parallel to the diagonal — each point in
-                 # a leg contour tracks its own y-position on the
-                 # diagonal, so the leg's two side boundaries stay
-                 # parallel to each other AND to the diagonal at all
-                 # widening levels. Both edges "tilt with" the
-                 # widening angle change.
-                 "shear_by_y_contours": {1: (590, -7), 2: (590, -7), 3: (590, -7)}},
+                 # Legs and cross-stroke stay at their NATURAL vertical
+                 # orientation (not sheared with the diagonal — that
+                 # made the letter look like a rotating fan). Uniform
+                 # partial shift per contour, chosen so each contour's
+                 # median-y position roughly matches the diagonal's
+                 # shift at that y. Matches the ﬡ (U+FB21) wide-alef
+                 # pattern: legs/hooks preserve their vertical stroke
+                 # identity while translating along the diagonal.
+                 #   Contour 1 (lower-left leg, y~200): ratio 0.65
+                 #   Contour 2 (cross stroke, y~336):    ratio 0.43
+                 #   Contour 3 (upper-right leg, y~505): ratio 0.86
+                 "contour_shift_ratios": {1: 0.65, 2: 0.43, 3: 0.86}},
         # Shin — BOTTOM-BAR INFIX between left prong cluster and right
         # prong. Shin has 4 contours: (0) main outer body including
         # bowl + rightmost prong, (1) small inner triangle,

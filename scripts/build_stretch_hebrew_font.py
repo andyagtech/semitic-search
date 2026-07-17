@@ -276,13 +276,16 @@ FRANK_RUHL = {
         # any off-curve controls to on-curve flattens this dip.
         0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
                  "underside_y_max": 440, "underside_x_min": 100},
-        # Pe: same underside-corner pattern as kaf. Point 8 at (370, 440)
-        # is an off-curve Bezier control forming the internal rounded
-        # corner where the top-bar underside meets the right vertical.
-        # underside_y_max + insertion preserves the corner rounding and
-        # gives a flat straight underside for the extended bar.
-        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
-                 "underside_y_max": 440, "underside_x_min": 100},
+        # Pe option #3 (three-component INFIX): start with base infix
+        # (bar_bottom=0 covers bottom bar; bar_top=590 covers top bar +
+        # left leg + top corner). x_cutoff=200 partitions outer contour
+        # into left half (natural) and right half (shifted right).
+        # always_shift_contours=[1] forces the yod-tick to translate as
+        # one rigid unit, preserving its geometry + cavity spacing.
+        # (underside corner treatment deferred — will re-add once base
+        # infix is verified correct.)
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 200,
+                 "always_shift_contours": [1]},
         # Final letters use LEG class to preserve the descender (like tav):
         # the descender (y<0 or y<leg_max_y) stays anchored while the top
         # bar zone extends leftward.
@@ -290,10 +293,13 @@ FRANK_RUHL = {
         # (344, 440) off-curve control for the internal rounded corner.
         0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 290,
                  "underside_y_max": 440, "underside_x_min": 100},
-        # Finalpe: same underside-corner pattern. Point 10 at (326, 440)
-        # off-curve control for the internal rounded corner.
-        0x05E3: {"name": "finalpe",  "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 300,
-                 "underside_y_max": 440, "underside_x_min": 100},
+        # Finalpe option #3 (three-component INFIX like pe). Yod-tick
+        # (contour 1) at x=[33, 181] all shifts uniformly; letter body
+        # partitions cleanly at x=200 into left (natural) / right
+        # (shifted). Below the letter body, the descender at y<0 stays
+        # with the right side (moves with it via mono).
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -160, "bar_top": 590, "x_cutoff": 200,
+                 "always_shift_contours": [1]},
         # qof's descender is on the LEFT (below baseline). leg-class would
         # SHIFT the descender leftward with the top bar — instead use plain
         # bar class so only the top zone (y=440..620) participates.
@@ -1207,6 +1213,7 @@ def stretch_glyph(
     x_cutoff: int | None = None,
     right_cutoff: int | None = None,
     shift_contours: list[int] | None = None,
+    always_shift_contours: list[int] | None = None,
     underside_y_max: int | None = None,
     underside_x_min: int | None = None,
     flatten_top_from_y: int | None = None,
@@ -1454,8 +1461,24 @@ def stretch_glyph(
 
     new_glyph = copy.deepcopy(src)
     orig_coords = list(src.coordinates)
+    # Contour-index lookup for always_shift_contours support. Certain
+    # sub-contours (e.g. peh's yod-tick inner glyph) span the letter's
+    # x_cutoff on both sides; if we let bar-class's per-point x-check
+    # decide, the sub-contour tears apart. always_shift_contours forces
+    # a uniform full-shift on the whole contour so it translates as one
+    # rigid unit — post-mono the unit ends at natural position.
+    always_shift_set = set(always_shift_contours or [])
+    _end_pts = list(src.endPtsOfContours)
+    def _contour_idx(i: int) -> int:
+        for ci, end in enumerate(_end_pts):
+            if i <= end:
+                return ci
+        return len(_end_pts) - 1
     for i, (x, y) in enumerate(new_glyph.coordinates):
-        s = shift_for(x, y)
+        if _contour_idx(i) in always_shift_set:
+            s = shift  # full shift regardless of x
+        else:
+            s = shift_for(x, y)
         if s != 0:
             # Sign convention: positive s = shift LEFT (x - s), negative s
             # = shift RIGHT (x - (-s) = x + |s|). "sym" is the only class
@@ -3019,6 +3042,8 @@ def build_one(config: dict) -> int:
         aliases = [cmap[a] for a in alias_cps if a in cmap]
         shift_contours_raw = info.get("shift_contours")
         shift_contours = list(shift_contours_raw) if isinstance(shift_contours_raw, list) else None
+        always_shift_raw = info.get("always_shift_contours")
+        always_shift_contours = list(always_shift_raw) if isinstance(always_shift_raw, list) else None
         src_glyph = cmap.get(cp)
         if not src_glyph:
             print(f"  skip {letter_name}: not in cmap")
@@ -3047,6 +3072,7 @@ def build_one(config: dict) -> int:
                     x_cutoff=x_cut_int,
                     right_cutoff=right_cut_int,
                     shift_contours=shift_contours,
+                    always_shift_contours=always_shift_contours,
                     underside_y_max=underside_y_max,
                     underside_x_min=underside_x_min,
                     flatten_top_from_y=flatten_top_from_y,
@@ -3126,6 +3152,7 @@ def build_one(config: dict) -> int:
                 x_cutoff=x_cut_int,
                 right_cutoff=right_cut_int,
                 shift_contours=shift_contours,
+                always_shift_contours=always_shift_contours,
                 underside_y_max=underside_y_max,
                 underside_x_min=underside_x_min,
                 flatten_top_from_y=flatten_top_from_y,

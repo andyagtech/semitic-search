@@ -305,20 +305,21 @@ FRANK_RUHL = {
         # bar class so only the top zone (y=440..620) participates.
         # Descender at y<0 stays anchored.
         0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
-        # Tzade var1: TWO-BAR INFIX with arm's y flattened for
-        # parallel-bars look. bar_top=350 keeps the left leg with
-        # the right cluster. Arm's naturally-diagonal top edge
-        # (points 33-35 at y=175/320/329) and bottom edge (points
-        # 6-9 at y=247-339) span y=[170, 340]. flatten_top raises
-        # all points in this y range to y=340 — flattens both arm
-        # edges to a single horizontal line. flatten_top_contours=[0]
-        # restricts the flattening to contour 0 so yod-heads (contour
-        # 2) and inner counter (contour 1) are NOT touched.
-        # Result: arm becomes a HORIZONTAL bar at y=340 that INFIXes
-        # between LEFT stays and RIGHT shifts.
-        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 350, "x_cutoff": 200,
-                 "flatten_top_from_y": 170, "flatten_top_to_y": 340,
-                 "flatten_top_contours": [0]},
+        # Tzade var1 — INFIX at the TOP FLAT SEGMENT (y=546). The
+        # user's target extends the horizontal bar directly under the
+        # yod-heads (points 25-28 form a natural flat at y=546).
+        # x_cutoff=100 partitions contour 0: LEFT (points 0-1 base
+        # corner, 15-25 left leg + top-left) stays; RIGHT (all points
+        # x>=100, including 26-28 top bar + all right-side + arm)
+        # shifts rightward. Between point 25 (96, 546) [stays] and
+        # point 26 (109, 546) [shifts], the natural walk stretches
+        # horizontally at y=546 → top-bar extension.
+        # Between point 1 (74, 99) [stays] and point 2 (328, 99)
+        # [shifts], the walk stretches at y=99 → base extension.
+        # Yod-heads (contour 2) and inner counter (contour 1) are
+        # entirely at x>=249, so they shift uniformly rightward with
+        # the right cluster.
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 100},
         # Aleph — DIAGONAL INFIX. Contour 0 (main diagonal) partitions
         # cleanly at x=200: left half stays, right half shifts right.
         # The diagonal stretches from natural-top-left to shifted-

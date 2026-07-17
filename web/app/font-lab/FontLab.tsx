@@ -2835,7 +2835,7 @@ const STRETCHABLE = new Set([
 // so Peshitta lines have several stretchable positions per row.
 const HEBREW_STRETCHABLE = new Set([
   "ד", "ה", "ל", "ם", "ר", "ת",
-  "ב", "ח", "כ", "ך", "פ", "ף", "ק", "ט", "י", "צ",
+  "ב", "ח", "כ", "ך", "פ", "ף", "ק", "ט", "י", "צ", "א",
 ]);
 const SYRIAC_STRETCHABLE = new Set(["ܐ", "ܒ", "ܕ", "ܗ", "ܘ", "ܡ", "ܣ", "ܪ", "ܫ", "ܬ"]);
 // Ethiopic: 5 Ge'ez consonant series × 7 vowel orders each = 35 fidels.

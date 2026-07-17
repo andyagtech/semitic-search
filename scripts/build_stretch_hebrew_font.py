@@ -319,6 +319,21 @@ FRANK_RUHL = {
         # to form the two visible bars: the base at y=0 and the arm
         # spanning y=~150-329.
         0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 200},
+        # Aleph — DIAGONAL INFIX experiment. Natural aleph is 4
+        # contours: (0) main diagonal spine from top-left down to
+        # bottom-right, (1) lower-left leg at x=[43,169], (2) small
+        # cross stroke at x=[321,430], (3) upper-right leg at
+        # x=[330,487]. INFIX with x_cutoff=200 partitions contour 0
+        # into left-side points (all x<200, stay via mono) and
+        # right-side points (all x>=200, shift right via mono).
+        # The natural walk between LEFT and RIGHT halves of the main
+        # diagonal stretches horizontally — the diagonal becomes more
+        # horizontal as widening increases. Contour 1 (all x<200)
+        # stays; contours 2 & 3 (all x>=200) shift rightward with
+        # the upper-right stroke and leg.
+        # bar_bottom=-7 matches aleph's yMin so the lowest points
+        # of contour 0 (at y=-7) are captured in the shift zone.
+        0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200},
         # tet: closed shape with top curls on both sides. Bar-class
         # DISTORTS the closed body — none of dalet/heh/tav's parameter
         # tunings work. Instead use baseline_extend, which inserts a

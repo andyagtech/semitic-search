@@ -25,6 +25,7 @@ const LETTERS: Letter[] = [
   { code: "ף", name: "finalpe",  klass: "bar",             version: "v2" },
   { code: "ק", name: "qof",      klass: "bar",             version: "v2" },
   { code: "צ", name: "tzade",    klass: "bar",             version: "v2" },
+  { code: "א", name: "aleph",    klass: "bar",             version: "v2" },
   // v1 — original 6, known-good; regression baseline
   { code: "ד", name: "dalet",    klass: "bar",  version: "v1" },
   { code: "ה", name: "he",       klass: "leg",  version: "v1" },

@@ -319,21 +319,29 @@ FRANK_RUHL = {
         # to form the two visible bars: the base at y=0 and the arm
         # spanning y=~150-329.
         0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 200},
-        # Aleph — DIAGONAL INFIX experiment. Natural aleph is 4
-        # contours: (0) main diagonal spine from top-left down to
-        # bottom-right, (1) lower-left leg at x=[43,169], (2) small
-        # cross stroke at x=[321,430], (3) upper-right leg at
-        # x=[330,487]. INFIX with x_cutoff=200 partitions contour 0
-        # into left-side points (all x<200, stay via mono) and
-        # right-side points (all x>=200, shift right via mono).
-        # The natural walk between LEFT and RIGHT halves of the main
-        # diagonal stretches horizontally — the diagonal becomes more
-        # horizontal as widening increases. Contour 1 (all x<200)
-        # stays; contours 2 & 3 (all x>=200) shift rightward with
-        # the upper-right stroke and leg.
-        # bar_bottom=-7 matches aleph's yMin so the lowest points
-        # of contour 0 (at y=-7) are captured in the shift zone.
-        0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200},
+        # Aleph — DIAGONAL INFIX. Contour 0 (main diagonal) partitions
+        # cleanly at x=200: left half stays, right half shifts right.
+        # The diagonal stretches from natural-top-left to shifted-
+        # bottom-right, becoming more horizontal as widening grows.
+        #
+        # Legs need to STAY CONNECTED to the diagonal. The diagonal
+        # at any y=y_leg moves rightward by (1 - t) * shift where t is
+        # the y-parameter: t=0 at top (y=590), t=1 at bottom (y=-7).
+        # So each contour's shift ratio is the amount its attached-y
+        # position on the diagonal moves.
+        #   Contour 1 (lower-left leg, y in [0,388], median ~y=200):
+        #     t = (590-200)/597 ≈ 0.653 → diagonal moves by ~0.35*shift
+        #   Contour 3 (upper-right leg, y in [420,590], median ~y=505):
+        #     t = (590-505)/597 ≈ 0.142 → diagonal moves by ~0.86*shift
+        #     (this is nearly full mono shift — leg near top of diagonal
+        #     which is the fixed end, so the diagonal there BARELY moves;
+        #     shift ratio 0.14 gives a small partial shift)
+        #   Contour 2 (small cross stroke y in [220,452], median ~y=336):
+        #     t = (590-336)/597 ≈ 0.425 → diagonal moves by ~0.57*shift
+        # These ratios keep each contour tracking its natural attachment
+        # point on the widened diagonal.
+        0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200,
+                 "contour_shift_ratios": {1: 0.65, 2: 0.43, 3: 0.86}},
         # tet: closed shape with top curls on both sides. Bar-class
         # DISTORTS the closed body — none of dalet/heh/tav's parameter
         # tunings work. Instead use baseline_extend, which inserts a
@@ -1234,6 +1242,8 @@ def stretch_glyph(
     right_cutoff: int | None = None,
     shift_contours: list[int] | None = None,
     always_shift_contours: list[int] | None = None,
+    never_shift_contours: list[int] | None = None,
+    contour_shift_ratios: dict[int, float] | None = None,
     underside_y_max: int | None = None,
     underside_x_min: int | None = None,
     flatten_top_from_y: int | None = None,
@@ -1488,6 +1498,8 @@ def stretch_glyph(
     # a uniform full-shift on the whole contour so it translates as one
     # rigid unit — post-mono the unit ends at natural position.
     always_shift_set = set(always_shift_contours or [])
+    never_shift_set = set(never_shift_contours or [])
+    shift_ratios = dict(contour_shift_ratios or {})
     _end_pts = list(src.endPtsOfContours)
     def _contour_idx(i: int) -> int:
         for ci, end in enumerate(_end_pts):
@@ -1495,8 +1507,18 @@ def stretch_glyph(
                 return ci
         return len(_end_pts) - 1
     for i, (x, y) in enumerate(new_glyph.coordinates):
-        if _contour_idx(i) in always_shift_set:
+        ci = _contour_idx(i)
+        if ci in always_shift_set:
             s = shift  # full shift regardless of x
+        elif ci in never_shift_set:
+            s = 0.0  # never shift — contour translates rightward via mono only
+        elif ci in shift_ratios:
+            # Partial shift: post-mono the contour ends at
+            # natural_x + (1 - ratio) * shift, letting it PARTIALLY
+            # track the widening. Useful for aleph legs that attach
+            # to the diagonal at a specific y — shift ratio = fraction
+            # the diagonal moves at that y.
+            s = shift * shift_ratios[ci]
         else:
             s = shift_for(x, y)
         if s != 0:
@@ -3064,6 +3086,12 @@ def build_one(config: dict) -> int:
         shift_contours = list(shift_contours_raw) if isinstance(shift_contours_raw, list) else None
         always_shift_raw = info.get("always_shift_contours")
         always_shift_contours = list(always_shift_raw) if isinstance(always_shift_raw, list) else None
+        never_shift_raw = info.get("never_shift_contours")
+        never_shift_contours = list(never_shift_raw) if isinstance(never_shift_raw, list) else None
+        ratios_raw = info.get("contour_shift_ratios")
+        contour_shift_ratios: dict[int, float] | None = None
+        if isinstance(ratios_raw, dict):
+            contour_shift_ratios = {int(k): float(v) for k, v in ratios_raw.items()}
         src_glyph = cmap.get(cp)
         if not src_glyph:
             print(f"  skip {letter_name}: not in cmap")
@@ -3093,6 +3121,8 @@ def build_one(config: dict) -> int:
                     right_cutoff=right_cut_int,
                     shift_contours=shift_contours,
                     always_shift_contours=always_shift_contours,
+                    never_shift_contours=never_shift_contours,
+                    contour_shift_ratios=contour_shift_ratios,
                     underside_y_max=underside_y_max,
                     underside_x_min=underside_x_min,
                     flatten_top_from_y=flatten_top_from_y,
@@ -3173,6 +3203,8 @@ def build_one(config: dict) -> int:
                 right_cutoff=right_cut_int,
                 shift_contours=shift_contours,
                 always_shift_contours=always_shift_contours,
+                never_shift_contours=never_shift_contours,
+                contour_shift_ratios=contour_shift_ratios,
                 underside_y_max=underside_y_max,
                 underside_x_min=underside_x_min,
                 flatten_top_from_y=flatten_top_from_y,

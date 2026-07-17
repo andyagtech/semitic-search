@@ -345,15 +345,21 @@ FRANK_RUHL = {
         # Shin — BOTTOM-BAR INFIX between left prong cluster and right
         # prong. Shin has 4 contours: (0) main outer body including
         # bowl + rightmost prong, (1) small inner triangle,
-        # (2) left prong top, (3) middle prong top. Contours 1, 2, 3
-        # are all at x<400. x_cutoff=400 partitions contour 0 into
-        # left half (points 0-18 = bowl-left + inner descent + bottom-
-        # middle) and right half (points 19-53 = bowl-right + rightmost
-        # prong). Left cluster (2 prongs + inner triangle + bowl-left)
-        # stays at natural; right prong + bowl-right shift rightward
-        # via mono. The base bar at y=0 (implicit closing segment of
-        # contour 0) stretches horizontally between them.
-        0x05E9: {"name": "shin",     "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 400},
+        # (2) left prong top, (3) middle prong top.
+        #
+        # x_cutoff=391 partitions contour 0: points up to 17 (x=379)
+        # stay, point 18 (x=391, first off-curve of the interior corner
+        # going up the right wall) and beyond shift right. This keeps
+        # the interior corner's Bezier controls (points 18, 19, 20)
+        # all shifting together as a rigid unit — natural corner shape
+        # preserved.
+        #
+        # always_shift_contours=[3] because contour 3 (middle prong)
+        # has 3 points at x=392 (>= 391) that would otherwise split
+        # from the rest of contour 3 (x<391). Forcing uniform shift
+        # keeps the middle prong cohesive with the left cluster.
+        0x05E9: {"name": "shin",     "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 391,
+                 "always_shift_contours": [3]},
         # tet: closed shape with top curls on both sides. Bar-class
         # DISTORTS the closed body — none of dalet/heh/tav's parameter
         # tunings work. Instead use baseline_extend, which inserts a

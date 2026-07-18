@@ -1639,6 +1639,13 @@ export function FontLab() {
         >
           ▦ Stretch debug
         </a>
+        <a
+          href="/letter-anatomy"
+          className="text-xs px-2.5 py-1 rounded border border-teal-400 bg-teal-50 hover:bg-teal-100 text-teal-800"
+          title="Contour inspector: see every glyph's contours, point indices, and INFIX partition preview. Pick x_cutoff/bar_bottom/bar_top visually before setting them in the build script."
+        >
+          ◔ Letter anatomy
+        </a>
         <button
           type="button"
           onClick={() => setTourOpen(true)}

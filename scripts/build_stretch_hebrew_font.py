@@ -342,18 +342,18 @@ FRANK_RUHL = {
         # These ratios keep each contour tracking its natural attachment
         # point on the widened diagonal.
         0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200,
-                 # Contour 1 (lower-left leg): ratio 1.0 → NO partial
-                 # shift, contour stays at natural x. Keeps the letter's
-                 # LEFT BOUNDARY at a consistent x=43 across every
-                 # widening level (user's red-line reference stays put).
-                 # Contour 3 (upper-right yod hook): ratio 0.715 → shifts
-                 # by 0.285 * shift, matching the diagonal's movement
-                 # at y=420 (the yod hook's ATTACHMENT y on the diagonal).
-                 # This keeps the yod hook visually CONNECTED to the
-                 # diagonal at every widening.
-                 # Contour 2 (small cross stroke, y~336): ratio 0.575 →
-                 # shifts by 0.425 * shift, matching diagonal at y=336.
-                 "contour_shift_ratios": {1: 1.0, 2: 0.575, 3: 0.715}},
+                 # Symmetric-boundary strategy: BOTH legs stay at
+                 # natural position (ratio 1.0). The diagonal changes
+                 # angle across widening and passes through the yod
+                 # hook's area at wider widths — so they intersect
+                 # naturally without any partial-shift math.
+                 # Contour 1 (lower-left leg): stays at natural x=43.
+                 # Contour 3 (upper-right yod hook): stays at natural
+                 # x=[330,487]. At wider widths the diagonal passes
+                 # through contour 3's y-range at that x, so they
+                 # intersect and read as connected.
+                 # Contour 2 (small cross stroke): stays at natural too.
+                 "contour_shift_ratios": {1: 1.0, 2: 1.0, 3: 1.0}},
         # Shin — BOTTOM-BAR INFIX between left prong cluster and right
         # prong. Shin has 4 contours: (0) main outer body including
         # bowl + rightmost prong, (1) small inner triangle,

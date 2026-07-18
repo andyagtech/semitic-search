@@ -320,6 +320,19 @@ FRANK_RUHL = {
         # entirely at x>=249, so they shift uniformly rightward with
         # the right cluster.
         0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 100},
+        # Ayin — natural has a small descender at y<0 (points 0 and 43).
+        # User's widened form uses the FLAT-bottomed alternate ayin.
+        # flatten_top from -100 to 1 on contour 0 raises the descender
+        # points to y=0 in widened variants ONLY — the natural glyph is
+        # untouched. Result: pressing stretch auto-switches to the
+        # alternate flat-bottomed form without any UI toggle.
+        # INFIX: x_cutoff=100 keeps point 1 (68, 21) in the stays half.
+        # always_shift_contours=[1,2] keeps the inner counter and the
+        # top yod-cluster cohesive with the right cluster.
+        0x05E2: {"name": "ayin",     "class": "bar", "bar_bottom": -100, "bar_top": 590, "x_cutoff": 100,
+                 "always_shift_contours": [1, 2],
+                 "flatten_top_from_y": -100, "flatten_top_to_y": 1,
+                 "flatten_top_contours": [0]},
         # Aleph — DIAGONAL INFIX. Contour 0 (main diagonal) partitions
         # cleanly at x=200: left half stays, right half shifts right.
         # The diagonal stretches from natural-top-left to shifted-

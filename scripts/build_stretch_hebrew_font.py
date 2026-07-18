@@ -320,19 +320,25 @@ FRANK_RUHL = {
         # entirely at x>=249, so they shift uniformly rightward with
         # the right cluster.
         0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0, "bar_top": 590, "x_cutoff": 100},
-        # Ayin — natural has a small descender at y<0 (points 0 and 43).
-        # User's widened form uses the FLAT-bottomed alternate ayin.
-        # flatten_top from -100 to 1 on contour 0 raises the descender
-        # points to y=0 in widened variants ONLY — the natural glyph is
-        # untouched. Result: pressing stretch auto-switches to the
-        # alternate flat-bottomed form without any UI toggle.
-        # INFIX: x_cutoff=100 keeps point 1 (68, 21) in the stays half.
-        # always_shift_contours=[1,2] keeps the inner counter and the
-        # top yod-cluster cohesive with the right cluster.
-        0x05E2: {"name": "ayin",     "class": "bar", "bar_bottom": -100, "bar_top": 590, "x_cutoff": 100,
-                 "always_shift_contours": [1, 2],
-                 "flatten_top_from_y": -100, "flatten_top_to_y": 1,
-                 "flatten_top_contours": [0]},
+        # Ayin — widened variants use Frank Ruhl's FLAT-BOTTOMED alt
+        # glyph (uni05E2.ss01) as their source instead of the natural
+        # curly-descender ayin. The alt already ships with the right
+        # cap geometry: pt 0 (38, 0) → pt 1 (58, 100) is the angled
+        # LEFT edge; top of tail at y=100 runs to pt 2 (255, 100);
+        # bottom at y=0 runs to pt 43 (220, 0). We don't reshape any
+        # of that — plain bar-class INFIX at x_cutoff=100 keeps pts 0
+        # & 1 (the cap) at natural x, and every point at x>=100 (the
+        # letter body + tail's right edges) translates right with mono.
+        # The flat top/bottom of the tail extend rigidly; the cap
+        # keeps its exact angle. Contours 1 (inner counter) and 2
+        # (top hooks) translate as rigid units via never_shift so the
+        # yod cluster stays intact — contour 2 has points on BOTH
+        # sides of x_cutoff and would tear apart under default INFIX.
+        # Natural s0 keeps the curly-descender glyph untouched; only
+        # widened variants s1+ switch to the alt.
+        0x05E2: {"name": "ayin",     "class": "bar", "bar_bottom": 0, "bar_top": 586, "x_cutoff": 100,
+                 "source_glyph_override": "uni05E2.ss01",
+                 "never_shift_contours": [1, 2]},
         # Aleph — DIAGONAL INFIX. Contour 0 (main diagonal) partitions
         # cleanly at x=200: left half stays, right half shifts right.
         # The diagonal stretches from natural-top-left to shifted-
@@ -355,18 +361,52 @@ FRANK_RUHL = {
         # These ratios keep each contour tracking its natural attachment
         # point on the widened diagonal.
         0x05D0: {"name": "aleph",    "class": "bar", "bar_bottom": -7, "bar_top": 590, "x_cutoff": 200,
-                 # Symmetric-boundary strategy: BOTH legs stay at
-                 # natural position (ratio 1.0). The diagonal changes
-                 # angle across widening and passes through the yod
-                 # hook's area at wider widths — so they intersect
-                 # naturally without any partial-shift math.
-                 # Contour 1 (lower-left leg): stays at natural x=43.
-                 # Contour 3 (upper-right yod hook): stays at natural
-                 # x=[330,487]. At wider widths the diagonal passes
-                 # through contour 3's y-range at that x, so they
-                 # intersect and read as connected.
-                 # Contour 2 (small cross stroke): stays at natural too.
-                 "contour_shift_ratios": {1: 1.0, 2: 1.0, 3: 1.0}},
+                 # Contour 1 (lower-left leg) stays at natural x — the leg
+                 # sits inside the diagonal's LEFT-stays half, which is
+                 # preserved by INFIX. Contours 2 (mid-right connector) and
+                 # 3 (upper-right yod-hook) attach to the diagonal's RIGHT
+                 # side, which shifts right with mono, so they need to
+                 # translate right by the FULL shift to stay attached.
+                 # ratio 0.0 = no leftward shift + mono adds shift → net
+                 # full rightward translation.
+                 # raise_point_ys pushes the leg-top pts (34, 35) into the
+                 # diagonal band. Natural pt 34=(145,388) sits ~1 unit
+                 # below the diagonal at s1 and ~48 below at s16; y=460
+                 # keeps it strictly inside [bottom_edge, top_edge] at
+                 # every widening level. Same for pt 35 at y=445.
+                 "contour_shift_ratios": {1: 1.0, 2: 0.0, 3: 0.0},
+                 "raise_point_ys": {34: 460, 35: 445},
+                 # Per-variant hand-tuned tweaks — piecewise-linear
+                 # interpolation across all 16 widening levels from user
+                 # anchor points. Anchors (from anatomy-tool sessions):
+                 #   pt 32, 33, 36     — leg: s1, s2, s3, s4, s5, s9
+                 #   pt 37             — leg: s1, s2, s5, s14
+                 #   pt 44             — connector: s1..s5, s9
+                 #   pt 45             — connector: s1..s5, s9, s14
+                 #   pt 54             — connector: s2, s3, s5
+                 # Leg pts hold at their last anchor beyond it; connector
+                 # pts extrapolate the last-segment slope so they keep
+                 # tracking the (still-growing) diagonal at s10..s16.
+                 # Regenerate this table with:
+                 #   .venv/bin/python scratchpad/gen_aleph_overrides.py
+                 "point_overrides_by_variant": {
+                      1: {32: (84, 332), 33: (109, 383), 36: (131, 364), 37: (111, 311), 44: (570, 140), 45: (472, 221), 54: (518, 221)},
+                      2: {32: (82, 343), 33: (106, 384), 36: (135, 370), 37: (114, 305), 44: (703, 150), 45: (621, 200), 54: (657, 219)},
+                      3: {32: (85, 343), 33: (111, 395), 36: (136, 366), 37: (115, 307), 44: (851, 137), 45: (767, 180), 54: (809, 221)},
+                      4: {32: (85, 336), 33: (108, 385), 36: (133, 367), 37: (116, 308), 44: (1018, 124), 45: (917, 164), 54: (956, 208)},
+                      5: {32: (76, 314), 33: (105, 383), 36: (137, 382), 37: (117, 310), 44: (1167, 131), 45: (1063, 168), 54: (1102, 196)},
+                      6: {32: (76, 318), 33: (104, 382), 36: (136, 376), 37: (116, 310), 44: (1319, 128), 45: (1212, 162), 54: (1253, 190)},
+                      7: {32: (76, 322), 33: (104, 382), 36: (136, 370), 37: (115, 310), 44: (1471, 124), 45: (1360, 156), 54: (1405, 185)},
+                      8: {32: (76, 325), 33: (103, 381), 36: (136, 365), 37: (115, 310), 44: (1623, 120), 45: (1508, 150), 54: (1556, 179)},
+                      9: {32: (76, 329), 33: (102, 380), 36: (135, 359), 37: (114, 310), 44: (1775, 117), 45: (1657, 144), 54: (1708, 173)},
+                     10: {32: (76, 329), 33: (102, 380), 36: (135, 359), 37: (113, 311), 44: (1927, 114), 45: (1807, 145), 54: (1859, 168)},
+                     11: {32: (76, 329), 33: (102, 380), 36: (135, 359), 37: (112, 311), 44: (2079, 110), 45: (1958, 145), 54: (2011, 162)},
+                     12: {32: (76, 329), 33: (102, 380), 36: (135, 359), 37: (112, 311), 44: (2231, 106), 45: (2108, 146), 54: (2162, 157)},
+                     13: {32: (76, 329), 33: (102, 380), 36: (135, 359), 37: (111, 311), 44: (2383, 103), 45: (2259, 146), 54: (2314, 151)},
+                     14: {32: (76, 329), 33: (102, 380), 36: (135, 359), 37: (110, 311), 44: (2535, 100), 45: (2409, 147), 54: (2465, 145)},
+                     15: {32: (76, 329), 33: (102, 380), 36: (135, 359), 37: (110, 311), 44: (2687, 96), 45: (2559, 148), 54: (2617, 140)},
+                     16: {32: (76, 329), 33: (102, 380), 36: (135, 359), 37: (110, 311), 44: (2839, 92), 45: (2710, 148), 54: (2768, 134)},
+                 }},
         # Shin — BOTTOM-BAR INFIX between left prong cluster and right
         # prong. Shin has 4 contours: (0) main outer body including
         # bowl + rightmost prong, (1) small inner triangle,
@@ -1296,6 +1336,7 @@ def stretch_glyph(
     flatten_top_from_y: int | None = None,
     flatten_top_to_y: int | None = None,
     flatten_top_contours: list[int] | None = None,
+    raise_point_ys: dict[int, int] | None = None,
 ) -> object:
     """Return a new TTGlyph built from `src_name` with selected points
     shifted LEFT. Shift depends on letter_class and the point's (x, y):
@@ -1716,6 +1757,20 @@ def stretch_glyph(
                     continue
                 nx, _ = new_glyph.coordinates[i]
                 new_glyph.coordinates[i] = (nx, flatten_top_to_y)
+
+    # Optionally raise specific point y-values to fixed targets. Used to
+    # give collapsed tails a proper thickness — e.g. ayin's descender in
+    # the natural glyph has its inside corner (pt 1 at y=21) only 20 units
+    # above the flattened baseline, so the widened flat tail tapers to a
+    # sliver on the left. Raising pt 1 to y=80 turns that sliver into a
+    # thick left cap. Only affects widened variants (this function is
+    # only called to build stretched glyphs; the natural glyph is copied
+    # verbatim from the source).
+    if raise_point_ys is not None:
+        for pi, new_y in raise_point_ys.items():
+            if 0 <= pi < len(new_glyph.coordinates):
+                nx, _ = new_glyph.coordinates[pi]
+                new_glyph.coordinates[pi] = (nx, int(new_y))
 
     new_glyph.recalcBounds(font["glyf"])
     return new_glyph
@@ -3157,6 +3212,27 @@ def build_one(config: dict) -> int:
         flatten_top_to_y = int(ft_to) if isinstance(ft_to, int) else None
         ft_contours_raw = info.get("flatten_top_contours")
         flatten_top_contours = list(ft_contours_raw) if isinstance(ft_contours_raw, list) else None
+        raise_ys_raw = info.get("raise_point_ys")
+        raise_point_ys: dict[int, int] | None = None
+        if isinstance(raise_ys_raw, dict):
+            raise_point_ys = {int(k): int(v) for k, v in raise_ys_raw.items()}
+        # Per-variant absolute (post-mono) point overrides. Format:
+        #   point_overrides_by_variant = {n: {pt_idx: (x, y)}}
+        # where n is the widening level (1..MAX_LEVELS) and pt_idx is a
+        # FLAT point index across all contours. Applied AFTER the mono
+        # translation for that variant, so (x, y) are the final on-glyph
+        # coords the user wants to see. Missing variants → algorithmic
+        # (post-shift, post-mono) coords. Used to bake in hand-tuned
+        # anatomy-tool tweaks that don't cleanly fit a per-contour rule.
+        pobv_raw = info.get("point_overrides_by_variant")
+        point_overrides_by_variant: dict[int, dict[int, tuple[int, int]]] | None = None
+        if isinstance(pobv_raw, dict):
+            point_overrides_by_variant = {}
+            for k, v in pobv_raw.items():
+                if isinstance(v, dict):
+                    point_overrides_by_variant[int(k)] = {
+                        int(pk): (int(pv[0]), int(pv[1])) for pk, pv in v.items()
+                    }
         # Resolve alias codepoints (Hebrew Presentation Forms) to the
         # actual glyph names this font uses. Different fonts have different
         # naming conventions (uniFB33 vs daleddagesh).
@@ -3181,6 +3257,27 @@ def build_one(config: dict) -> int:
         if not src_glyph:
             print(f"  skip {letter_name}: not in cmap")
             continue
+        # Some letters want to widen a STYLISTIC ALTERNATE, not the
+        # default glyph, but the ligature key MUST stay the default
+        # glyph — otherwise typing the letter's Unicode codepoint
+        # won't trigger our widening at render time. Split them:
+        #   • src_glyph        — cmap[cp], the glyph the user's typed
+        #                        character resolves to. Used as the
+        #                        ligature first-glyph key and the
+        #                        letter_variants dict key.
+        #   • geometry_src     — where the widened outline comes from.
+        #                        Defaults to src_glyph; the config's
+        #                        `source_glyph_override` (e.g.
+        #                        "uni05E2.ss01" for ayin's flat-bottomed
+        #                        alt) points it elsewhere.
+        # Ayin's flat-bottomed alt already ships with the exact cap
+        # geometry we want — angled left edge, flat top/bottom of tail —
+        # so widening THAT via plain bar-class INFIX extends the flat
+        # middle without touching anything else.
+        geometry_src = src_glyph
+        source_override = info.get("source_glyph_override")
+        if isinstance(source_override, str) and source_override in font.getGlyphOrder():
+            geometry_src = source_override
 
         # Helper to build MAX_LEVELS stretched variants from ANY source glyph
         # (isolated or positional form). Positional forms in cursive fonts
@@ -3214,6 +3311,7 @@ def build_one(config: dict) -> int:
                     flatten_top_from_y=flatten_top_from_y,
                     flatten_top_to_y=flatten_top_to_y,
                     flatten_top_contours=flatten_top_contours,
+                    raise_point_ys=raise_point_ys,
                 )
                 lsb_mode_ = config.get("lsb_mode", "shift")
                 # "sym" class shifts left AND right by shift_/2 each — the
@@ -3276,13 +3374,13 @@ def build_one(config: dict) -> int:
                 forms_variants.append(vn)
             return forms_variants
 
-        base_advance = font["hmtx"].metrics[src_glyph][0]
+        base_advance = font["hmtx"].metrics[geometry_src][0]
         variants: list[str] = []
         for n in range(1, MAX_LEVELS + 1):
             variant_name = f"{letter_name}_s{n}"
             total_shift = step * n
             new_glyph = stretch_glyph(
-                font, src_glyph, total_shift,
+                font, geometry_src, total_shift,
                 letter_class=letter_class,
                 bar_bottom=bar_bottom, bar_top=bar_top,
                 arm_min_y=arm_min_y, leg_max_y=leg_max_y,
@@ -3298,6 +3396,7 @@ def build_one(config: dict) -> int:
                 flatten_top_from_y=flatten_top_from_y,
                 flatten_top_to_y=flatten_top_to_y,
                 flatten_top_contours=flatten_top_contours,
+                raise_point_ys=raise_point_ys,
             )
             # Grow advance proportionally: stretched letter takes more
             # horizontal space so neighbors don't overlap its extended arm.
@@ -3337,6 +3436,18 @@ def build_one(config: dict) -> int:
                 new_lsb = new_glyph.xMin
             else:
                 new_lsb = 0
+            # Per-variant absolute point overrides (final on-glyph coords
+            # — applied AFTER lsb-mode positioning so the numbers the
+            # user copied out of the anatomy tool land verbatim). Only
+            # touches the specific (variant, point_idx) pairs listed;
+            # everything else keeps its algorithmic position.
+            if point_overrides_by_variant is not None and n in point_overrides_by_variant:
+                for pi, (ox, oy) in point_overrides_by_variant[n].items():
+                    if 0 <= pi < len(new_glyph.coordinates):
+                        new_glyph.coordinates[pi] = (int(ox), int(oy))
+                new_glyph.recalcBounds(font["glyf"])
+                if lsb_mode == "mono" or lsb_mode == "natural":
+                    new_lsb = new_glyph.xMin
             font["glyf"][variant_name] = new_glyph
             font["hmtx"].metrics[variant_name] = (base_advance + total_shift, new_lsb)
             if variant_name not in order:

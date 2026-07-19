@@ -903,6 +903,14 @@ export default function Home() {
             <Link href="/docs" className="hover:text-neutral-700">API docs</Link>
             <Link href="/settings" className="hover:text-neutral-700">Preferences</Link>
             <Link href="/workshop" className="hover:text-neutral-700">Workshop</Link>
+            <a
+              href="https://github.com/andyagtech/semitic-search"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-neutral-700"
+            >
+              Source ↗
+            </a>
           </div>
         </footer>
       </div>

@@ -37,3 +37,13 @@ data/dumps/
 *.swp
 .vercel
 .env*.local
+
+# Local editor / assistant state
+.claude/
+.cursor/
+
+# Working scratch (design screenshots, upstream font archives, etc.)
+ideas/
+web/public/fonts/*.zip
+web/public/fonts/Idiqlat-2.100/
+web/public/fonts/SyrCOM*

@@ -43,6 +43,36 @@ const MAX_LEVEL = 16;
 // (see useLoadStretchFont for details).
 const FONT_FAMILY_BASE = "FL_StretchHebrew_Debug";
 
+// Fonts the debug grid can load. Extend as more Hebrew stretch builds
+// are added — the picker lets you inspect any of them without touching
+// the URL. Frank Ruhl kept as default (matches the historical build).
+// Each font's set of widening-configured letters. Mirrors
+// hebrewStretchableFor in font-lab. Update when adding letters to a
+// font config in build_stretch_hebrew_font.py.
+type StretchFont = { id: string; label: string; file: string; letters: Set<string> };
+const BASE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
+const COMPLEX_10 = ["ב","ח","ט","י","ך","כ","ף","פ","צ","ק"];
+const withComplex = () => new Set([...BASE, ...COMPLEX_10]);
+const FONTS: StretchFont[] = [
+  { id: "frank-ruhl", label: "Frank Ruhl", file: "SemiticStretchHebrew-v2.ttf",
+    letters: new Set([...BASE, ...COMPLEX_10, "א","ש","ע"]) },
+  { id: "noto-sans-heb", label: "Noto Sans Hebrew", file: "SemiticStretchNotoSansHebrew.ttf",
+    letters: new Set([...BASE, "ב","ח","ט","י","ך","כ","צ","ק"]) },
+  { id: "noto-serif-heb", label: "Noto Serif Hebrew", file: "SemiticStretchNotoSerifHebrew.ttf", letters: withComplex() },
+  { id: "gladia",        label: "Gladia CLM",       file: "SemiticStretchGladiaCLM.ttf",       letters: withComplex() },
+  { id: "keter",         label: "Keter Aram Tsova", file: "SemiticStretchKeterAramTsova.ttf",  letters: withComplex() },
+  { id: "hillel",        label: "Hillel CLM",       file: "SemiticStretchHillelCLM.ttf",       letters: withComplex() },
+  { id: "shofar",        label: "Shofar",           file: "SemiticStretchShofar.ttf",          letters: withComplex() },
+  { id: "freemono",      label: "FreeMono",         file: "SemiticStretchFreeMono.ttf",        letters: withComplex() },
+  { id: "nachlieli",     label: "Nachlieli CLM",    file: "SemiticStretchNachlieliCLM.ttf",    letters: withComplex() },
+  { id: "miriammono",    label: "Miriam Mono CLM",  file: "SemiticStretchMiriamMonoCLM.ttf",   letters: withComplex() },
+  { id: "ezrasil",       label: "Ezra SIL SR",      file: "SemiticStretchEzraSIL.ttf",         letters: withComplex() },
+  { id: "stam",          label: "Stam Ashkenaz CLM",file: "SemiticStretchStamAshkenazCLM.ttf", letters: withComplex() },
+  { id: "shlomo",        label: "Shlomo SemiStam",  file: "SemiticStretchShlomoSemiStam.ttf",  letters: withComplex() },
+  { id: "rashi",         label: "Rashi",            file: "SemiticStretchRashi.ttf",
+    letters: new Set([...BASE, "ב","ח","ט","י","ך","כ","ף","פ","ק"]) },
+];
+
 const CLASS_TINT: Record<string, string> = {
   bar:              "bg-amber-50 text-amber-900 border-amber-200",
   leg:              "bg-emerald-50 text-emerald-900 border-emerald-200",
@@ -51,14 +81,14 @@ const CLASS_TINT: Record<string, string> = {
   baseline_extend:  "bg-rose-50 text-rose-900 border-rose-200",
 };
 
-function useLoadStretchFont(): { ready: boolean; family: string } {
-  // A unique family name per mount, plus a unique URL query, so the
-  // browser is FORCED to fetch the current bytes and can't fall back
-  // to a still-registered FontFace from a previous mount (that trap
-  // hit us — `document.fonts` was serving stale bytes even after the
-  // .ttf on disk changed, because the family name matched an already-
-  // loaded FontFace). The mounted family flows out via `family` so
-  // the render can reference the exact instance we just loaded.
+function useLoadStretchFont(fontFile: string): { ready: boolean; family: string } {
+  // A unique family name per mount + font-file switch, plus a unique URL
+  // query, so the browser is FORCED to fetch the current bytes and can't
+  // fall back to a still-registered FontFace from a previous mount (that
+  // trap hit us — `document.fonts` was serving stale bytes even after
+  // the .ttf on disk changed, because the family name matched an
+  // already-loaded FontFace). The mounted family flows out via `family`
+  // so the render can reference the exact instance we just loaded.
   const [state, setState] = useState<{ ready: boolean; family: string }>({
     ready: false,
     family: FONT_FAMILY_BASE,
@@ -68,10 +98,11 @@ function useLoadStretchFont(): { ready: boolean; family: string } {
     const family = `${FONT_FAMILY_BASE}_${stamp}`;
     const face = new FontFace(
       family,
-      `url(/fonts/SemiticStretchHebrew-v2.ttf?v=${stamp}) format("truetype")`,
+      `url(/fonts/${fontFile}?v=${stamp}) format("truetype")`,
       { display: "block", unicodeRange: "U+0000-10FFFF" },
     );
     let cancelled = false;
+    setState({ ready: false, family: FONT_FAMILY_BASE });
     face
       .load()
       .then((loaded) => {
@@ -87,18 +118,18 @@ function useLoadStretchFont(): { ready: boolean; family: string } {
       cancelled = true;
       document.fonts.delete(face);
     };
-  }, []);
+  }, [fontFile]);
   return state;
 }
 
-// Build one letter's grapheme string at level N. Kept as a helper so
-// the row-click and copy button use the same construction.
+// Build one letter's grapheme string at level N, capped at MAX_LEVEL.
 function stretched(letter: string, level: number): string {
   return letter + TRIG.repeat(Math.max(0, Math.min(MAX_LEVEL, level)));
 }
 
 export function StretchDebug() {
-  const { ready: fontReady, family: fontFamily } = useLoadStretchFont();
+  const [fontIdx, setFontIdx] = useState(0);
+  const { ready: fontReady, family: fontFamily } = useLoadStretchFont(FONTS[fontIdx].file);
   const [fontSize, setFontSize] = useState(96);
   const [showV1, setShowV1] = useState(true);
   const [hoverCol, setHoverCol] = useState<number | null>(null);
@@ -112,9 +143,14 @@ export function StretchDebug() {
   });
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
 
+  const currentFont = FONTS[fontIdx];
   const filtered = useMemo(
-    () => LETTERS.filter((L) => showV1 || L.version === "v2"),
-    [showV1],
+    // Per-font filter: only letters this font actually widens. Then the
+    // v1/v2 toggle further limits to the recently-added set.
+    () => LETTERS.filter((L) =>
+      currentFont.letters.has(L.code) && (showV1 || L.version === "v2"),
+    ),
+    [showV1, currentFont],
   );
 
   // Columns: 0, 2, 4, ... 16 (9 discrete widths).
@@ -142,6 +178,18 @@ export function StretchDebug() {
       {/* Controls */}
       <section className="bg-white border border-neutral-200 rounded-lg p-4 space-y-3">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+          <label className="flex items-center gap-2">
+            <span className="text-neutral-600">font</span>
+            <select
+              value={fontIdx}
+              onChange={(e) => setFontIdx(parseInt(e.target.value, 10))}
+              className="border border-neutral-300 rounded px-2 py-1 text-sm"
+            >
+              {FONTS.map((f, i) => (
+                <option key={f.id} value={i}>{f.label}</option>
+              ))}
+            </select>
+          </label>
           <label className="flex items-center gap-2">
             <span className="text-neutral-600">size</span>
             <input

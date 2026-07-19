@@ -17,9 +17,38 @@ type Glyph = {
 
 // Fonts we can load. Each entry: display label + .ttf file path (relative
 // to /public). The list mirrors the stretch-debug picker for consistency.
-const FONTS: Array<{ id: string; label: string; file: string }> = [
-  { id: "stretch-hebrew", label: "Semitic Stretch Hebrew", file: "SemiticStretchHebrew-v2.ttf" },
-  { id: "frank-ruhl-src", label: "Frank Ruhl (source)", file: "FrankRuhlLibre.ttf" },
+// stretchable = codepoint set of letters that widen in this font (undef
+// for source fonts, which have no stretch variants).
+type FontEntry = { id: string; label: string; file: string; stretchable?: Set<number> };
+const BASE_CPS = [0x05D3, 0x05D4, 0x05DC, 0x05DD, 0x05E8, 0x05EA];
+// bet, het, tet, yod, finalkaf, kaf, finalpe, pe, tzade, qof
+const COMPLEX_10_CPS = [0x05D1, 0x05D7, 0x05D8, 0x05D9, 0x05DA, 0x05DB, 0x05E3, 0x05E4, 0x05E6, 0x05E7];
+const withComplexCps = () => new Set([...BASE_CPS, ...COMPLEX_10_CPS]);
+const FONTS: FontEntry[] = [
+  { id: "stretch-hebrew", label: "Semitic Stretch Hebrew (Frank Ruhl)", file: "SemiticStretchHebrew-v2.ttf",
+    stretchable: new Set([...BASE_CPS, ...COMPLEX_10_CPS, 0x05D0, 0x05E2, 0x05E9]) },
+  { id: "stretch-noto-sans-heb", label: "Semitic Stretch Noto Sans Hebrew", file: "SemiticStretchNotoSansHebrew.ttf",
+    // pe/finalpe skipped in Noto Sans
+    stretchable: new Set([...BASE_CPS, 0x05D1, 0x05D7, 0x05D8, 0x05D9, 0x05DA, 0x05DB, 0x05E6, 0x05E7]) },
+  { id: "stretch-noto-serif-heb",label: "Semitic Stretch Noto Serif Hebrew", file: "SemiticStretchNotoSerifHebrew.ttf", stretchable: withComplexCps() },
+  { id: "stretch-gladia",        label: "Semitic Stretch Gladia CLM",       file: "SemiticStretchGladiaCLM.ttf",       stretchable: withComplexCps() },
+  { id: "stretch-keter",         label: "Semitic Stretch Keter Aram Tsova", file: "SemiticStretchKeterAramTsova.ttf",  stretchable: withComplexCps() },
+  { id: "stretch-hillel",        label: "Semitic Stretch Hillel CLM",       file: "SemiticStretchHillelCLM.ttf",       stretchable: withComplexCps() },
+  { id: "stretch-shofar",        label: "Semitic Stretch Shofar",           file: "SemiticStretchShofar.ttf",          stretchable: withComplexCps() },
+  { id: "stretch-freemono",      label: "Semitic Stretch FreeMono",         file: "SemiticStretchFreeMono.ttf",        stretchable: withComplexCps() },
+  { id: "stretch-nachlieli",     label: "Semitic Stretch Nachlieli CLM",    file: "SemiticStretchNachlieliCLM.ttf",    stretchable: withComplexCps() },
+  { id: "stretch-miriammono",    label: "Semitic Stretch Miriam Mono CLM",  file: "SemiticStretchMiriamMonoCLM.ttf",   stretchable: withComplexCps() },
+  { id: "stretch-ezrasil",       label: "Semitic Stretch Ezra SIL SR",      file: "SemiticStretchEzraSIL.ttf",         stretchable: withComplexCps() },
+  { id: "stretch-stam",          label: "Semitic Stretch Stam Ashkenaz",    file: "SemiticStretchStamAshkenazCLM.ttf", stretchable: withComplexCps() },
+  { id: "stretch-shlomo",        label: "Semitic Stretch Shlomo SemiStam",  file: "SemiticStretchShlomoSemiStam.ttf",  stretchable: withComplexCps() },
+  // Rashi — tzade skipped
+  { id: "stretch-rashi",         label: "Semitic Stretch Rashi",            file: "SemiticStretchRashi.ttf",
+    stretchable: new Set([...BASE_CPS, 0x05D1, 0x05D7, 0x05D8, 0x05D9, 0x05DA, 0x05DB, 0x05E3, 0x05E4, 0x05E7]) },
+  // Source fonts (no widening variants)
+  { id: "frank-ruhl-src",        label: "Frank Ruhl (source)",              file: "FrankRuhlLibre.ttf" },
+  { id: "noto-sans-heb-src",     label: "Noto Sans Hebrew (source)",        file: "NotoSansHebrew.ttf" },
+  { id: "noto-serif-heb-src",    label: "Noto Serif Hebrew (source)",       file: "NotoSerifHebrew.ttf" },
+  { id: "gladia-src",            label: "Gladia CLM (source)",              file: "GladiaCLM-Bold.ttf" },
 ];
 
 // Hebrew letters — Unicode codepoint plus a short name. Rendered as
@@ -667,20 +696,35 @@ export function LetterAnatomy() {
             {error ? <span className="ml-3 text-red-600">error: {error}</span> : null}
           </div>
         </div>
-        {/* Letter grid — click to select */}
+        {/* Letter grid — click to select. Letters without a widening
+            variant in the currently-loaded font are dimmed (stretch
+            fonts only; source fonts don't have stretch variants at all
+            so we don't dim anything). */}
         <div className="grid grid-cols-9 gap-1">
-          {HEBREW_LETTERS.map((L) => (
-            <button
-              key={L.cp}
-              onClick={() => setCp(L.cp)}
-              className={`text-2xl px-2 py-1 rounded border ${
-                cp === L.cp ? "border-neutral-900 bg-neutral-100" : "border-neutral-200 hover:bg-neutral-50"
-              }`}
-              title={`${L.name} (U+${L.cp.toString(16).toUpperCase()})`}
-            >
-              <span style={{ fontFamily: "'Frank Ruhl Libre', serif" }}>{L.ch}</span>
-            </button>
-          ))}
+          {HEBREW_LETTERS.map((L) => {
+            const stretchable = FONTS[fontIdx].stretchable;
+            const hasStretch = !stretchable || stretchable.has(L.cp);
+            return (
+              <button
+                key={L.cp}
+                onClick={() => setCp(L.cp)}
+                className={`text-2xl px-2 py-1 rounded border transition ${
+                  cp === L.cp
+                    ? "border-neutral-900 bg-neutral-100"
+                    : hasStretch
+                    ? "border-neutral-200 hover:bg-neutral-50"
+                    : "border-neutral-100 bg-neutral-50 text-neutral-300"
+                }`}
+                title={
+                  hasStretch
+                    ? `${L.name} (U+${L.cp.toString(16).toUpperCase()})`
+                    : `${L.name} — no widening variant in this font`
+                }
+              >
+                <span style={{ fontFamily: "'Frank Ruhl Libre', serif" }}>{L.ch}</span>
+              </button>
+            );
+          })}
         </div>
       </section>
 

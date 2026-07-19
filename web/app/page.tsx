@@ -11,6 +11,7 @@ import { reconstruct } from "@/lib/reconstruct";
 import { ScriptToggle } from "@/components/ScriptToggle";
 import { SCRIPT_VARIANTS, getScriptVariant } from "@/lib/scripts";
 import { TourHost, TourHelpButton } from "@/components/Tour";
+import { SiteNav } from "@/components/SiteNav";
 
 type FamilySummary = {
   slug: string;
@@ -585,60 +586,10 @@ export default function Home() {
               Identify a Semitic root and find cross-language cognates, ranked by confidence.
             </p>
           </div>
-          <nav id="tour-nav" className="flex gap-3 text-sm whitespace-nowrap self-start sm:mt-1 flex-wrap">
-            <Link href="/roots" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Roots
-            </Link>
-            <Link href="/tables" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Tables
-            </Link>
-            <Link href="/learn" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Learn
-            </Link>
-            <Link href="/generators" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Generators
-            </Link>
-            <Link href="/loanwords" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Loanwords
-            </Link>
-            <Link href="/polyglot" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Polyglot table
-            </Link>
-            <Link href="/timeline" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Timeline
-            </Link>
-            <Link href="/linguistics" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Sound changes
-            </Link>
-            <Link href="/isogloss" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Isogloss map
-            </Link>
-            <Link href="/cross-language" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Cross-lang
-            </Link>
-            <Link href="/themes" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Themes
-            </Link>
-            <Link href="/guess" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Guess
-            </Link>
-            <Link href="/stats" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Stats
-            </Link>
-            <Link href="/font-lab" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Font lab
-            </Link>
-            <Link href="/settings" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Preferences
-            </Link>
-            <Link href="/methodology" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Methodology
-            </Link>
-            <Link href="/docs" className="text-neutral-700 hover:text-neutral-900 underline-offset-2 hover:underline">
-              Docs
-            </Link>
+          <div className="flex items-start gap-3 self-start sm:mt-1">
+            <SiteNav />
             <TourHelpButton />
-          </nav>
+          </div>
         </header>
 
         {!data && !loading && featured.length > 0 && (() => {
@@ -937,14 +888,22 @@ export default function Home() {
           </section>
         )}
 
-        <footer className="mt-10 text-xs text-neutral-500 flex flex-wrap items-center gap-4">
-          <span>v0 prototype. LLM-generated cognates may be wrong — verify before citing.</span>
-          <a
-            href="mailto:el.andy.barr@gmail.com?subject=Semitic%20Search%20feedback&body=Hi%20Andy%2C%0A%0AI%20want%20to%20report%2Fpropose%3A%20%0A%0A(e.g.%20%22Syriac%20cognate%20for%20k-t-b%20is%20missing%22%2C%20%22b-r-k%20m-l-k%20link%20looks%20wrong%22)%0A%0ASource%20or%20reference%3A%0A"
-            className="underline underline-offset-2 hover:text-neutral-800"
-          >
-            Report an error / propose a cognate →
-          </a>
+        <footer className="mt-10 pt-6 border-t border-neutral-200 text-xs text-neutral-500">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <span>v0 prototype. LLM-generated cognates may be wrong — verify before citing.</span>
+            <a
+              href="mailto:el.andy.barr@gmail.com?subject=Semitic%20Search%20feedback&body=Hi%20Andy%2C%0A%0AI%20want%20to%20report%2Fpropose%3A%20%0A%0A(e.g.%20%22Syriac%20cognate%20for%20k-t-b%20is%20missing%22%2C%20%22b-r-k%20m-l-k%20link%20looks%20wrong%22)%0A%0ASource%20or%20reference%3A%0A"
+              className="underline underline-offset-2 hover:text-neutral-800"
+            >
+              Report an error / propose a cognate →
+            </a>
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-neutral-400">
+            <Link href="/methodology" className="hover:text-neutral-700">Methodology</Link>
+            <Link href="/docs" className="hover:text-neutral-700">API docs</Link>
+            <Link href="/settings" className="hover:text-neutral-700">Preferences</Link>
+            <Link href="/workshop" className="hover:text-neutral-700">Workshop</Link>
+          </div>
         </footer>
       </div>
     </main>

@@ -234,16 +234,16 @@ FRANK_RUHL = {
         # makes the chain bar a uniform strip.
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 290,
                  "chain_bar_top": 546,
-                 "alias_codepoints": ALIAS_DAGESH["dalet"], "overflow": True},
+                 "alias_codepoints": ALIAS_DAGESH["dalet"]},
         0x05D4: {"name": "he",       "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 400, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["he"]},
         0x05DC: {"name": "lamed",    "class": "arm", "bar_bottom": 440, "bar_top": 573, "arm_min_y": 573, "x_cutoff": 300,
-                 "alias_codepoints": ALIAS_DAGESH["lamed"], "overflow": True, "arm_top_y": 793},
+                 "alias_codepoints": ALIAS_DAGESH["lamed"], "arm_top_y": 793},
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 300},
         # Same ear-peak issue as dalet — bar flat top at y=546, ear at y=586.
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
                  "chain_bar_top": 546,
-                 "alias_codepoints": ALIAS_DAGESH["resh"], "overflow": True},
+                 "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
         # ─── Expanded stretchable set (v2) ─────────────────────────────────
@@ -537,6 +537,18 @@ KETER_ARAM_TSOVA = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 700,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # Complex-letter ports — bar_bottom/top match this font's dalet;
+        # x_cutoff scaled from Frank Ruhl percentages across each glyph's bbox.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 650,  "bar_top": 1250, "x_cutoff": 614},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 650,  "bar_top": 1250, "leg_max_y": 950,  "x_cutoff": 513},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 1172, "x_cutoff": 409},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 650,  "bar_top": 1250, "x_cutoff": 298},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 650,  "bar_top": 1250, "leg_max_y": 100,  "x_cutoff": 533},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 650,  "bar_top": 1250, "x_cutoff": 587},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -416, "bar_top": 1215, "x_cutoff": 402},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 1206, "x_cutoff": 348},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 1172, "x_cutoff": 180},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -399, "bar_top": 1216, "x_cutoff": 552},
     },
 }
 
@@ -651,6 +663,17 @@ HILLEL = {
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 280},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 350, "bar_top": 520, "x_cutoff": 250},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 350, "bar_top": 520, "leg_max_y": 350, "x_cutoff": 320},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 350,  "bar_top": 520, "x_cutoff": 290},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 350,  "bar_top": 520, "leg_max_y": 400, "x_cutoff": 272},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 507, "x_cutoff": 219},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 350,  "bar_top": 520, "x_cutoff": 164},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 350,  "bar_top": 520, "leg_max_y": 100, "x_cutoff": 289},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 350,  "bar_top": 520, "x_cutoff": 284},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -188, "bar_top": 500, "x_cutoff": 220},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 500, "x_cutoff": 196},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 506, "x_cutoff": 108},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -243, "bar_top": 500, "x_cutoff": 335},
     },
 }
 
@@ -673,6 +696,21 @@ GLADIA = {
         0x05DD: {"name": "finalmem", "class": "box", "x_cutoff": 350},
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 350},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 450, "x_cutoff": 400},
+        # First-pass ports — Gladia CLM (bold sans-serif) has 1 contour
+        # for most letters, so we skip Frank Ruhl's always_shift_contours
+        # (nothing to preserve as a separate rigid sub-contour).
+        # bar_bottom/top match the existing dalet-family; x_cutoff scaled
+        # from Frank Ruhl percentages across the target glyph's bbox.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 415},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 470, "x_cutoff": 330},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,   "bar_top": 600, "x_cutoff": 260},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 185},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 450, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 380},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 395},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -200, "bar_top": 600, "x_cutoff": 275},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,   "bar_top": 600, "x_cutoff": 245},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,   "bar_top": 600, "x_cutoff": 130},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 450, "bar_top": 620, "x_cutoff": 405},
     },
 }
 
@@ -688,6 +726,9 @@ NOTO_SANS_HEBREW = {
     "step": 150,
     "lsb_mode": "mono",  # fixes stretched-letter overlap; see FRANK_RUHL note
     "import_marks": ARABIC_MARKS,
+    # x_cutoff values ported from Frank Ruhl by scaling to each glyph's
+    # x-range (Frank Ruhl % across bbox → Noto Sans same % of bbox).
+    # First-pass tunings; iterate in the anatomy tool as needed.
     "letters": {
         0x05D3: {"name": "dalet",    "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 300,
                  "alias_codepoints": ALIAS_DAGESH["dalet"]},
@@ -700,6 +741,18 @@ NOTO_SANS_HEBREW = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 440, "x_cutoff": 380,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # First-pass ports of the complex letters — geometry is close to
+        # Frank Ruhl so bar_bottom/top match; x_cutoff scaled to each
+        # glyph's actual x-range. Skipped: aleph/ayin/shin/pe/finalpe
+        # (different contour counts than Frank Ruhl, need per-font work).
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 320},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 470, "x_cutoff": 310},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,   "bar_top": 590, "x_cutoff": 240},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 110},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 440, "bar_top": 620, "leg_max_y": 100, "x_cutoff": 310},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 310},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,   "bar_top": 590, "x_cutoff": 110},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 440, "bar_top": 620, "x_cutoff": 395},
     },
 }
 
@@ -725,6 +778,24 @@ NOTO_SERIF_HEBREW = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 480, "bar_top": 670, "leg_max_y": 480, "x_cutoff": 380,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # First-pass ports of the complex letters. Noto Serif Hebrew's
+        # geometry rides higher than Frank Ruhl (bar zone 480–670 vs
+        # 440–620) and has larger yMax=647. pe & finalpe keep their
+        # yod-tick as contour 1 like Frank Ruhl, so always_shift_contours
+        # ports directly. Skipped: aleph/ayin/shin (contour-count or
+        # alt-glyph mismatch).
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 315},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 480, "bar_top": 670, "leg_max_y": 500, "x_cutoff": 325},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,   "bar_top": 647, "x_cutoff": 240},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 165},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 480, "bar_top": 670, "leg_max_y": 100, "x_cutoff": 285},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 330},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -240, "bar_top": 647, "x_cutoff": 230,
+                 "always_shift_contours": [1]},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,   "bar_top": 647, "x_cutoff": 220,
+                 "always_shift_contours": [1]},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,   "bar_top": 647, "x_cutoff": 100},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": 480, "bar_top": 670, "x_cutoff": 365},
     },
 }
 
@@ -750,6 +821,17 @@ SHOFAR = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 900, "bar_top": 1250, "leg_max_y": 900, "x_cutoff": 800,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 900,  "bar_top": 1250, "x_cutoff": 628},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 900,  "bar_top": 1250, "leg_max_y": 950, "x_cutoff": 588},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 1193, "x_cutoff": 433},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 900,  "bar_top": 1250, "x_cutoff": 337},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 900,  "bar_top": 1250, "leg_max_y": 200, "x_cutoff": 659},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 900,  "bar_top": 1250, "x_cutoff": 611},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -595, "bar_top": 1194, "x_cutoff": 447},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 1186, "x_cutoff": 393},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 1189, "x_cutoff": 205},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -544, "bar_top": 1186, "x_cutoff": 742},
     },
 }
 
@@ -784,6 +866,17 @@ FREE_MONO = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 350, "bar_top": 500, "leg_max_y": 350, "x_cutoff": 400,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 350,  "bar_top": 500, "x_cutoff": 365},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 350,  "bar_top": 500, "leg_max_y": 400, "x_cutoff": 305},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 480, "x_cutoff": 207},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 350,  "bar_top": 500, "x_cutoff": 250},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 350,  "bar_top": 500, "leg_max_y": 100, "x_cutoff": 350},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 350,  "bar_top": 500, "x_cutoff": 345},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -200, "bar_top": 480, "x_cutoff": 271},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 480, "x_cutoff": 238},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 480, "x_cutoff": 122},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -200, "bar_top": 480, "x_cutoff": 366},
     },
 }
 
@@ -810,6 +903,17 @@ NACHLIELI = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 420, "bar_top": 620, "leg_max_y": 430, "x_cutoff": 430,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 420,  "bar_top": 620, "x_cutoff": 360},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 420,  "bar_top": 620, "leg_max_y": 480, "x_cutoff": 354},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 608, "x_cutoff": 258},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 420,  "bar_top": 620, "x_cutoff": 116},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 420,  "bar_top": 620, "leg_max_y": 100, "x_cutoff": 318},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 420,  "bar_top": 620, "x_cutoff": 333},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -200, "bar_top": 600, "x_cutoff": 271},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 600, "x_cutoff": 249},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 600, "x_cutoff": 121},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -200, "bar_top": 600, "x_cutoff": 414},
     },
 }
 
@@ -837,6 +941,17 @@ MIRIAM_MONO = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 350, "bar_top": 500, "leg_max_y": 350, "x_cutoff": 350,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 350,  "bar_top": 500, "x_cutoff": 348},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 350,  "bar_top": 500, "leg_max_y": 400, "x_cutoff": 304},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 485, "x_cutoff": 226},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 350,  "bar_top": 500, "x_cutoff": 264},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 350,  "bar_top": 500, "leg_max_y": 100, "x_cutoff": 340},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 350,  "bar_top": 500, "x_cutoff": 339},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -200, "bar_top": 480, "x_cutoff": 310},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 480, "x_cutoff": 253},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 480, "x_cutoff": 140},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -200, "bar_top": 480, "x_cutoff": 343},
     },
 }
 
@@ -878,6 +993,17 @@ EZRA_SIL = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 1000, "bar_top": 1500, "leg_max_y": 1000, "x_cutoff": 800,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 1000, "bar_top": 1500, "x_cutoff": 809},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 1000, "bar_top": 1500, "leg_max_y": 1200, "x_cutoff": 705},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 1444, "x_cutoff": 525},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 1000, "bar_top": 1500, "x_cutoff": 351},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 1000, "bar_top": 1500, "leg_max_y": 200,  "x_cutoff": 881},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 1000, "bar_top": 1500, "x_cutoff": 789},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -655, "bar_top": 1444, "x_cutoff": 577},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 1444, "x_cutoff": 473},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 1444, "x_cutoff": 272},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -795, "bar_top": 1444, "x_cutoff": 818},
     },
 }
 
@@ -924,6 +1050,17 @@ STAM_ASHKENAZ = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 850, "bar_top": 1100, "leg_max_y": 900, "x_cutoff": 700,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 850,  "bar_top": 1450, "x_cutoff": 742},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 850,  "bar_top": 1450, "leg_max_y": 1050, "x_cutoff": 624},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 1400, "x_cutoff": 439},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 850,  "bar_top": 1450, "x_cutoff": 268},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 850,  "bar_top": 1450, "leg_max_y": 200,  "x_cutoff": 694},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 850,  "bar_top": 1450, "x_cutoff": 747},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -700, "bar_top": 1248, "x_cutoff": 549},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 1249, "x_cutoff": 445},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 1410, "x_cutoff": 211},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -746, "bar_top": 1409, "x_cutoff": 746},
     },
 }
 
@@ -955,6 +1092,17 @@ SHLOMO_SEMISTAM = {
                  "alias_codepoints": ALIAS_DAGESH["resh"]},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 1100, "bar_top": 1400, "leg_max_y": 1100, "x_cutoff": 800,
                  "alias_codepoints": ALIAS_DAGESH["tav"]},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 794},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 1100, "bar_top": 1500, "leg_max_y": 1200, "x_cutoff": 709},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 1356, "x_cutoff": 529},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 351},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 1100, "bar_top": 1500, "leg_max_y": 200,  "x_cutoff": 909},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 1100, "bar_top": 1500, "x_cutoff": 789},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -655, "bar_top": 1464, "x_cutoff": 602},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 1484, "x_cutoff": 470},
+        0x05E6: {"name": "tzade",    "class": "bar", "bar_bottom": 0,    "bar_top": 1518, "x_cutoff": 267},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -675, "bar_top": 1358, "x_cutoff": 814},
     },
 }
 
@@ -1067,6 +1215,18 @@ NOTO_RASHI = {
         0x05E8: {"name": "resh",     "class": "bar", "bar_bottom": 500, "bar_top": 655, "x_cutoff": 220,
                  "chain_bar_top": 590},
         0x05EA: {"name": "tav",      "class": "leg", "bar_bottom": 450, "bar_top": 655, "leg_max_y": 400, "x_cutoff": 280},
+        # Complex-letter ports — geometry ported from Frank Ruhl proportions.
+        # Rashi tzade skipped: xMin<0 pushes the 15% cutoff negative — the
+        # letter has a distinctive left flourish that needs custom handling.
+        0x05D1: {"name": "bet",      "class": "bar", "bar_bottom": 500,  "bar_top": 655, "x_cutoff": 316},
+        0x05D7: {"name": "het",      "class": "leg", "bar_bottom": 500,  "bar_top": 655, "leg_max_y": 500, "x_cutoff": 284},
+        0x05D8: {"name": "tet",      "class": "bar", "bar_bottom": 0,    "bar_top": 610, "x_cutoff": 235},
+        0x05D9: {"name": "yod",      "class": "bar", "bar_bottom": 500,  "bar_top": 655, "x_cutoff": 134},
+        0x05DA: {"name": "finalkaf", "class": "leg", "bar_bottom": 500,  "bar_top": 655, "leg_max_y": 100, "x_cutoff": 269},
+        0x05DB: {"name": "kaf",      "class": "bar", "bar_bottom": 500,  "bar_top": 655, "x_cutoff": 319},
+        0x05E3: {"name": "finalpe",  "class": "bar", "bar_bottom": -240, "bar_top": 611, "x_cutoff": 235},
+        0x05E4: {"name": "pe",       "class": "bar", "bar_bottom": 0,    "bar_top": 652, "x_cutoff": 193},
+        0x05E7: {"name": "qof",      "class": "bar", "bar_bottom": -240, "bar_top": 651, "x_cutoff": 341},
     },
 }
 
@@ -2099,6 +2259,7 @@ def build_overflow_chain(
     info: dict,
     step: int,
     max_levels: int,
+    lsb_mode: str = "shift",
 ) -> tuple[str, str, str]:
     """For a stretchable letter with bar or arm class, build the three-glyph
     chain that extends the bar past the pre-baked variant cap. For arm-class
@@ -2127,8 +2288,16 @@ def build_overflow_chain(
     bar_top = int(info["bar_top"])
     letter_class = str(info.get("class", "bar"))
     has_arm = letter_class == "arm"
+    # Leg-class letters (he, tav, het, finalkaf) have a piece that hangs
+    # DOWN below the bar. It rides on the leftmost tail in the extended
+    # chain, same as the arm rides on lamed's leftmost tail.
+    has_leg = letter_class == "leg"
     arm_min_y = int(info.get("arm_min_y", bar_top))
     letter_name = str(info["name"])
+    # Every seam in the overflow chain overlaps by this many font units on
+    # each side. Larger overlaps hide sub-pixel AA discontinuities that
+    # otherwise show up as thin vertical seams at some zoom levels.
+    BAR_OVERLAP = 8
 
     glyf = font["glyf"]
     src_glyph = glyf[src_glyph_name]
@@ -2163,7 +2332,16 @@ def build_overflow_chain(
     # but the actual flat bar bottom is higher up). Defaults to bar_bottom.
     # Set this when the bar_segment tile would otherwise extend below the
     # natural body's bar, creating a visible step at the chain seam.
-    chain_bar_bottom = int(info.get("chain_bar_bottom", bar_bottom))
+    # For letters whose widening zone spans the whole letter body (tet,
+    # pe, finalpe, aleph, etc. with bar_bottom ≈ 0), using bar_bottom
+    # directly makes the chain tile as tall as the letter — a solid
+    # block, not a bar. Default the tile bottom to bar_top - 200 so the
+    # tile is a reasonable thin bar. Per-letter `chain_bar_bottom`
+    # config still wins.
+    chain_bar_bottom = int(info.get(
+        "chain_bar_bottom",
+        max(bar_bottom, bar_top - 200),
+    ))
 
     # The bar's left-edge has rounded corners (top-left and bottom-left
     # softening) in most Hebrew designs. We want those corners ONLY at the
@@ -2234,8 +2412,37 @@ def build_overflow_chain(
     glyf[start_name] = start_glyph
     base_advance = font["hmtx"].metrics[src_glyph_name][0]
     max_advance = base_advance + step * max_levels
-    # lsb=0 (shift mode) keeps display alignment consistent with lamed_s{max}.
-    font["hmtx"].metrics[start_name] = (max_advance, 0)
+    # LSB depends on lsb_mode. In shift mode, the letter_s{max}'s LSB is 0
+    # and the outline draws at pen - xMin. In mono mode, letter_s{max}'s
+    # LSB = its xMin, so the outline draws at pen + 0 (natural position).
+    # For the start glyph to SUBSTITUTE cleanly for letter_s{max} without
+    # a visual jump, we need to match the display offset each mode uses.
+    #
+    # ADVANCE: in mono mode, letter_s{max} carries ~40 units of right
+    # sidebearing (advance > outline_xmax) — the natural space to the
+    # next letter in normal text. For overflow, we DON'T want that gap;
+    # we want the next segment to butt right up against the letter body.
+    # Set advance = xMax so pen ends exactly at the outline's right edge,
+    # and the segment (with LSB=-2, xMin=-2) overlaps by 2 units.
+    if lsb_mode == "mono":
+        # In RTL visual order, start (letter body) is placed AFTER all
+        # tail/intermediates (visually rightmost). Its outline_left should
+        # butt up against the last intermediate's outline_right with the
+        # same BAR_OVERLAP overlap that intermediates use with each other.
+        # LSB = -BAR_OVERLAP makes outline_left appear BAR_OVERLAP units
+        # LEFT of pen, matching intermediate's LSB.
+        # Advance: preserve the letter's natural right-sidebearing (the
+        # gap between outline_xmax and the next letter's origin) so the
+        # widened cluster doesn't collide with the next letter. rsb is
+        # read from letter_s{max}'s hmtx entry.
+        s_max_adv, _ = font["hmtx"].metrics[last_variant_name]
+        rsb = int(s_max_adv - last_glyph.xMax)
+        start_lsb = -BAR_OVERLAP
+        start_advance = start_lsb + int(start_glyph.xMax - start_glyph.xMin) + rsb
+    else:
+        start_lsb = 0
+        start_advance = max_advance
+    font["hmtx"].metrics[start_name] = (start_advance, start_lsb)
 
     # 2. Extract the natural left-side structure (ear + arm + bar's leftmost
     # portion) from lamed_s{max} as a single piece. Earlier versions used
@@ -2250,9 +2457,13 @@ def build_overflow_chain(
     # matching the bar tile's leftmost edge. Optional arm_top_y clip removes
     # decorative serifs at the very top (set per-letter when the source's arm
     # ends in a kotz that reads as a "lip" when grafted onto an extension).
+    # Left clip lower bound: chain_bar_bottom for bar/arm class (letter is
+    # entirely at y >= bar_bottom). For leg class the leg hangs DOWN to
+    # the letter's yMin, so extend the clip down to include it.
+    left_clip_bottom = int(src_glyph.yMin) if has_leg else int(chain_bar_bottom)
     left_clip = pathops.Path()
     lc = left_clip.getPen()
-    lc.moveTo((-BIG, chain_bar_bottom)); lc.lineTo((bar_clip_x_left, chain_bar_bottom))
+    lc.moveTo((-BIG, left_clip_bottom)); lc.lineTo((bar_clip_x_left, left_clip_bottom))
     lc.lineTo((bar_clip_x_left, BIG)); lc.lineTo((-BIG, BIG))
     lc.closePath()
     left_path = pathops.op(src_path, left_clip, pathops.PathOp.INTERSECTION)
@@ -2264,40 +2475,74 @@ def build_overflow_chain(
         tc.lineTo((BIG, int(arm_top_y))); tc.lineTo((-BIG, int(arm_top_y)))
         tc.closePath()
         left_path = pathops.op(left_path, top_clip, pathops.PathOp.INTERSECTION)
-    left_xmax_orig = left_path.bounds[2] if left_path.bounds else 0
-    left_path = left_path.transform(1, 0, 0, 1, -left_xmax_orig, 0)
+    if left_path.bounds:
+        left_xmin_orig, _, left_xmax_orig, _ = left_path.bounds
+        cap_width = left_xmax_orig - left_xmin_orig
+    else:
+        left_xmin_orig = left_xmax_orig = cap_width = 0
+    # In mono mode, position the cap in POSITIVE x space (cap sits at
+    # [0, cap_width], bar sits after it) so the tail's entire outline
+    # lives within its own advance and doesn't collide with the previous
+    # letter. In shift mode we keep the historical layout where the
+    # cap hangs LEFT of x=0.
+    if lsb_mode == "mono":
+        left_path = left_path.transform(1, 0, 0, 1, -left_xmin_orig, 0)
+    else:
+        left_path = left_path.transform(1, 0, 0, 1, -left_xmax_orig, 0)
 
     # 3. tail glyph: natural left piece + bar rectangle. Bar extends 2 units
     # beyond `step` on both sides so adjacent segments overlap (hides sub-
     # pixel/AA gaps).
+    # In mono mode, the bar rectangle is shifted right by cap_width so the
+    # cap and bar sit side by side in [0, cap_width + step]. In shift mode
+    # we keep the historical layout with bar at [-2, step+2] and the cap
+    # hanging left of 0 (advance = step, LSB = xMin < 0).
+    if lsb_mode == "mono":
+        bar_x_left = int(cap_width) - BAR_OVERLAP
+        bar_x_right = int(cap_width) + step + BAR_OVERLAP
+    else:
+        bar_x_left = -BAR_OVERLAP
+        bar_x_right = step + BAR_OVERLAP
     tail_pen = TTGlyphPen(None)
     left_path.draw(tail_pen)
-    tail_pen.moveTo((-2, chain_bar_bottom))
-    tail_pen.lineTo((step + 2, chain_bar_bottom))
-    tail_pen.lineTo((step + 2, chain_bar_top))
-    tail_pen.lineTo((-2, chain_bar_top))
+    tail_pen.moveTo((bar_x_left, chain_bar_bottom))
+    tail_pen.lineTo((bar_x_right, chain_bar_bottom))
+    tail_pen.lineTo((bar_x_right, chain_bar_top))
+    tail_pen.lineTo((bar_x_left, chain_bar_top))
     tail_pen.closePath()
     tail_glyph = tail_pen.glyph()
     tail_glyph.recalcBounds(glyf)
     tail_name = f"{letter_name}_overflow_tail"
     glyf[tail_name] = tail_glyph
-    # lsb = xMin so display offset = 0 → bar's display = pen..pen+step,
-    # tiling seamlessly to the next intermediate segment (which has lsb=0).
-    font["hmtx"].metrics[tail_name] = (step, tail_glyph.xMin)
+    # In mono mode, tail's advance covers cap + step so the following
+    # intermediate lands past the cap and bar without overlap. LSB=0
+    # since the outline starts at x=0.
+    if lsb_mode == "mono":
+        tail_advance = int(cap_width) + step
+        tail_lsb = 0
+    else:
+        tail_advance = step
+        tail_lsb = tail_glyph.xMin
+    font["hmtx"].metrics[tail_name] = (tail_advance, tail_lsb)
 
-    # 5. intermediate segment: plain bar rectangle, lsb=0. Outline extends
-    # 2 units beyond `step` on each side to overlap adjacent segments and
-    # hide sub-pixel rendering gaps between glyphs.
+    # 5. intermediate segment: plain bar rectangle. Outline extends
+    # BAR_OVERLAP units beyond `step` on each side to overlap adjacent
+    # segments and hide sub-pixel rendering gaps at zoom.
     int_pen = TTGlyphPen(None)
-    int_pen.moveTo((-2, chain_bar_bottom))
-    int_pen.lineTo((step + 2, chain_bar_bottom))
-    int_pen.lineTo((step + 2, chain_bar_top))
-    int_pen.lineTo((-2, chain_bar_top))
+    int_pen.moveTo((-BAR_OVERLAP, chain_bar_bottom))
+    int_pen.lineTo((step + BAR_OVERLAP, chain_bar_bottom))
+    int_pen.lineTo((step + BAR_OVERLAP, chain_bar_top))
+    int_pen.lineTo((-BAR_OVERLAP, chain_bar_top))
     int_pen.closePath()
     int_glyph = int_pen.glyph()
     int_name = f"{letter_name}_bar_segment"
     glyf[int_name] = int_glyph
-    font["hmtx"].metrics[int_name] = (step, 0)
+    # Same LSB pattern as start: mono needs LSB = xMin so the outline
+    # draws at pen + 0, letting consecutive segments tile at pen-step
+    # boundaries. In shift mode, LSB = 0 gives the -2..step+2 overlap.
+    int_glyph.recalcBounds(glyf)
+    int_lsb = int_glyph.xMin if lsb_mode == "mono" else 0
+    font["hmtx"].metrics[int_name] = (step, int_lsb)
 
     order = font.getGlyphOrder()
     for n in (start_name, int_name, tail_name):
@@ -3487,16 +3732,39 @@ def build_one(config: dict) -> int:
         pos_note = f" + positional-form sets [{', '.join(positional_variants.keys())}]" if positional_variants else ""
         print(f"  {letter_name} (class {letter_class}): {MAX_LEVELS} variants × step={step}{alias_note}{pos_note}")
 
-        # Overflow tatweel-style chain. Default-enabled for bar/arm class
-        # letters in shift-mode fonts (the math for natural/mono modes
-        # still needs derivation, so those are skipped). Leg/box classes
-        # still TODO. Per-letter `"overflow": False` opts out.
+        # Overflow tatweel-style chain — DISABLED BY DEFAULT.
+        #
+        # STATUS: The infrastructure below (build_overflow_chain,
+        # build_overflow_segment, LSB math for both mono and shift modes,
+        # chained-context GSUB rules with a demote pass) all works
+        # mechanically — glyphs get built, GSUB fires, extension goes past
+        # s16. What we could not solve reliably was seamlessness of the
+        # SEAMS in text at all zoom levels:
+        #   - AA subpixel rendering shows thin vertical seams at every
+        #     glyph boundary even with 8-unit overlap and the intermediate
+        #     tile identical to the letter's own bar.
+        #   - Mono-mode start/tail/intermediate LSB math survives multiple
+        #     iterations (see git log around this file). Each fix trades
+        #     one seam for another because the letter's natural top-bar
+        #     y-range doesn't quite match the synthetic tile's y-range for
+        #     any global default.
+        #   - The tail's left cap needs cap_width added to its advance to
+        #     avoid colliding with the previous letter, which then shifts
+        #     the whole cluster's grid off the natural letter spacing.
+        #
+        # The upshot: infinite extension via a repeating bar segment is
+        # feasible in principle for a per-letter, per-font hand-tuned
+        # setup, but not as a one-size-fits-all auto-build. Leaving the
+        # code in place for a future revisit where each letter carries an
+        # explicit `"overflow": True` plus per-letter `chain_bar_top`,
+        # `chain_bar_bottom`, tail-cap offsets, and matching intermediate
+        # y-range. Until then, we ship the 16 pre-baked variants only.
         is_shift = config.get("lsb_mode", "shift") == "shift"
-        overflow_default = letter_class in ("bar", "arm") and is_shift
-        overflow_enabled = info.get("overflow", overflow_default)
-        if overflow_enabled and is_shift and letter_class in ("bar", "arm"):
+        overflow_enabled = info.get("overflow", False)
+        if overflow_enabled and letter_class in ("bar", "arm", "leg"):
             start, intermed, tail = build_overflow_chain(
                 font, src_glyph, variants[-1], info, step, MAX_LEVELS,
+                lsb_mode=config.get("lsb_mode", "shift"),
             )
             overflow_chains[src_glyph] = (start, intermed, tail, variants[-1])
             print(f"    + overflow chain ({letter_class}): start={start}, int={intermed}, tail={tail}")

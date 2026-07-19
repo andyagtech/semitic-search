@@ -5,7 +5,7 @@ import path from "node:path";
 
 export const metadata: Metadata = {
   title: "Semitic Stretch Fonts — download",
-  description: "Custom Semitic-script fonts with kashida-style widening ligatures and centered mark positioning. 19 fonts covering Hebrew, Syriac, and Ethiopic. Free download.",
+  description: "Custom Semitic-script fonts with kashida-style widening ligatures and centered mark positioning. 20 fonts covering Hebrew, Syriac, and Ethiopic. Free download.",
 };
 
 type FontEntry = {

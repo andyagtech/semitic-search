@@ -1,0 +1,670 @@
+{
+  "letters": [
+    [
+      "aleph",
+      "א"
+    ],
+    [
+      "bet",
+      "ב"
+    ],
+    [
+      "dalet",
+      "ד"
+    ],
+    [
+      "he",
+      "ה"
+    ],
+    [
+      "het",
+      "ח"
+    ],
+    [
+      "tet",
+      "ט"
+    ],
+    [
+      "yod",
+      "י"
+    ],
+    [
+      "finalkaf",
+      "ך"
+    ],
+    [
+      "kaf",
+      "כ"
+    ],
+    [
+      "lamed",
+      "ל"
+    ],
+    [
+      "finalmem",
+      "ם"
+    ],
+    [
+      "ayin",
+      "ע"
+    ],
+    [
+      "finalpe",
+      "ף"
+    ],
+    [
+      "pe",
+      "פ"
+    ],
+    [
+      "tzade",
+      "צ"
+    ],
+    [
+      "qof",
+      "ק"
+    ],
+    [
+      "resh",
+      "ר"
+    ],
+    [
+      "shin",
+      "ש"
+    ],
+    [
+      "tav",
+      "ת"
+    ]
+  ],
+  "rows": [
+    {
+      "font": "Frank Ruhl",
+      "cells": {
+        "aleph": "•",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "•",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "•",
+        "tav": "•"
+      },
+      "total_wide": 19,
+      "total_inf": 0
+    },
+    {
+      "font": "Noto Sans Hebrew",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "",
+        "pe": "",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 14,
+      "total_inf": 0
+    },
+    {
+      "font": "Noto Serif Hebrew",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Gladia CLM",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Keter Aram Tsova",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Hillel CLM",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Shofar",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "FreeMono",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Nachlieli CLM",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Miriam Mono CLM",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Ezra SIL SR",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Stam Ashkenaz CLM",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Shlomo SemiStam",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "•",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 16,
+      "total_inf": 0
+    },
+    {
+      "font": "Rashi",
+      "cells": {
+        "aleph": "",
+        "bet": "•",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "•",
+        "tet": "•",
+        "yod": "•",
+        "finalkaf": "•",
+        "kaf": "•",
+        "lamed": "•",
+        "finalmem": "",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "•",
+        "pe": "•",
+        "finaltsadi": "",
+        "tzade": "",
+        "qof": "•",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 14,
+      "total_inf": 0
+    },
+    {
+      "font": "Shmulik CLM",
+      "cells": {
+        "aleph": "",
+        "bet": "",
+        "gimel": "",
+        "dalet": "•",
+        "he": "•",
+        "vav": "",
+        "zayin": "",
+        "het": "",
+        "tet": "",
+        "yod": "",
+        "finalkaf": "",
+        "kaf": "",
+        "lamed": "•",
+        "finalmem": "•",
+        "mem": "",
+        "finalnun": "",
+        "nun": "",
+        "samekh": "",
+        "ayin": "",
+        "finalpe": "",
+        "pe": "",
+        "finaltsadi": "",
+        "tzade": "",
+        "qof": "",
+        "resh": "•",
+        "shin": "",
+        "tav": "•"
+      },
+      "total_wide": 6,
+      "total_inf": 0
+    }
+  ],
+  "totals": {
+    "aleph": [
+      1,
+      0
+    ],
+    "bet": [
+      14,
+      0
+    ],
+    "dalet": [
+      15,
+      0
+    ],
+    "he": [
+      15,
+      0
+    ],
+    "het": [
+      14,
+      0
+    ],
+    "tet": [
+      14,
+      0
+    ],
+    "yod": [
+      14,
+      0
+    ],
+    "finalkaf": [
+      14,
+      0
+    ],
+    "kaf": [
+      14,
+      0
+    ],
+    "lamed": [
+      15,
+      0
+    ],
+    "finalmem": [
+      14,
+      0
+    ],
+    "ayin": [
+      1,
+      0
+    ],
+    "finalpe": [
+      13,
+      0
+    ],
+    "pe": [
+      13,
+      0
+    ],
+    "tzade": [
+      13,
+      0
+    ],
+    "qof": [
+      14,
+      0
+    ],
+    "resh": [
+      15,
+      0
+    ],
+    "shin": [
+      1,
+      0
+    ],
+    "tav": [
+      15,
+      0
+    ]
+  }
+}

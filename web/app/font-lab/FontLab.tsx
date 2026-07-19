@@ -1307,7 +1307,7 @@ export function FontLab() {
         return autoJustifySemitic(
           prev, justifyWidthPx, font.family, fontSize,
           fontFeatureSettings,
-          HEBREW_STRETCHABLE,
+          hebrewStretchableFor(fontId),
           trigger,
         );
       });
@@ -1764,7 +1764,7 @@ export function FontLab() {
                 onClick={() => {
                   const wantJustify = s.text.includes(HEBREW_STRETCH) || s.text.includes(TATWEEL);
                   const clean = s.text.replace(/[׆ـ⁠܍᎚]/g, "");
-                  const stretchable = script.id === "syriac" ? SYRIAC_STRETCHABLE : HEBREW_STRETCHABLE;
+                  const stretchable = script.id === "syriac" ? SYRIAC_STRETCHABLE : hebrewStretchableFor(fontId);
                   const trigger = script.id === "syriac" ? TATWEEL : HEBREW_STRETCH;
                   // Sample expects stretch but user isn't on a stretch font
                   // — flip to the default stretch font so the demo shows.
@@ -1931,7 +1931,7 @@ export function FontLab() {
                     setText(
                       autoJustifySemitic(
                         text, justifyWidthPx, font.family, fontSize, fontFeatureSettings,
-                        HEBREW_STRETCHABLE, HEBREW_STRETCH,
+                        hebrewStretchableFor(fontId), HEBREW_STRETCH,
                       ),
                     );
                   }
@@ -2057,6 +2057,7 @@ export function FontLab() {
 
         {script.id === "hebrew" && (
           <HebrewOnScreenKeyboard
+            stretchable={hebrewStretchableFor(fontId)}
             onPress={insertAtCursor}
             onToggleMark={toggleMarkAtCursor}
             onBackspace={() => {
@@ -2825,25 +2826,58 @@ function BulkColorControls({
   );
 }
 
-// Letters that have a stretch variant in our SemiticStretch* fonts. Any
-// of these followed by U+05C6 trigger(s) gets substituted to a wider
-// glyph by the GSUB liga rule. Highlighted in the on-screen keyboard so
-// users know which keys can be stretched.
-const STRETCHABLE = new Set([
-  "ד", "ה", "ל", "ם", "ר", "ת",                   // Original 6 (widely supported)
-  "ב", "ח", "כ", "ך", "פ", "ף", "ק", "ט", "י",     // v2 expansion (Frank Ruhl only for now)
-]);
+// Letters that have a stretch variant PER FONT. Keys are font IDs
+// (matching entries in the Hebrew script's fonts[] above). Any Hebrew
+// stretch font not listed falls back to HEBREW_STRETCHABLE_BASE (the six
+// letters every Frank-Ruhl-derived config carries). Update this map
+// whenever build_stretch_hebrew_font.py adds letters to a font config.
+// Both the on-screen keyboard highlighting and auto-justify trigger
+// placement key off these sets so triggers never land next to a letter
+// that has no widened variant in the loaded font.
+const HEBREW_STRETCHABLE_BASE = new Set(["ד", "ה", "ל", "ם", "ר", "ת"]);
+// The 10-letter "complex" set every port receives (bar-class INFIX):
+// bet, het, tet, yod, finalkaf, kaf, finalpe, pe, tzade, qof.
+// Frank Ruhl adds aleph/ayin/shin on top; Noto Sans skips pe/finalpe.
+const HEBREW_COMPLEX_10 = ["ב","ח","ט","י","ך","כ","ף","פ","צ","ק"];
+const HEBREW_STRETCHABLE_PER_FONT: Record<string, Set<string>> = {
+  // Frank Ruhl — full 19-letter set (all Hebrew letters with widening)
+  stretch: new Set([
+    "ד","ה","ל","ם","ר","ת",
+    ...HEBREW_COMPLEX_10, "א","ש","ע",
+  ]),
+  // Noto Sans Hebrew — pe/finalpe skipped (source has 1 contour, no
+  // separate yod-tick for always_shift_contours). 14 total.
+  stretchnotosanshebrew: new Set([
+    "ד","ה","ל","ם","ר","ת",
+    "ב","ח","ט","י","ך","כ","צ","ק",
+  ]),
+  // Every other font with the full complex-10 port: 16 letters.
+  stretchnotoserifhebrew: new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchgladia:          new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchketer:           new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchhillel:          new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchshofar:          new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchfreemono:        new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchnachlieli:       new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchmiriammono:      new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchezrasil:         new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchstamashkenaz:    new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  stretchshlomosemistam:  new Set(["ד","ה","ל","ם","ר","ת", ...HEBREW_COMPLEX_10]),
+  // Rashi — tzade skipped (xMin<0 pushes cutoff negative), 15 total.
+  stretchrashi:           new Set([
+    "ד","ה","ל","ם","ר","ת",
+    "ב","ח","ט","י","ך","כ","ף","פ","ק",
+  ]),
+};
 
-// Which letters our stretch fonts widen. Hebrew (Frank Ruhl v2):
-// original 6 + expanded 7 = ב ד ה ח כ ך ל ם פ ף ק ר ת. Other Hebrew
-// stretch fonts still cover only the original 6; the expanded set is
-// per-font and gets added as we tune each font's geometry.
-// Syriac (Nohadra): ܐ ܒ ܕ ܗ ܘ ܡ ܣ ܪ ܫ ܬ — expanded from the original 4
-// so Peshitta lines have several stretchable positions per row.
-const HEBREW_STRETCHABLE = new Set([
-  "ד", "ה", "ל", "ם", "ר", "ת",
-  "ב", "ח", "כ", "ך", "פ", "ף", "ק", "ט", "י", "צ", "א", "ש", "ע",
-]);
+function hebrewStretchableFor(fontId: string): Set<string> {
+  return HEBREW_STRETCHABLE_PER_FONT[fontId] ?? HEBREW_STRETCHABLE_BASE;
+}
+
+// Backwards-compat fallback for call sites that only care about the
+// FULL possible set (e.g. showcase pre-baking where we want to allow
+// widening on any letter Frank Ruhl covers).
+const HEBREW_STRETCHABLE = HEBREW_STRETCHABLE_PER_FONT.stretch;
 const SYRIAC_STRETCHABLE = new Set(["ܐ", "ܒ", "ܕ", "ܗ", "ܘ", "ܡ", "ܣ", "ܪ", "ܫ", "ܬ"]);
 // Ethiopic: 5 Ge'ez consonant series × 7 vowel orders each = 35 fidels.
 // The stretch build widens the horizontal decorative strokes of each.
@@ -3268,6 +3302,7 @@ const HEBREW_NIQQUD: { ch: string; label: string }[] = [
 
 function HebrewOnScreenKeyboard({
   onPress, onToggleMark, onBackspace, onClear, onStretch, onShorten, font, fontReady,
+  stretchable,
 }: {
   onPress: (ch: string) => void;
   onToggleMark: (ch: string) => void;
@@ -3277,6 +3312,11 @@ function HebrewOnScreenKeyboard({
   onShorten?: () => void;
   font: { family: string };
   fontReady: boolean;
+  // Per-font set of letters that have a widening ligature in the
+  // currently-loaded font. Highlighted in amber; other letters render
+  // plain. Prevents triggers being suggested for letters that would
+  // fall through as raw U+05C6 glyphs.
+  stretchable: Set<string>;
 }) {
   const [open, setOpen] = useState(true);
   const fontStyle = fontReady ? { fontFamily: font.family } : undefined;
@@ -3300,7 +3340,7 @@ function HebrewOnScreenKeyboard({
           {HEBREW_KEY_ROWS.map((row, ri) => (
             <div key={ri} className="flex gap-1 justify-center flex-wrap">
               {row.map((ch) => {
-                const isStretchable = STRETCHABLE.has(ch);
+                const isStretchable = stretchable.has(ch);
                 return (
                   <button
                     key={ch}

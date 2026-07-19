@@ -3,6 +3,9 @@
 A linguistics tool for identifying Semitic (normally triliteral) roots and
 finding cognate/related terms across Semitic languages.
 
+**Live:** <https://semitic-search.andy-barr.com>
+**Companion fonts repo:** <https://github.com/andyagtech/semitic-stretch-fonts>
+
 ## Supported languages
 
 **v1:** Arabic, Hebrew, Syriac, Amharic, Tigrinya
@@ -48,3 +51,11 @@ cp .env.example .env
 ```
 
 The real `.env` is gitignored. Never commit keys.
+
+## License
+
+MIT for the code (see `LICENSE`). The Semitic Stretch fonts under
+`web/public/fonts/SemiticStretch*.ttf` are derivatives that retain their
+upstream OFL / GPL-2.0 licenses — full details in the companion fonts
+repo. Ingested lexical data (Kaikki, Wiktionary) retains its upstream
+license, typically CC-BY-SA 4.0.

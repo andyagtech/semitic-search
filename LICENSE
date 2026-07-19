@@ -1,0 +1,39 @@
+MIT License
+
+Copyright (c) 2026 Andy Barr
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Note on bundled assets:
+
+The Semitic Stretch fonts under web/public/fonts/SemiticStretch*.ttf are
+derivatives of upstream faces and retain their upstream licenses (SIL Open
+Font License 1.1 or GNU GPL v2.0). See the per-font LICENSE sidecars in the
+companion repository:
+
+  https://github.com/andyagtech/semitic-stretch-fonts
+
+Non-derivative bundled fonts (Noto*, Free*, EastSyriacNohadra, etc.) retain
+their upstream OFL / GPL / public-domain licenses. See each font vendor's
+site for the authoritative license text.
+
+Third-party lexical data ingested from Kaikki.org, Wiktionary, and other
+sources retains its upstream license (typically CC-BY-SA 4.0).

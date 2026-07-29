@@ -153,13 +153,21 @@ const SCRIPTS: ScriptEntry[] = [
   },
   {
     id: "syriac", label: "Assyrian (Syriac)", dir: "rtl",
-    // Peshitta Genesis 1:1, split into four short lines so auto-justify
-    // has room to insert tatweel triggers on each row.
+    // Peshitta Genesis 1:1-1:3 (Eastern edition), with U+070D SYRIAC
+    // HARKLEAN ASTERISCUS baked in on stretchable letters so widening
+    // shows on first render (no need to click auto-justify). Verified
+    // Chrome-compatible: U+070D is the same trigger used by the shipping
+    // Noto Sans Syriac / Nohadra Sapna stretch fonts and renders through
+    // our font in Chromium's shaper. Genesis 1:2 provides the ONLY
+    // dalath ܕ in the passage (ܕܐܠܗܐ, "of God"); Gen 1:1 covers beth,
+    // rish, taw; Gen 1:3 adds two more rishes. Auto-justify still works
+    // — it strips existing triggers before rebalancing (see line ~3095).
     sample:
-      "ܒܪܝܫܝܬ\n" +
-      "ܒܪܐ ܐܠܗܐ\n" +
-      "ܝܬ ܫܡܝܐ\n" +
-      "ܘܝܬ ܐܪܥܐ",
+      "ܒܪ܍܍܍ܫܝܬ ܒܪ܍܍ܐ ܐܠܗܐ\n" +
+      "ܝܬ܍܍܍ ܫܡܝܐ ܘܝܬ܍܍܍ ܐܪ܍܍ܥܐ\n" +
+      "ܘܐܪ܍ܥܐ ܗܘܬ܍܍ ܬܘܗ ܘܒܘܗ\n" +
+      "ܘܪ܍܍ܘܚܗ ܕ܍܍܍ܐܠܗܐ ܡܪ܍܍ܚܦܐ\n" +
+      "ܘܐܡܪ܍܍ ܐܠܗܐ ܢܗܘܐ ܢܘܗܪ܍܍ܐ",
     fonts: [
       { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
         note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on beth ܒ, dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts." },
@@ -1115,6 +1123,16 @@ const SYRIAC_SAMPLES: { label: string; text: string; hint: string }[] = [
       "ܝܬ ܫܡܝܐ\n" +
       "ܘܝܬ ܐܪܥܐ",
     hint: "Multi-line short lines — auto-justify stretches ܒ ܕ ܪ ܬ to fill each row to the column width",
+  },
+  {
+    label: "Peshitta Genesis 1:1-1:3 (with kashida)",
+    text:
+      "ܒܪ܍܍܍ܫܝܬ ܒܪ܍܍ܐ ܐܠܗܐ\n" +
+      "ܝܬ܍܍܍ ܫܡܝܐ ܘܝܬ܍܍܍ ܐܪ܍܍ܥܐ\n" +
+      "ܘܐܪ܍ܥܐ ܗܘܬ܍܍ ܬܘܗ ܘܒܘܗ\n" +
+      "ܘܪ܍܍ܘܚܗ ܕ܍܍܍ܐܠܗܐ ܡܪ܍܍ܚܦܐ\n" +
+      "ܘܐܡܪ܍܍ ܐܠܗܐ ܢܗܘܐ ܢܘܗܪ܍܍ܐ",
+    hint: "Gen 1:1-1:3 with U+070D triggers baked in — widening shows on load for beth ܒ, dalath ܕ, rish ܪ, taw ܬ. Genesis 1:2 has the only dalath (ܕܐܠܗܐ).",
   },
   {
     label: "ܐܒܘܢ ܕܒܫܡܝܐ",

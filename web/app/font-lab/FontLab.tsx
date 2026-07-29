@@ -2852,7 +2852,7 @@ function BulkColorControls({
 // (matching entries in the Hebrew script's fonts[] above). Any Hebrew
 // stretch font not listed falls back to HEBREW_STRETCHABLE_BASE (the six
 // letters every Frank-Ruhl-derived config carries). Update this map
-// whenever build_stretch_hebrew_font.py adds letters to a font config.
+// whenever build_stretch_fonts.py adds letters to a font config.
 // Both the on-screen keyboard highlighting and auto-justify trigger
 // placement key off these sets so triggers never land next to a letter
 // that has no widened variant in the loaded font.

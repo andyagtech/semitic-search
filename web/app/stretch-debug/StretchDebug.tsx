@@ -30,7 +30,7 @@ type Script = {
 
 // ─── Hebrew ────────────────────────────────────────────────────────────
 // Frank Ruhl and 13 other Hebrew stretch fonts. Trigger: U+05C6 Hebrew
-// Punctuation Nun Hafukha. See build_stretch_hebrew_font.py.
+// Punctuation Nun Hafukha. See build_stretch_fonts.py.
 const HEB_LETTERS: Letter[] = [
   { code: "ב", name: "bet",      klass: "bar", version: "v2" },
   { code: "ח", name: "het",      klass: "bar", version: "v2" },
@@ -91,10 +91,11 @@ const SYR_LETTERS: Letter[] = [
   { code: "ܬ", name: "taw",      klass: "leg" },
 ];
 const SYR_QUAD = new Set(["ܒ","ܕ","ܪ","ܬ"]);
+const SYR_PAIR = new Set(["ܕ","ܪ"]);  // Noto Sans Syriac restricted to right-joining letters
 const SYR_TEN = new Set(["ܐ","ܒ","ܕ","ܗ","ܘ","ܡ","ܣ","ܪ","ܫ","ܬ"]);
 const SYR_FONTS: StretchFont[] = [
   { id: "ramsina",       label: "Ramsina (cursive)",             file: "SemiticStretchRamsina.ttf",        letters: SYR_QUAD },
-  { id: "noto-sans-syr", label: "Noto Sans Syriac (cursive)",    file: "SemiticStretchNotoSansSyriac.ttf", letters: SYR_QUAD },
+  { id: "noto-sans-syr", label: "Noto Sans Syriac (cursive)",    file: "SemiticStretchNotoSansSyriac.ttf", letters: SYR_PAIR },
   { id: "nohadra-sapna", label: "Nohadra Sapna (block)",         file: "SemiticStretchNohadraSapna.ttf",   letters: SYR_TEN },
   { id: "nohadra-amedia",label: "Nohadra Amedia (block)",        file: "SemiticStretchNohadraAmedia.ttf",  letters: SYR_TEN },
 ];

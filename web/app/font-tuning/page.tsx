@@ -4,7 +4,7 @@ import { MarkTuner } from "./MarkTuner";
 export const metadata = {
   title: "Mark position tuning — Semitic Search",
   description:
-    "Interactively tune the X/Y anchor of every Arabic and Hebrew combining mark on top of Hebrew letters. Live preview using the current deployed font; copy-to-clipboard the Python snippet to paste into build_stretch_hebrew_font.py for the next rebuild.",
+    "Interactively tune the X/Y anchor of every Arabic and Hebrew combining mark on top of Hebrew letters. Live preview using the current deployed font; copy-to-clipboard the Python snippet to paste into build_stretch_fonts.py for the next rebuild.",
 };
 
 export default function FontTuningPage() {
@@ -25,7 +25,7 @@ export default function FontTuningPage() {
             proposed offset applied to the CURRENT deployed font — it&apos;s
             a visual sketch, not a final render. When you like the values,
             copy the Python snippet at the bottom and paste it into
-            <code className="mx-1 font-mono text-xs bg-neutral-100 px-1 rounded">scripts/build_stretch_hebrew_font.py</code>
+            <code className="mx-1 font-mono text-xs bg-neutral-100 px-1 rounded">scripts/build_stretch_fonts.py</code>
             to bake them into the next rebuild.
           </p>
         </header>

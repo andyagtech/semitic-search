@@ -10,7 +10,7 @@ type Mark = {
   name: string;
   short: string;
   cls: "above" | "below";
-  // Current baked-in values (from build_stretch_hebrew_font.py). Users
+  // Current baked-in values (from build_stretch_fonts.py). Users
   // adjust these interactively; the deltas end up in the copyable Python
   // snippet below. NB: these MUST be kept in sync with the build script
   // by hand for the "generate Python" output to be truthful — but even
@@ -112,7 +112,7 @@ export function MarkTuner() {
   const resetAll = () => setDeltas({});
 
   // Python code snippet reflecting current baked + delta values. User
-  // pastes this into build_stretch_hebrew_font.py in place of the
+  // pastes this into build_stretch_fonts.py in place of the
   // corresponding constants, then rebuilds all Hebrew stretch fonts.
   const snippet = useMemo(() => {
     const xShiftLines: string[] = [];
@@ -132,7 +132,7 @@ export function MarkTuner() {
         yLines.push(`    ${cpHex(m.cp)}: ${base + dy},  # ${m.short} (${m.cls} base ${base} + ${dy})`);
       }
     }
-    return `# --- Paste into scripts/build_stretch_hebrew_font.py ---
+    return `# --- Paste into scripts/build_stretch_fonts.py ---
 
 _MARK_ANCHOR_X_SHIFT: dict[int, int] = {
 ${xShiftLines.join("\n") || "    # (all defaults)"}
@@ -144,7 +144,7 @@ ${yLines.join("\n") || "    # (all defaults)"}
 
 # Then rebuild all Hebrew stretch fonts:
 #   .venv/bin/python -c "import sys; sys.path.insert(0,'scripts'); \\
-#     import build_stretch_hebrew_font as b; \\
+#     import build_stretch_fonts as b; \\
 #     [b.build_one(c) for c in b.CONFIGS if c.get('import_marks')]"`;
   }, [deltas]);
 
@@ -334,7 +334,7 @@ ${yLines.join("\n") || "    # (all defaults)"}
       <section className="rounded-lg border border-emerald-300 bg-emerald-50 p-4">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-sm font-semibold text-emerald-900">
-            Python snippet — paste into build_stretch_hebrew_font.py
+            Python snippet — paste into build_stretch_fonts.py
           </h2>
           <button
             type="button"
@@ -347,7 +347,7 @@ ${yLines.join("\n") || "    # (all defaults)"}
         <p className="text-xs text-emerald-900 mb-2">
           Only shows the marks that have non-default X/Y shifts (either
           the baked-in ones from the current build or your interactive
-          deltas). Paste both dicts into <code className="font-mono">scripts/build_stretch_hebrew_font.py</code>,
+          deltas). Paste both dicts into <code className="font-mono">scripts/build_stretch_fonts.py</code>,
           replacing the existing definitions, then rebuild the Hebrew
           stretch fonts as shown at the bottom of the snippet.
         </p>

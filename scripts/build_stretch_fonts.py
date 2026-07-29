@@ -1,20 +1,36 @@
-"""Build kashida-capable Hebrew fonts from open-source bases. Each entry in
-CONFIGS specifies a source font (e.g. Frank Ruhl Libre, Keter Aram Tsova)
-and per-letter geometric zones (bar/arm/leg/box ranges, x_cutoff). For each
-of the six scribally-stretchable letters (ד ה ל ם ר ת), we derive 6 widened
-variants and wire them via GSUB ligatures so `letter + N × U+05C6` produces
-`letter_stretched_N`.
+"""Build kashida-capable Semitic-script fonts from open-source bases.
+Covers Hebrew (14 fonts), Syriac / Assyrian (Noto Sans Syriac, Nohadra
+Sapna/Amedia, Ramsina), Ethiopic (Noto Serif Ethiopic), and one Latin
+experiment (Kufam). Each entry in CONFIGS specifies a source font and
+per-letter geometric zones (bar/arm/leg/box ranges, x_cutoff). For each
+stretchable letter we derive 16 widened variants and wire them via GSUB
+ligatures so `letter + N × <trigger>` produces `letter_stretched_N`,
+where <trigger> is a script-appropriate codepoint (U+05C6 for Hebrew,
+U+070D for Syriac, U+139A for Ethiopic).
 
 The framework is config-driven so adding a new font is just adding one
-CONFIGS entry. Per-font tuning is required because each font's glyphs sit
-at different coordinates (Frank Ruhl uses UPM=1000, Keter Aram Tsova
-UPM=2048, Heebo UPM=1000 with different stroke heights, etc.).
+CONFIGS entry. Per-font tuning is required because each font's glyphs
+sit at different coordinates (Frank Ruhl UPM=1000, Keter Aram Tsova
+UPM=2048, Ramsina UPM=2048, Nohadra UPM=1000, etc.).
+
+Cursive vs non-cursive:
+  - Non-cursive scripts (Hebrew, Nohadra block Syriac) widen the base
+    letter directly — one variant set per codepoint.
+  - Cursive scripts (Ramsina, Noto Sans Syriac) also build per-positional
+    variant sets (.init/.medi/.fina) so mid-word widening survives the
+    shaper's positional-form substitution.
+
+Filename: this file was historically `build_stretch_hebrew_font.py` when
+only Hebrew fonts shipped. Renamed to `build_stretch_fonts.py` now that
+it covers three scripts; per-script builder facades (build_stretch_syriac_
+font.py, etc.) are a possible future refactor if the CONFIGS list grows
+much further.
 
 License notes:
-  - SIL OFL fonts (Frank Ruhl Libre, David Libre, Heebo, Noto, ...) — must
+  - SIL OFL fonts (Frank Ruhl Libre, Noto family, Ramsina, ...) — must
     be renamed (per OFL §3) when modified. Output stays under SIL OFL.
-  - GPL fonts (Culmus: Keter Aram Tsova, Keter YG, Taamey Frank, Shofar,
-    Ktav Yad CLM) — derivatives must remain GPL. Distribute output as GPL.
+  - GPL fonts (Culmus: Keter Aram Tsova, Shofar, ...) — derivatives must
+    remain GPL. Distribute output as GPL.
 """
 
 from __future__ import annotations
@@ -1147,6 +1163,17 @@ NOTO_SANS_SYRIAC = {
     # glyph` below replaces the source font's asteriscus glyph with a 1×1
     # invisible placeholder.
     "stretch_codepoint": 0x070D,
+    # Restricted to right-joining letters (dalath, rish) after visual review
+    # revealed a triangular wedge artifact in the shipped taw/beth positional
+    # forms. Root cause: this config's bar/leg cutoffs (x_cutoff, bar_top,
+    # leg_max_y) were tuned for the ISOLATED outline; when the build applies
+    # the same shifts to init/medi/fina glyphs whose left/right joining stubs
+    # sit at different x-coordinates, the shift zone catches half a
+    # connector-stub and tears the contour. Dalath and rish are BOTH
+    # right-joining — they only appear as isolated or .fina forms, and .fina
+    # geometry is close enough to isolated that a single set of cutoffs
+    # works. Adding taw/beth back means widening init/medi/fina too, which
+    # needs per-positional-form cutoffs — a real body of work, deferred.
     "letters": {
         # Dalath: bar-class. Bar zone is the flat top portion; x_cutoff picks
         # a point between the stretchable left curve and the anchored right
@@ -1158,21 +1185,6 @@ NOTO_SANS_SYRIAC = {
         # of the bar — fixes the awkward bottom edge at low stretch levels
         # (image 53/54).
         0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 300, "bar_top": 420, "x_cutoff": 220},
-        # Taw: has a horizontal cross-bar higher up. Treat as leg-class
-        # (bar + descending left leg). leg_max_y catches the descender
-        # portion so it doesn't drag horizontally with the bar shift.
-        # x_cutoff dropped from 350 → 250 so taw's vertical ascender
-        # (roughly x=280-350, y=400-713) sits fully to the right of the
-        # cutoff and stays anchored. Previous value caught the ascender's
-        # base in the shift zone while its top (y>bar_top=700) stayed put
-        # — producing the triangular tear in image 60.
-        0x072C: {"name": "taw",    "class": "leg", "bar_bottom": 400, "bar_top": 700, "leg_max_y": 200, "x_cutoff": 250},
-        # Beth: Estrangela beth has a flat top bar from x≈385 to x≈721 at
-        # y≈423, with a left-curl foot at x=49-300 below y=100. Widen the
-        # whole left half of the letter (curl + rise + left bar) as a
-        # unit — bar zone spans the entire body y range so the shifted
-        # left half stays continuous with the rise/curl.
-        0x0712: {"name": "beth",   "class": "bar", "bar_bottom": 0, "bar_top": 429, "x_cutoff": 550},
     },
 }
 
@@ -1281,7 +1293,17 @@ NOHADRA_SAPNA = {
         0x0710: {"name": "alaph",  "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
         0x0717: {"name": "he",     "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
         0x0718: {"name": "waw",    "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 220},
-        0x0721: {"name": "mim",    "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 300},
+        # Mim ܡ has a 2-contour outline: outer body (contour 0) spans x=[51,
+        # 455] and inner counter/hole (contour 1) spans x=[253, 354]. A
+        # single x_cutoff sliced through the middle of the counter,
+        # asymmetrically distorting it as the letter widened (visible in
+        # user review of Nohadra Sapna at s2+). Fix: run outer body at full
+        # shift and the counter at HALF shift so it stays visually centered
+        # inside the widened body. If finer per-variant control is later
+        # needed, layer point_overrides_by_variant on top (same mechanism as
+        # Frank Ruhl aleph).
+        0x0721: {"name": "mim",    "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 500,
+                 "contour_shift_ratios": {0: 1.0, 1: 0.5}},
         0x0723: {"name": "semkath","class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
         0x072B: {"name": "shin",   "class": "bar", "bar_bottom": 0, "bar_top": 303, "x_cutoff": 400},
     },

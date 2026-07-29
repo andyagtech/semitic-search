@@ -39,7 +39,7 @@ export default function LetterAnatomyPage() {
             colour each point by which side of the INFIX partition it lands
             on. Use it to pick partitions visually before setting them in{" "}
             <code className="mx-1 font-mono text-xs bg-neutral-100 px-1 rounded">
-              build_stretch_hebrew_font.py
+              build_stretch_fonts.py
             </code>
             .
           </p>

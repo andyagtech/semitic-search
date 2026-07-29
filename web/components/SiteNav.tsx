@@ -81,7 +81,7 @@ const GROUPS: NavGroup[] = [
       { href: "/font-lab", label: "Font lab",
         description: "Live playground for the stretch fonts" },
       { href: "/fonts", label: "Download fonts",
-        description: "21 free .ttf files — Hebrew, Syriac, Ethiopic" },
+        description: "Free .ttf files — Hebrew, Syriac, Ethiopic" },
       { href: "https://github.com/andyagtech/semitic-stretch-fonts",
         label: "Source on GitHub ↗",
         description: "Font sources, build scripts, per-font LICENSE sidecars",

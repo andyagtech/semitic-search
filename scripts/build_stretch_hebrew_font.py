@@ -1299,6 +1299,59 @@ NOHADRA_AMEDIA = {
     "internal_id": "SemiticSearch-SemiticStretchNohadraAmedia-1.0",
 }
 
+# Ramsina (SIL Global, OFL) — East Syriac cursive at UPM=2048. Derived from
+# Sparksoft's older "Nohadra" family but architecturally different from
+# Nohadra Sapna/Amedia above: Ramsina IS a cursive font (has init/medi/fina
+# GSUB features + `stch`), so its dual-joining letters render as positional
+# variants inside words. We widen the ISOLATED forms only, which matches
+# where scribal East-Syriac justification happens in practice — end-of-word
+# and stand-alone letters. Reserved font name "Ramsina" per OFL §3 means
+# our derivative ships as "Semitic Stretch Ramsina".
+#
+# Geometry survey (contour scan of Ramsina 2.100):
+#   dalath ܕ  U+0715  x=[100,631] y=[-276,612]  hook peaks at (264,612)
+#   rish   ܪ  U+072A  x=[100,631] y=[   0,909]  dalath body + dot at y=909
+#   taw    ܬ  U+072C  x=[100,890] y=[ -23,828]  wide baseline + ascender
+#   beth   ܒ  U+0712  x=[ 50,972] y=[   0,670]  wide baseline + right hook
+# Baseline for each letter sits at y=0-200 (the joining rail); the shift
+# targets the letter body ABOVE that so the connecting stroke stays intact.
+RAMSINA = {
+    "id": "ramsina",
+    "source": "Ramsina-Regular.ttf",
+    "output": "SemiticStretchRamsina.ttf",
+    "family": "Semitic Stretch Ramsina",
+    "postscript": "SemiticStretchRamsina",
+    "internal_id": "SemiticSearch-SemiticStretchRamsina-1.0",
+    # UPM=2048 (2× Noto Sans Syriac at UPM=1000). Step scaled ~2× to
+    # produce visibly-progressive stretches without needing extra levels.
+    "step": 200,
+    "lsb_mode": "mono",
+    "language_system": "syrc",
+    # Same trigger as NOTO_SANS_SYRIAC and NOHADRA_SAPNA — U+070D SYRIAC
+    # HARKLEAN ASTERISCUS. Real Syriac codepoint, non-joining, Base class,
+    # and effectively unused in modern text.
+    "stretch_codepoint": 0x070D,
+    "override_trigger_glyph": True,
+    "letters": {
+        # Dalath: right-joining, so its isolated/final form appears at every
+        # end-of-joining-run — the natural scribal widening slot. Bar zone
+        # catches the upper horizontal stroke; x_cutoff=200 keeps the right
+        # hook and tail-descender anchored.
+        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 350, "bar_top": 630, "x_cutoff": 200},
+        # Rish: dalath body + supralineal dot at y=909. bar_top=630 leaves
+        # the dot outside the shift zone so it stays put above the widened
+        # body.
+        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 350, "bar_top": 630, "x_cutoff": 200},
+        # Taw: cross-bar y=[-20, 260]; ascender peaks at y=828 stays put.
+        # leg class so the left descender travels with the bar.
+        0x072C: {"name": "taw",    "class": "leg", "bar_bottom": -30, "bar_top": 280, "leg_max_y": 100, "x_cutoff": 250},
+        # Beth: right hook + flat top y≈600-670. x_cutoff=500 keeps the
+        # hook (right half) anchored while the left half of the top bar
+        # extends. Dual-joining — widens in isolated form only.
+        0x0712: {"name": "beth",   "class": "bar", "bar_bottom": 0, "bar_top": 670, "x_cutoff": 500},
+    },
+}
+
 # Ge'ez / Ethiopic — Noto Serif Ethiopic. Ethiopic is a SYLLABARY (each
 # fidel = consonant+vowel), so we widen 5 consonant SERIES × 7 vowel
 # orders = 35 codepoints. The stretchable candidates were selected by
@@ -1450,7 +1503,7 @@ CONFIGS = [
     FREE_MONO, NACHLIELI, MIRIAM_MONO, EZRA_SIL,
     STAM_ASHKENAZ, SHLOMO_SEMISTAM,
     NOTO_RASHI,
-    NOTO_SANS_SYRIAC, NOHADRA_SAPNA, NOHADRA_AMEDIA,
+    NOTO_SANS_SYRIAC, NOHADRA_SAPNA, NOHADRA_AMEDIA, RAMSINA,
     NOTO_SERIF_ETHIOPIC,
     NOTO_KUFAM_LATIN,
 ]

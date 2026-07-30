@@ -3989,7 +3989,12 @@ def build_one(config: dict) -> int:
         # triangular sliver as the letter grows. Opt-in required.
         pf = info.get("positional_forms", False)
         if pf is True:
-            allowed_suffixes = (".fina",)
+            # Opt-in True builds ALL joining variants — the letter-anatomy
+            # preview shows what actually renders when the user selects a
+            # positional form tab, so any breakage on init/medi is visible
+            # and can be tuned per-letter. Set to a specific list to
+            # restrict per-letter (e.g. [".fina"] only).
+            allowed_suffixes = (".init", ".medi", ".fina")
         elif isinstance(pf, (list, tuple)):
             allowed_suffixes = tuple(str(s) for s in pf)
         else:

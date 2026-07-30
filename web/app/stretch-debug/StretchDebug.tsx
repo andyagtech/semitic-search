@@ -90,11 +90,11 @@ const SYR_LETTERS: Letter[] = [
   { code: "ܫ", name: "shin",     klass: "bar" },
   { code: "ܬ", name: "taw",      klass: "leg" },
 ];
-const SYR_QUAD = new Set(["ܒ","ܕ","ܪ","ܬ"]);
-const SYR_PAIR = new Set(["ܕ","ܪ"]);  // Noto Sans Syriac restricted to right-joining letters
-const SYR_TEN = new Set(["ܐ","ܒ","ܕ","ܗ","ܘ","ܡ","ܣ","ܪ","ܫ","ܬ"]);
+const SYR_TRIO = new Set(["ܒ","ܕ","ܪ"]);        // Ramsina (taw deferred pending anatomy-guided rethink)
+const SYR_PAIR = new Set(["ܕ","ܪ"]);            // Noto Sans Syriac restricted to right-joining letters
+const SYR_TEN  = new Set(["ܐ","ܒ","ܕ","ܗ","ܘ","ܡ","ܣ","ܪ","ܫ","ܬ"]);
 const SYR_FONTS: StretchFont[] = [
-  { id: "ramsina",       label: "Ramsina (cursive)",             file: "SemiticStretchRamsina.ttf",        letters: SYR_QUAD },
+  { id: "ramsina",       label: "Ramsina (cursive)",             file: "SemiticStretchRamsina.ttf",        letters: SYR_TRIO },
   { id: "noto-sans-syr", label: "Noto Sans Syriac (cursive)",    file: "SemiticStretchNotoSansSyriac.ttf", letters: SYR_PAIR },
   { id: "nohadra-sapna", label: "Nohadra Sapna (block)",         file: "SemiticStretchNohadraSapna.ttf",   letters: SYR_TEN },
   { id: "nohadra-amedia",label: "Nohadra Amedia (block)",        file: "SemiticStretchNohadraAmedia.ttf",  letters: SYR_TEN },

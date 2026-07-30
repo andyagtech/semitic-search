@@ -51,11 +51,13 @@ const FONTS: FontEntry[] = [
   { id: "gladia-src",            label: "Gladia CLM (source)",              file: "GladiaCLM-Bold.ttf" },
 ];
 
-// Hebrew letters — Unicode codepoint plus a short name. Rendered as
-// clickable chips so we pick by shape not memorized code. The `name`
-// field MUST match the build-script's letter name so we can find the
-// widened variant `{name}_s{N}` by glyph-name lookup.
-const HEBREW_LETTERS: Array<{ cp: number; name: string; ch: string }> = [
+// A letter in a script — codepoint, short name matching the build-script
+// glyph naming, and the character for the chip display.
+type LetterEntry = { cp: number; name: string; ch: string };
+
+// Hebrew letters. `name` must match the build-script's letter name so we
+// can find the widened variant `{name}_s{N}` by glyph-name lookup.
+const HEBREW_LETTERS: LetterEntry[] = [
   { cp: 0x05D0, name: "aleph",      ch: "א" },
   { cp: 0x05D1, name: "bet",        ch: "ב" },
   { cp: 0x05D2, name: "gimel",      ch: "ג" },
@@ -85,6 +87,85 @@ const HEBREW_LETTERS: Array<{ cp: number; name: string; ch: string }> = [
   { cp: 0x05EA, name: "tav",        ch: "ת" },
 ];
 
+// Syriac letters, in Unicode alphabetical order. Names match the
+// build-script (alaph, beth, gamal, dalath, he, waw, ..., taw).
+const SYRIAC_LETTERS: LetterEntry[] = [
+  { cp: 0x0710, name: "alaph",   ch: "ܐ" },
+  { cp: 0x0712, name: "beth",    ch: "ܒ" },
+  { cp: 0x0713, name: "gamal",   ch: "ܓ" },
+  { cp: 0x0715, name: "dalath",  ch: "ܕ" },
+  { cp: 0x0717, name: "he",      ch: "ܗ" },
+  { cp: 0x0718, name: "waw",     ch: "ܘ" },
+  { cp: 0x0719, name: "zayn",    ch: "ܙ" },
+  { cp: 0x071A, name: "heth",    ch: "ܚ" },
+  { cp: 0x071B, name: "teth",    ch: "ܛ" },
+  { cp: 0x071D, name: "yodh",    ch: "ܝ" },
+  { cp: 0x071F, name: "kaph",    ch: "ܟ" },
+  { cp: 0x0720, name: "lamadh",  ch: "ܠ" },
+  { cp: 0x0721, name: "mim",     ch: "ܡ" },
+  { cp: 0x0722, name: "nun",     ch: "ܢ" },
+  { cp: 0x0723, name: "semkath", ch: "ܣ" },
+  { cp: 0x0725, name: "e",       ch: "ܥ" },
+  { cp: 0x0726, name: "pe",      ch: "ܦ" },
+  { cp: 0x0728, name: "sadhe",   ch: "ܨ" },
+  { cp: 0x0729, name: "qaph",    ch: "ܩ" },
+  { cp: 0x072A, name: "rish",    ch: "ܪ" },
+  { cp: 0x072B, name: "shin",    ch: "ܫ" },
+  { cp: 0x072C, name: "taw",     ch: "ܬ" },
+];
+
+// Syriac stretch fonts. Includes both stretch derivatives and their raw
+// source counterparts (so you can inspect the natural glyph before
+// widening).
+const SYRIAC_FONTS: FontEntry[] = [
+  { id: "syr-stretch-ramsina",      label: "Semitic Stretch Ramsina",             file: "SemiticStretchRamsina.ttf",
+    stretchable: new Set([0x0712, 0x0715, 0x072A]) },
+  { id: "syr-stretch-noto",         label: "Semitic Stretch Noto Sans Syriac",    file: "SemiticStretchNotoSansSyriac.ttf",
+    stretchable: new Set([0x0715, 0x072A]) },
+  { id: "syr-stretch-nohadra-sapna", label: "Semitic Stretch Nohadra Sapna",      file: "SemiticStretchNohadraSapna.ttf",
+    stretchable: new Set([0x0710, 0x0712, 0x0715, 0x0717, 0x0718, 0x0721, 0x0723, 0x072A, 0x072B, 0x072C]) },
+  { id: "syr-stretch-nohadra-amedia",label: "Semitic Stretch Nohadra Amedia",     file: "SemiticStretchNohadraAmedia.ttf",
+    stretchable: new Set([0x0710, 0x0712, 0x0715, 0x0717, 0x0718, 0x0721, 0x0723, 0x072A, 0x072B, 0x072C]) },
+  { id: "syr-ramsina-src",          label: "Ramsina (source)",                    file: "Ramsina-Regular.ttf" },
+  { id: "syr-noto-src",             label: "Noto Sans Syriac (source)",           file: "NotoSansSyriac.ttf" },
+  { id: "syr-nohadra-sapna-src",    label: "Nohadra Sapna (source)",              file: "NohadraSyriacSapna.ttf" },
+];
+
+// Which scripts the anatomy tool supports. Each script defines its own
+// letter set, font list, default codepoint, and stretch-trigger char.
+// A script that has positional forms (cursive Syriac) also shows the
+// init/medi/fina toggle.
+type ScriptEntry = {
+  id: "hebrew" | "syriac";
+  label: string;
+  letters: LetterEntry[];
+  fonts: FontEntry[];
+  defaultCp: number;
+  stretchTrigger: string;
+  hasPositionalForms: boolean;
+  chipFontFamily: string;
+};
+const SCRIPTS: ScriptEntry[] = [
+  { id: "hebrew",  label: "Hebrew",           letters: HEBREW_LETTERS, fonts: FONTS,
+    defaultCp: 0x05E2, stretchTrigger: "׆", hasPositionalForms: false,
+    chipFontFamily: "'Frank Ruhl Libre', serif" },
+  { id: "syriac", label: "Assyrian (Syriac)", letters: SYRIAC_LETTERS, fonts: SYRIAC_FONTS,
+    defaultCp: 0x0715, stretchTrigger: "܍", hasPositionalForms: true,
+    chipFontFamily: "'Estrangelo Edessa', 'Noto Sans Syriac', serif" },
+];
+
+// Positional forms a cursive Syriac letter can take. Isolated = no
+// suffix; the other three append to the glyph name (uni0712 →
+// uni0712.init, beth_s3 → beth.init_s3). Not every letter has all four
+// — right-joining letters only have isolated and .fina.
+type PositionalForm = "isol" | "init" | "medi" | "fina";
+const POSITIONAL_FORMS: Array<{ id: PositionalForm; label: string; description: string }> = [
+  { id: "isol", label: "isolated", description: "Standalone letter, no joining neighbours" },
+  { id: "init", label: "initial",  description: "First letter of a joining run (joins to next)" },
+  { id: "medi", label: "medial",   description: "Middle of a joining run (joins both sides)" },
+  { id: "fina", label: "final",    description: "End of a joining run (joins to previous)" },
+];
+
 // A rainbow of contour colours. Contour 0 is charcoal so the outer body
 // reads as the "letter"; sub-contours get accent hues so they pop.
 const CONTOUR_COLOURS = [
@@ -104,8 +185,9 @@ const COLOUR_SWATCHES = [
   "#0ea5e9", "#a855f7", "#eab308", "#22c55e", "#ef4444", "#e11d48",
 ];
 
-// U+05C6 is the widening trigger — insert N of these after a letter to
-// fire the GSUB ligature to variant `{name}_s{N}`.
+// U+05C6 is the Hebrew widening trigger — legacy per-script constant
+// kept for the small stretch preview strip below the anatomy canvas.
+// The active script's trigger is chosen dynamically inside the component.
 const HEBREW_STRETCH_TRIG = "׆";
 
 // Cache a parsed opentype.js Font per file. Keyed by file path since the
@@ -263,11 +345,29 @@ function useLoadStretchFontFace(fontFile: string, familyBase: string): { ready: 
 }
 
 export function LetterAnatomy() {
-  // Pickers — default to the stretch font + ayin since ayin is the
-  // active investigation. Users can switch instantly via the chips.
+  // Script selector — Hebrew (default) or Assyrian (Syriac). Switching
+  // scripts resets the codepoint and font picker to the new script's
+  // defaults so we never point at a glyph the wrong font doesn't have.
+  const [scriptId, setScriptId] = useState<"hebrew" | "syriac">("hebrew");
+  const script = SCRIPTS.find((s) => s.id === scriptId)!;
+  // Positional-form toggle. Only meaningful for cursive Syriac; ignored
+  // for Hebrew (which has no init/medi/fina). Resets to isolated on
+  // script switch.
+  const [positionalForm, setPositionalForm] = useState<PositionalForm>("isol");
+  // Font + codepoint pickers. Defaults come from the active script.
   const [fontIdx, setFontIdx] = useState(0);
-  const [cp, setCp] = useState(0x05E2);
+  const [cp, setCp] = useState(script.defaultCp);
   const [stretchLevel, setStretchLevel] = useState(0);
+  // Reset dependent pickers when script changes.
+  const switchScript = (id: "hebrew" | "syriac") => {
+    if (id === scriptId) return;
+    const next = SCRIPTS.find((s) => s.id === id)!;
+    setScriptId(id);
+    setFontIdx(0);
+    setCp(next.defaultCp);
+    setStretchLevel(0);
+    setPositionalForm("isol");
+  };
 
   // Loaded glyph geometry.
   const [glyph, setGlyph] = useState<Glyph | null>(null);
@@ -326,13 +426,21 @@ export function LetterAnatomy() {
   const wasPanningRef = useRef(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const cur = HEBREW_LETTERS.find((l) => l.cp === cp);
-  const glyphName = cur ? (stretchLevel > 0 ? `${cur.name}_s${stretchLevel}` : cur.name) : "";
+  const cur = script.letters.find((l) => l.cp === cp);
+  // Syriac positional-form suffix (empty for Hebrew or isolated).
+  const posSuffix = script.hasPositionalForms && positionalForm !== "isol"
+    ? `.${positionalForm}`
+    : "";
+  const glyphName = cur
+    ? stretchLevel > 0
+      ? `${cur.name}${posSuffix}_s${stretchLevel}`
+      : `${cur.name}${posSuffix}`
+    : "";
 
   // Live stretch font for the small text preview below the anatomy view.
   const { ready: cssFontReady, family: cssFontFamily } = useLoadStretchFontFace(
-    FONTS[fontIdx].file,
-    "LA_StretchHebrew_Preview",
+    script.fonts[fontIdx]?.file ?? script.fonts[0].file,
+    `LA_StretchPreview_${scriptId}`,
   );
 
   // Fit-to-glyph viewBox using the standard OpenType idiom: viewBox is
@@ -353,10 +461,20 @@ export function LetterAnatomy() {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    const file = FONTS[fontIdx].file;
-    const promise = stretchLevel > 0 && cur
-      ? loadGlyphByName(file, `${cur.name}_s${stretchLevel}`)
-      : loadGlyphByCp(file, cp);
+    const file = script.fonts[fontIdx]?.file ?? script.fonts[0].file;
+    // Load path:
+    //   - stretched (level>0): always by glyph name — includes any positional suffix
+    //   - base + isolated: by codepoint (works for every font that maps cp)
+    //   - base + positional (Syriac only): by name uni{XXXX}{.init/.medi/.fina}
+    let promise: Promise<Glyph | null>;
+    if (stretchLevel > 0 && cur) {
+      promise = loadGlyphByName(file, `${cur.name}${posSuffix}_s${stretchLevel}`);
+    } else if (posSuffix) {
+      const cpHex = cp.toString(16).toUpperCase().padStart(4, "0");
+      promise = loadGlyphByName(file, `uni${cpHex}${posSuffix}`);
+    } else {
+      promise = loadGlyphByCp(file, cp);
+    }
     promise
       .then((g) => {
         if (cancelled) return;
@@ -375,17 +493,20 @@ export function LetterAnatomy() {
           setContourTranslations({});
           setPointOverrides({});
         } else {
+          const cpHex = cp.toString(16).toUpperCase();
           setError(
             stretchLevel > 0
-              ? `no glyph named ${cur?.name}_s${stretchLevel} in this font`
-              : `no glyph for U+${cp.toString(16).toUpperCase()}`,
+              ? `no glyph named ${cur?.name}${posSuffix}_s${stretchLevel} in this font`
+              : posSuffix
+                ? `no positional variant uni${cpHex.padStart(4, "0")}${posSuffix} in this font`
+                : `no glyph for U+${cpHex}`,
           );
         }
       })
       .catch((e) => { console.error(e); if (!cancelled) setError(String(e)); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [fontIdx, cp, stretchLevel, cur, computeBaseView]);
+  }, [scriptId, fontIdx, cp, stretchLevel, cur, posSuffix, script.fonts, computeBaseView]);
 
   // Reset view to the fit-to-glyph baseline.
   const resetView = useCallback(() => {
@@ -649,6 +770,56 @@ export function LetterAnatomy() {
 
   return (
     <div className="space-y-6">
+      {/* Script tabs */}
+      <section className="bg-white border border-neutral-200 rounded-lg p-3">
+        <div role="tablist" aria-label="Script" className="flex flex-wrap gap-1">
+          {SCRIPTS.map((s) => {
+            const active = s.id === scriptId;
+            return (
+              <button
+                key={s.id}
+                role="tab"
+                aria-selected={active}
+                onClick={() => switchScript(s.id)}
+                className={`px-4 py-1.5 rounded text-sm border transition ${
+                  active
+                    ? "bg-neutral-900 text-white border-neutral-900"
+                    : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+                }`}
+              >
+                {s.label}
+              </button>
+            );
+          })}
+          {script.hasPositionalForms && (
+            <div className="ml-auto flex items-center gap-2">
+              <span className="text-xs text-neutral-500 uppercase tracking-wider">form</span>
+              <div role="tablist" aria-label="Positional form" className="flex gap-1">
+                {POSITIONAL_FORMS.map((f) => {
+                  const active = f.id === positionalForm;
+                  return (
+                    <button
+                      key={f.id}
+                      role="tab"
+                      aria-selected={active}
+                      onClick={() => setPositionalForm(f.id)}
+                      title={f.description}
+                      className={`px-3 py-1 rounded text-xs border transition ${
+                        active
+                          ? "bg-neutral-900 text-white border-neutral-900"
+                          : "bg-white text-neutral-600 border-neutral-300 hover:border-neutral-400"
+                      }`}
+                    >
+                      {f.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Font + codepoint pickers */}
       <section className="bg-white border border-neutral-200 rounded-lg p-4 space-y-3">
         <div className="flex flex-wrap items-center gap-3 text-sm">
@@ -659,7 +830,7 @@ export function LetterAnatomy() {
               onChange={(e) => setFontIdx(parseInt(e.target.value, 10))}
               className="border border-neutral-300 rounded px-2 py-1 text-sm"
             >
-              {FONTS.map((f, i) => (
+              {script.fonts.map((f, i) => (
                 <option key={f.id} value={i}>
                   {f.label}
                 </option>
@@ -676,7 +847,7 @@ export function LetterAnatomy() {
               value={stretchLevel}
               onChange={(e) => setStretchLevel(parseInt(e.target.value, 10))}
               className="w-40"
-              disabled={fontIdx === 1 /* Frank Ruhl source has no _sN variants */}
+              disabled={script.fonts[fontIdx]?.stretchable === undefined}
             />
             <span className="w-14 tabular-nums text-neutral-500 text-xs">
               s{stretchLevel}
@@ -697,12 +868,12 @@ export function LetterAnatomy() {
           </div>
         </div>
         {/* Letter grid — click to select. Letters without a widening
-            variant in the currently-loaded font are dimmed (stretch
-            fonts only; source fonts don't have stretch variants at all
-            so we don't dim anything). */}
-        <div className="grid grid-cols-9 gap-1">
-          {HEBREW_LETTERS.map((L) => {
-            const stretchable = FONTS[fontIdx].stretchable;
+            variant in the currently-loaded font are dimmed. */}
+        <div className={`grid gap-1 ${
+          script.letters.length > 20 ? "grid-cols-9" : "grid-cols-11"
+        }`}>
+          {script.letters.map((L) => {
+            const stretchable = script.fonts[fontIdx]?.stretchable;
             const hasStretch = !stretchable || stretchable.has(L.cp);
             return (
               <button
@@ -721,7 +892,7 @@ export function LetterAnatomy() {
                     : `${L.name} — no widening variant in this font`
                 }
               >
-                <span style={{ fontFamily: "'Frank Ruhl Libre', serif" }}>{L.ch}</span>
+                <span style={{ fontFamily: script.chipFontFamily }}>{L.ch}</span>
               </button>
             );
           })}
@@ -1517,7 +1688,7 @@ export function LetterAnatomy() {
                 }`}
                 title={`s${n}`}
               >
-                {cur.ch + HEBREW_STRETCH_TRIG.repeat(n)}
+                {cur.ch + script.stretchTrigger.repeat(n)}
                 <span
                   dir="ltr"
                   className="block font-mono text-[10px] text-neutral-400 tracking-normal"

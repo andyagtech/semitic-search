@@ -1175,16 +1175,18 @@ NOTO_SANS_SYRIAC = {
     # works. Adding taw/beth back means widening init/medi/fina too, which
     # needs per-positional-form cutoffs — a real body of work, deferred.
     "letters": {
-        # Dalath: bar-class. Bar zone is the flat top portion; x_cutoff picks
-        # a point between the stretchable left curve and the anchored right
-        # tail. Conservative values pending visual verification.
-        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 300, "bar_top": 420, "x_cutoff": 220},
-        # Rish: same shape as dalath but with the additional dot/serif
-        # above (higher y-max). Same bar zone. bar_bottom raised from 250
-        # to 300 so the shift stops short of the rounded lower transition
-        # of the bar — fixes the awkward bottom edge at low stretch levels
-        # (image 53/54).
-        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 300, "bar_top": 420, "x_cutoff": 220},
+        # Dalath: bar-class. Bar zone must catch BOTH edges of the top bar
+        # or the widened terminal tapers to a wedge — the outer top edge
+        # sits at y=426 in Noto Sans Syriac, and the inner underside at
+        # y=353. bar_top=430 catches the outer top; bar_bottom=340 sits
+        # just below the underside without accidentally including tail
+        # points below the bar. x_cutoff=220 keeps the right-hand tail and
+        # rounded top-right transition anchored while the left terminal
+        # slides out cleanly.
+        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 340, "bar_top": 430, "x_cutoff": 220},
+        # Rish: same shape as dalath + supralineal dot at y≈610. Same bar
+        # zone works because the dot is well above bar_top and stays put.
+        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 340, "bar_top": 430, "x_cutoff": 220},
     },
 }
 
@@ -1364,13 +1366,20 @@ RAMSINA = {
         # the dot outside the shift zone so it stays put above the widened
         # body.
         0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 350, "bar_top": 630, "x_cutoff": 200},
-        # Taw: cross-bar y=[-20, 260]; ascender peaks at y=828 stays put.
-        # leg class so the left descender travels with the bar.
-        0x072C: {"name": "taw",    "class": "leg", "bar_bottom": -30, "bar_top": 280, "leg_max_y": 100, "x_cutoff": 250},
         # Beth: right hook + flat top y≈600-670. x_cutoff=500 keeps the
         # hook (right half) anchored while the left half of the top bar
         # extends. Dual-joining — widens in isolated form only.
         0x0712: {"name": "beth",   "class": "bar", "bar_bottom": 0, "bar_top": 670, "x_cutoff": 500},
+        # Taw: DISABLED pending a rethink. The bar/leg/x_cutoff approach
+        # produces a wedge/whale silhouette because Ramsina taw's ascender
+        # arch (pts 14-34, y=277..828, x=134..890) is interleaved with the
+        # baseline stroke across the same x range — any hard x_cutoff cuts
+        # through the arch, so shifting "the right half" drags the arch's
+        # peak sideways too. A proper Ramsina-taw widening probably needs
+        # per-contour surgery (extend the baseline stroke as its own zone,
+        # keep the ascender+counter as a rigid feature) — deferring until
+        # the letter-anatomy tool guides the exact contour handling.
+        # 0x072C: {"name": "taw", "class": "leg", ...},
     },
 }
 

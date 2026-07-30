@@ -356,6 +356,7 @@ export function LetterAnatomy() {
       script: p.get("script"),
       font: p.get("font"),
       letter: p.get("letter"),
+      form: p.get("form"),
     };
   })();
   const initialScript: "hebrew" | "syriac" = (() => {
@@ -381,6 +382,13 @@ export function LetterAnatomy() {
     );
     return match ? match.cp : initialScriptDef.defaultCp;
   })();
+  const initialForm: PositionalForm = (() => {
+    const f = initial?.form?.toLowerCase();
+    if (f === "init" || f === "initial") return "init";
+    if (f === "medi" || f === "medial") return "medi";
+    if (f === "fina" || f === "final") return "fina";
+    return "isol";
+  })();
 
   // Script selector — Hebrew (default) or Assyrian. Switching scripts
   // resets the codepoint and font picker to the new script's defaults
@@ -390,7 +398,7 @@ export function LetterAnatomy() {
   // Positional-form toggle. Only meaningful for cursive Assyrian; ignored
   // for Hebrew (which has no init/medi/fina). Resets to isolated on
   // script switch.
-  const [positionalForm, setPositionalForm] = useState<PositionalForm>("isol");
+  const [positionalForm, setPositionalForm] = useState<PositionalForm>(initialForm);
   // Font + codepoint pickers. Defaults come from the active script or
   // from URL params if provided.
   const [fontIdx, setFontIdx] = useState(initialFontIdx);
@@ -426,9 +434,19 @@ export function LetterAnatomy() {
     }
     const letterEntry = script.letters.find((L) => L.cp === cp);
     if (letterEntry) params.set("letter", letterEntry.name);
+    // Positional form: write for Assyrian only (Hebrew has no positional
+    // forms). Full names (initial/medial/final) read better in URLs than
+    // the internal 4-char codes. Isolated is the default and stays
+    // implicit — omitting it keeps URLs shorter for the common case.
+    if (script.hasPositionalForms && positionalForm !== "isol") {
+      const formName = { init: "initial", medi: "medial", fina: "final" }[positionalForm];
+      params.set("form", formName);
+    } else {
+      params.delete("form");
+    }
     const url = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState(null, "", url);
-  }, [scriptId, fontIdx, cp, script.fonts, script.letters]);
+  }, [scriptId, fontIdx, cp, positionalForm, script.fonts, script.letters, script.hasPositionalForms]);
 
   // Loaded glyph geometry.
   const [glyph, setGlyph] = useState<Glyph | null>(null);
@@ -1781,36 +1799,42 @@ export function LetterAnatomy() {
               click a level to jump the anatomy view there
             </span>
           </div>
-          <div className="flex flex-wrap items-end gap-x-4 gap-y-2 overflow-x-auto">
+          <div className="flex flex-col items-end gap-1">
             {Array.from({ length: 17 }, (_, n) => {
               const g = previewGlyphs[n];
               const active = stretchLevel === n;
-              // Fixed cell size — all variants render into the same box
-              // so wider ones extend beyond and get clipped, giving a
-              // visual sense of how much the letter grows at each level.
-              const PREVIEW_W = 96;
-              const PREVIEW_H = 96;
+              // Row height fixed; width grows with the widened variant so
+              // each row shows the true extent of that stretch level.
+              const ROW_H = 64;
+              // Compute the SVG width that fits this specific glyph.
+              const upem = g?.upem || 2048;
+              const scale = (ROW_H * 0.7) / upem;
+              const gw = g ? (g.bounds.xMax - g.bounds.xMin) : 0;
+              const svgW = g ? Math.max(60, gw * scale + 20) : 60;
               return (
                 <button
                   key={n}
                   onClick={() => setStretchLevel(n)}
-                  className={`p-1 rounded ${
+                  className={`flex items-center gap-3 px-3 py-1 rounded transition ${
                     active
                       ? "bg-amber-100 ring-1 ring-amber-400"
-                      : "hover:bg-neutral-100"
+                      : "hover:bg-neutral-50"
                   }`}
                   title={`s${n}${g ? "" : " (glyph not built)"}`}
+                  style={{ direction: "rtl" }}
                 >
-                  <div style={{ width: PREVIEW_W, height: PREVIEW_H }} className="flex items-end justify-end">
+                  {/* Level label on the LEFT (start of RTL flow = visually left) */}
+                  <span
+                    className="font-mono text-[10px] text-neutral-400 w-8 flex-shrink-0"
+                    style={{ direction: "ltr", textAlign: "left" }}
+                  >
+                    s{n}
+                  </span>
+                  <div
+                    style={{ height: ROW_H, width: svgW }}
+                    className="flex items-end justify-start flex-shrink-0"
+                  >
                     {g ? (() => {
-                      const pad = 40;
-                      const gw = g.bounds.xMax - g.bounds.xMin;
-                      const gh = g.bounds.yMax - g.bounds.yMin;
-                      const upem = g.upem || 1000;
-                      // Scale so the base isolated form fits the cell;
-                      // widened variants (with larger gw) will extend
-                      // beyond the visible area — that's the point.
-                      const scale = PREVIEW_H / (upem * 0.9);
                       const path = g.contours.map((c) => {
                         let d = "";
                         c.forEach((p, i) => {
@@ -1818,18 +1842,19 @@ export function LetterAnatomy() {
                         });
                         return d + "Z";
                       }).join(" ");
-                      // Right-align so widening extends leftward (RTL)
-                      const originX = PREVIEW_W - pad;
-                      const originY = PREVIEW_H - pad;
+                      // Anchor at right edge so all levels align on their
+                      // right end (natural for RTL scripts). Wider variants
+                      // extend leftward.
+                      const originY = ROW_H * 0.85;
                       return (
                         <svg
-                          width={PREVIEW_W}
-                          height={PREVIEW_H}
-                          viewBox={`0 0 ${PREVIEW_W} ${PREVIEW_H}`}
+                          width={svgW}
+                          height={ROW_H}
+                          viewBox={`0 0 ${svgW} ${ROW_H}`}
                           style={{ overflow: "visible" }}
                         >
                           <g
-                            transform={`translate(${originX}, ${originY}) scale(${scale}) translate(${-g.bounds.xMax}, 0)`}
+                            transform={`translate(${svgW - 10}, ${originY}) scale(${scale}) translate(${-g.bounds.xMax}, 0)`}
                           >
                             <path d={path} fill="#1f2937" fillRule="evenodd" />
                           </g>
@@ -1839,12 +1864,6 @@ export function LetterAnatomy() {
                       <span className="text-[10px] text-neutral-300 font-mono">—</span>
                     )}
                   </div>
-                  <span
-                    className="block font-mono text-[10px] text-neutral-400 text-center mt-1"
-                    style={{ fontFamily: "ui-monospace, monospace", fontSize: 10 }}
-                  >
-                    s{n}
-                  </span>
                 </button>
               );
             })}

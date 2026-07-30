@@ -1361,7 +1361,13 @@ RAMSINA = {
         # the upper curve stays visually anchored on the left while the
         # rectangle's right edge (pt 0 at x=623, pt 25 at x=623) translates
         # right. Every upper-curve point sits at x<500, so they all shift.
-        0x0710: {"name": "alaph",  "class": "bar", "bar_bottom": 0, "bar_top": 864, "x_cutoff": 500, "positional_forms": True},
+        # bar_bottom lowered to -250 so the alaph.fina positional form's
+        # small hook (pts 3-9, y=-234 to -102) is INSIDE the shift zone
+        # and stays visually anchored with the left side. Without this, the
+        # hook falls through to "out-of-zone" and translates right on its
+        # own, detaching from its attachment pts (2, 11, 12). Isolated form
+        # has no pts with y<0 so the change is a no-op there.
+        0x0710: {"name": "alaph",  "class": "bar", "bar_bottom": -250, "bar_top": 864, "x_cutoff": 500, "positional_forms": True},
         # Gamal: diagonal upper body + horizontal shelf (pt 26→27 at y=195)
         # over the baseline (pt 13→12 at y=0), plus a small descender
         # square at (x≈1150..1346, y≈-484..-289). bar_bottom=-500 catches
@@ -3968,17 +3974,30 @@ def build_one(config: dict) -> int:
                                ".fin2", ".fin3", ".med2")
         positional_variants: dict[str, list[str]] = {}
         # Gate positional-variant building on a per-letter opt-in.
-        # Default False (skip) because most of our configs use x/y cutoffs
-        # or point indices tuned to the ISOLATED form's geometry — applying
-        # them unchanged to positional variants (which have different
-        # point counts, bboxes, and joining stubs) produces broken glyphs.
-        # Set `positional_forms: True` to opt in a letter once its
-        # positional-form widening has been tuned or verified. When True,
-        # we still fall back to the isolated-form config for every
-        # variant, so any per-form nuance still requires manual review.
-        want_positional = bool(info.get("positional_forms", False))
-        if want_positional:
+        # `positional_forms` accepts:
+        #   False (default): skip all positional variants; only the isolated
+        #     form widens.
+        #   True: opt in ONLY .fina (word-final) — safe default because
+        #     .fina geometry is closest to isolated (both are line-ending
+        #     forms, minimal joining-stub geometry to deform).
+        #   List of suffixes like [".fina", ".init"]: opt-in specific forms
+        #     per letter, for cases where the isolated config has been
+        #     verified to produce clean widening on those variants.
+        # Init/medi are notoriously fragile because their joining stubs
+        # need CONTROL-POINT INSERTION on the extending edge to widen
+        # cleanly — otherwise the outline degenerates into a thin
+        # triangular sliver as the letter grows. Opt-in required.
+        pf = info.get("positional_forms", False)
+        if pf is True:
+            allowed_suffixes = (".fina",)
+        elif isinstance(pf, (list, tuple)):
+            allowed_suffixes = tuple(str(s) for s in pf)
+        else:
+            allowed_suffixes = ()
+        if allowed_suffixes:
             for suffix in POSITIONAL_SUFFIXES:
+                if suffix not in allowed_suffixes:
+                    continue
                 positional = src_glyph + suffix
                 if positional in font.getGlyphOrder():
                     pos_prefix = f"{letter_name}{suffix}"

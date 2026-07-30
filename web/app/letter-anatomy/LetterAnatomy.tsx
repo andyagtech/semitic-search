@@ -1750,7 +1750,21 @@ export function LetterAnatomy() {
                 }`}
                 title={`s${n}`}
               >
-                {cur.ch + script.stretchTrigger.repeat(n)}
+                {(() => {
+                  // Force positional-form shaping using ZWJ (U+200D):
+                  //   isol: no ZWJ
+                  //   init: append ZWJ so shaper sees "letter joining ..."
+                  //   medi: prepend + append ZWJ
+                  //   fina: prepend ZWJ so shaper sees "... joining letter"
+                  // Trigger inserted AFTER the letter but BEFORE the trailing
+                  // ZWJ so the widened glyph substitutes first, then joining
+                  // context still fires. For Hebrew (no positional forms),
+                  // the ZWJ has no effect but is harmless.
+                  const ZWJ = "‍";
+                  const before = positionalForm === "medi" || positionalForm === "fina" ? ZWJ : "";
+                  const after = positionalForm === "medi" || positionalForm === "init" ? ZWJ : "";
+                  return before + cur.ch + script.stretchTrigger.repeat(n) + after;
+                })()}
                 <span
                   dir="ltr"
                   className="block font-mono text-[10px] text-neutral-400 tracking-normal"

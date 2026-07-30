@@ -1370,16 +1370,48 @@ RAMSINA = {
         # hook (right half) anchored while the left half of the top bar
         # extends. Dual-joining — widens in isolated form only.
         0x0712: {"name": "beth",   "class": "bar", "bar_bottom": 0, "bar_top": 670, "x_cutoff": 500},
-        # Taw: DISABLED pending a rethink. The bar/leg/x_cutoff approach
-        # produces a wedge/whale silhouette because Ramsina taw's ascender
-        # arch (pts 14-34, y=277..828, x=134..890) is interleaved with the
-        # baseline stroke across the same x range — any hard x_cutoff cuts
-        # through the arch, so shifting "the right half" drags the arch's
-        # peak sideways too. A proper Ramsina-taw widening probably needs
-        # per-contour surgery (extend the baseline stroke as its own zone,
-        # keep the ascender+counter as a rigid feature) — deferring until
-        # the letter-anatomy tool guides the exact contour handling.
-        # 0x072C: {"name": "taw", "class": "leg", ...},
+        # Nun: L-shaped letter with a middle shelf (pt 34→35 at y=195) over
+        # a wide baseline (pt 22→21 at y=0), and a right ascender above the
+        # shelf. Widening zone is the rectangular strip between shelf and
+        # baseline. bar_top=600 catches the full letter height so the ring
+        # hook on the left stays visually anchored; x_cutoff=450 keeps the
+        # right ascender (leftmost point pt 3/pt 4 at x=466) safely in the
+        # "translates right" set.
+        0x0722: {"name": "nun",    "class": "bar", "bar_bottom": 0, "bar_top": 600, "x_cutoff": 450},
+        # Alaph: "2"-shape with a rectangular base at the bottom. Widening
+        # zone is the base rectangle bounded by pt 24→25 (y=195) on top and
+        # pt 1→0 (y=0) on the bottom. bar_top=864 (full letter height) so
+        # the upper curve stays visually anchored on the left while the
+        # rectangle's right edge (pt 0 at x=623, pt 25 at x=623) translates
+        # right. Every upper-curve point sits at x<500, so they all shift.
+        0x0710: {"name": "alaph",  "class": "bar", "bar_bottom": 0, "bar_top": 864, "x_cutoff": 500},
+        # Gamal: diagonal upper body + horizontal shelf (pt 26→27 at y=195)
+        # over the baseline (pt 13→12 at y=0), plus a small descender
+        # square at (x≈1150..1346, y≈-484..-289). bar_bottom=-500 catches
+        # the descender square; bar_top=400 catches the left hook's peak
+        # (pt 21 at y=352). Upper body sits above bar_top so it stays out
+        # of zone and translates right as a unit with the right shelf edge.
+        0x0713: {"name": "gamal",  "class": "bar", "bar_bottom": -500, "bar_top": 400, "x_cutoff": 500},
+        # Taw: aleph-style angle-change widening, guided by anatomy review.
+        # The letter is an arch: left rise (pts 8-19, x<316) → peak (pt 20
+        # at 316,828) → outer right diagonal (pts 23-27) down to the right
+        # foot (pts 27-32 forming a small rigid shape at x≈783-890, y=-12
+        # to 275) → interior return (pts 32-35) back up to (292, 577) →
+        # small baseline hump (pts 36-44 + 0-7).
+        #
+        # Widening extends the right diagonal:
+        #   - Left rise, peak, and interior top-left (all x<350) shift-then-
+        #     mono → stay visually anchored. Bar_bottom=-50 to bar_top=900
+        #     covers the whole letter height so no left-side point escapes
+        #     the zone and accidentally translates.
+        #   - Right diagonal, right foot, and interior return east (all
+        #     x>=350) stay-then-mono → translate right rigidly. The right
+        #     foot (pts 27-32) travels as a rigid unit; its endpoints stay
+        #     connected to the diagonal above and the interior return below.
+        #   - Angle-change hinges fall naturally at pt 22↔23 (top of arch),
+        #     pt 34↔35 (interior return), and pts 5↔6 / 39↔40 (baseline
+        #     hump edges).
+        0x072C: {"name": "taw",    "class": "bar", "bar_bottom": -50, "bar_top": 900, "x_cutoff": 350},
     },
 }
 

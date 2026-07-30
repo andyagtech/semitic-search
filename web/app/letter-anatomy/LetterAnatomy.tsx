@@ -407,6 +407,10 @@ export function LetterAnatomy() {
     setPositionalForm("isol");
   };
 
+  // Preview strip state — populated below after `cur` and `posSuffix` are
+  // in scope.
+  const [previewGlyphs, setPreviewGlyphs] = useState<(Glyph | null)[]>([]);
+
   // Reflect current selection back into the URL so it can be bookmarked
   // or shared. Uses replaceState — no navigation, no re-render.
   useEffect(() => {
@@ -499,6 +503,44 @@ export function LetterAnatomy() {
     script.fonts[fontIdx]?.file ?? script.fonts[0].file,
     `LA_StretchPreview_${scriptId}`,
   );
+
+  // Preview strip: load all 17 widened variants for the current letter ×
+  // form directly by glyph name, so we can render each as SVG. Bypasses
+  // HarfBuzz shaping — for positional forms we'd need a ZWJ between
+  // letter and triggers to force init/medi shaping, but that ZWJ then
+  // breaks the widening ligature match.
+  useEffect(() => {
+    if (!cur) return;
+    let cancelled = false;
+    const file = script.fonts[fontIdx]?.file ?? script.fonts[0].file;
+    const load = async () => {
+      const out: (Glyph | null)[] = [];
+      for (let n = 0; n <= 16; n++) {
+        let name: string;
+        if (n === 0) {
+          if (posSuffix) {
+            const cpHex = cp.toString(16).toUpperCase().padStart(4, "0");
+            name = `uni${cpHex}${posSuffix}`;
+          } else {
+            const g = await loadGlyphByCp(file, cp);
+            out.push(g);
+            continue;
+          }
+        } else {
+          name = `${cur.name}${posSuffix}_s${n}`;
+        }
+        try {
+          const g = await loadGlyphByName(file, name);
+          out.push(g);
+        } catch {
+          out.push(null);
+        }
+      }
+      if (!cancelled) setPreviewGlyphs(out);
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [cur, cp, posSuffix, fontIdx, script.fonts]);
 
   // Fit-to-glyph viewBox using the standard OpenType idiom: viewBox is
   // in flipped coords (y increases downward), then the content group
@@ -1721,59 +1763,91 @@ export function LetterAnatomy() {
         </section>
       ) : null}
 
-      {/* Live stretch preview strip — renders the letter with N trigger
-          characters at each level so we can eyeball what the widened
-          variant looks like in text. Uses the same font we're
-          inspecting so the anatomy and rendered form stay in sync. */}
+      {/* Live stretch preview strip — renders each widened variant
+          directly from the font's glyph table (by name), so the strip
+          reflects the SELECTED positional form (isolated/init/medi/fina)
+          accurately. HarfBuzz text shaping can't produce this cleanly:
+          for positional forms we'd need a ZWJ between letter and triggers,
+          but that ZWJ then breaks the widening ligature. Direct SVG
+          rendering bypasses both issues. */}
       {cur ? (
         <section className="bg-white border border-neutral-200 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2 text-xs uppercase tracking-wider text-neutral-500">
-            <span>stretch preview — {cur.name}</span>
+            <span>
+              stretch preview — {cur.name}
+              {posSuffix ? <span className="font-mono">{posSuffix}</span> : null}
+            </span>
             <span className="font-mono lowercase tracking-normal text-neutral-400">
-              {cssFontReady ? "font ready" : "loading…"} · click a level to jump the anatomy view there
+              click a level to jump the anatomy view there
             </span>
           </div>
-          <div
-            dir="rtl"
-            className="flex flex-wrap items-baseline gap-x-4 gap-y-2 overflow-x-auto"
-            style={{ fontFamily: cssFontFamily, fontSize: 72, lineHeight: 1.1 }}
-          >
-            {Array.from({ length: 17 }, (_, n) => (
-              <button
-                key={n}
-                onClick={() => setStretchLevel(n)}
-                dir="rtl"
-                className={`px-2 py-1 rounded ${
-                  stretchLevel === n
-                    ? "bg-amber-100 ring-1 ring-amber-400"
-                    : "hover:bg-neutral-100"
-                }`}
-                title={`s${n}`}
-              >
-                {(() => {
-                  // Force positional-form shaping using ZWJ (U+200D):
-                  //   isol: no ZWJ
-                  //   init: append ZWJ so shaper sees "letter joining ..."
-                  //   medi: prepend + append ZWJ
-                  //   fina: prepend ZWJ so shaper sees "... joining letter"
-                  // Trigger inserted AFTER the letter but BEFORE the trailing
-                  // ZWJ so the widened glyph substitutes first, then joining
-                  // context still fires. For Hebrew (no positional forms),
-                  // the ZWJ has no effect but is harmless.
-                  const ZWJ = "‍";
-                  const before = positionalForm === "medi" || positionalForm === "fina" ? ZWJ : "";
-                  const after = positionalForm === "medi" || positionalForm === "init" ? ZWJ : "";
-                  return before + cur.ch + script.stretchTrigger.repeat(n) + after;
-                })()}
-                <span
-                  dir="ltr"
-                  className="block font-mono text-[10px] text-neutral-400 tracking-normal"
-                  style={{ fontFamily: "ui-monospace, monospace", fontSize: 10 }}
+          <div className="flex flex-wrap items-end gap-x-4 gap-y-2 overflow-x-auto">
+            {Array.from({ length: 17 }, (_, n) => {
+              const g = previewGlyphs[n];
+              const active = stretchLevel === n;
+              // Fixed cell size — all variants render into the same box
+              // so wider ones extend beyond and get clipped, giving a
+              // visual sense of how much the letter grows at each level.
+              const PREVIEW_W = 96;
+              const PREVIEW_H = 96;
+              return (
+                <button
+                  key={n}
+                  onClick={() => setStretchLevel(n)}
+                  className={`p-1 rounded ${
+                    active
+                      ? "bg-amber-100 ring-1 ring-amber-400"
+                      : "hover:bg-neutral-100"
+                  }`}
+                  title={`s${n}${g ? "" : " (glyph not built)"}`}
                 >
-                  s{n}
-                </span>
-              </button>
-            ))}
+                  <div style={{ width: PREVIEW_W, height: PREVIEW_H }} className="flex items-end justify-end">
+                    {g ? (() => {
+                      const pad = 40;
+                      const gw = g.bounds.xMax - g.bounds.xMin;
+                      const gh = g.bounds.yMax - g.bounds.yMin;
+                      const upem = g.upem || 1000;
+                      // Scale so the base isolated form fits the cell;
+                      // widened variants (with larger gw) will extend
+                      // beyond the visible area — that's the point.
+                      const scale = PREVIEW_H / (upem * 0.9);
+                      const path = g.contours.map((c) => {
+                        let d = "";
+                        c.forEach((p, i) => {
+                          d += (i === 0 ? "M" : "L") + p.x + " " + (-p.y);
+                        });
+                        return d + "Z";
+                      }).join(" ");
+                      // Right-align so widening extends leftward (RTL)
+                      const originX = PREVIEW_W - pad;
+                      const originY = PREVIEW_H - pad;
+                      return (
+                        <svg
+                          width={PREVIEW_W}
+                          height={PREVIEW_H}
+                          viewBox={`0 0 ${PREVIEW_W} ${PREVIEW_H}`}
+                          style={{ overflow: "visible" }}
+                        >
+                          <g
+                            transform={`translate(${originX}, ${originY}) scale(${scale}) translate(${-g.bounds.xMax}, 0)`}
+                          >
+                            <path d={path} fill="#1f2937" fillRule="evenodd" />
+                          </g>
+                        </svg>
+                      );
+                    })() : (
+                      <span className="text-[10px] text-neutral-300 font-mono">—</span>
+                    )}
+                  </div>
+                  <span
+                    className="block font-mono text-[10px] text-neutral-400 text-center mt-1"
+                    style={{ fontFamily: "ui-monospace, monospace", fontSize: 10 }}
+                  >
+                    s{n}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </section>
       ) : null}

@@ -1392,26 +1392,88 @@ RAMSINA = {
         # (pt 21 at y=352). Upper body sits above bar_top so it stays out
         # of zone and translates right as a unit with the right shelf edge.
         0x0713: {"name": "gamal",  "class": "bar", "bar_bottom": -500, "bar_top": 400, "x_cutoff": 500},
-        # Taw: aleph-style angle-change widening, guided by anatomy review.
-        # The letter is an arch: left rise (pts 8-19, x<316) → peak (pt 20
-        # at 316,828) → outer right diagonal (pts 23-27) down to the right
-        # foot (pts 27-32 forming a small rigid shape at x≈783-890, y=-12
-        # to 275) → interior return (pts 32-35) back up to (292, 577) →
-        # small baseline hump (pts 36-44 + 0-7).
+        # Pe: outer body + separate inner counter (contour 1 at x=630-810,
+        # y=485-658). Shelf pt 14→15 (y=195), baseline pt 2→1 (y=0). Full
+        # letter height (0..902) in zone so left hook stays visually and
+        # the entire right upper loop + inner counter translate right as
+        # rigid units. x_cutoff=350 splits between shelf-left (277) and
+        # shelf-right (879).
+        0x0726: {"name": "pe",     "class": "bar", "bar_bottom": 0, "bar_top": 902, "x_cutoff": 350},
+        # E (ain, ܥ): hooked letter with a decorative upper flourish at
+        # pts 0-15 (x=416-608, y=568-884). Shelf pt 52→53 (y=195), baseline
+        # pt 39→38 (y=0). x_cutoff bumped to 650 so the upper flourish
+        # sits ENTIRELY on the "shifts / stays visually" side, otherwise
+        # a middle-x cutoff would tear the flourish. Right side (descending
+        # arc + right foot pts 22-32 at x=852-1275) still translates right
+        # cleanly since it's all far right of the flourish.
+        0x0725: {"name": "e",      "class": "bar", "bar_bottom": 0, "bar_top": 884, "x_cutoff": 650},
+        # Kaph: cloud-shape with an inward arch. Shelf pt 13→14 (y=195),
+        # baseline pt 2→41 (y=0). Inner arch (pts 15-27) all at x>=486
+        # travels with the right side as a rigid unit. x_cutoff=350 splits
+        # between shelf endpoints.
+        0x071F: {"name": "kaph",   "class": "bar", "bar_bottom": 0, "bar_top": 612, "x_cutoff": 350},
+        # Lamadh: L-shape. Widening area is between pts 26, 27, 12, 13.
+        # Shelf pt 26→27 (y=195), baseline pt 13→12 (y=0). Full letter
+        # height (0..1136) in zone so the tall upper hook and diagonal
+        # ascender translate right as a unit while the left foot stays
+        # anchored. x_cutoff=350 lands between shelf-left (277) and
+        # shelf-right (810).
+        0x0720: {"name": "lamadh", "class": "bar", "bar_bottom": 0, "bar_top": 1136, "x_cutoff": 350},
+        # Heh: rounded body with a right descender leg (pts 0-2 + 24-25
+        # at y=-134 to -115) hanging below the baseline. Widening zone is
+        # the top-bar / inner-shelf area — split between pt 4 (666, 400,
+        # inner-shelf left, stays visually) and pt 3 (755, 400, top of
+        # right leg, translates right). Full descender + full letter
+        # height in zone (bar_bottom=-150 catches y=-134, bar_top=700
+        # catches y=646). x_cutoff=700 lets the top bar (pt 16 at 321 →
+        # pt 17 at 737) and inner shelf (pt 4 → pt 3) both extend, while
+        # the right leg + top-right curl (pts 18-25 at x=771-849) travel
+        # as a rigid unit and the inner counter (pts 26-39 at x=270-531)
+        # stays visually anchored with the left body.
+        0x0717: {"name": "he",     "class": "bar", "bar_bottom": -150, "bar_top": 700, "x_cutoff": 700},
+        # Heth: two "MM" waves at the bottom right + two hills at the top
+        # right. Widening rectangle is between shelf pt 28 (277, 195) →
+        # pt 29 (478, 195) on top and baseline pt 16 (240, 0) → pt 15
+        # (558, 0) on the bottom. x_cutoff=400 puts both pt 29 (shelf-
+        # right) and pt 15 (baseline-right) in the translates-right set,
+        # so the rectangle widens uniformly. Right MM waves (pts 5-14 at
+        # x=588-1164) and both top hills (pts 32-44 at x=499-998) travel
+        # right as rigid units. Left hook + shelf-left + baseline-left
+        # stay visually.
+        0x071A: {"name": "heth",   "class": "bar", "bar_bottom": -50, "bar_top": 500, "x_cutoff": 400},
+        # Teth: cross-shape with a tall ascender arch (pts 29-53 at
+        # x=434-955, y=195-994) and a hanging right descender (pts 0-14,
+        # x=837-1449, y=-512 to 0) plus a small triangle counter (contour
+        # 1 at x=1060-1357, y=-262 to 0). Widening rectangle between
+        # shelf pt 27 (277, 195) → pt 28 (730, 195) and baseline pt 15
+        # (240, 0) → pt 14 (837, 0). x_cutoff=430 is chosen precisely to
+        # sit BELOW the ascender's leftmost point (pt 33 at x=434), so
+        # the ascender arch stays intact as a rigid unit and translates
+        # right along with the descender and the triangle counter. Left
+        # hook stays visually.
+        0x071B: {"name": "teth",   "class": "bar", "bar_bottom": -520, "bar_top": 1000, "x_cutoff": 430},
+        # Taw: aleph-style angle-change widening. The letter is an arch:
+        # left rise (pts 8-19, x<316) → peak (pt 20 at 316,828) → outer
+        # right diagonal (pts 23-31) → right foot (pts 27-32) → interior
+        # return (pts 32-35) → baseline hump (pts 36-44 + 0-7).
         #
-        # Widening extends the right diagonal:
-        #   - Left rise, peak, and interior top-left (all x<350) shift-then-
-        #     mono → stay visually anchored. Bar_bottom=-50 to bar_top=900
-        #     covers the whole letter height so no left-side point escapes
-        #     the zone and accidentally translates.
-        #   - Right diagonal, right foot, and interior return east (all
-        #     x>=350) stay-then-mono → translate right rigidly. The right
-        #     foot (pts 27-32) travels as a rigid unit; its endpoints stay
-        #     connected to the diagonal above and the interior return below.
-        #   - Angle-change hinges fall naturally at pt 22↔23 (top of arch),
-        #     pt 34↔35 (interior return), and pts 5↔6 / 39↔40 (baseline
-        #     hump edges).
-        0x072C: {"name": "taw",    "class": "bar", "bar_bottom": -50, "bar_top": 900, "x_cutoff": 350},
+        # Uses lean_top to make the right side ROTATE/FAN OPEN around the
+        # peak rather than translate rigidly. For right-side points
+        # (x>=x_cutoff):
+        #   - y=lean_top (near peak): full in-zone shift → stays visually
+        #   - y=bar_bottom (foot bottom): zero shift → translates right by
+        #     full shift via mono
+        #   - between: linear interpolation
+        # So the right diagonal near the peak barely moves; the right foot
+        # translates almost fully; intermediate points fan out smoothly.
+        # This matches the manual "rotate around peak" pattern from anatomy
+        # review — right foot preserves its rigid shape but progressively
+        # slides down-right, while the diagonal opens like a fan.
+        #
+        # Left rise + peak stays visually anchored (all x<350 shift full).
+        0x072C: {"name": "taw",    "class": "bar",
+                 "bar_bottom": -50, "bar_top": 900, "x_cutoff": 350,
+                 "lean_top": 650},
     },
 }
 
@@ -1613,6 +1675,7 @@ def stretch_glyph(
     flatten_top_to_y: int | None = None,
     flatten_top_contours: list[int] | None = None,
     raise_point_ys: dict[int, int] | None = None,
+    lean_top: int | None = None,
 ) -> object:
     """Return a new TTGlyph built from `src_name` with selected points
     shifted LEFT. Shift depends on letter_class and the point's (x, y):
@@ -1686,9 +1749,25 @@ def stretch_glyph(
             if bar_bottom <= y <= bar_top:
                 return shift if x < x_cutoff else 0.0
             return 0.0
-        # "bar" (dalet, resh): only the bar zone stretches, hard split
+        # "bar" (dalet, resh): only the bar zone stretches, hard split.
+        # Optional `lean_top`: right-side points (x>=x_cutoff) get a y-based
+        # taper — points at y=lean_top get FULL in-zone shift (post-mono:
+        # stays visually, same as left side); points at y=bar_bottom get
+        # ZERO in-zone shift (post-mono: translates right by full shift);
+        # linear between. This "fans open" the right side — used for taw
+        # where the right diagonal should rotate around the peak rather
+        # than slide rigidly rightward. Without lean_top, right-side
+        # points get uniform zero shift (rigid translate) as before.
         if bar_bottom <= y <= bar_top:
-            return shift if x < x_cutoff else 0.0
+            if x < x_cutoff:
+                return shift
+            if lean_top is not None:
+                span = lean_top - bar_bottom
+                if span <= 0:
+                    return 0.0
+                factor = max(0.0, min(1.0, (y - bar_bottom) / span))
+                return shift * factor
+            return 0.0
         return 0.0
 
     # "shear" class: shift each point LEFT by an amount proportional to
@@ -3577,6 +3656,8 @@ def build_one(config: dict) -> int:
         raise_point_ys: dict[int, int] | None = None
         if isinstance(raise_ys_raw, dict):
             raise_point_ys = {int(k): int(v) for k, v in raise_ys_raw.items()}
+        lean_top_raw = info.get("lean_top")
+        lean_top = int(lean_top_raw) if isinstance(lean_top_raw, int) else None
         # Per-variant absolute (post-mono) point overrides. Format:
         #   point_overrides_by_variant = {n: {pt_idx: (x, y)}}
         # where n is the widening level (1..MAX_LEVELS) and pt_idx is a
@@ -3673,6 +3754,7 @@ def build_one(config: dict) -> int:
                     flatten_top_to_y=flatten_top_to_y,
                     flatten_top_contours=flatten_top_contours,
                     raise_point_ys=raise_point_ys,
+                    lean_top=lean_top,
                 )
                 lsb_mode_ = config.get("lsb_mode", "shift")
                 # "sym" class shifts left AND right by shift_/2 each — the
@@ -3758,6 +3840,7 @@ def build_one(config: dict) -> int:
                 flatten_top_to_y=flatten_top_to_y,
                 flatten_top_contours=flatten_top_contours,
                 raise_point_ys=raise_point_ys,
+                lean_top=lean_top,
             )
             # Grow advance proportionally: stretched letter takes more
             # horizontal space so neighbors don't overlap its extended arm.

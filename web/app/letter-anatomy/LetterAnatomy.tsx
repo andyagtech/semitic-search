@@ -119,7 +119,7 @@ const SYRIAC_LETTERS: LetterEntry[] = [
 // widening).
 const SYRIAC_FONTS: FontEntry[] = [
   { id: "syr-stretch-ramsina",      label: "Semitic Stretch Ramsina",             file: "SemiticStretchRamsina.ttf",
-    stretchable: new Set([0x0710, 0x0712, 0x0713, 0x0715, 0x0722, 0x072A, 0x072C]) },
+    stretchable: new Set([0x0710, 0x0712, 0x0713, 0x0715, 0x0717, 0x071A, 0x071B, 0x071F, 0x0720, 0x0722, 0x0725, 0x0726, 0x072A, 0x072C]) },
   { id: "syr-stretch-noto",         label: "Semitic Stretch Noto Sans Syriac",    file: "SemiticStretchNotoSansSyriac.ttf",
     stretchable: new Set([0x0715, 0x072A]) },
   { id: "syr-stretch-nohadra-sapna", label: "Semitic Stretch Nohadra Sapna",      file: "SemiticStretchNohadraSapna.ttf",

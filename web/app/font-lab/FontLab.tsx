@@ -167,7 +167,8 @@ const SCRIPTS: ScriptEntry[] = [
       "ܝܬ܍܍܍ ܫܡܝܐ ܘܝܬ܍܍܍ ܐܪ܍܍ܥܐ\n" +
       "ܘܐܪ܍ܥܐ ܗܘܬ܍܍ ܬܘܗ ܘܒܘܗ\n" +
       "ܘܪ܍܍ܘܚܗ ܕ܍܍܍ܐܠܗܐ ܡܪ܍܍ܚܦܐ\n" +
-      "ܘܐܡܪ܍܍ ܐܠܗܐ ܢܗܘܐ ܢܘܗܪ܍܍ܐ",
+      "ܘܢ܍܍ܗܝܪ ܢ܍܍ܘܗܪܐ ܥ܍܍ܠ ܐܪܥܐ\n" +
+      "ܓ܍܍ܡܪ ܐܠܗܐ ܟ܍܍ܠ ܥܒܕܗ",
     fonts: [
       { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
         note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on beth ܒ, dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts." },

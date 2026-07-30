@@ -81,16 +81,24 @@ const HEB_FONTS: StretchFont[] = [
 const SYR_LETTERS: Letter[] = [
   { code: "ܐ", name: "alaph",    klass: "bar" },
   { code: "ܒ", name: "beth",     klass: "bar" },
+  { code: "ܓ", name: "gamal",    klass: "bar" },
   { code: "ܕ", name: "dalath",   klass: "bar" },
   { code: "ܗ", name: "he",       klass: "bar" },
   { code: "ܘ", name: "waw",      klass: "bar" },
+  { code: "ܚ", name: "heth",     klass: "bar" },
+  { code: "ܛ", name: "teth",     klass: "bar" },
+  { code: "ܟ", name: "kaph",     klass: "bar" },
+  { code: "ܠ", name: "lamadh",   klass: "bar" },
   { code: "ܡ", name: "mim",      klass: "bar" },
+  { code: "ܢ", name: "nun",      klass: "bar" },
   { code: "ܣ", name: "semkath",  klass: "bar" },
+  { code: "ܥ", name: "e",        klass: "bar" },
+  { code: "ܦ", name: "pe",       klass: "bar" },
   { code: "ܪ", name: "rish",     klass: "bar" },
   { code: "ܫ", name: "shin",     klass: "bar" },
-  { code: "ܬ", name: "taw",      klass: "leg" },
+  { code: "ܬ", name: "taw",      klass: "bar" },
 ];
-const SYR_RAMSINA = new Set(["ܐ","ܒ","ܓ","ܕ","ܢ","ܪ","ܬ"]);  // Ramsina — alaph/beth/gamal/dalath/nun/rish/taw
+const SYR_RAMSINA = new Set(["ܐ","ܒ","ܓ","ܕ","ܗ","ܚ","ܛ","ܟ","ܠ","ܢ","ܥ","ܦ","ܪ","ܬ"]);  // Ramsina — 14 letters
 const SYR_PAIR = new Set(["ܕ","ܪ"]);                       // Noto Sans Syriac (right-joining only)
 const SYR_TEN  = new Set(["ܐ","ܒ","ܕ","ܗ","ܘ","ܡ","ܣ","ܪ","ܫ","ܬ"]);
 const SYR_FONTS: StretchFont[] = [

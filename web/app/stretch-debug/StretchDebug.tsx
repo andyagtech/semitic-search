@@ -75,8 +75,8 @@ const HEB_FONTS: StretchFont[] = [
     letters: new Set([...HEB_BASE, "ב","ח","ט","י","ך","כ","ף","פ","ק"]) },
 ];
 
-// ─── Assyrian (Syriac) ─────────────────────────────────────────────────
-// Trigger: U+070D SYRIAC HARKLEAN ASTERISCUS. Real Syriac codepoint,
+// ─── Assyrian ──────────────────────────────────────────────────────────
+// Trigger: U+070D SYRIAC HARKLEAN ASTERISCUS. Real Syriac-script codepoint,
 // joining_type=Non-joining, Base class — survives Chromium's shaper.
 const SYR_LETTERS: Letter[] = [
   { code: "ܐ", name: "alaph",    klass: "bar" },
@@ -99,11 +99,11 @@ const SYR_LETTERS: Letter[] = [
   { code: "ܬ", name: "taw",      klass: "bar" },
 ];
 const SYR_RAMSINA = new Set(["ܐ","ܒ","ܓ","ܕ","ܗ","ܚ","ܛ","ܟ","ܠ","ܢ","ܥ","ܦ","ܪ","ܬ"]);  // Ramsina — 14 letters
-const SYR_PAIR = new Set(["ܕ","ܪ"]);                       // Noto Sans Syriac (right-joining only)
 const SYR_TEN  = new Set(["ܐ","ܒ","ܕ","ܗ","ܘ","ܡ","ܣ","ܪ","ܫ","ܬ"]);
+const SYR_NONE = new Set<string>();  // no widening — source font shown as-is
 const SYR_FONTS: StretchFont[] = [
   { id: "ramsina",       label: "Ramsina (cursive)",             file: "SemiticStretchRamsina.ttf",        letters: SYR_RAMSINA },
-  { id: "noto-sans-syr", label: "Noto Sans Syriac (cursive)",    file: "SemiticStretchNotoSansSyriac.ttf", letters: SYR_PAIR },
+  { id: "noto-sans",     label: "Noto Sans Syriac",              file: "NotoSansSyriac.ttf",               letters: SYR_NONE },
   { id: "nohadra-sapna", label: "Nohadra Sapna (block)",         file: "SemiticStretchNohadraSapna.ttf",   letters: SYR_TEN },
   { id: "nohadra-amedia",label: "Nohadra Amedia (block)",        file: "SemiticStretchNohadraAmedia.ttf",  letters: SYR_TEN },
 ];
@@ -146,7 +146,7 @@ const SCRIPTS: Script[] = [
     note: "GSUB-ligature widening. Each letter has 16 pre-baked variants; N triggers → variant s{N}. v1 = original 6-letter set; v2 = expanded 13-letter set.",
   },
   {
-    id: "syriac", label: "Assyrian (Syriac)", trigger: "܍", triggerLabel: "U+070D",
+    id: "syriac", label: "Assyrian", trigger: "܍", triggerLabel: "U+070D",
     letters: SYR_LETTERS, fonts: SYR_FONTS,
     note: "GSUB ligatures on U+070D SYRIAC HARKLEAN ASTERISCUS. Cursive fonts (Ramsina, Noto Sans Syriac) widen 4 right-joining/dual letters — the isolated forms show cleanly; mid-word behavior depends on shaper positional-form ordering. Block fonts (Nohadra) widen all 10 letters uniformly.",
   },

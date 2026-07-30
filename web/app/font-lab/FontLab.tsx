@@ -170,8 +170,6 @@ const SCRIPTS: ScriptEntry[] = [
       "ܘܢ܍܍ܗܝܪ ܢ܍܍ܘܗܪܐ ܥ܍܍ܠ ܐܪܥܐ\n" +
       "ܓ܍܍ܡܪ ܐܠܗܐ ܟ܍܍ܠ ܥܒܕܗ",
     fonts: [
-      { id: "stretchsyriac", label: "Semitic Stretch Noto Sans Syriac", file: "SemiticStretchNotoSansSyriac.ttf", family: "FL_StretchNotoSansSyriac",
-        note: "Custom Noto Sans Syriac derivative (OFL). Kashida-style widening on beth ܒ, dalath ܕ, rish ܪ, and taw ܬ via the same U+05C6 trigger as the Hebrew stretch fonts." },
       { id: "stretchnohadrasapna", label: "Semitic Stretch Nohadra Sapna", file: "SemiticStretchNohadraSapna.ttf", family: "FL_StretchNohadraSapna",
         note: "Custom Nohadra Sapna derivative (SIL OFL, Sargis Yonan). Block-style geometric Syriac with kashida widening on ܐ ܒ ܕ ܗ ܘ ܡ ܣ ܪ ܫ ܬ. Converted from CFF to TrueType before stretch synthesis." },
       { id: "stretchnohadraamedia", label: "Semitic Stretch Nohadra Amedia", file: "SemiticStretchNohadraAmedia.ttf", family: "FL_StretchNohadraAmedia",

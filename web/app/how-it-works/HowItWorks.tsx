@@ -33,7 +33,7 @@ export function HowItWorks() {
     );
     const syrFace = new FontFace(
       syr,
-      `url(/fonts/SemiticStretchNotoSansSyriac.ttf?v=${stamp}) format("truetype")`,
+      `url(/fonts/SemiticStretchRamsina.ttf?v=${stamp}) format("truetype")`,
       { display: "block", unicodeRange: "U+0000-10FFFF" },
     );
     let cancelled = false;

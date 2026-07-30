@@ -1163,31 +1163,13 @@ NOTO_SANS_SYRIAC = {
     # glyph` below replaces the source font's asteriscus glyph with a 1×1
     # invisible placeholder.
     "stretch_codepoint": 0x070D,
-    # Restricted to right-joining letters (dalath, rish) after visual review
-    # revealed a triangular wedge artifact in the shipped taw/beth positional
-    # forms. Root cause: this config's bar/leg cutoffs (x_cutoff, bar_top,
-    # leg_max_y) were tuned for the ISOLATED outline; when the build applies
-    # the same shifts to init/medi/fina glyphs whose left/right joining stubs
-    # sit at different x-coordinates, the shift zone catches half a
-    # connector-stub and tears the contour. Dalath and rish are BOTH
-    # right-joining — they only appear as isolated or .fina forms, and .fina
-    # geometry is close enough to isolated that a single set of cutoffs
-    # works. Adding taw/beth back means widening init/medi/fina too, which
-    # needs per-positional-form cutoffs — a real body of work, deferred.
-    "letters": {
-        # Dalath: bar-class. Bar zone must catch BOTH edges of the top bar
-        # or the widened terminal tapers to a wedge — the outer top edge
-        # sits at y=426 in Noto Sans Syriac, and the inner underside at
-        # y=353. bar_top=430 catches the outer top; bar_bottom=340 sits
-        # just below the underside without accidentally including tail
-        # points below the bar. x_cutoff=220 keeps the right-hand tail and
-        # rounded top-right transition anchored while the left terminal
-        # slides out cleanly.
-        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 340, "bar_top": 430, "x_cutoff": 220},
-        # Rish: same shape as dalath + supralineal dot at y≈610. Same bar
-        # zone works because the dot is well above bar_top and stays put.
-        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 340, "bar_top": 430, "x_cutoff": 220},
-    },
+    # Widening set INTENTIONALLY EMPTY. Kept in CONFIGS so the font still
+    # builds and ships under the Assyrian tab as one of the important
+    # Syriac faces — but we widen no letters here (dalath/rish were the
+    # last remaining candidates; visual review showed even their .fina
+    # positional geometry needs per-form cutoffs we're not currently doing,
+    # and the whole set produced too many artifacts to justify shipping).
+    "letters": {},
 }
 
 # Noto Rashi Hebrew (Google, OFL) — UPM=1000. Semi-cursive Rashi script,
@@ -1407,19 +1389,17 @@ RAMSINA = {
         #
         # LEFT (stays visually): pts 39-52 = left foot + baseline-west +
         # shelf-left. Small contiguous outline slice on the left side.
-        # RIGHT (translates rigidly): everything else, split into two
-        # ranges because pt 53 (shelf-right) is not adjacent to pts 0-38
-        # in the outline order:
-        #   0-38: upper flourish + right descending arc + right foot +
-        #         baseline-east up to pt 38 (823, 0)
-        #   53:   shelf-right (740, 195)
-        # This makes the baseline widen (pt 38 translates while pt 39
-        # stays), the shelf widen (pt 53 translates while pt 52 stays),
-        # and the whole upper flourish + right arc + right foot travel
-        # rigidly as one unit — preserving their internal shape.
+        # RIGHT (translates rigidly): pts 0-38 and pts 53-56. The 53-56
+        # range covers shelf-right + the upper connection back to the
+        # flourish (pts 54, 55, 56 are off-curves on the diagonal from
+        # shelf-right up to pt 0). Keeping 54-56 in the translate set is
+        # what preserves the "0-56-55-54-53 on a straight line" property
+        # at every stretch level (they all translate together so the
+        # line just shifts right; if any of them stayed while pt 0 or 53
+        # translated, the line would bend).
         0x0725: {"name": "e",      "class": "bar",
                  "bar_bottom": -100, "bar_top": 1000, "x_cutoff": 0,
-                 "translate_indices": [(0, 38), (53, 53)]},
+                 "translate_indices": [(0, 38), (53, 56)]},
         # Kaph: cloud-shape with an inward arch. Shelf pt 13→14 (y=195),
         # baseline pt 2→41 (y=0). Inner arch (pts 15-27) all at x>=486
         # travels with the right side as a rigid unit. x_cutoff=350 splits
@@ -1481,7 +1461,21 @@ RAMSINA = {
         # bar zone kept wide so no point escapes into out-of-zone.
         0x072C: {"name": "taw",    "class": "bar",
                  "bar_bottom": -600, "bar_top": 1000, "x_cutoff": 0,
-                 "translate_indices": [(23, 34)]},
+                 "translate_indices": [(23, 34)],
+                 # Two collinearity constraints, one per diagonal edge:
+                 # - Inner return (32,33,34) on the line from pt 35 (stays)
+                 #   to pt 31 (translates).
+                 # - Outer diagonal (23,24,25,26) on the line from pt 22
+                 #   (stays, last peak point) to pt 27 (translates, last
+                 #   diagonal point before the right foot).
+                 # Both are needed because on each edge one anchor stays
+                 # and the other translates, so the intermediate pts —
+                 # which all translated with the "right" set — would jut
+                 # out and create a hump instead of a clean line.
+                 "collinear_between": [
+                     {"start": 35, "end": 31, "pts": [32, 33, 34]},
+                     {"start": 22, "end": 27, "pts": [23, 24, 25, 26]},
+                 ]},
     },
 }
 
@@ -1636,7 +1630,7 @@ CONFIGS = [
     FREE_MONO, NACHLIELI, MIRIAM_MONO, EZRA_SIL,
     STAM_ASHKENAZ, SHLOMO_SEMISTAM,
     NOTO_RASHI,
-    NOTO_SANS_SYRIAC, NOHADRA_SAPNA, NOHADRA_AMEDIA, RAMSINA,
+    NOHADRA_SAPNA, NOHADRA_AMEDIA, RAMSINA,
     NOTO_SERIF_ETHIOPIC,
     NOTO_KUFAM_LATIN,
 ]
@@ -1685,6 +1679,7 @@ def stretch_glyph(
     raise_point_ys: dict[int, int] | None = None,
     lean_top: int | None = None,
     translate_indices: list[tuple[int, int]] | None = None,
+    collinear_between: list[dict] | None = None,
 ) -> object:
     """Return a new TTGlyph built from `src_name` with selected points
     shifted LEFT. Shift depends on letter_class and the point's (x, y):
@@ -2018,6 +2013,35 @@ def stretch_glyph(
             # = shift RIGHT (x - (-s) = x + |s|). "sym" is the only class
             # that emits negative values.
             new_glyph.coordinates[i] = (int(round(x - s)), y)
+
+    # collinear_between: force listed intermediate pts to sit on a straight
+    # line between two anchor pts, at their natural y. Applied AFTER the
+    # main shift loop so it uses the SHIFTED positions of the anchors —
+    # useful when the two anchors moved by different amounts (e.g. taw's
+    # interior return: pt 35 stays but pt 31 translates full shift, and
+    # the intermediate off-curves 32-34 would otherwise hump because they
+    # translated with pt 31 while pt 35 kept its natural x). Config format:
+    #   collinear_between: [{"start": start_idx, "end": end_idx,
+    #                         "pts": [idx, idx, ...]}]
+    # Each intermediate pt's x is recomputed as x_start + (y-y_start) *
+    # (x_end - x_start) / (y_end - y_start), keeping its natural y.
+    if collinear_between:
+        coords = list(new_glyph.coordinates)
+        for entry in collinear_between:
+            si = int(entry["start"])
+            ei = int(entry["end"])
+            ax, ay = coords[si]
+            bx, by = coords[ei]
+            dy = by - ay
+            if dy == 0:
+                continue  # degenerate; can't interpolate by y
+            for pi in entry.get("pts", []):
+                px, py = coords[int(pi)]
+                t = (py - ay) / dy
+                new_x = ax + t * (bx - ax)
+                coords[int(pi)] = (int(round(new_x)), py)
+        from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
+        new_glyph.coordinates = GlyphCoordinates(coords)
 
     # Optionally straighten the underside of the bar. Some fonts (e.g.
     # Keter Aram Tsova resh) have an arch-shaped underside — the bottom
@@ -3686,6 +3710,8 @@ def build_one(config: dict) -> int:
         translate_indices: list[tuple[int, int]] | None = None
         if isinstance(ti_raw, list):
             translate_indices = [(int(a), int(b)) for a, b in ti_raw]
+        cb_raw = info.get("collinear_between")
+        collinear_between: list[dict] | None = list(cb_raw) if isinstance(cb_raw, list) else None
         # Per-variant absolute (post-mono) point overrides. Format:
         #   point_overrides_by_variant = {n: {pt_idx: (x, y)}}
         # where n is the widening level (1..MAX_LEVELS) and pt_idx is a
@@ -3784,6 +3810,7 @@ def build_one(config: dict) -> int:
                     raise_point_ys=raise_point_ys,
                     lean_top=lean_top,
                     translate_indices=translate_indices,
+                    collinear_between=collinear_between,
                 )
                 lsb_mode_ = config.get("lsb_mode", "shift")
                 # "sym" class shifts left AND right by shift_/2 each — the
@@ -3871,6 +3898,7 @@ def build_one(config: dict) -> int:
                 raise_point_ys=raise_point_ys,
                 lean_top=lean_top,
                 translate_indices=translate_indices,
+                collinear_between=collinear_between,
             )
             # Grow advance proportionally: stretched letter takes more
             # horizontal space so neighbors don't overlap its extended arm.

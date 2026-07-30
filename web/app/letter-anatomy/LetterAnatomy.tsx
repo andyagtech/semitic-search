@@ -114,21 +114,19 @@ const SYRIAC_LETTERS: LetterEntry[] = [
   { cp: 0x072C, name: "taw",     ch: "ܬ" },
 ];
 
-// Syriac stretch fonts. Includes both stretch derivatives and their raw
-// source counterparts (so you can inspect the natural glyph before
-// widening).
+// Assyrian fonts — stretch derivatives + source counterparts. Noto Sans
+// Syriac ships in source form only (widening abandoned after positional-
+// form geometry proved too complex to tune per-letter).
 const SYRIAC_FONTS: FontEntry[] = [
-  { id: "syr-stretch-ramsina",      label: "Semitic Stretch Ramsina",             file: "SemiticStretchRamsina.ttf",
+  { id: "ramsina",       label: "Semitic Stretch Ramsina",             file: "SemiticStretchRamsina.ttf",
     stretchable: new Set([0x0710, 0x0712, 0x0713, 0x0715, 0x0717, 0x071A, 0x071B, 0x071F, 0x0720, 0x0722, 0x0725, 0x0726, 0x072A, 0x072C]) },
-  { id: "syr-stretch-noto",         label: "Semitic Stretch Noto Sans Syriac",    file: "SemiticStretchNotoSansSyriac.ttf",
-    stretchable: new Set([0x0715, 0x072A]) },
-  { id: "syr-stretch-nohadra-sapna", label: "Semitic Stretch Nohadra Sapna",      file: "SemiticStretchNohadraSapna.ttf",
+  { id: "noto-sans",     label: "Noto Sans Syriac",                    file: "NotoSansSyriac.ttf" },
+  { id: "nohadra-sapna", label: "Semitic Stretch Nohadra Sapna",       file: "SemiticStretchNohadraSapna.ttf",
     stretchable: new Set([0x0710, 0x0712, 0x0715, 0x0717, 0x0718, 0x0721, 0x0723, 0x072A, 0x072B, 0x072C]) },
-  { id: "syr-stretch-nohadra-amedia",label: "Semitic Stretch Nohadra Amedia",     file: "SemiticStretchNohadraAmedia.ttf",
+  { id: "nohadra-amedia",label: "Semitic Stretch Nohadra Amedia",      file: "SemiticStretchNohadraAmedia.ttf",
     stretchable: new Set([0x0710, 0x0712, 0x0715, 0x0717, 0x0718, 0x0721, 0x0723, 0x072A, 0x072B, 0x072C]) },
-  { id: "syr-ramsina-src",          label: "Ramsina (source)",                    file: "Ramsina-Regular.ttf" },
-  { id: "syr-noto-src",             label: "Noto Sans Syriac (source)",           file: "NotoSansSyriac.ttf" },
-  { id: "syr-nohadra-sapna-src",    label: "Nohadra Sapna (source)",              file: "NohadraSyriacSapna.ttf" },
+  { id: "ramsina-src",   label: "Ramsina (source)",                    file: "Ramsina-Regular.ttf" },
+  { id: "nohadra-sapna-src", label: "Nohadra Sapna (source)",          file: "NohadraSyriacSapna.ttf" },
 ];
 
 // Which scripts the anatomy tool supports. Each script defines its own
@@ -149,7 +147,7 @@ const SCRIPTS: ScriptEntry[] = [
   { id: "hebrew",  label: "Hebrew",           letters: HEBREW_LETTERS, fonts: FONTS,
     defaultCp: 0x05E2, stretchTrigger: "׆", hasPositionalForms: false,
     chipFontFamily: "'Frank Ruhl Libre', serif" },
-  { id: "syriac", label: "Assyrian (Syriac)", letters: SYRIAC_LETTERS, fonts: SYRIAC_FONTS,
+  { id: "syriac", label: "Assyrian", letters: SYRIAC_LETTERS, fonts: SYRIAC_FONTS,
     defaultCp: 0x0715, stretchTrigger: "܍", hasPositionalForms: true,
     chipFontFamily: "'Estrangelo Edessa', 'Noto Sans Syriac', serif" },
 ];
@@ -345,18 +343,58 @@ function useLoadStretchFontFace(fontFile: string, familyBase: string): { ready: 
 }
 
 export function LetterAnatomy() {
-  // Script selector — Hebrew (default) or Assyrian (Syriac). Switching
-  // scripts resets the codepoint and font picker to the new script's
-  // defaults so we never point at a glyph the wrong font doesn't have.
-  const [scriptId, setScriptId] = useState<"hebrew" | "syriac">("hebrew");
+  // Read URL query params on mount so `?script=assyrian&font=ramsina&
+  // letter=alaph` deep-links directly to a specific view. Params are
+  // resolved against the script/font/letter tables; unknown values fall
+  // back to sensible defaults. `assyrian` and `syriac` both map to the
+  // same script id ("syriac" internally — kept because the letter data
+  // is Syriac-script codepoints; UI label is "Assyrian").
+  const initial = (() => {
+    if (typeof window === "undefined") return null;
+    const p = new URLSearchParams(window.location.search);
+    return {
+      script: p.get("script"),
+      font: p.get("font"),
+      letter: p.get("letter"),
+    };
+  })();
+  const initialScript: "hebrew" | "syriac" = (() => {
+    const s = initial?.script?.toLowerCase();
+    if (s === "assyrian" || s === "syriac") return "syriac";
+    if (s === "hebrew") return "hebrew";
+    return "hebrew";
+  })();
+  const initialScriptDef = SCRIPTS.find((s) => s.id === initialScript)!;
+  const initialFontIdx = (() => {
+    const f = initial?.font?.toLowerCase();
+    if (!f) return 0;
+    const idx = initialScriptDef.fonts.findIndex(
+      (fnt) => fnt.id.toLowerCase() === f || fnt.id.toLowerCase().endsWith("-" + f),
+    );
+    return idx >= 0 ? idx : 0;
+  })();
+  const initialCp = (() => {
+    const l = initial?.letter?.toLowerCase();
+    if (!l) return initialScriptDef.defaultCp;
+    const match = initialScriptDef.letters.find(
+      (L) => L.name.toLowerCase() === l || L.ch === l,
+    );
+    return match ? match.cp : initialScriptDef.defaultCp;
+  })();
+
+  // Script selector — Hebrew (default) or Assyrian. Switching scripts
+  // resets the codepoint and font picker to the new script's defaults
+  // so we never point at a glyph the wrong font doesn't have.
+  const [scriptId, setScriptId] = useState<"hebrew" | "syriac">(initialScript);
   const script = SCRIPTS.find((s) => s.id === scriptId)!;
-  // Positional-form toggle. Only meaningful for cursive Syriac; ignored
+  // Positional-form toggle. Only meaningful for cursive Assyrian; ignored
   // for Hebrew (which has no init/medi/fina). Resets to isolated on
   // script switch.
   const [positionalForm, setPositionalForm] = useState<PositionalForm>("isol");
-  // Font + codepoint pickers. Defaults come from the active script.
-  const [fontIdx, setFontIdx] = useState(0);
-  const [cp, setCp] = useState(script.defaultCp);
+  // Font + codepoint pickers. Defaults come from the active script or
+  // from URL params if provided.
+  const [fontIdx, setFontIdx] = useState(initialFontIdx);
+  const [cp, setCp] = useState(initialCp);
   const [stretchLevel, setStretchLevel] = useState(0);
   // Reset dependent pickers when script changes.
   const switchScript = (id: "hebrew" | "syriac") => {
@@ -368,6 +406,25 @@ export function LetterAnatomy() {
     setStretchLevel(0);
     setPositionalForm("isol");
   };
+
+  // Reflect current selection back into the URL so it can be bookmarked
+  // or shared. Uses replaceState — no navigation, no re-render.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("script", scriptId === "syriac" ? "assyrian" : scriptId);
+    const fontEntry = script.fonts[fontIdx];
+    if (fontEntry) {
+      // Strip a common prefix if present so URLs read "ramsina" not
+      // "syr-stretch-ramsina" (backwards-compatible with our older ids).
+      const slug = fontEntry.id.replace(/^syr-(stretch-)?/, "");
+      params.set("font", slug);
+    }
+    const letterEntry = script.letters.find((L) => L.cp === cp);
+    if (letterEntry) params.set("letter", letterEntry.name);
+    const url = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState(null, "", url);
+  }, [scriptId, fontIdx, cp, script.fonts, script.letters]);
 
   // Loaded glyph geometry.
   const [glyph, setGlyph] = useState<Glyph | null>(null);
@@ -868,10 +925,15 @@ export function LetterAnatomy() {
           </div>
         </div>
         {/* Letter grid — click to select. Letters without a widening
-            variant in the currently-loaded font are dimmed. */}
-        <div className={`grid gap-1 ${
-          script.letters.length > 20 ? "grid-cols-9" : "grid-cols-11"
-        }`}>
+            variant in the currently-loaded font are dimmed. RTL-scripts
+            (Assyrian, Hebrew) render right-to-left so alaph lands in
+            the upper-right — matches how native readers scan. */}
+        <div
+          dir="rtl"
+          className={`grid gap-1 ${
+            script.letters.length > 20 ? "grid-cols-9" : "grid-cols-11"
+          }`}
+        >
           {script.letters.map((L) => {
             const stretchable = script.fonts[fontIdx]?.stretchable;
             const hasStretch = !stretchable || stretchable.has(L.cp);

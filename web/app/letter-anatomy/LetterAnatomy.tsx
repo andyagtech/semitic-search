@@ -119,7 +119,7 @@ const SYRIAC_LETTERS: LetterEntry[] = [
 // form geometry proved too complex to tune per-letter).
 const SYRIAC_FONTS: FontEntry[] = [
   { id: "ramsina",       label: "Semitic Stretch Ramsina",             file: "SemiticStretchRamsina.ttf",
-    stretchable: new Set([0x0710, 0x0712, 0x0713, 0x0715, 0x0717, 0x071A, 0x071B, 0x071F, 0x0720, 0x0722, 0x0725, 0x0726, 0x072A, 0x072C]) },
+    stretchable: new Set([0x0710, 0x0712, 0x0713, 0x0717, 0x071A, 0x071B, 0x071F, 0x0720, 0x0722, 0x0725, 0x0726, 0x072C]) },
   { id: "noto-sans",     label: "Noto Sans Syriac",                    file: "NotoSansSyriac.ttf" },
   { id: "nohadra-sapna", label: "Semitic Stretch Nohadra Sapna",       file: "SemiticStretchNohadraSapna.ttf",
     stretchable: new Set([0x0710, 0x0712, 0x0715, 0x0717, 0x0718, 0x0721, 0x0723, 0x072A, 0x072B, 0x072C]) },

@@ -1339,19 +1339,14 @@ RAMSINA = {
     "stretch_codepoint": 0x070D,
     "override_trigger_glyph": True,
     "letters": {
-        # Dalath: right-joining, so its isolated/final form appears at every
-        # end-of-joining-run — the natural scribal widening slot. Bar zone
-        # catches the upper horizontal stroke; x_cutoff=200 keeps the right
-        # hook and tail-descender anchored.
-        0x0715: {"name": "dalath", "class": "bar", "bar_bottom": 350, "bar_top": 630, "x_cutoff": 200},
-        # Rish: dalath body + supralineal dot at y=909. bar_top=630 leaves
-        # the dot outside the shift zone so it stays put above the widened
-        # body.
-        0x072A: {"name": "rish",   "class": "bar", "bar_bottom": 350, "bar_top": 630, "x_cutoff": 200},
+        # Dalath and rish (both right-joining) DROPPED from widening —
+        # visual review showed the .fina positional form geometry doesn't
+        # match the isolated-form tuning, and neither looks great when
+        # widened even in isolation. Left for a future per-form pass.
         # Beth: right hook + flat top y≈600-670. x_cutoff=500 keeps the
         # hook (right half) anchored while the left half of the top bar
         # extends. Dual-joining — widens in isolated form only.
-        0x0712: {"name": "beth",   "class": "bar", "bar_bottom": 0, "bar_top": 670, "x_cutoff": 500},
+        0x0712: {"name": "beth",   "class": "bar", "bar_bottom": 0, "bar_top": 670, "x_cutoff": 500, "positional_forms": True},
         # Nun: L-shaped letter with a middle shelf (pt 34→35 at y=195) over
         # a wide baseline (pt 22→21 at y=0), and a right ascender above the
         # shelf. Widening zone is the rectangular strip between shelf and
@@ -1359,28 +1354,28 @@ RAMSINA = {
         # hook on the left stays visually anchored; x_cutoff=450 keeps the
         # right ascender (leftmost point pt 3/pt 4 at x=466) safely in the
         # "translates right" set.
-        0x0722: {"name": "nun",    "class": "bar", "bar_bottom": 0, "bar_top": 600, "x_cutoff": 450},
+        0x0722: {"name": "nun",    "class": "bar", "bar_bottom": 0, "bar_top": 600, "x_cutoff": 450, "positional_forms": True},
         # Alaph: "2"-shape with a rectangular base at the bottom. Widening
         # zone is the base rectangle bounded by pt 24→25 (y=195) on top and
         # pt 1→0 (y=0) on the bottom. bar_top=864 (full letter height) so
         # the upper curve stays visually anchored on the left while the
         # rectangle's right edge (pt 0 at x=623, pt 25 at x=623) translates
         # right. Every upper-curve point sits at x<500, so they all shift.
-        0x0710: {"name": "alaph",  "class": "bar", "bar_bottom": 0, "bar_top": 864, "x_cutoff": 500},
+        0x0710: {"name": "alaph",  "class": "bar", "bar_bottom": 0, "bar_top": 864, "x_cutoff": 500, "positional_forms": True},
         # Gamal: diagonal upper body + horizontal shelf (pt 26→27 at y=195)
         # over the baseline (pt 13→12 at y=0), plus a small descender
         # square at (x≈1150..1346, y≈-484..-289). bar_bottom=-500 catches
         # the descender square; bar_top=400 catches the left hook's peak
         # (pt 21 at y=352). Upper body sits above bar_top so it stays out
         # of zone and translates right as a unit with the right shelf edge.
-        0x0713: {"name": "gamal",  "class": "bar", "bar_bottom": -500, "bar_top": 400, "x_cutoff": 500},
+        0x0713: {"name": "gamal",  "class": "bar", "bar_bottom": -500, "bar_top": 400, "x_cutoff": 500, "positional_forms": True},
         # Pe: outer body + separate inner counter (contour 1 at x=630-810,
         # y=485-658). Shelf pt 14→15 (y=195), baseline pt 2→1 (y=0). Full
         # letter height (0..902) in zone so left hook stays visually and
         # the entire right upper loop + inner counter translate right as
         # rigid units. x_cutoff=350 splits between shelf-left (277) and
         # shelf-right (879).
-        0x0726: {"name": "pe",     "class": "bar", "bar_bottom": 0, "bar_top": 902, "x_cutoff": 350},
+        0x0726: {"name": "pe",     "class": "bar", "bar_bottom": 0, "bar_top": 902, "x_cutoff": 350, "positional_forms": True},
         # E (ain, ܥ): hooked letter with upper flourish, right descending
         # arc, right foot, and left foot. Uses translate_indices because
         # the upper flourish (pts 0-15 at x=416-608) shares an x range
@@ -1404,14 +1399,14 @@ RAMSINA = {
         # baseline pt 2→41 (y=0). Inner arch (pts 15-27) all at x>=486
         # travels with the right side as a rigid unit. x_cutoff=350 splits
         # between shelf endpoints.
-        0x071F: {"name": "kaph",   "class": "bar", "bar_bottom": 0, "bar_top": 612, "x_cutoff": 350},
+        0x071F: {"name": "kaph",   "class": "bar", "bar_bottom": 0, "bar_top": 612, "x_cutoff": 350, "positional_forms": True},
         # Lamadh: L-shape. Widening area is between pts 26, 27, 12, 13.
         # Shelf pt 26→27 (y=195), baseline pt 13→12 (y=0). Full letter
         # height (0..1136) in zone so the tall upper hook and diagonal
         # ascender translate right as a unit while the left foot stays
         # anchored. x_cutoff=350 lands between shelf-left (277) and
         # shelf-right (810).
-        0x0720: {"name": "lamadh", "class": "bar", "bar_bottom": 0, "bar_top": 1136, "x_cutoff": 350},
+        0x0720: {"name": "lamadh", "class": "bar", "bar_bottom": 0, "bar_top": 1136, "x_cutoff": 350, "positional_forms": True},
         # Heh: rounded body with a right descender leg (pts 0-2 + 24-25
         # at y=-134 to -115) hanging below the baseline. Widening zone is
         # the top-bar / inner-shelf area — split between pt 4 (666, 400,
@@ -1423,7 +1418,7 @@ RAMSINA = {
         # the right leg + top-right curl (pts 18-25 at x=771-849) travel
         # as a rigid unit and the inner counter (pts 26-39 at x=270-531)
         # stays visually anchored with the left body.
-        0x0717: {"name": "he",     "class": "bar", "bar_bottom": -150, "bar_top": 700, "x_cutoff": 700},
+        0x0717: {"name": "he",     "class": "bar", "bar_bottom": -150, "bar_top": 700, "x_cutoff": 700, "positional_forms": True},
         # Heth: two "MM" waves at the bottom right + two hills at the top
         # right. Widening rectangle is between shelf pt 28 (277, 195) →
         # pt 29 (478, 195) on top and baseline pt 16 (240, 0) → pt 15
@@ -1433,7 +1428,7 @@ RAMSINA = {
         # x=588-1164) and both top hills (pts 32-44 at x=499-998) travel
         # right as rigid units. Left hook + shelf-left + baseline-left
         # stay visually.
-        0x071A: {"name": "heth",   "class": "bar", "bar_bottom": -50, "bar_top": 500, "x_cutoff": 400},
+        0x071A: {"name": "heth",   "class": "bar", "bar_bottom": -50, "bar_top": 500, "x_cutoff": 400, "positional_forms": True},
         # Teth: cross-shape with a tall ascender arch (pts 29-53 at
         # x=434-955, y=195-994) and a hanging right descender (pts 0-14,
         # x=837-1449, y=-512 to 0) plus a small triangle counter (contour
@@ -1444,7 +1439,7 @@ RAMSINA = {
         # the ascender arch stays intact as a rigid unit and translates
         # right along with the descender and the triangle counter. Left
         # hook stays visually.
-        0x071B: {"name": "teth",   "class": "bar", "bar_bottom": -520, "bar_top": 1000, "x_cutoff": 430},
+        0x071B: {"name": "teth",   "class": "bar", "bar_bottom": -520, "bar_top": 1000, "x_cutoff": 430, "positional_forms": True},
         # Taw: rigid translation of the right side. Uses translate_indices
         # (outline-index partition, overrides x_cutoff) because the letter's
         # small baseline hump (pts 36-44 + 0-7) has HIGH x-values but must
@@ -3972,13 +3967,24 @@ def build_one(config: dict) -> int:
                                ".init2", ".medi2", ".fina2",
                                ".fin2", ".fin3", ".med2")
         positional_variants: dict[str, list[str]] = {}
-        for suffix in POSITIONAL_SUFFIXES:
-            positional = src_glyph + suffix
-            if positional in font.getGlyphOrder():
-                pos_prefix = f"{letter_name}{suffix}"
-                pos_vars = build_form_variants(positional, pos_prefix)
-                if pos_vars:
-                    positional_variants[positional] = pos_vars
+        # Gate positional-variant building on a per-letter opt-in.
+        # Default False (skip) because most of our configs use x/y cutoffs
+        # or point indices tuned to the ISOLATED form's geometry — applying
+        # them unchanged to positional variants (which have different
+        # point counts, bboxes, and joining stubs) produces broken glyphs.
+        # Set `positional_forms: True` to opt in a letter once its
+        # positional-form widening has been tuned or verified. When True,
+        # we still fall back to the isolated-form config for every
+        # variant, so any per-form nuance still requires manual review.
+        want_positional = bool(info.get("positional_forms", False))
+        if want_positional:
+            for suffix in POSITIONAL_SUFFIXES:
+                positional = src_glyph + suffix
+                if positional in font.getGlyphOrder():
+                    pos_prefix = f"{letter_name}{suffix}"
+                    pos_vars = build_form_variants(positional, pos_prefix)
+                    if pos_vars:
+                        positional_variants[positional] = pos_vars
 
         letter_variants[src_glyph] = {
             "variants": variants,

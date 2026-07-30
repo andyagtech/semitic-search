@@ -98,7 +98,7 @@ const SYR_LETTERS: Letter[] = [
   { code: "ܫ", name: "shin",     klass: "bar" },
   { code: "ܬ", name: "taw",      klass: "bar" },
 ];
-const SYR_RAMSINA = new Set(["ܐ","ܒ","ܓ","ܕ","ܗ","ܚ","ܛ","ܟ","ܠ","ܢ","ܥ","ܦ","ܪ","ܬ"]);  // Ramsina — 14 letters
+const SYR_RAMSINA = new Set(["ܐ","ܒ","ܓ","ܗ","ܚ","ܛ","ܟ","ܠ","ܢ","ܥ","ܦ","ܬ"]);  // Ramsina — 12 letters (dalath, rish deferred)
 const SYR_TEN  = new Set(["ܐ","ܒ","ܕ","ܗ","ܘ","ܡ","ܣ","ܪ","ܫ","ܬ"]);
 const SYR_NONE = new Set<string>();  // no widening — source font shown as-is
 const SYR_FONTS: StretchFont[] = [

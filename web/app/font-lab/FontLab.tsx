@@ -152,7 +152,7 @@ const SCRIPTS: ScriptEntry[] = [
     ],
   },
   {
-    id: "syriac", label: "Assyrian (Syriac)", dir: "rtl",
+    id: "syriac", label: "Assyrian", dir: "rtl",
     // Peshitta Genesis 1:1-1:3 (Eastern edition), with U+070D SYRIAC
     // HARKLEAN ASTERISCUS baked in on stretchable letters so widening
     // shows on first render (no need to click auto-justify). Verified
@@ -893,7 +893,7 @@ const SHOWCASE: { section: string; scriptId: string; items: ShowcaseItem[] }[] =
     ],
   },
   {
-    section: "Assyrian (Syriac)",
+    section: "Assyrian",
     scriptId: "syriac",
     items: [
       {
@@ -1686,7 +1686,7 @@ export function FontLab() {
               value={scriptId}
               onChange={(e) => setScriptId(e.target.value)}
             >
-              {/* Living / modern script order: Arabic → Assyrian (Syriac)
+              {/* Living / modern script order: Arabic → Assyrian
                   → Amharic → Hebrew. Then an "Ancient scripts" optgroup
                   bundling the historical inscription scripts together. */}
               {(["arabic", "syriac", "ethiopic", "hebrew"] as const).map((id) => {

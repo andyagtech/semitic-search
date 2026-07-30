@@ -1374,7 +1374,21 @@ RAMSINA = {
         # the descender square; bar_top=400 catches the left hook's peak
         # (pt 21 at y=352). Upper body sits above bar_top so it stays out
         # of zone and translates right as a unit with the right shelf edge.
-        0x0713: {"name": "gamal",  "class": "bar", "bar_bottom": -500, "bar_top": 400, "x_cutoff": 500, "positional_forms": True},
+        0x0713: {"name": "gamal",  "class": "bar", "bar_bottom": -500, "bar_top": 400, "x_cutoff": 500, "positional_forms": True,
+                 # Per-form overrides for cursive positional variants.
+                 # Isolated + fina use the base config (bar_top=400
+                 # catches the left hook, x_cutoff=500 splits at the
+                 # shelf endpoints). Init and medi need different splits
+                 # because their outlines have different structure:
+                 # .init has the whole letter body (pts 15-25) at
+                 # x=168-509, y=195-857 — user directive: don't move any
+                 # of them. bar_top=1000 puts them fully in zone;
+                 # x_cutoff=600 keeps them all on the "shifts / stays
+                 # visually" side. Only pts 3+ (upper diagonal x>=619)
+                 # and pts 4-12 (right descender) translate right.
+                 "positional_configs": {
+                     ".init": {"bar_top": 1000, "x_cutoff": 600},
+                 }},
         # Pe: outer body + separate inner counter (contour 1 at x=630-810,
         # y=485-658). Shelf pt 14→15 (y=195), baseline pt 2→1 (y=0). Full
         # letter height (0..902) in zone so left hook stays visually and
@@ -3678,41 +3692,95 @@ def build_one(config: dict) -> int:
     overflow_chains: dict[str, tuple[str, str, str, str]] = {}
     cmap = font.getBestCmap()
 
+    def _extract_widening_params(cfg: dict) -> dict:
+        """Extract every widening parameter from a config dict.
+
+        Used to resolve params for BOTH the isolated form and each
+        positional variant. Per-form overrides live under `positional_
+        configs.{suffix}` and are merged shallowly into the base config
+        before extraction — so a config like:
+
+            {"class": "bar", "bar_top": 400, "x_cutoff": 500,
+             "positional_configs": {".init": {"bar_top": 1000}}}
+
+        yields bar_top=400 for isolated and bar_top=1000 for .init,
+        with x_cutoff=500 inherited by both.
+        """
+        result: dict = {
+            "letter_class": str(cfg.get("class", "bar")),
+            "bar_bottom": int(cfg.get("bar_bottom", 440)),
+            "bar_top": int(cfg.get("bar_top", 620)),
+        }
+        _arm = cfg.get("arm_min_y")
+        result["arm_min_y"] = int(_arm) if isinstance(_arm, int) else None
+        _leg = cfg.get("leg_max_y")
+        result["leg_max_y"] = int(_leg) if isinstance(_leg, int) else None
+        _xc = cfg.get("x_cutoff")
+        result["x_cut_int"] = int(_xc) if isinstance(_xc, int) else None
+        _rc = cfg.get("right_cutoff")
+        result["right_cut_int"] = int(_rc) if isinstance(_rc, int) else None
+        _uy = cfg.get("underside_y_max")
+        result["underside_y_max"] = int(_uy) if isinstance(_uy, int) else None
+        _ux = cfg.get("underside_x_min")
+        result["underside_x_min"] = int(_ux) if isinstance(_ux, int) else None
+        _ftf = cfg.get("flatten_top_from_y")
+        result["flatten_top_from_y"] = int(_ftf) if isinstance(_ftf, int) else None
+        _ftt = cfg.get("flatten_top_to_y")
+        result["flatten_top_to_y"] = int(_ftt) if isinstance(_ftt, int) else None
+        _ftc = cfg.get("flatten_top_contours")
+        result["flatten_top_contours"] = list(_ftc) if isinstance(_ftc, list) else None
+        _ry = cfg.get("raise_point_ys")
+        result["raise_point_ys"] = {int(k): int(v) for k, v in _ry.items()} if isinstance(_ry, dict) else None
+        _lt = cfg.get("lean_top")
+        result["lean_top"] = int(_lt) if isinstance(_lt, int) else None
+        _ti = cfg.get("translate_indices")
+        result["translate_indices"] = [(int(a), int(b)) for a, b in _ti] if isinstance(_ti, list) else None
+        _cb = cfg.get("collinear_between")
+        result["collinear_between"] = list(_cb) if isinstance(_cb, list) else None
+        _sc = cfg.get("shift_contours")
+        result["shift_contours"] = list(_sc) if isinstance(_sc, list) else None
+        _asc = cfg.get("always_shift_contours")
+        result["always_shift_contours"] = list(_asc) if isinstance(_asc, list) else None
+        _nsc = cfg.get("never_shift_contours")
+        result["never_shift_contours"] = list(_nsc) if isinstance(_nsc, list) else None
+        _csr = cfg.get("contour_shift_ratios")
+        result["contour_shift_ratios"] = ({int(k): float(v) for k, v in _csr.items()}
+                                          if isinstance(_csr, dict) else None)
+        _sbyc = cfg.get("shear_by_y_contours")
+        result["shear_by_y_contours"] = ({int(k): (int(v[0]), int(v[1])) for k, v in _sbyc.items()}
+                                         if isinstance(_sbyc, dict) else None)
+        return result
+
+    def _resolve_form_params(base_info: dict, form_suffix: str | None) -> dict:
+        """Merge base config with the form's per-form override, extract."""
+        if form_suffix is None:
+            return _extract_widening_params(base_info)
+        overrides = (base_info.get("positional_configs") or {}).get(form_suffix)
+        if not isinstance(overrides, dict):
+            return _extract_widening_params(base_info)
+        merged = {**base_info, **overrides}
+        return _extract_widening_params(merged)
+
     for cp, info in letters.items():
         letter_name = str(info["name"])
-        letter_class = str(info.get("class", "bar"))
-        bar_bottom = int(info.get("bar_bottom", 440))  # type: ignore
-        bar_top = int(info.get("bar_top", 620))  # type: ignore
-        arm = info.get("arm_min_y")
-        arm_min_y = int(arm) if isinstance(arm, int) else None
-        leg = info.get("leg_max_y")
-        leg_max_y = int(leg) if isinstance(leg, int) else None
-        x_cut = info.get("x_cutoff")
-        x_cut_int = int(x_cut) if isinstance(x_cut, int) else None
-        right_cut = info.get("right_cutoff")
-        right_cut_int = int(right_cut) if isinstance(right_cut, int) else None
-        und_y = info.get("underside_y_max")
-        underside_y_max = int(und_y) if isinstance(und_y, int) else None
-        und_x = info.get("underside_x_min")
-        underside_x_min = int(und_x) if isinstance(und_x, int) else None
-        ft_from = info.get("flatten_top_from_y")
-        flatten_top_from_y = int(ft_from) if isinstance(ft_from, int) else None
-        ft_to = info.get("flatten_top_to_y")
-        flatten_top_to_y = int(ft_to) if isinstance(ft_to, int) else None
-        ft_contours_raw = info.get("flatten_top_contours")
-        flatten_top_contours = list(ft_contours_raw) if isinstance(ft_contours_raw, list) else None
-        raise_ys_raw = info.get("raise_point_ys")
-        raise_point_ys: dict[int, int] | None = None
-        if isinstance(raise_ys_raw, dict):
-            raise_point_ys = {int(k): int(v) for k, v in raise_ys_raw.items()}
-        lean_top_raw = info.get("lean_top")
-        lean_top = int(lean_top_raw) if isinstance(lean_top_raw, int) else None
-        ti_raw = info.get("translate_indices")
-        translate_indices: list[tuple[int, int]] | None = None
-        if isinstance(ti_raw, list):
-            translate_indices = [(int(a), int(b)) for a, b in ti_raw]
-        cb_raw = info.get("collinear_between")
-        collinear_between: list[dict] | None = list(cb_raw) if isinstance(cb_raw, list) else None
+        # Isolated-form params (used inside build_form_variants below).
+        _iso_params = _resolve_form_params(info, None)
+        letter_class = _iso_params["letter_class"]
+        bar_bottom = _iso_params["bar_bottom"]
+        bar_top = _iso_params["bar_top"]
+        arm_min_y = _iso_params["arm_min_y"]
+        leg_max_y = _iso_params["leg_max_y"]
+        x_cut_int = _iso_params["x_cut_int"]
+        right_cut_int = _iso_params["right_cut_int"]
+        underside_y_max = _iso_params["underside_y_max"]
+        underside_x_min = _iso_params["underside_x_min"]
+        flatten_top_from_y = _iso_params["flatten_top_from_y"]
+        flatten_top_to_y = _iso_params["flatten_top_to_y"]
+        flatten_top_contours = _iso_params["flatten_top_contours"]
+        raise_point_ys = _iso_params["raise_point_ys"]
+        lean_top = _iso_params["lean_top"]
+        translate_indices = _iso_params["translate_indices"]
+        collinear_between = _iso_params["collinear_between"]
         # Per-variant absolute (post-mono) point overrides. Format:
         #   point_overrides_by_variant = {n: {pt_idx: (x, y)}}
         # where n is the widening level (1..MAX_LEVELS) and pt_idx is a
@@ -3736,20 +3804,11 @@ def build_one(config: dict) -> int:
         alias_cps_raw = info.get("alias_codepoints", [])
         alias_cps = list(alias_cps_raw) if isinstance(alias_cps_raw, list) else []
         aliases = [cmap[a] for a in alias_cps if a in cmap]
-        shift_contours_raw = info.get("shift_contours")
-        shift_contours = list(shift_contours_raw) if isinstance(shift_contours_raw, list) else None
-        always_shift_raw = info.get("always_shift_contours")
-        always_shift_contours = list(always_shift_raw) if isinstance(always_shift_raw, list) else None
-        never_shift_raw = info.get("never_shift_contours")
-        never_shift_contours = list(never_shift_raw) if isinstance(never_shift_raw, list) else None
-        ratios_raw = info.get("contour_shift_ratios")
-        contour_shift_ratios: dict[int, float] | None = None
-        if isinstance(ratios_raw, dict):
-            contour_shift_ratios = {int(k): float(v) for k, v in ratios_raw.items()}
-        shear_raw = info.get("shear_by_y_contours")
-        shear_by_y_contours: dict[int, tuple[int, int]] | None = None
-        if isinstance(shear_raw, dict):
-            shear_by_y_contours = {int(k): (int(v[0]), int(v[1])) for k, v in shear_raw.items()}
+        shift_contours = _iso_params["shift_contours"]
+        always_shift_contours = _iso_params["always_shift_contours"]
+        never_shift_contours = _iso_params["never_shift_contours"]
+        contour_shift_ratios = _iso_params["contour_shift_ratios"]
+        shear_by_y_contours = _iso_params["shear_by_y_contours"]
         src_glyph = cmap.get(cp)
         if not src_glyph:
             print(f"  skip {letter_name}: not in cmap")
@@ -3782,7 +3841,16 @@ def build_one(config: dict) -> int:
         # variants so cursive joining chains stay intact — the .init form
         # widened must still have its left-joining stub, else adjacent
         # letters render dangling stubs into the widened body.
-        def build_form_variants(src_name: str, variant_prefix: str) -> list[str]:
+        def build_form_variants(src_name: str, variant_prefix: str,
+                                params: dict | None = None) -> list[str]:
+            """Build MAX_LEVELS widened variants for one source glyph.
+            `params` optionally overrides the isolated-form widening
+            parameters — used for positional variants whose per-form
+            overrides live under `positional_configs.<suffix>`.
+            Defaults to isolated-form params captured in closure.
+            """
+            p = params if params is not None else _iso_params
+            _class = p["letter_class"]
             if src_name not in font["hmtx"].metrics:
                 return []
             base_adv = font["hmtx"].metrics[src_name][0]
@@ -3793,31 +3861,31 @@ def build_one(config: dict) -> int:
                 shift_ = step * n
                 new_g = stretch_glyph(
                     font, src_name, shift_,
-                    letter_class=letter_class,
-                    bar_bottom=bar_bottom, bar_top=bar_top,
-                    arm_min_y=arm_min_y, leg_max_y=leg_max_y,
-                    x_cutoff=x_cut_int,
-                    right_cutoff=right_cut_int,
-                    shift_contours=shift_contours,
-                    always_shift_contours=always_shift_contours,
-                    never_shift_contours=never_shift_contours,
-                    contour_shift_ratios=contour_shift_ratios,
-                    shear_by_y_contours=shear_by_y_contours,
-                    underside_y_max=underside_y_max,
-                    underside_x_min=underside_x_min,
-                    flatten_top_from_y=flatten_top_from_y,
-                    flatten_top_to_y=flatten_top_to_y,
-                    flatten_top_contours=flatten_top_contours,
-                    raise_point_ys=raise_point_ys,
-                    lean_top=lean_top,
-                    translate_indices=translate_indices,
-                    collinear_between=collinear_between,
+                    letter_class=_class,
+                    bar_bottom=p["bar_bottom"], bar_top=p["bar_top"],
+                    arm_min_y=p["arm_min_y"], leg_max_y=p["leg_max_y"],
+                    x_cutoff=p["x_cut_int"],
+                    right_cutoff=p["right_cut_int"],
+                    shift_contours=p["shift_contours"],
+                    always_shift_contours=p["always_shift_contours"],
+                    never_shift_contours=p["never_shift_contours"],
+                    contour_shift_ratios=p["contour_shift_ratios"],
+                    shear_by_y_contours=p["shear_by_y_contours"],
+                    underside_y_max=p["underside_y_max"],
+                    underside_x_min=p["underside_x_min"],
+                    flatten_top_from_y=p["flatten_top_from_y"],
+                    flatten_top_to_y=p["flatten_top_to_y"],
+                    flatten_top_contours=p["flatten_top_contours"],
+                    raise_point_ys=p["raise_point_ys"],
+                    lean_top=p["lean_top"],
+                    translate_indices=p["translate_indices"],
+                    collinear_between=p["collinear_between"],
                 )
                 lsb_mode_ = config.get("lsb_mode", "shift")
                 # "sym" class shifts left AND right by shift_/2 each — the
                 # letter's origin has already moved by shift_/2, not shift_.
                 # For mono realignment we translate by half, not full.
-                post_shift = (shift_ // 2) if letter_class == "sym" else shift_
+                post_shift = (shift_ // 2) if _class == "sym" else shift_
                 if lsb_mode_ == "mono":
                     for i in range(len(new_g.coordinates)):
                         x, y = new_g.coordinates[i]
@@ -4006,7 +4074,11 @@ def build_one(config: dict) -> int:
                 positional = src_glyph + suffix
                 if positional in font.getGlyphOrder():
                     pos_prefix = f"{letter_name}{suffix}"
-                    pos_vars = build_form_variants(positional, pos_prefix)
+                    # Resolve per-form params: base config + per-form overrides
+                    # from `positional_configs[suffix]`. Missing overrides
+                    # inherit the isolated-form config unchanged.
+                    form_params = _resolve_form_params(info, suffix)
+                    pos_vars = build_form_variants(positional, pos_prefix, form_params)
                     if pos_vars:
                         positional_variants[positional] = pos_vars
 

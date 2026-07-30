@@ -1399,14 +1399,27 @@ RAMSINA = {
         # rigid units. x_cutoff=350 splits between shelf-left (277) and
         # shelf-right (879).
         0x0726: {"name": "pe",     "class": "bar", "bar_bottom": 0, "bar_top": 902, "x_cutoff": 350},
-        # E (ain, ܥ): hooked letter with a decorative upper flourish at
-        # pts 0-15 (x=416-608, y=568-884). Shelf pt 52→53 (y=195), baseline
-        # pt 39→38 (y=0). x_cutoff bumped to 650 so the upper flourish
-        # sits ENTIRELY on the "shifts / stays visually" side, otherwise
-        # a middle-x cutoff would tear the flourish. Right side (descending
-        # arc + right foot pts 22-32 at x=852-1275) still translates right
-        # cleanly since it's all far right of the flourish.
-        0x0725: {"name": "e",      "class": "bar", "bar_bottom": 0, "bar_top": 884, "x_cutoff": 650},
+        # E (ain, ܥ): hooked letter with upper flourish, right descending
+        # arc, right foot, and left foot. Uses translate_indices because
+        # the upper flourish (pts 0-15 at x=416-608) shares an x range
+        # with the right descending arc (pts 16-22 at x=594-852) — no
+        # vertical cutoff can separate them cleanly.
+        #
+        # LEFT (stays visually): pts 39-52 = left foot + baseline-west +
+        # shelf-left. Small contiguous outline slice on the left side.
+        # RIGHT (translates rigidly): everything else, split into two
+        # ranges because pt 53 (shelf-right) is not adjacent to pts 0-38
+        # in the outline order:
+        #   0-38: upper flourish + right descending arc + right foot +
+        #         baseline-east up to pt 38 (823, 0)
+        #   53:   shelf-right (740, 195)
+        # This makes the baseline widen (pt 38 translates while pt 39
+        # stays), the shelf widen (pt 53 translates while pt 52 stays),
+        # and the whole upper flourish + right arc + right foot travel
+        # rigidly as one unit — preserving their internal shape.
+        0x0725: {"name": "e",      "class": "bar",
+                 "bar_bottom": -100, "bar_top": 1000, "x_cutoff": 0,
+                 "translate_indices": [(0, 38), (53, 53)]},
         # Kaph: cloud-shape with an inward arch. Shelf pt 13→14 (y=195),
         # baseline pt 2→41 (y=0). Inner arch (pts 15-27) all at x>=486
         # travels with the right side as a rigid unit. x_cutoff=350 splits
@@ -1452,28 +1465,23 @@ RAMSINA = {
         # right along with the descender and the triangle counter. Left
         # hook stays visually.
         0x071B: {"name": "teth",   "class": "bar", "bar_bottom": -520, "bar_top": 1000, "x_cutoff": 430},
-        # Taw: aleph-style angle-change widening. The letter is an arch:
-        # left rise (pts 8-19, x<316) → peak (pt 20 at 316,828) → outer
-        # right diagonal (pts 23-31) → right foot (pts 27-32) → interior
-        # return (pts 32-35) → baseline hump (pts 36-44 + 0-7).
+        # Taw: rigid translation of the right side. Uses translate_indices
+        # (outline-index partition, overrides x_cutoff) because the letter's
+        # small baseline hump (pts 36-44 + 0-7) has HIGH x-values but must
+        # STAY visually — no vertical cutoff can separate it from the right
+        # diagonal that shares the same x range.
         #
-        # Uses lean_top to make the right side ROTATE/FAN OPEN around the
-        # peak rather than translate rigidly. For right-side points
-        # (x>=x_cutoff):
-        #   - y=lean_top (near peak): full in-zone shift → stays visually
-        #   - y=bar_bottom (foot bottom): zero shift → translates right by
-        #     full shift via mono
-        #   - between: linear interpolation
-        # So the right diagonal near the peak barely moves; the right foot
-        # translates almost fully; intermediate points fan out smoothly.
-        # This matches the manual "rotate around peak" pattern from anatomy
-        # review — right foot preserves its rigid shape but progressively
-        # slides down-right, while the diagonal opens like a fan.
-        #
-        # Left rise + peak stays visually anchored (all x<350 shift full).
+        # Pts 23-34 translate right rigidly:
+        #   23-27: outer right diagonal (top down to right foot)
+        #   27-32: right foot (small rigid shape at x=783-890, y=-12 to 275)
+        #   32-34: interior return east (from foot back up to interior top)
+        # Everything else stays visually anchored:
+        #   0-22: baseline hump east + left connector + left rise + peak
+        #   35-44: interior top-left + interior baseline hump west
+        # bar zone kept wide so no point escapes into out-of-zone.
         0x072C: {"name": "taw",    "class": "bar",
-                 "bar_bottom": -50, "bar_top": 900, "x_cutoff": 350,
-                 "lean_top": 650},
+                 "bar_bottom": -600, "bar_top": 1000, "x_cutoff": 0,
+                 "translate_indices": [(23, 34)]},
     },
 }
 
@@ -1676,6 +1684,7 @@ def stretch_glyph(
     flatten_top_contours: list[int] | None = None,
     raise_point_ys: dict[int, int] | None = None,
     lean_top: int | None = None,
+    translate_indices: list[tuple[int, int]] | None = None,
 ) -> object:
     """Return a new TTGlyph built from `src_name` with selected points
     shifted LEFT. Shift depends on letter_class and the point's (x, y):
@@ -1951,9 +1960,24 @@ def stretch_glyph(
             if i <= end:
                 return ci
         return len(_end_pts) - 1
+    # translate_indices: list of (start_idx, end_idx) inclusive point-index
+    # ranges. Pts in ANY range TRANSLATE RIGHT (s=0 → post-mono at natural+
+    # shift). Pts OUTSIDE all ranges STAY VISUALLY (s=full → post-mono at
+    # natural). When set, this OVERRIDES the x_cutoff logic — used when the
+    # letter's "widening" and "static" regions can't be cleanly separated by
+    # a vertical x line (e.g. taw's baseline hump has high x but must stay;
+    # e's upper flourish shares an x range with the right descending arc).
+    translate_ranges: list[tuple[int, int]] = list(translate_indices or [])
+    def in_translate_ranges(i: int) -> bool:
+        for start, end in translate_ranges:
+            if start <= i <= end:
+                return True
+        return False
     for i, (x, y) in enumerate(new_glyph.coordinates):
         ci = _contour_idx(i)
-        if ci in always_shift_set:
+        if translate_ranges:
+            s = 0.0 if in_translate_ranges(i) else shift
+        elif ci in always_shift_set:
             s = shift  # full shift regardless of x
         elif ci in never_shift_set:
             s = 0.0  # never shift — contour translates rightward via mono only
@@ -3658,6 +3682,10 @@ def build_one(config: dict) -> int:
             raise_point_ys = {int(k): int(v) for k, v in raise_ys_raw.items()}
         lean_top_raw = info.get("lean_top")
         lean_top = int(lean_top_raw) if isinstance(lean_top_raw, int) else None
+        ti_raw = info.get("translate_indices")
+        translate_indices: list[tuple[int, int]] | None = None
+        if isinstance(ti_raw, list):
+            translate_indices = [(int(a), int(b)) for a, b in ti_raw]
         # Per-variant absolute (post-mono) point overrides. Format:
         #   point_overrides_by_variant = {n: {pt_idx: (x, y)}}
         # where n is the widening level (1..MAX_LEVELS) and pt_idx is a
@@ -3755,6 +3783,7 @@ def build_one(config: dict) -> int:
                     flatten_top_contours=flatten_top_contours,
                     raise_point_ys=raise_point_ys,
                     lean_top=lean_top,
+                    translate_indices=translate_indices,
                 )
                 lsb_mode_ = config.get("lsb_mode", "shift")
                 # "sym" class shifts left AND right by shift_/2 each — the
@@ -3841,6 +3870,7 @@ def build_one(config: dict) -> int:
                 flatten_top_contours=flatten_top_contours,
                 raise_point_ys=raise_point_ys,
                 lean_top=lean_top,
+                translate_indices=translate_indices,
             )
             # Grow advance proportionally: stretched letter takes more
             # horizontal space so neighbors don't overlap its extended arm.
